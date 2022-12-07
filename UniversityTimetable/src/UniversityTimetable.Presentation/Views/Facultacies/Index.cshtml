@@ -1,0 +1,77 @@
+﻿@model ListWithPaginationData<FacultacyDTO>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Facultacies</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Data)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
+                    <a asp-controller="Departments" asp-action="Index" asp-route-FacultacyId="@item.Id">View departments</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<p>Page</p>
+@if (Model.Metadata.PageNumber < FacultacyParameters.PagesInLine + 2)
+{
+    @foreach (var i in Enumerable.Range(1, Math.Min(FacultacyParameters.PagesInLine + 3, Model.Metadata.MaxPageNumber)))
+    {
+        <a asp-action="Index" asp-route-PageNumber="@i" asp-route-PageSize="@(Model.Metadata.PageSize)">@i</a>
+        <text> </text>
+    }
+    @if (Model.Metadata.MaxPageNumber > FacultacyParameters.PagesInLine)
+    {
+        <text>...</text>
+        <a asp-action="Index" asp-route-PageNumber="@(Model.Metadata.MaxPageNumber)" asp-route-PageSize="@(Model.Metadata.PageSize)">
+            @Model.Metadata.MaxPageNumber
+        </a>
+    }
+}
+else if (Model.Metadata.PageNumber >= Model.Metadata.MaxPageNumber - FacultacyParameters.PagesInLine - 1)
+{
+    <a asp-action="Index" asp-route-PageNumber="1" asp-route-PageSize="@(Model.Metadata.PageSize)">1</a>
+    <text>...</text>
+    @foreach (var i in Enumerable.Range(Model.Metadata.MaxPageNumber - FacultacyParameters.PagesInLine - 2, FacultacyParameters.PagesInLine + 3))
+    {
+        <a asp-action="Index" asp-route-PageNumber="@i" asp-route-PageSize="@(Model.Metadata.PageSize)">@i</a>
+        <text> </text>
+    }
+}
+else
+{
+    <a asp-action="Index" asp-route-PageNumber="1" asp-route-PageSize="@(Model.Metadata.PageSize)">1</a>
+    <text>...</text>
+    foreach (var i in Enumerable.Range(Model.Metadata.PageNumber - FacultacyParameters.PagesInLine + 2, FacultacyParameters.PagesInLine + 2))
+    {
+        <a asp-action="Index" asp-route-PageNumber="@i" asp-route-PageSize="@(Model.Metadata.PageSize)">@i</a>
+        <text> </text>
+    }
+    <text>...</text>
+    <a asp-action="Index" asp-route-PageNumber="@(Model.Metadata.MaxPageNumber)" asp-route-PageSize="@(Model.Metadata.PageSize)">
+        @Model.Metadata.MaxPageNumber
+    </a>
+}

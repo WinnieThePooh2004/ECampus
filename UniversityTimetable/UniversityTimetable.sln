@@ -1,0 +1,49 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33015.44
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniversityTimetable.Shared", "src\UniversityTimetable.Shared\UniversityTimetable.Shared.csproj", "{17D1A6AB-4B91-4E8C-91B9-9F8D1F4F711D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniversityTimetable.Domain", "src\UniversityTimetable.Domain\UniversityTimetable.Domain.csproj", "{6B71F88F-E0F5-4A15-A7C6-FFCCB39D892C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniversityTimetable.Infrastructure", "src\UniversityTimetable.Infrastructure\UniversityTimetable.Infrastructure.csproj", "{C3BE9554-1940-47E8-89A8-C1CF4D31BAD7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Migrations", "Migrations\Migrations.csproj", "{CAE16776-1889-48EC-80DE-F7A0D79590E6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniversityTimetable.Presentation", "src\UniversityTimetable.Presentation\UniversityTimetable.Presentation.csproj", "{C0E625C8-D892-4855-8E56-80A151AEC22F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{17D1A6AB-4B91-4E8C-91B9-9F8D1F4F711D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17D1A6AB-4B91-4E8C-91B9-9F8D1F4F711D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17D1A6AB-4B91-4E8C-91B9-9F8D1F4F711D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17D1A6AB-4B91-4E8C-91B9-9F8D1F4F711D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B71F88F-E0F5-4A15-A7C6-FFCCB39D892C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B71F88F-E0F5-4A15-A7C6-FFCCB39D892C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B71F88F-E0F5-4A15-A7C6-FFCCB39D892C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B71F88F-E0F5-4A15-A7C6-FFCCB39D892C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3BE9554-1940-47E8-89A8-C1CF4D31BAD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3BE9554-1940-47E8-89A8-C1CF4D31BAD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3BE9554-1940-47E8-89A8-C1CF4D31BAD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3BE9554-1940-47E8-89A8-C1CF4D31BAD7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CAE16776-1889-48EC-80DE-F7A0D79590E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CAE16776-1889-48EC-80DE-F7A0D79590E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CAE16776-1889-48EC-80DE-F7A0D79590E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CAE16776-1889-48EC-80DE-F7A0D79590E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C0E625C8-D892-4855-8E56-80A151AEC22F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0E625C8-D892-4855-8E56-80A151AEC22F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0E625C8-D892-4855-8E56-80A151AEC22F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0E625C8-D892-4855-8E56-80A151AEC22F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {63E4F5B7-9FF0-4456-8DFC-DB74808DB92C}
+	EndGlobalSection
+EndGlobal
