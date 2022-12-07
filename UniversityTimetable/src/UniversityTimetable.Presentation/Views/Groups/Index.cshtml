@@ -1,13 +1,13 @@
-﻿@model IndexModel<DepartmentDTO, DepartmentParameters>
+﻿@model IndexModel<GroupDTO, GroupParameters>
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Departments</h1>
+<h1>Index</h1>
 
 <p>
-    <a asp-action="Create" asp-route-facultacyId="@Model.Parameters.FacultacyId">Create New</a>
+    <a asp-action="Create" asp-route-departmentId="@Model.Parameters.DepartmentId">Create New</a>
 </p>
 <table class="table">
     <thead>
@@ -28,17 +28,14 @@
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                     <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
-                    <a asp-action="Index" asp-controller="Teachers" asp-route-DepartmentId="@item.Id">View teachers</a> |
-                    <a asp-action="Index" asp-controller="Groups" asp-route-DepartmentId=" @item.Id">View groups</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
-<p>Page</p>
 <component type="typeof(PageNavigationLine)" render-mode="ServerPrerendered"
-           param-Parameters="@Model.Parameters" param-ControllerName="@("departments")"
+           param-Parameters="@Model.Parameters" param-ControllerName="@("groups")"
            param-MaxPageNumber="@Model.Metadata.MaxPageNumber" />
 <br />
-<a asp-controller="Facultacies">Back</a>
+<a asp-controller="Departments" asp-route-Id="@Model.Parameters.DepartmentId" asp-action="Details">Back</a>

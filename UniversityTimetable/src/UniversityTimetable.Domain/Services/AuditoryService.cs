@@ -45,7 +45,7 @@ namespace UniversityTimetable.Domain.Services
             return _mapper.Map<AuditoryDTO>(await _repository.GetByIdAsync((int)id));
         }
 
-        public async Task<ListWithPaginationData<AuditoryDTO>> GetByParameters(AuditoryParameters parameters)
+        public async Task<ListWithPaginationData<AuditoryDTO>> GetByParametersAsync(AuditoryParameters parameters)
         {
             return _mapper.Map<ListWithPaginationData<AuditoryDTO>>(await _repository.GetByParameters(parameters));
         }

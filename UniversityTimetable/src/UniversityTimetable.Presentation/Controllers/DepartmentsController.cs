@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using UniversityTimetable.Presentation.Models;
 using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Shared.Interfaces;
-using UniversityTimetable.Shared.Models;
 using UniversityTimetable.Shared.QueryParameters;
 
 namespace UniversityTimetable.Presentation.Controllers
@@ -17,7 +17,7 @@ namespace UniversityTimetable.Presentation.Controllers
         // GET: Departments
         public async Task<IActionResult> Index(DepartmentParameters parameters)
         {
-            return View((await _service.GetByParameters(parameters), parameters.FacultacyId));
+            return View(IndexModel.Create(await _service.GetByParametersAsync(parameters), parameters));
         }
 
         // GET: Departments/Details/5

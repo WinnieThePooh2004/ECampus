@@ -16,6 +16,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
         ?? throw new InvalidOperationException("Connection string 'ApplicationDbContext' not found.")));
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddServerSideBlazor();
 builder.Services.AddAutoMapper(Assembly.Load("UniversityTimetable.Domain"));
 
 builder.Services.AddScoped<IService<FacultacyDTO, FacultacyParameters>, FacultacyService>();
@@ -24,6 +25,12 @@ builder.Services.AddScoped<IService<DepartmentDTO, DepartmentParameters>, Depart
 builder.Services.AddScoped<IRepository<Department, DepartmentParameters>, DepartmentRepository>();
 builder.Services.AddScoped<IService<AuditoryDTO, AuditoryParameters>, AuditoryService>();
 builder.Services.AddScoped<IRepository<Auditory, AuditoryParameters>, AuditoryRepository>();
+builder.Services.AddScoped<IService<GroupDTO, GroupParameters>, GroupService>();
+builder.Services.AddScoped<IRepository<Group, GroupParameters>, GroupRepository>();
+builder.Services.AddScoped<IService<TeacherDTO, TeacherParameters>, TeacherService>();
+builder.Services.AddScoped<IRepository<Teacher, TeacherParameters>, TeacherRepository>();
+builder.Services.AddScoped<IService<ClassDTO, ClassParameters>, ClassService>();
+builder.Services.AddScoped<IRepository<Class, ClassParameters>, ClassRepository>();
 
 var app = builder.Build();
 
@@ -46,4 +53,5 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
+app.MapBlazorHub();
 app.Run();

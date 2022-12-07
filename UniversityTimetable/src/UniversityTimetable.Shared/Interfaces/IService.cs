@@ -6,7 +6,7 @@ namespace UniversityTimetable.Shared.Interfaces
         where TValue : class
         where TParams : QueryParameters.QueryParameters
     {
-        public Task<ListWithPaginationData<TValue>> GetByParameters(TParams parameters);
+        public Task<ListWithPaginationData<TValue>> GetByParametersAsync(TParams parameters);
         public Task<TValue> GetByIdAsync(int? id);
         public Task<TValue> CreateAsync(TValue entity);
         public Task<TValue> UpdateAsync(TValue entity);

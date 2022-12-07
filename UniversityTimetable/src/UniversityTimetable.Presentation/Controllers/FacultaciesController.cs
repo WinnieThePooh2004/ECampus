@@ -2,8 +2,9 @@
 using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Shared.Interfaces;
 using UniversityTimetable.Shared.QueryParameters;
+using UniversityTimetable.Presentation.Models;
 
-namespace UniversityTimetable.PAO.Controllers
+namespace UniversityTimetable.Presentation.Controllers
 {
     public class FacultaciesController : Controller
     {
@@ -16,7 +17,7 @@ namespace UniversityTimetable.PAO.Controllers
         // GET: Facultacies
         public async Task<IActionResult> Index([FromQuery] FacultacyParameters parameters)
         {
-            return View(await _service.GetByParameters(parameters));
+            return View(IndexModel.Create(await _service.GetByParametersAsync(parameters), parameters));
         }
 
         // GET: Facultacies/Details/5

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -32,8 +32,8 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\UniversityTimetable.Presentation\UniversityTimetable.Presentation.csproj" />
-  </ItemGroup>
-
+<ItemGroup>
+    <ProjectReference Include="..\src\UniversityTimetable.Infrastructure\UniversityTimetable.Infrastructure.csproj" />
+    <ProjectReference Include="..\src\UniversityTimetable.Presentation\UniversityTimetable.Presentation.csproj" />
+</ItemGroup>
 </Project>

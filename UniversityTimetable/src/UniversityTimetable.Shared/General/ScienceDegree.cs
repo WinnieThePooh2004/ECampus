@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace UniversityTimetable.Shared.General
+﻿namespace UniversityTimetable.Shared.General
 {
     public enum ScienceDegree
     {
+        /// <summary>
+        /// used only for teacher parameters as value that accepts all variants
+        /// </summary>
+        None,
         Master,
         PhD
     }

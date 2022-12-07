@@ -11,6 +11,7 @@ namespace UniversityTimetable.Shared.Models
         public int DayOfTheWeek { get; set; }
         public bool IsDeleted { get; set; }
         public string SubjectName { get; set; }
+        public WeekDependency WeekDependency { get; set; }
 
         public int TeacherId { get; set; }
         public Teacher Teacher { get; set; }

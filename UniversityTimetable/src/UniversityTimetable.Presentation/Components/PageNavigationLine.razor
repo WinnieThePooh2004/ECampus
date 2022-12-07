@@ -1,0 +1,40 @@
+﻿@using UniversityTimetable.Shared.QueryParameters
+@using Microsoft.AspNetCore.Components.Forms
+<p>Page</p>
+@if (Parameters.PageNumber < QueryParameters.PagesInLine + 2)
+{
+    @foreach (var i in Enumerable.Range(1, Math.Min(QueryParameters.PagesInLine + 3, MaxPageNumber)))
+    {
+        <a href="@($"/{ControllerName}/Index?PageNumber={i}")">@i</a>
+        <text>@(" ")</text>
+    }
+    @if (MaxPageNumber > QueryParameters.PagesInLine)
+    {
+        <text>@("...")</text>
+        <a asp-action="Index" asp-route-PageNumber="@(MaxPageNumber)" asp-route-PageSize="@(Parameters.PageSize)">
+            @MaxPageNumber
+        </a>
+    }
+}
+else if (Parameters.PageNumber >= MaxPageNumber - QueryParameters.PagesInLine - 1)
+{
+    <a asp-action="Index" asp-route-PageNumber="1" asp-route-PageSize="@(Parameters.PageSize)">1</a>
+    <text>@("...")</text>
+    @foreach (var i in Enumerable.Range(MaxPageNumber - QueryParameters.PagesInLine - 2, QueryParameters.PagesInLine + 3))
+    {
+        <a asp-action="Index" asp-route-PageNumber="@i" asp-route-PageSize="@(Parameters.PageSize)">@i </a>
+    }
+}
+else
+{
+    <a asp-action="Index" asp-route-PageNumber="1" asp-route-PageSize="@(Parameters.PageSize)">1</a>
+    <text>@("...")</text>
+    foreach (var i in Enumerable.Range(Parameters.PageNumber - QueryParameters.PagesInLine + 2, QueryParameters.PagesInLine + 2))
+    {
+        <a asp-action="Index" asp-route-PageNumber="@i" asp-route-PageSize="@(Parameters.PageSize)">@i </a>
+    }
+    <text>@("...")</text>
+    <a asp-action="Index" asp-route-PageNumber="@(MaxPageNumber)" asp-route-PageSize="@(Parameters.PageSize)">
+        @MaxPageNumber
+    </a>
+}

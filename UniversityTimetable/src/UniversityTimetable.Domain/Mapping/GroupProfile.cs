@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Shared.Models;
 
 namespace UniversityTimetable.Domain.Mapping
@@ -7,8 +8,8 @@ namespace UniversityTimetable.Domain.Mapping
     {
         public GroupProfile() 
         {
-            CreateMap<Group, GroupProfile>().ReverseMap();
-            this.CreateListWithPaginationDataMap<Group, GroupProfile>();
+            CreateMap<Group, GroupDTO>().ReverseMap();
+            this.CreateListWithPaginationDataMap<Group, GroupDTO>();
         }
     }
 }

@@ -45,7 +45,7 @@ namespace UniversityTimetable.Domain.Services
             return _mapper.Map<FacultacyDTO>(await _repository.GetByIdAsync((int)id));
         }
 
-        public async Task<ListWithPaginationData<FacultacyDTO>> GetByParameters(FacultacyParameters parameters)
+        public async Task<ListWithPaginationData<FacultacyDTO>> GetByParametersAsync(FacultacyParameters parameters)
         {
             _logger.LogInformation("Getting facultacies by parameters:{params}", parameters);
             var facultacies = await _repository.GetByParameters(parameters);

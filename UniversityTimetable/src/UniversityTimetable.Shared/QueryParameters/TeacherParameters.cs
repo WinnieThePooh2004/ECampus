@@ -2,7 +2,7 @@
 
 namespace UniversityTimetable.Shared.QueryParameters
 {
-    public class TeacherParameters
+    public class TeacherParameters : QueryParameters
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }

@@ -43,8 +43,7 @@ namespace UniversityTimetable.Infrastructure.Repositories
         public async Task<ListWithPaginationData<Department>> GetByParameters(DepartmentParameters parameters)
         {
             var entities = _context.Departments
-                .Where(d => (string.IsNullOrEmpty(parameters.DepartmentName)
-                        || d.Name == parameters.DepartmentName)
+                .Where(d => (string.IsNullOrEmpty(parameters.DepartmentName) || d.Name == parameters.DepartmentName)
                         && d.FacultacyId == parameters.FacultacyId);
             int totalCount = await entities.CountAsync();
 

@@ -44,8 +44,8 @@ namespace UniversityTimetable.Infrastructure.Repositories
         public async Task<ListWithPaginationData<Auditory>> GetByParameters(AuditoryParameters parameters)
         {
             var query = _context.Auditories
-                .Where(a => string.IsNullOrEmpty(parameters.BuildingName) || a.Building == parameters.BuildingName
-                    && string.IsNullOrEmpty(parameters.AuditoryName) || a.Name == parameters.AuditoryName);
+                .Where(a => (string.IsNullOrEmpty(parameters.BuildingName) || a.Building == parameters.BuildingName) &&
+                (string.IsNullOrEmpty(parameters.AuditoryName) || a.Name == parameters.AuditoryName));
             var totalCount = await query.CountAsync();
             var pagedItems = await query
                 .OrderBy(a => a.Name)

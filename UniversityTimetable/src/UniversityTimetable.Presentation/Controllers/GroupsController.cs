@@ -2,90 +2,88 @@
 using UniversityTimetable.Presentation.Models;
 using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Shared.Interfaces;
-using UniversityTimetable.Shared.Models;
 using UniversityTimetable.Shared.QueryParameters;
 
 namespace UniversityTimetable.Presentation.Controllers
 {
-    public class ClassesController : Controller
+    public class GroupsController : Controller
     {
+        private readonly IService<GroupDTO, GroupParameters> _service;
 
-        private readonly IService<ClassDTO, ClassParameters> _service;
-
-        public ClassesController(IService<ClassDTO, ClassParameters> service)
+        public GroupsController(IService<GroupDTO, GroupParameters> service)
         {
             _service = service;
         }
 
-        // GET: Classes
-        public async Task<IActionResult> Index([FromQuery] ClassParameters parameters)
+        // GET: Groups
+        public async Task<IActionResult> Index([FromQuery] GroupParameters parameters)
         {
             return View(IndexModel.Create(await _service.GetByParametersAsync(parameters), parameters));
-
         }
 
-        // GET: Classes/Details/5
+        // GET: Groups/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             return View(await _service.GetByIdAsync(id));
         }
 
-        // GET: Classes/Create
-        public IActionResult Create([FromQuery] int teacherId, [FromQuery] int groupId, [FromQuery] int auditoryId)
+        // GET: Groups/Create
+        public IActionResult Create([FromQuery] int departmentId)
         {
-            var @class = new ClassDTO{ GroupId = groupId, AuditoryId = auditoryId, TeacherId = teacherId };
-            return View(@class);
+            var group = new GroupDTO { DepartmentId = departmentId };
+            return View(group);
         }
 
-        // POST: Classes/Create
+        // POST: Groups/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,ClassType,SubjectName,TeacherId,GroupId,AuditoryId")] ClassDTO @class)
+        public async Task<IActionResult> Create([Bind("Id,Name,DepartmentName,DepartmentId")] GroupDTO group)
         {
-            if(!ModelState.IsValid)
+            Console.WriteLine(group.DepartmentId);
+            if (!ModelState.IsValid || group.DepartmentId == 0)
             {
-                return View(@class);
+                return View(group);
             }
-            await _service.CreateAsync(@class);
-            return RedirectToAction(nameof(Index));
+            await _service.CreateAsync(group);
+            return RedirectToAction(nameof(Index), new { DepartmentId = group.DepartmentId });
         }
 
-        // GET: Classes/Edit/5
+        // GET: Groups/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             return View(await _service.GetByIdAsync(id));
         }
 
-        // POST: Classes/Edit/5
+        // POST: Groups/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,ClassType,SubjectName,TeacherId,GroupId,AuditoryId")] ClassDTO @class)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] GroupDTO group)
         {
             if (!ModelState.IsValid)
             {
-                return View(@class);
+                return View(group);
             }
-            await _service.UpdateAsync(@class);
-            return RedirectToAction(nameof(Index));
+            await _service.CreateAsync(group);
+            return RedirectToAction(nameof(Index), new { DepartmentId = group.DepartmentId });
         }
 
-        // GET: Classes/Delete/5
+        // GET: Groups/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             return View(await _service.GetByIdAsync(id));
         }
 
-        // POST: Classes/Delete/5
+        // POST: Groups/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id, [FromQuery] int departmentId)
         {
             await _service.DeleteAsync(id);
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { DepartmentId = departmentId });
         }
     }
 }

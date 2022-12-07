@@ -1,4 +1,4 @@
-﻿@model ListWithPaginationData<AuditoryDTO>
+﻿@model IndexModel<AuditoryDTO, AuditoryParameters>
 
 @{
     ViewData["Title"] = "Index";
@@ -39,42 +39,6 @@
         }
     </tbody>
 </table>
-@if (Model.Metadata.PageNumber < FacultacyParameters.PagesInLine + 2)
-{
-    @foreach (var i in Enumerable.Range(1, Math.Min(FacultacyParameters.PagesInLine + 3, Model.Metadata.MaxPageNumber)))
-    {
-        <a asp-action="Index" asp-route-PageNumber="@i" asp-route-PageSize="@(Model.Metadata.PageSize)">@i</a>
-        <text> </text>
-    }
-    @if (Model.Metadata.MaxPageNumber > FacultacyParameters.PagesInLine)
-    {
-        <text>...</text>
-        <a asp-action="Index" asp-route-PageNumber="@(Model.Metadata.MaxPageNumber)" asp-route-PageSize="@(Model.Metadata.PageSize)">
-            @Model.Metadata.MaxPageNumber
-        </a>
-    }
-}
-else if (Model.Metadata.PageNumber >= Model.Metadata.MaxPageNumber - FacultacyParameters.PagesInLine - 1)
-{
-    <a asp-action="Index" asp-route-PageNumber="1" asp-route-PageSize="@(Model.Metadata.PageSize)">1</a>
-    <text>...</text>
-    @foreach (var i in Enumerable.Range(Model.Metadata.MaxPageNumber - FacultacyParameters.PagesInLine - 2, FacultacyParameters.PagesInLine + 3))
-    {
-        <a asp-action="Index" asp-route-PageNumber="@i" asp-route-PageSize="@(Model.Metadata.PageSize)">@i</a>
-        <text> </text>
-    }
-}
-else
-{
-    <a asp-action="Index" asp-route-PageNumber="1" asp-route-PageSize="@(Model.Metadata.PageSize)">1</a>
-    <text>...</text>
-    foreach (var i in Enumerable.Range(Model.Metadata.PageNumber - FacultacyParameters.PagesInLine + 2, FacultacyParameters.PagesInLine + 2))
-    {
-        <a asp-action="Index" asp-route-PageNumber="@i" asp-route-PageSize="@(Model.Metadata.PageSize)">@i</a>
-        <text> </text>
-    }
-    <text>...</text>
-    <a asp-action="Index" asp-route-PageNumber="@(Model.Metadata.MaxPageNumber)" asp-route-PageSize="@(Model.Metadata.PageSize)">
-        @Model.Metadata.MaxPageNumber
-    </a>
-}
+<component type="typeof(PageNavigationLine)" render-mode="ServerPrerendered"
+           param-Parameters="@Model.Parameters" param-ControllerName="@("auditories")"
+           param-MaxPageNumber="@Model.Metadata.MaxPageNumber" />

@@ -2,6 +2,7 @@
 using UniversityTimetable.Shared.Interfaces;
 using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Shared.QueryParameters;
+using UniversityTimetable.Presentation.Models;
 
 namespace UniversityTimetable.Presentation.Controllers
 {
@@ -17,7 +18,7 @@ namespace UniversityTimetable.Presentation.Controllers
         // GET: Auditories
         public async Task<IActionResult> Index(AuditoryParameters parameters)
         {
-            return View(await _service.GetByParameters(parameters));
+            return View(IndexModel.Create(await _service.GetByParametersAsync(parameters), parameters));
         }
 
         // GET: Auditories/Details/5
