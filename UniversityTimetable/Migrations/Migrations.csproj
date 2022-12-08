@@ -33,7 +33,11 @@
   </ItemGroup>
 
 <ItemGroup>
+    <ProjectReference Include="..\src\UniversityTimetable.Api\UniversityTimetable.Api.csproj" />
     <ProjectReference Include="..\src\UniversityTimetable.Infrastructure\UniversityTimetable.Infrastructure.csproj" />
-    <ProjectReference Include="..\src\UniversityTimetable.Presentation\UniversityTimetable.Presentation.csproj" />
+</ItemGroup>
+
+<ItemGroup>
+  <Folder Include="Migrations\" />
 </ItemGroup>
 </Project>
