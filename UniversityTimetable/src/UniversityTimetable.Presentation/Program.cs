@@ -4,7 +4,8 @@ using UniversityTimetable.Domain.Services;
 using UniversityTimetable.Infrastructure;
 using UniversityTimetable.Infrastructure.Repositories;
 using UniversityTimetable.Shared.DataTransferObjects;
-using UniversityTimetable.Shared.Interfaces;
+using UniversityTimetable.Shared.Interfaces.Repositories;
+using UniversityTimetable.Shared.Interfaces.Services;
 using UniversityTimetable.Shared.Models;
 using UniversityTimetable.Shared.QueryParameters;
 
@@ -29,8 +30,8 @@ builder.Services.AddScoped<IService<GroupDTO, GroupParameters>, GroupService>();
 builder.Services.AddScoped<IRepository<Group, GroupParameters>, GroupRepository>();
 builder.Services.AddScoped<IService<TeacherDTO, TeacherParameters>, TeacherService>();
 builder.Services.AddScoped<IRepository<Teacher, TeacherParameters>, TeacherRepository>();
-builder.Services.AddScoped<IService<ClassDTO, ClassParameters>, ClassService>();
-builder.Services.AddScoped<IRepository<Class, ClassParameters>, ClassRepository>();
+builder.Services.AddScoped<IClassService, ClassService>();
+builder.Services.AddScoped<IClassRepository, ClassRepository>();
 
 var app = builder.Build();
 

@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using UniversityTimetable.Shared.Interfaces;
 using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Shared.QueryParameters;
 using UniversityTimetable.Presentation.Models;
+using UniversityTimetable.Shared.Interfaces.Services;
 
 namespace UniversityTimetable.Presentation.Controllers
 {

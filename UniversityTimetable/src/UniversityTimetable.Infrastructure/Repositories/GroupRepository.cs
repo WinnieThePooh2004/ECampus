@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using UniversityTimetable.Shared.Interfaces;
+using UniversityTimetable.Shared.Interfaces.Repositories;
 using UniversityTimetable.Shared.Models;
 using UniversityTimetable.Shared.Pagination;
 using UniversityTimetable.Shared.QueryParameters;

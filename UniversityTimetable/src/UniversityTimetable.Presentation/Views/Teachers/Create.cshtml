@@ -26,7 +26,8 @@
             <div class="form-group">
                 <label asp-for="ScienceDegree" class="control-label"></label>
                 <select asp-for="ScienceDegree" class="form-control">
-                    <option value="@UniversityTimetable.Shared.General.ScienceDegree.Master"></option>
+                    <option value="@UniversityTimetable.Shared.General.ScienceDegree.Master">Master</option>
+                    <option value="@UniversityTimetable.Shared.General.ScienceDegree.PhD">PhD</option>
                 </select>
                 <span asp-validation-for="ScienceDegree" class="text-danger"></span>
             </div>

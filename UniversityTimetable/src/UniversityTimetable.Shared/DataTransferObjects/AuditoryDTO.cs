@@ -8,5 +8,6 @@
 
         public List<ClassDTO> Classes { get; set; }
 
+        public string FullName => $"b. {Building}: aud. {Name}";
     }
 }

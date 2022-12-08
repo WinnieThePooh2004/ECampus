@@ -4,6 +4,6 @@
     {
         AppearsOnOddWeeks,
         AppearsOnEvenWeeks,
-        AppearsAlways
+        None
     }
 }

@@ -1,4 +1,4 @@
-﻿@model UniversityTimetable.Shared.Models.Class
+﻿@model ClassDTO
 
 @{
     ViewData["Title"] = "Edit";
@@ -13,15 +13,28 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="GroupId" />
+            <input type="hidden" asp-for="DayOfTheWeek" />
+            <input type="hidden" asp-for="Number" />
             <div class="form-group">
                 <label asp-for="ClassType" class="control-label"></label>
-                <select asp-for="ClassType" class="form-control"></select>
+                <select asp-for="ClassType" class="form-control">
+                    @foreach (ClassType classType in Enum.GetValues<ClassType>())
+                    {
+                        <option value="@classType">@classType</option>
+                    }
+                </select>
                 <span asp-validation-for="ClassType" class="text-danger"></span>
             </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsDeleted" /> @Html.DisplayNameFor(model => model.IsDeleted)
-                </label>
+            <div class="form-group">
+                <label asp-for="WeekDependency" class="control-label"></label>
+                <select asp-for="WeekDependency" class="form-control">
+                    @foreach (WeekDependency weekDependency in Enum.GetValues<ClassType>())
+                    {
+                        <option value="@weekDependency">@weekDependency</option>
+                    }
+                </select>
+                <span asp-validation-for="WeekDependency" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="SubjectName" class="control-label"></label>
@@ -30,17 +43,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="TeacherId" class="control-label"></label>
-                <select asp-for="TeacherId" class="form-control" asp-items="ViewBag.TeacherId"></select>
+                <input asp-for="TeacherId" class="form-control" />
                 <span asp-validation-for="TeacherId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="GroupId" class="control-label"></label>
-                <select asp-for="GroupId" class="form-control" asp-items="ViewBag.GroupId"></select>
-                <span asp-validation-for="GroupId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="AuditoryId" class="control-label"></label>
-                <select asp-for="AuditoryId" class="form-control" asp-items="ViewBag.AuditoryId"></select>
+                <input asp-for="AuditoryId" class="form-control" />
                 <span asp-validation-for="AuditoryId" class="text-danger"></span>
             </div>
             <div class="form-group">

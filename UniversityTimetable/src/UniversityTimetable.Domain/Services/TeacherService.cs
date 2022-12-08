@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
 using UniversityTimetable.Shared.DataTransferObjects;
-using UniversityTimetable.Shared.Interfaces;
+using UniversityTimetable.Shared.Interfaces.Repositories;
+using UniversityTimetable.Shared.Interfaces.Services;
 using UniversityTimetable.Shared.Models;
 using UniversityTimetable.Shared.Pagination;
 using UniversityTimetable.Shared.QueryParameters;
@@ -23,6 +24,7 @@ namespace UniversityTimetable.Domain.Services
 
         public async Task<TeacherDTO> CreateAsync(TeacherDTO entity)
         {
+            _logger.LogInformation("Creating new teacher with departmentId={id}", entity.DepartmentId);
             var teacher = _mapper.Map<Teacher>(entity);
             await _repository.CreateAsync(teacher);
             return entity;

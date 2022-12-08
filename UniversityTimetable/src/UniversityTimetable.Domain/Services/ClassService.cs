@@ -1,20 +1,21 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
 using UniversityTimetable.Shared.DataTransferObjects;
-using UniversityTimetable.Shared.Interfaces;
+using UniversityTimetable.Shared.Interfaces.Repositories;
+using UniversityTimetable.Shared.Interfaces.Services;
 using UniversityTimetable.Shared.Models;
 using UniversityTimetable.Shared.Pagination;
-using UniversityTimetable.Shared.QueryParameters;
+using UniversityTimetable.Shared.QueryParameters.TimetableParameters;
 
 namespace UniversityTimetable.Domain.Services
 {
-    public class ClassService : IService<ClassDTO, ClassParameters>
+    public class ClassService : IClassService
     {
         private readonly ILogger<ClassService> _logger;
-        private readonly IRepository<Class, ClassParameters> _repository;
+        private readonly IClassRepository _repository;
         private readonly IMapper _mapper;
 
-        public ClassService(ILogger<ClassService> logger, IRepository<Class, ClassParameters> repository, IMapper mapper)
+        public ClassService(ILogger<ClassService> logger, IClassRepository repository, IMapper mapper)
         {
             _logger = logger;
             _repository = repository;
@@ -45,9 +46,25 @@ namespace UniversityTimetable.Domain.Services
             return _mapper.Map<ClassDTO>(await _repository.GetByIdAsync((int)id));
         }
 
-        public async Task<ListWithPaginationData<ClassDTO>> GetByParametersAsync(ClassParameters parameters)
+        public async Task<Timetable<ClassDTO>> GetTimetableForAuditoryAsync(AuditoryTimetableParameters parameters)
         {
-            return _mapper.Map<ListWithPaginationData<ClassDTO>>(await _repository.GetByParameters(parameters));
+            _logger.LogInformation("Getting auditory for group with id={id}", parameters.AuditoryId);
+            var timetable = await _repository.GetTimetableForAuditoryAsync(parameters);
+            return _mapper.Map<Timetable<ClassDTO>>(timetable);
+        }
+
+        public async Task<Timetable<ClassDTO>> GetTimetableForGroupAsync(GroupTimetableParameters parameters)
+        {
+            _logger.LogInformation("Getting timetable for group with id={id}", parameters.GroupId);
+            var timetable = await _repository.GetTimetableForGroupAsync(parameters);
+            return _mapper.Map<Timetable<ClassDTO>>(timetable);
+        }
+
+        public async Task<Timetable<ClassDTO>> GetTimetableForTeacherAsync(TeacherTimetableParameters parameters)
+        {
+            _logger.LogInformation("Getting teacher for group with id={id}", parameters.TeacherId);
+            var timetable = await _repository.GetTimetableForTeacherAsync(parameters);
+            return _mapper.Map<Timetable<ClassDTO>>(timetable);
         }
 
         public async Task<ClassDTO> UpdateAsync(ClassDTO entity)

@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using UniversityTimetable.Shared.Interfaces;
 using UniversityTimetable.Shared.Models;
 using UniversityTimetable.Shared.Pagination;
 using UniversityTimetable.Shared.QueryParameters;
 using UniversityTimetable.Shared.General;
+using UniversityTimetable.Shared.Interfaces.Repositories;
 
 namespace UniversityTimetable.Infrastructure.Repositories
 {
@@ -61,9 +61,11 @@ namespace UniversityTimetable.Infrastructure.Repositories
 
         }
 
-        public Task<Teacher> UpdateAsync(Teacher entity)
+        public async Task<Teacher> UpdateAsync(Teacher entity)
         {
-            throw new NotImplementedException();
+            _context.Update(entity);
+            await _context.SaveChangesAsync();
+            return entity;
         }
     }
 }

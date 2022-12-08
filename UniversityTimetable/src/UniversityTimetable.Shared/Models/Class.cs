@@ -1,9 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using UniversityTimetable.Shared.General;
+﻿using UniversityTimetable.Shared.General;
+using UniversityTimetable.Shared.Interfaces.Models;
 
 namespace UniversityTimetable.Shared.Models
 {
-    public class Class : IIsDeleted
+    public class Class : IIsDeleted, IClass
     {
         public int Id { get; set; }
         public ClassType ClassType { get; set; }
@@ -11,7 +11,7 @@ namespace UniversityTimetable.Shared.Models
         public int DayOfTheWeek { get; set; }
         public bool IsDeleted { get; set; }
         public string SubjectName { get; set; }
-        public WeekDependency WeekDependency { get; set; }
+        public WeekDependency WeekDependency { get; set; } = WeekDependency.None;
 
         public int TeacherId { get; set; }
         public Teacher Teacher { get; set; }

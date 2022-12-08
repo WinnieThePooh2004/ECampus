@@ -1,0 +1,98 @@
+﻿@model Timetable<ClassDTO>
+@{
+    ViewData["Title"] = "GroupTimetable";
+}
+
+<h1>Timetable</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Time</th>
+            @foreach (var day in Enumerable.Range(1, 6))
+            {
+                <th>
+                    @((DayOfWeek)day)
+                </th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var number in Enumerable.Range(0, 5))
+        {
+            <tr>
+                <td width="10%">
+                    @(8 + (30 + number * 115) / 60).@((30 + number * 115) % 60)-@(9 + (15 + number * 115) / 60).@((15 + number * 115) % 60)
+                </td>
+                @foreach (var day in Enumerable.Range(0, 6))
+                {
+                    @if (Model?.GetClass(day, number) is null)
+                    {
+                        <td rowspan="@(Model?.GetClass(day, number, WeekDependency.AppearsOnEvenWeeks) is null ? 2 : 1)" width="15%">
+                            <a asp-action="Create" asp-route-DayOfWeek="@day" asp-route-Number="@number" asp-route-GroupId="@Model?.GroupId">Create</a>
+                        </td>
+                    }
+                    else
+                    {
+                        <td rowspan="@(Model?.GetClass(day, number)?.WeekDependency == WeekDependency.None ? 2 : 1)" width="15%">
+                            <p>
+                                @Model?.GetClass(day, number)?.SubjectName @Model?.GetClass(day, number)?.ClassType
+                            <p>
+                            <p>
+                                Teacher: @Model?.GetClass(day, number)?.Teacher.FullName
+                            </p>
+                                    @Model?.GetClass(day, number)?.Auditory.FullName
+                            <p>
+                                <a asp-action="Edit" asp-route-Id="@Model?.GetClass(day, number)?.Id">Edit</a> |
+                                <a asp-action="Delete" asp-route-Id="@Model?.GetClass(day, number, WeekDependency.AppearsOnEvenWeeks)?.Id">Delete</a>
+                            </p>
+                        </td>
+                    }
+                }
+            </tr>
+            <tr>
+                <td width="10%">
+                    @(9 + (20 + number * 115) / 60).@((20 + number * 115) % 60)-@(9 + (55 + number * 115) / 60).@((55 + number * 115) % 60)
+                </td>
+                @foreach (var day in Enumerable.Range(0, 6))
+                {
+                    @if (Model?.GetClass(day, number)?.WeekDependency == WeekDependency.AppearsOnOddWeeks)
+                    {
+                        @if (Model?.GetClass(day, number, WeekDependency.AppearsOnEvenWeeks) is null)
+                        {
+
+                            <td style="border: 1px solid black;border-collapse: collapse;" width="15%">
+                                <a asp-action="Create" asp-route-DayOfWeek="@day" asp-route-Number="@number" asp-route-GroupId="@Model?.GroupId">Create</a>
+                            </td>
+                        }
+                        else
+                        {
+                            <td width="15%">
+                                <p>
+                                    @Model?.GetClass(day, number, WeekDependency.AppearsOnEvenWeeks)?.SubjectName
+                                    @Model?.GetClass(day, number, WeekDependency.AppearsOnEvenWeeks)?.ClassType<br />
+                                    Teacher: @Model?.GetClass(day, number, WeekDependency.AppearsOnEvenWeeks)?.Teacher.FullName <br />
+                                    @Model?.GetClass(day, number, WeekDependency.AppearsOnEvenWeeks)?.Auditory.FullName  <br />
+                                    <a asp-action="Edit" asp-route-Id="@Model?.GetClass(day, number, WeekDependency.AppearsOnEvenWeeks)?.Id">Edit</a> |
+                                    <a asp-action="Delete" asp-route-Id="@Model?.GetClass(day, number, WeekDependency.AppearsOnEvenWeeks)?.Id">Delete</a>
+                                </p>
+                            </td>
+                        }
+                    }
+                    else if (Model?.GetClass(day, number, WeekDependency.AppearsOnEvenWeeks) is not null)
+                    {
+                        <td width="15%">
+                            <p>
+                                @Model?.GetClass(day, number, WeekDependency.AppearsOnEvenWeeks)?.SubjectName
+                                @Model?.GetClass(day, number, WeekDependency.AppearsOnEvenWeeks)?.ClassType<br />
+                                Teacher: @Model?.GetClass(day, number, WeekDependency.AppearsOnEvenWeeks)?.Teacher.FullName <br />
+                                @Model?.GetClass(day, number, WeekDependency.AppearsOnEvenWeeks)?.Auditory.FullName  <br />
+                                <a asp-action="Edit" asp-route-Id="@Model?.GetClass(day, number, WeekDependency.AppearsOnEvenWeeks)?.Id">Edit</a> |
+                                <a asp-action="Delete" asp-route-Id="@Model?.GetClass(day, number, WeekDependency.AppearsOnEvenWeeks)?.Id">Delete</a>
+                            </p>
+                        </td>
+                    }
+                }
+            </tr>
+        }
+    </tbody>
+</table>
