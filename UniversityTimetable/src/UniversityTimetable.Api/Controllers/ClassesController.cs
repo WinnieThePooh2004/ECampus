@@ -15,6 +15,13 @@ namespace UniversityTimetable.Api.Controllers
             _service = service;
         }
 
+        [HttpGet("Auditory/{auditoryId}")]
+        public async Task<IActionResult> AuditoryTimetable(int auditoryId)
+        {
+            var table = await _service.GetTimetableForAuditoryAsync(auditoryId);
+            return Ok(table);
+        }
+
         [HttpGet("Group/{groupId}")]
         public async Task<IActionResult> GroupTimetable(int groupId)
         {
