@@ -1,4 +1,4 @@
-﻿namespace UniversityTimetable.Shared.Pagination
+﻿namespace UniversityTimetable.Shared.DataContainers
 {
     public class PaginationData
     {

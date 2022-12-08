@@ -1,31 +1,17 @@
 ﻿using AutoMapper;
-using UniversityTimetable.Shared.Interfaces.Models;
-using UniversityTimetable.Shared.Pagination;
+using UniversityTimetable.Shared.DataContainers;
+using UniversityTimetable.Shared.DataTransferObjects;
 
 namespace UniversityTimetable.Domain.Mapping.Converters
 {
-    public class TimetableConvert<TClass, TClassTo> : ITypeConverter<Timetable<TClass>, Timetable<TClassTo>>
-        where TClass : IClass
-        where TClassTo : IClass
+    public class TimetableConvert : ITypeConverter<TimetableData, Timetable>
     {
-        public Timetable<TClassTo> Convert(Timetable<TClass> source, Timetable<TClassTo> destination, ResolutionContext context)
-        {
-            var result = new Timetable<TClassTo>()
+        public Timetable Convert(TimetableData source, Timetable destination, ResolutionContext context)
+            => new Timetable(context.Mapper.Map<IEnumerable<ClassDTO>>(source.Classes))
             {
-                GroupId = source.GroupId,
-                TeacherId = source.TeacherId,
-                AuditoryId = source.AuditoryId,
+                Auditory = context.Mapper.Map<AuditoryDTO>(source.Auditory),
+                Group = context.Mapper.Map<GroupDTO>(source.Group),
+                Teacher = context.Mapper.Map<TeacherDTO>(source.Teacher)
             };
-            foreach (var @class in source.DailyClasses)
-            {
-                if(@class is not null)
-                {
-                    var mappedClass = context.Mapper.Map<TClassTo>(@class);
-                    Console.WriteLine(mappedClass);
-                    result.Add(mappedClass);
-                }
-            }
-            return result;
-        }
     }
 }

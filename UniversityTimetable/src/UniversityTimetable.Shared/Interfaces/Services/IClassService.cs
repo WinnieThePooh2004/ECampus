@@ -1,13 +1,12 @@
-﻿using UniversityTimetable.Shared.DataTransferObjects;
-using UniversityTimetable.Shared.Pagination;
-using UniversityTimetable.Shared.QueryParameters.TimetableParameters;
+﻿using UniversityTimetable.Shared.DataContainers;
+using UniversityTimetable.Shared.DataTransferObjects;
 
 namespace UniversityTimetable.Shared.Interfaces.Services
 {
     public interface IClassService : IBaseService<ClassDTO>
     {
-        Task<Timetable<ClassDTO>> GetTimetableForGroupAsync(GroupTimetableParameters parameters);
-        Task<Timetable<ClassDTO>> GetTimetableForTeacherAsync(TeacherTimetableParameters parameters);
-        Task<Timetable<ClassDTO>> GetTimetableForAuditoryAsync(AuditoryTimetableParameters parameters);
+        Task<Timetable> GetTimetableForGroupAsync(int groupId);
+        Task<Timetable> GetTimetableForTeacherAsync(int teacherId);
+        Task<Timetable> GetTimetableForAuditoryAsync(int auditoryId);
     }
 }

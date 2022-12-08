@@ -1,5 +1,5 @@
-﻿using UniversityTimetable.Shared.Interfaces.Repositories;
-using UniversityTimetable.Shared.Pagination;
+﻿using UniversityTimetable.Shared.DataContainers;
+using UniversityTimetable.Shared.Interfaces.Repositories;
 
 namespace UniversityTimetable.Shared.Interfaces.Services
 {

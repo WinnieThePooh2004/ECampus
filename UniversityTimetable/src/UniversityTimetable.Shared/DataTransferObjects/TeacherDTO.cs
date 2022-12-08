@@ -11,8 +11,6 @@ namespace UniversityTimetable.Shared.DataTransferObjects
 
         public int DepartmentId { get; set; }
 
-        public List<ClassDTO> Classes { get; set; }
-
         public string FullName => $"{FirstName[0]}. {LastName}";
     }
 }

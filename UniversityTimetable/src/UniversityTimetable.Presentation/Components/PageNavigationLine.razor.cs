@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using UniversityTimetable.Shared.QueryParameters;
 
-namespace UniversityTimetable.Presentation.Components
+namespace UniversityTimetable.Api.Components
 {
     public partial class PageNavigationLine
     {

@@ -40,7 +40,8 @@
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                     <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> | 
+                    <a asp-action="TeacherTimetable" asp-controller="Classes" asp-route-TeacherId="@item.Id">Timetable</a>
                 </td>
             </tr>
         }
@@ -51,4 +52,4 @@
            param-Parameters="@Model.Parameters" param-ControllerName="@("teachers")"
            param-MaxPageNumber="@Model.Metadata.MaxPageNumber" />
 <br />
-<a asp-controller="Depattments" asp-action="Details" asp-route-id="@Model.Parameters.DepartmentId">Back</a>
+<a asp-controller="Depatments" asp-action="Details" asp-route-id="@Model.Parameters.DepartmentId">Back</a>

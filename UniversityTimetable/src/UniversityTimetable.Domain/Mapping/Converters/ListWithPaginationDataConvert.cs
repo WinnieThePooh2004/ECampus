@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using UniversityTimetable.Shared.Pagination;
+using UniversityTimetable.Shared.DataContainers;
 
 namespace UniversityTimetable.Domain.Mapping
 {

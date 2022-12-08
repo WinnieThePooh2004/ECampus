@@ -1,4 +1,4 @@
-﻿using UniversityTimetable.Shared.Pagination;
+﻿using UniversityTimetable.Shared.DataContainers;
 
 namespace UniversityTimetable.Shared.Interfaces.Repositories
 {

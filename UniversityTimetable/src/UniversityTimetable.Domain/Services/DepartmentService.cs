@@ -1,15 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using UniversityTimetable.Shared.DataContainers;
 using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Shared.Interfaces.Repositories;
 using UniversityTimetable.Shared.Interfaces.Services;
 using UniversityTimetable.Shared.Models;
-using UniversityTimetable.Shared.Pagination;
 using UniversityTimetable.Shared.QueryParameters;
 
 namespace UniversityTimetable.Domain.Services

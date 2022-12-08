@@ -1,7 +1,7 @@
 ﻿using UniversityTimetable.Shared.Pagination;
 using UniversityTimetable.Shared.QueryParameters;
 
-namespace UniversityTimetable.Presentation.Models
+namespace UniversityTimetable.Api.Models
 {
     /// <summary>
     /// this type of object shouldn`t be used out of the 'Index' methods of controllers

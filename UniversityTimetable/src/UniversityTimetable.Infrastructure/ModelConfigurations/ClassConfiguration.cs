@@ -13,17 +13,26 @@ namespace UniversityTimetable.Infrastructure.ModelConfigurations
             builder.HasOne(c => c.Teacher)
                 .WithMany(t => t.Classes)
                 .HasForeignKey(c => c.TeacherId)
+                .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasOne(c => c.Group)
                 .WithMany(g => g.Classes)
                 .HasForeignKey(c => c.GroupId)
+                .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasOne(c => c.Auditory)
                 .WithMany(t => t.Classes)
                 .HasForeignKey(c => c.AuditoryId)
+                .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
+
+            //builder.HasOne(c => c.Subject)
+            //    .WithMany(t => t.Classes)
+            //    .HasForeignKey(c => c.SubjectId)
+            //    .IsRequired()
+            //    .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

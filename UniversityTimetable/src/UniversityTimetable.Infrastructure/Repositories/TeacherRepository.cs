@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using UniversityTimetable.Shared.Models;
-using UniversityTimetable.Shared.Pagination;
 using UniversityTimetable.Shared.QueryParameters;
 using UniversityTimetable.Shared.General;
 using UniversityTimetable.Shared.Interfaces.Repositories;
+using UniversityTimetable.Shared.DataContainers;
 
 namespace UniversityTimetable.Infrastructure.Repositories
 {

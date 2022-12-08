@@ -35,15 +35,11 @@
                     {
                         <td rowspan="@(Model?.GetClass(day, number)?.WeekDependency == WeekDependency.None ? 2 : 1)" width="15%">
                             <p>
-                                @Model?.GetClass(day, number)?.SubjectName @Model?.GetClass(day, number)?.ClassType
-                            <p>
-                            <p>
-                                Teacher: @Model?.GetClass(day, number)?.Teacher.FullName
-                            </p>
-                                    @Model?.GetClass(day, number)?.Auditory.FullName
-                            <p>
+                                @Model?.GetClass(day, number)?.SubjectName @Model?.GetClass(day, number)?.ClassType<br />
+                                Teacher: @Model?.GetClass(day, number)?.Teacher.FullName <br />
+                                @Model?.GetClass(day, number)?.Auditory.FullName  <br />
                                 <a asp-action="Edit" asp-route-Id="@Model?.GetClass(day, number)?.Id">Edit</a> |
-                                <a asp-action="Delete" asp-route-Id="@Model?.GetClass(day, number, WeekDependency.AppearsOnEvenWeeks)?.Id">Delete</a>
+                                <a asp-action="Delete" asp-route-Id="@Model?.GetClass(day, number, WeekDependency.AppearsOnOddWeeks)?.Id">Delete</a>
                             </p>
                         </td>
                     }

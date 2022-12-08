@@ -4,7 +4,7 @@ using UniversityTimetable.Shared.Interfaces.Services;
 using UniversityTimetable.Shared.Models;
 using UniversityTimetable.Shared.QueryParameters.TimetableParameters;
 
-namespace UniversityTimetable.Presentation.Controllers
+namespace UniversityTimetable.Api.Controllers
 {
     public class ClassesController : Controller
     {
@@ -16,17 +16,24 @@ namespace UniversityTimetable.Presentation.Controllers
             _service = service;
         }
 
+        public async Task<IActionResult> GroupTimetable([FromQuery] GroupTimetableParameters parameters)
+        {
+            var table = await _service.GetTimetableForGroupAsync(parameters);
+            return View(table);
+        }
+        
+        public async Task<IActionResult> TeacherTimetable([FromQuery] TeacherTimetableParameters parameters)
+        {
+            var table = await _service.GetTimetableForTeacherAsync(parameters);
+            return View(table);
+        }
+
         // GET: Classes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             return View(await _service.GetByIdAsync(id));
         }
 
-        public async Task<IActionResult> GroupTimetable([FromQuery] GroupTimetableParameters parameters)
-        {
-            var table = await _service.GetTimetableForGroupAsync(parameters);
-            return View(table);
-        }
 
         // GET: Classes/Create
         public IActionResult Create([FromQuery] CreateQueryParameters parameters)
@@ -87,10 +94,10 @@ namespace UniversityTimetable.Presentation.Controllers
         // POST: Classes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id, [FromQuery] int groupId)
         {
             await _service.DeleteAsync(id);
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(GroupTimetable), new GroupTimetableParameters { GroupId = groupId });
         }
     }
 }

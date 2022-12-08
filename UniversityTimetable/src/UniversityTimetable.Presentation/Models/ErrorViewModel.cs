@@ -1,4 +1,4 @@
-namespace UniversityTimetable.Presentation.Models
+namespace UniversityTimetable.Api.Models
 {
     public class ErrorViewModel
     {

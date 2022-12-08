@@ -1,13 +1,11 @@
-﻿using UniversityTimetable.Shared.Models;
-using UniversityTimetable.Shared.Pagination;
-using UniversityTimetable.Shared.QueryParameters.TimetableParameters;
-
+﻿using UniversityTimetable.Shared.DataContainers;
+using UniversityTimetable.Shared.Models;
 namespace UniversityTimetable.Shared.Interfaces.Repositories
 {
     public interface IClassRepository : IBaseRepository<Class>
     {
-        Task<Timetable<Class>> GetTimetableForGroupAsync(GroupTimetableParameters parameters);
-        Task<Timetable<Class>> GetTimetableForTeacherAsync(TeacherTimetableParameters parameters);
-        Task<Timetable<Class>> GetTimetableForAuditoryAsync(AuditoryTimetableParameters parameters);
+        Task<TimetableData> GetTimetableForGroupAsync(int groupId);
+        Task<TimetableData> GetTimetableForTeacherAsync(int teacherId);
+        Task<TimetableData> GetTimetableForAuditoryAsync(int auditoryId);
     }
 }

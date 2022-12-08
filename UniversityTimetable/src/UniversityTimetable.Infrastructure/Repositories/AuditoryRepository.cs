@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using UniversityTimetable.Shared.DataContainers;
 using UniversityTimetable.Shared.Interfaces.Repositories;
 using UniversityTimetable.Shared.Models;
-using UniversityTimetable.Shared.Pagination;
 using UniversityTimetable.Shared.QueryParameters;
 
 namespace UniversityTimetable.Infrastructure.Repositories

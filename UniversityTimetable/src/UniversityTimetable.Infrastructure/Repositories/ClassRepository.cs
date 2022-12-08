@@ -2,10 +2,9 @@
 using Microsoft.Extensions.Logging;
 using UniversityTimetable.Shared.Interfaces.Repositories;
 using UniversityTimetable.Shared.Models;
-using UniversityTimetable.Shared.Pagination;
-using UniversityTimetable.Shared.QueryParameters.TimetableParameters;
-using UniversityTimetable.Shared.General;
 using UniversityTimetable.Shared.Exceptions.InfrastructureExceptions;
+using UniversityTimetable.Shared.DataContainers;
+using System.Text.RegularExpressions;
 
 namespace UniversityTimetable.Infrastructure.Repositories
 {
@@ -49,72 +48,62 @@ namespace UniversityTimetable.Infrastructure.Repositories
             return @class;
         }
 
-        public async Task<Timetable<Class>> GetTimetableForAuditoryAsync(AuditoryTimetableParameters parameters)
+        public async Task<TimetableData> GetTimetableForAuditoryAsync(int auditoryId)
         {
-            var auditory = await _context.Groups.FirstOrDefaultAsync(g => g.Id == parameters.AuditoryId);
+            var auditory = await _context.Auditories.FirstOrDefaultAsync(g => g.Id == auditoryId);
             if (auditory is null)
             {
-                throw new ObjectNotFoundByIdException(typeof(Auditory), parameters.AuditoryId);
+                throw new ObjectNotFoundByIdException(typeof(Auditory), auditoryId);
             }
-            var timetable = new Timetable<Class>();
-            timetable.AuditoryId = auditory.Id;
-
-            var allauditoryClasses = await _context.Classes
-                .Include(c => c.Group)
-                .Include(c => c.Teacher)
-                .Where(c => c.AuditoryId == parameters.AuditoryId)
-                .ToListAsync();
-
-            foreach (var @class in allauditoryClasses)
+            var timetable = new TimetableData()
             {
-                timetable.Add(@class);
-            }
+                Auditory = auditory,
+                Classes = await _context.Classes
+                .IgnoreAutoIncludes()
+                .Include(c => c.Teacher)
+                .Include(c => c.Auditory)
+                .Where(c => c.AuditoryId == auditoryId)
+                .ToListAsync()
+            };
             return timetable;
         }
 
-        public async Task<Timetable<Class>> GetTimetableForGroupAsync(GroupTimetableParameters parameters)
+        public async Task<TimetableData> GetTimetableForGroupAsync(int groupId)
         {
-            var group = await _context.Groups.FirstOrDefaultAsync(g => g.Id == parameters.GroupId);
+            var group = await _context.Groups.FirstOrDefaultAsync(g => g.Id == groupId);
             if (group is null)
             {
-                throw new ObjectNotFoundByIdException(typeof(Group), parameters.GroupId);
+                throw new ObjectNotFoundByIdException(typeof(Shared.Models.Group), groupId);
             }
-            var timetable = new Timetable<Class>();
-            timetable.GroupId = group.Id;
-
-            var allGroupClasses = await _context.Classes
+            var timetable = new TimetableData()
+            {
+                Group = group,
+                Classes = await _context.Classes
+                .IgnoreAutoIncludes()
                 .Include(c => c.Teacher)
                 .Include(c => c.Auditory)
-                .Where(c => c.GroupId == parameters.GroupId)
-                .ToListAsync();
-
-            foreach (var @class in allGroupClasses)
-            {
-                timetable.Add(@class);
-            }
+                .Where(c => c.GroupId == groupId)
+                .ToListAsync()
+            };
             return timetable;
         }
 
-        public async Task<Timetable<Class>> GetTimetableForTeacherAsync(TeacherTimetableParameters parameters)
+        public async Task<TimetableData> GetTimetableForTeacherAsync(int teacherId)
         {
-            var teacher = await _context.Teachers.FirstOrDefaultAsync(t => t.Id == parameters.TeacherId);
+            var teacher = await _context.Teachers.FirstOrDefaultAsync(t => t.Id == teacherId);
             if (teacher is null)
             {
-                throw new ObjectNotFoundByIdException(typeof(Teacher), parameters.TeacherId);
+                throw new ObjectNotFoundByIdException(typeof(Teacher), teacherId);
             }
-            var timetable = new Timetable<Class>();
-            timetable.TeacherId = teacher.Id;
-
-            var allTeacherClasses = await _context.Classes
+            var timetable = new TimetableData()
+            {
+                Teacher = teacher,
+                Classes = await _context.Classes
                 .Include(c => c.Group)
                 .Include(c => c.Auditory)
-                .Where(c => c.TeacherId == parameters.TeacherId)
-                .ToListAsync();
-
-            foreach (var @class in allTeacherClasses)
-            {
-                timetable.Add(@class);
-            }
+                .Where(c => c.TeacherId == teacherId)
+                .ToListAsync()
+            };
             return timetable;
         }
 
