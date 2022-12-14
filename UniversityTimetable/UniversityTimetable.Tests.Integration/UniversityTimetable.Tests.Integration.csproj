@@ -21,4 +21,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\tests\UniversityTimetable.Tests.Shared\UniversityTimetable.Tests.Shared.csproj" />
+  </ItemGroup>
+
 </Project>
