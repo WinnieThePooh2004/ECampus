@@ -1,9 +1,9 @@
 ﻿using FluentValidation;
-using UniversityTimetable.Shared.Models;
+using UniversityTimetable.Shared.DataTransferObjects;
 
 namespace UniversityTimetable.Domain.Validation
 {
-    public class FacultyDTOValidator : AbstractValidator<Faculty>
+    public class FacultyDTOValidator : AbstractValidator<FacultyDTO>
     {
         public FacultyDTOValidator()
         {

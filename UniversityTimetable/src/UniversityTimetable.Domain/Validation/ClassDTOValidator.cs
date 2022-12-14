@@ -9,19 +9,19 @@ namespace UniversityTimetable.Domain.Validation
         {
             RuleFor(c => c.AuditoryId)
                 .NotEqual(0)
-                .WithMessage("Please, select some auditory");
+                .WithMessage("Please, select auditory");
 
             RuleFor(c => c.GroupId)
                 .NotEqual(0)
-                .WithMessage("Please, select some group");
+                .WithMessage("Please, select group");
 
             RuleFor(c => c.TeacherId)
                 .NotEqual(0)
-                .WithMessage("Please, select some teacher");
+                .WithMessage("Please, select teacher");
 
             RuleFor(c => c.SubjectId)
                 .NotEqual(0)
-                .WithMessage("Please, select some subject");
+                .WithMessage("Please, select subject");
 
         }
     }

@@ -14,7 +14,7 @@ namespace UniversityTimetable.Domain.Validation
 
             RuleFor(t => t.Building)
                 .NotEmpty()
-                .WithMessage("Please, enter building name");
+                .WithMessage("Please, enter building`s name");
         }
     }
 }
