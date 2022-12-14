@@ -3,11 +3,11 @@ using UniversityTimetable.Shared.Models;
 
 namespace UniversityTimetable.Shared.QueryParameters
 {
-    public class TeacherParameters : QueryParameters<Teacher>
+    public class TeacherParameters : QueryParameters, IQueryParameters<Teacher>
     {
         public int DepartmentId { get; set; }
 
-        public override IQueryable<Teacher> Filter(IQueryable<Teacher> items)
+        public IQueryable<Teacher> Filter(IQueryable<Teacher> items)
             => items.Search(g => g.LastName, SearchTerm).Where(t => DepartmentId == 0 || t.DepartmentId == DepartmentId);
 
     }

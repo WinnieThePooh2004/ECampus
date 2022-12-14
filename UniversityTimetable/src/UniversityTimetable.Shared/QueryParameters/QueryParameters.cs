@@ -1,6 +1,4 @@
-﻿using System.Linq.Expressions;
-
-namespace UniversityTimetable.Shared.QueryParameters
+﻿namespace UniversityTimetable.Shared.QueryParameters
 {
     public abstract class QueryParameters : IQueryParameters
     {
@@ -15,11 +13,6 @@ namespace UniversityTimetable.Shared.QueryParameters
             get => _pageSize;
             set => _pageSize = value > _maxPageSize ? _maxPageSize : value;
         }
-    }
-
-    public abstract class QueryParameters<T> : QueryParameters, IQueryParameters<T>
-        where T : class
-    {
 
         public override string ToString()
         {
@@ -27,7 +20,5 @@ namespace UniversityTimetable.Shared.QueryParameters
                 $"PageSize: {PageSize},\n" +
                 $"PageNumber: {PageNumber}";
         }
-
-        public abstract IQueryable<T> Filter(IQueryable<T> items);
     }
 }

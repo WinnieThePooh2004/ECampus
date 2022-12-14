@@ -6,6 +6,7 @@
         int PageSize { get; set; }
         string SearchTerm { get; set; }
     }
+
     public interface IQueryParameters<T> where T : class
     {
         IQueryable<T> Filter(IQueryable<T> items);
