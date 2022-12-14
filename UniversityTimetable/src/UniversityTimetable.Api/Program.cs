@@ -8,12 +8,19 @@ using UniversityTimetable.Shared.Interfaces.Repositories;
 using UniversityTimetable.Shared.Interfaces.Services;
 using UniversityTimetable.Shared.Models;
 using UniversityTimetable.Shared.QueryParameters;
+using FluentValidation.AspNetCore;
+using FluentValidation;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
+
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddFluentValidationClientsideAdapters();
+builder.Services.AddValidatorsFromAssembly(Assembly.Load("UniversityTimetable.Domain"));
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ApplicationDbContext")
         ?? throw new InvalidOperationException("Connection string 'ApplicationDbContext' not found.")));

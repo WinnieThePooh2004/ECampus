@@ -13,7 +13,10 @@ namespace UniversityTimetable.Domain.Mapping
         {
             CreateMap<Class, ClassDTO>();
             CreateMap<ClassDTO, Class>()
-                .IgnoreProperties(dest => dest.Group, dest => dest.Auditory, dest => dest.Teacher, dest => dest.Subject);
+                .IgnoreMember(dest => dest.Group)
+                .IgnoreMember(dest => dest.Auditory)
+                .IgnoreMember(dest => dest.Teacher)
+                .IgnoreMember(dest => dest.Subject);
 
             CreateMap<TimetableData, Timetable>().ConvertUsing<TimetableConvert>();
         }

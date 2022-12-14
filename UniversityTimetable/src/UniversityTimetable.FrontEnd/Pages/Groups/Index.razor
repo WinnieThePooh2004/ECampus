@@ -3,6 +3,6 @@
                 ParameterOptions="p => p.DepartmentId = DepartmentId"
                 TableHeaders="@(new(){ "Last name", "First name" })"
                 TableData="@(new(){ g => g.Name })"
-                CreateLink="@($"/departments/Create/{DepartmentId}")"
+                CreateLink="@($"/groups/Create/{DepartmentId}")"
                 EditLink="/groups/edit"
                 ActionLinks="@(new(){ ("Timetable", d => $"/timetable/group/{d.Id}")})" />

@@ -59,7 +59,7 @@ namespace UniversityTimetable.Infrastructure.Repositories
                 Auditory = auditory,
                 Classes = await _context.Classes
                 .Include(c => c.Teacher)
-                .Include(c => c.Auditory)
+                .Include(c => c.Group)
                 .Include(c => c.Subject)
                 .Where(c => c.AuditoryId == auditoryId)
                 .ToListAsync()
