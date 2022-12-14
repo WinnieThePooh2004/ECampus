@@ -9,8 +9,8 @@ namespace UniversityTimetable.Shared.DataContainers
         /// <summary>
         /// nobody has classes on sundays, so 6
         /// </summary>
-        public static int WorkDaysInWeek => 6;
-        public static int MaxClassesPerDay => 5;
+        private const int _workDaysInWeek = 6;
+        private const int _maxClassesPerDay = 5;
         public AuditoryDTO? Auditory { get; set; }
         public GroupDTO? Group { get; set; }
         public TeacherDTO? Teacher { get; set; }
@@ -25,7 +25,12 @@ namespace UniversityTimetable.Shared.DataContainers
             }
         }
 
-        public ClassDTO? GeClassDTO(int dayOfWeek, int number, WeekDependency weekDependency = WeekDependency.None)
+        public Timetable()
+        {
+            DailyClasses = CreateEmptyDataTable();
+        }
+
+        public ClassDTO? GetClass(int dayOfWeek, int number, WeekDependency weekDependency = WeekDependency.None)
         {
             if (weekDependency == WeekDependency.AppearsOnEvenWeeks)
             {
@@ -45,10 +50,10 @@ namespace UniversityTimetable.Shared.DataContainers
 
         private static ClassDTO?[][] CreateEmptyDataTable()
         {
-            ClassDTO[][] table = new ClassDTO[WorkDaysInWeek][];
-            for(int i = 0; i < WorkDaysInWeek; i++)
+            ClassDTO[][] table = new ClassDTO[_workDaysInWeek][];
+            for(int i = 0; i < _workDaysInWeek; i++)
             {
-                table[i] = new ClassDTO[MaxClassesPerDay * 2];
+                table[i] = new ClassDTO[_maxClassesPerDay * 2];
             }
             return table;
         }

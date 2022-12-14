@@ -6,8 +6,8 @@ using UniversityTimetable.Shared.QueryParameters;
 namespace UniversityTimetable.Api.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
-    public class TeachersController : Controller
+    [Route("api/[controller]")]
+    public class TeachersController : ControllerBase
     {
         private readonly IService<TeacherDTO, TeacherParameters> _service;
 
@@ -27,16 +27,12 @@ namespace UniversityTimetable.Api.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Details(int? id)
         {
-            return View(await _service.GetByIdAsync(id));
+            return Ok(await _service.GetByIdAsync(id));
         }
 
         [HttpPost]
         public async Task<IActionResult> Create(TeacherDTO teacher)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(teacher);
-            }
             await _service.CreateAsync(teacher);
             return Ok(teacher);
         }
@@ -44,10 +40,6 @@ namespace UniversityTimetable.Api.Controllers
         [HttpPut]
         public async Task<IActionResult> Edit(TeacherDTO teacher)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(teacher);
-            }
             await _service.UpdateAsync(teacher);
             return Ok(teacher);
         }

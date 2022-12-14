@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniversityTimetable.Infrast
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Migrations", "Migrations\Migrations.csproj", "{CAE16776-1889-48EC-80DE-F7A0D79590E6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniversityTimetable.Api", "src\UniversityTimetable.Api\UniversityTimetable.Api.csproj", "{4056FD4C-CC27-41A8-8665-336635C5BE3E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniversityTimetable.Api", "src\UniversityTimetable.Api\UniversityTimetable.Api.csproj", "{4056FD4C-CC27-41A8-8665-336635C5BE3E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniversityTimetable.FrontEnd", "src\UniversityTimetable.FrontEnd\UniversityTimetable.FrontEnd.csproj", "{50A2A603-6D83-4BE6-8F51-A26DDD7FFAE6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{4056FD4C-CC27-41A8-8665-336635C5BE3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4056FD4C-CC27-41A8-8665-336635C5BE3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4056FD4C-CC27-41A8-8665-336635C5BE3E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50A2A603-6D83-4BE6-8F51-A26DDD7FFAE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50A2A603-6D83-4BE6-8F51-A26DDD7FFAE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50A2A603-6D83-4BE6-8F51-A26DDD7FFAE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50A2A603-6D83-4BE6-8F51-A26DDD7FFAE6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

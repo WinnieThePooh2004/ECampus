@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UniversityTimetable.Shared.DataContainers;
+using UniversityTimetable.Shared.Extentions;
 using UniversityTimetable.Shared.Interfaces.Repositories;
 using UniversityTimetable.Shared.Models;
 using UniversityTimetable.Shared.QueryParameters;
@@ -49,9 +50,7 @@ namespace UniversityTimetable.Infrastructure.Repositories
 
         public async Task<ListWithPaginationData<Group>> GetByParameters(GroupParameters parameters)
         {
-            var query = _context.Groups
-                .Where(c => (string.IsNullOrEmpty(parameters.GroupName) || c.Name == parameters.GroupName) &&
-                (parameters.DepartmentId == 0 || parameters.DepartmentId == c.DepartmentId));
+            var query = _context.Groups.Filter(parameters);
 
             var totalCount = await query.CountAsync();
 

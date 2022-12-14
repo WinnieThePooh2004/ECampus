@@ -1,0 +1,9 @@
+﻿@page "/auditories"
+<h3>Auditories</h3>
+<IndexPageModel TData="AuditoryDTO" TParameters="AuditoryParameters"
+    TableHeaders="@(new(){ "building", "name" })"
+    TableData="@(new(){ a => a.Building, a => a.Name })"
+    CreateLink="/auditories/create"
+    EditLink="/auditories/edit"
+    ActionLinks="@(new(){ ("Timetable", a => $"/Timetable/auditory/{a.Id}") })"
+    />

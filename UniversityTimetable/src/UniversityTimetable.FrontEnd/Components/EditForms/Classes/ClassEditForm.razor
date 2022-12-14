@@ -1,0 +1,58 @@
+﻿@inherits EditForm<ClassDTO>
+<div class="row">
+    <div class="col-md-4">
+        <form>
+            <div class="form-group">
+                <label>Class type</label>
+                <br />
+                <InputSelect @bind-Value="Model.ClassType">
+                    @foreach (var type in Enum.GetValues<ClassType>())
+                    {
+                        <option value="@type">@type</option>
+                    }
+                </InputSelect>
+                <br />
+                <label>Week dependency</label>
+                <br />
+                <InputSelect @bind-Value="Model.WeekDependency">
+                    @foreach (var weekDependency in Enum.GetValues<WeekDependency>())
+                    {
+                        <option value="@weekDependency">@weekDependency</option>
+                    }
+                </InputSelect>
+                <br />
+                <br />
+            </div>
+            @if (TimetableMode != TimetableMode.Teacher)
+            {
+                <p>Select teacher</p>
+                <SingleItemSelect TData="TeacherDTO" TParameters="TeacherParameters" PropertyNames="@(new(){ "First name", "Last name"})"
+                              PropertiesToShow="@(new(){ t => t.FirstName, t => t.LastName })" @bind-SelectedId="Model.TeacherId" />
+                <br />
+            }
+            @if (TimetableMode != TimetableMode.Auditory)
+            {
+
+                <p>Select auditory</p>
+                <SingleItemSelect TData="AuditoryDTO" TParameters="AuditoryParameters" PropertyNames="@(new(){ "Building", "Name" })"
+                              PropertiesToShow=@(new(){ a => a.Building, a => a.Name }) @bind-SelectedId="Model.AuditoryId" />
+                <br />
+            }
+            @if (TimetableMode != TimetableMode.Group)
+            {
+                <p>Select subject</p>
+                <SingleItemSelect TData="GroupDTO" TParameters="GroupParameters" PropertyNames="@(new(){ "Name" })"
+                              PropertiesToShow=@(new(){ s => s.Name }) @bind-SelectedId="Model.GroupId" />
+                <br />
+            }
+            <p>Select subject</p>
+            <SingleItemSelect TData="SubjectDTO" TParameters="SubjectParameters" PropertyNames="@(new(){ "Name" })"
+                              PropertiesToShow=@(new(){ s => s.Name }) @bind-SelectedId="Model.SubjectId" />
+            <br />
+
+            <div class="form-group">
+                <div role="button" class="btn btn-primary" onclick="@(async () => await Submit())">Save</div>
+            </div>
+        </form>
+    </div>
+</div>

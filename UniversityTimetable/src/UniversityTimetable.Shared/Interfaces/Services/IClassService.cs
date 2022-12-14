@@ -8,5 +8,6 @@ namespace UniversityTimetable.Shared.Interfaces.Services
         Task<Timetable> GetTimetableForGroupAsync(int groupId);
         Task<Timetable> GetTimetableForTeacherAsync(int teacherId);
         Task<Timetable> GetTimetableForAuditoryAsync(int auditoryId);
+        Task<List<string>> ValidateAsync(ClassDTO @class);
     }
 }

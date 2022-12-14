@@ -1,0 +1,8 @@
+﻿@page "/timetable/group/{GroupId:int}"
+<h1>Timetable</h1>
+<TimetableModel CreateLink="@((day, number) => $"timetable/Create/{(int)TimetableMode.Group}/{GroupId}")"
+    EditLink="@($"timetable/edit/{(int)TimetableMode.Group}")"
+    DescriptionList="@(new(){ c => $"{c.Subject.Name} {c.ClassType}", c => $"Teacher: {c.Teacher.FullName}",
+        c => $"Building: {c.Auditory.Building}, aud: {c.Auditory.Name}" })"
+    RefreshData="@(requests => requests.GroupTimetable(GroupId))"
+    />

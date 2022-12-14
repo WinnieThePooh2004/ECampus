@@ -8,6 +8,7 @@ namespace UniversityTimetable.Shared.Models
         public string Name { get; set; }
         public bool IsDeleted { get; set; }
         public List<Class> Classes { get; set; }
-        public List<SubjectTeacher> Teachers { get; set; }
+        public List<SubjectTeacher> TeacherIds { get; set; }
+        public List<Teacher> Teachers { get; set; }
     }
 }

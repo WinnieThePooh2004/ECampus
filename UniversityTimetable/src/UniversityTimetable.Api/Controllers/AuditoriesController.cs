@@ -6,7 +6,7 @@ using UniversityTimetable.Shared.Interfaces.Services;
 namespace UniversityTimetable.Api.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class AuditoriesController : ControllerBase
     {
         private readonly IService<AuditoryDTO, AuditoryParameters> _service;

@@ -1,0 +1,7 @@
+﻿@page "/auditories/create"
+@inherits CreatePageBase<AuditoryDTO>
+<AuditoryEditForm Model="new()" OnSubmited="Save" />
+
+@code{
+    protected override string PageAfterSave => "/auditories";
+}

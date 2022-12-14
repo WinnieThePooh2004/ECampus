@@ -5,7 +5,7 @@ using UniversityTimetable.Shared.Interfaces.Services;
 namespace UniversityTimetable.Api.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class ClassesController : ControllerBase
     {
         private readonly IClassService _service;
@@ -27,6 +27,12 @@ namespace UniversityTimetable.Api.Controllers
         {
             var table = await _service.GetTimetableForGroupAsync(groupId);
             return Ok(table);
+        }
+
+        [HttpPut("Validate")]
+        public async Task<IActionResult> Validate(ClassDTO @class)
+        {
+            return Ok(await _service.ValidateAsync(@class));
         }
 
         [HttpGet("Teacher/{teacherId}")]

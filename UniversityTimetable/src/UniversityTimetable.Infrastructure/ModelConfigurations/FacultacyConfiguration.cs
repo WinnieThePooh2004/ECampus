@@ -4,9 +4,9 @@ using UniversityTimetable.Shared.Models;
 
 namespace Migrations.ModelConfigurations
 {
-    public class FacultacyConfiguration : IEntityTypeConfiguration<Facultacy>
+    public class FacultacyConfiguration : IEntityTypeConfiguration<Faculty>
     {
-        public void Configure(EntityTypeBuilder<Facultacy> builder)
+        public void Configure(EntityTypeBuilder<Faculty> builder)
         {
             builder.HasQueryFilter(f => !f.IsDeleted);
         }

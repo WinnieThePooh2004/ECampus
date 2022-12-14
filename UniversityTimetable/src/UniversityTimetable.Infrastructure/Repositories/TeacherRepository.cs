@@ -5,6 +5,7 @@ using UniversityTimetable.Shared.QueryParameters;
 using UniversityTimetable.Shared.General;
 using UniversityTimetable.Shared.Interfaces.Repositories;
 using UniversityTimetable.Shared.DataContainers;
+using UniversityTimetable.Shared.Extentions;
 
 namespace UniversityTimetable.Infrastructure.Repositories
 {
@@ -21,6 +22,8 @@ namespace UniversityTimetable.Infrastructure.Repositories
 
         public async Task<Teacher> CreateAsync(Teacher entity)
         {
+            entity.SubjectIds = entity.Subjects.Select(s => new SubjectTeacher { SubjectId = s.Id }).ToList();
+            entity.Subjects = null;
             _context.Add(entity);
             await _context.SaveChangesAsync();
             return entity;
@@ -29,26 +32,28 @@ namespace UniversityTimetable.Infrastructure.Repositories
         public async Task DeleteAsync(int id)
         {
             _context.Remove(new Teacher { Id = id });
+            _context.RemoveRange(await _context.SubjectTeachers.Where(st => st.TeacherId == id).ToListAsync());
             await _context.SaveChangesAsync();
         }
 
         public async Task<Teacher> GetByIdAsync(int id)
         {
-            var teacher = await _context.Teachers.FirstOrDefaultAsync(t => t.Id == id);
+            var teacher = await _context
+                .Teachers
+                .Include(t => t.SubjectIds)
+                .ThenInclude(st => st.Subject)
+                .FirstOrDefaultAsync(t => t.Id == id);
             if(teacher is null)
             {
                 throw new Exception();
             }
+            teacher.Subjects = teacher.SubjectIds.Select(t => t.Subject).ToList();
             return teacher;
         }
 
         public async Task<ListWithPaginationData<Teacher>> GetByParameters(TeacherParameters parameters)
         {
-            var query = _context.Teachers
-                .Where(t => (string.IsNullOrEmpty(parameters.FirstName) || t.FirstName == parameters.FirstName) &&
-                (string.IsNullOrEmpty(parameters.LastName) || t.LastName == parameters.LastName) && 
-                (parameters.ScienceDegree == ScienceDegree.None || parameters.ScienceDegree == t.ScienceDegree) &&
-                (parameters.DepartmentId == 0 || parameters.DepartmentId == t.DepartmentId));
+            var query = _context.Teachers.Filter(parameters);
 
             var totalCount = await query.CountAsync();
 
@@ -57,12 +62,17 @@ namespace UniversityTimetable.Infrastructure.Repositories
                 .Skip((parameters.PageNumber - 1) * parameters.PageSize)
                 .Take(parameters.PageSize)
                 .ToListAsync();
+
             return new ListWithPaginationData<Teacher>(pagedItems, totalCount, parameters.PageNumber, parameters.PageSize);
 
         }
 
         public async Task<Teacher> UpdateAsync(Teacher entity)
         {
+            var teacherSubjects = await _context.SubjectTeachers.Where(st => st.TeacherId == entity.Id).ToListAsync();
+            entity.SubjectIds = entity.Subjects.Select(s => new SubjectTeacher { SubjectId = s.Id }).ToList();
+            entity.Subjects.Clear();
+            _context.RemoveRange(teacherSubjects.Where(ts => !entity.Subjects.Any(s => s.Id == ts.SubjectId)));
             _context.Update(entity);
             await _context.SaveChangesAsync();
             return entity;

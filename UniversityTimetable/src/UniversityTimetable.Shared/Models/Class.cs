@@ -13,11 +13,11 @@ namespace UniversityTimetable.Shared.Models
         public WeekDependency WeekDependency { get; set; } = WeekDependency.None;
         
         public int TeacherId { get; set; }
-        public Teacher Teacher { get; set; }
+        public Teacher Teacher { get; set; } = null;
         public int GroupId { get; set; }
-        public Group Group { get; set; }
+        public Group Group { get; set; } = null;
         public int AuditoryId { get; set; }
-        public Auditory Auditory { get; set; }
+        public Auditory Auditory { get; set; } = null;
         public Subject Subject { get; set; }
     }
 }

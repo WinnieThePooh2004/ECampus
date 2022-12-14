@@ -20,8 +20,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddAutoMapper(Assembly.Load("UniversityTimetable.Domain"));
 
-builder.Services.AddScoped<IService<FacultacyDTO, FacultacyParameters>, FacultacyService>();
-builder.Services.AddScoped<IRepository<Facultacy, FacultacyParameters>, FacultacyRepository>();
+builder.Services.AddScoped<IService<FacultyDTO, FacultyParameters>, FacultyService>();
+builder.Services.AddScoped<IRepository<Faculty, FacultyParameters>, FacultyRepository>();
 builder.Services.AddScoped<IService<DepartmentDTO, DepartmentParameters>, DepartmentService>();
 builder.Services.AddScoped<IRepository<Department, DepartmentParameters>, DepartmentRepository>();
 builder.Services.AddScoped<IService<AuditoryDTO, AuditoryParameters>, AuditoryService>();
@@ -30,6 +30,8 @@ builder.Services.AddScoped<IService<GroupDTO, GroupParameters>, GroupService>();
 builder.Services.AddScoped<IRepository<Group, GroupParameters>, GroupRepository>();
 builder.Services.AddScoped<IService<TeacherDTO, TeacherParameters>, TeacherService>();
 builder.Services.AddScoped<IRepository<Teacher, TeacherParameters>, TeacherRepository>();
+builder.Services.AddScoped<IService<SubjectDTO, SubjectParameters>, SubjectService>();
+builder.Services.AddScoped<IRepository<Subject, SubjectParameters>, SubjectRepository>();
 builder.Services.AddScoped<IClassService, ClassService>();
 builder.Services.AddScoped<IClassRepository, ClassRepository>();
 

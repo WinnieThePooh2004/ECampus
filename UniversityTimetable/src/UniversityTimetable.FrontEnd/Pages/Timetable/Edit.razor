@@ -1,0 +1,9 @@
+﻿@page "/timetable/edit/{Mode:int}/{Id:int}"
+@inherits EditPageBase<ClassDTO>
+@if(Model is null)
+{
+    <p><em>Loading</em></p>
+    return;
+}
+    
+<ClassEditForm Model="Model" OnSubmited="Save" TimetableMode="(TimetableMode)Mode" />

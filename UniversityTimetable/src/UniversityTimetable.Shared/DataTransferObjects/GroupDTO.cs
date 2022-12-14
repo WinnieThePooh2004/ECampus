@@ -1,6 +1,8 @@
-﻿namespace UniversityTimetable.Shared.DataTransferObjects
+﻿using UniversityTimetable.Shared.Interfaces.Data;
+
+namespace UniversityTimetable.Shared.DataTransferObjects
 {
-    public class GroupDTO
+    public class GroupDTO : IDataTransferObject
     {
         public int Id { get; set; }
         public string Name { get; set; }

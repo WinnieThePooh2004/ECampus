@@ -13,7 +13,8 @@ namespace UniversityTimetable.Shared.Models
         public int DepartmentId { get; set; }
         public Department Department { get; set; }
 
-        public List<SubjectTeacher> Subjects { get; set; }
+        public List<SubjectTeacher> SubjectIds { get; set; }
+        public List<Subject> Subjects { get; set; }
         public List<Class> Classes { get; set; }
     }
 }

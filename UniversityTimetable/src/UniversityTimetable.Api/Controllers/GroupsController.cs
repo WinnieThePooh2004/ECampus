@@ -6,7 +6,7 @@ using UniversityTimetable.Shared.QueryParameters;
 namespace UniversityTimetable.Api.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class GroupsController : ControllerBase
     {
         private readonly IService<GroupDTO, GroupParameters> _service;
@@ -34,7 +34,6 @@ namespace UniversityTimetable.Api.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(GroupDTO group)
         {
             if (!ModelState.IsValid || group.DepartmentId == 0)
@@ -49,7 +48,6 @@ namespace UniversityTimetable.Api.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPut]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(GroupDTO group)
         {
             if (!ModelState.IsValid)

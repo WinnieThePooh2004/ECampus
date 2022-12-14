@@ -71,5 +71,10 @@ namespace UniversityTimetable.Domain.Services
             var @class = _mapper.Map<Class>(entity);
             return _mapper.Map<ClassDTO>(await _repository.UpdateAsync(@class));
         }
+
+        public Task<List<string>> ValidateAsync(ClassDTO @class)
+        {
+            return _repository.ValidateAsync(@class);
+        }
     }
 }

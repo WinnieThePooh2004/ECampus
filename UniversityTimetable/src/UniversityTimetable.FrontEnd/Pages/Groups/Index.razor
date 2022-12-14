@@ -1,0 +1,8 @@
+﻿@page "/groups/{DepartmentId:int}"
+<IndexPageModel TData="GroupDTO" TParameters="GroupParameters"
+                ParameterOptions="p => p.DepartmentId = DepartmentId"
+                TableHeaders="@(new(){ "Last name", "First name" })"
+                TableData="@(new(){ g => g.Name })"
+                CreateLink="@($"/departments/Create/{DepartmentId}")"
+                EditLink="/groups/edit"
+                ActionLinks="@(new(){ ("Timetable", d => $"/timetable/group/{d.Id}")})" />

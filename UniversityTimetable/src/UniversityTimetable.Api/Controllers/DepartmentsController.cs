@@ -6,7 +6,7 @@ using UniversityTimetable.Shared.QueryParameters;
 namespace UniversityTimetable.Api.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class DepartmentsController : ControllerBase
     {
         private readonly IService<DepartmentDTO, DepartmentParameters> _service;

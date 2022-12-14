@@ -1,11 +1,12 @@
 ﻿using UniversityTimetable.Shared.General;
+using UniversityTimetable.Shared.Interfaces.Data;
 
 namespace UniversityTimetable.Shared.DataTransferObjects
 {
-    public class ClassDTO
+    public class ClassDTO : IDataTransferObject
     {
         public int Id { get; set; }
-        public ClassType ClassType { get; set; }
+        public ClassType ClassType { get; set; } = ClassType.Lecture;
         public int Number { get; set; }
         public int DayOfWeek { get; set; }
         public WeekDependency WeekDependency { get; set; } = WeekDependency.None;
@@ -14,9 +15,9 @@ namespace UniversityTimetable.Shared.DataTransferObjects
         public int GroupId { get; set; }
         public int AuditoryId { get; set; }
         public int SubjectId { get; set; }
-        public AuditoryDTO Auditory { get; set; }
-        public TeacherDTO Teacher { get; set; }
-        public GroupDTO Group { get; set; }
+        public AuditoryDTO Auditory { get; set; } = null;
+        public TeacherDTO Teacher { get; set; } = null;
+        public GroupDTO Group { get; set; } = null;
         public SubjectDTO Subject { get; set; }
 
         public override string ToString()

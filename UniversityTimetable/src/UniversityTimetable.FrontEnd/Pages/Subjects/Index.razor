@@ -1,0 +1,7 @@
+﻿@page "/subjects"
+<IndexPageModel TData="SubjectDTO" TParameters="SubjectParameters"
+                TableHeaders="@(new(){ "Name" })"
+                TableData="@(new(){ t => t.Name })"
+                CreateLink="@($"/subjects/Create")"
+                EditLink="/subjects/edit"
+                ActionLinks="@(new(){ ("Timetable", d => $"/timetable/teacher/{d.Id}")})" />

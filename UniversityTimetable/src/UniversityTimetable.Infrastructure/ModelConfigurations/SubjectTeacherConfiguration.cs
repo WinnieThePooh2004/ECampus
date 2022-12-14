@@ -8,15 +8,14 @@ namespace UniversityTimetable.Infrastructure.ModelConfigurations
     {
         public void Configure(EntityTypeBuilder<SubjectTeacher> builder)
         {
-            builder.HasQueryFilter(s => !s.IsDeleted)
-                .HasOne(s => s.Teacher)
-                .WithMany(s => s.Subjects)
+            builder.HasOne(s => s.Teacher)
+                .WithMany(s => s.SubjectIds)
                 .HasForeignKey(s => s.TeacherId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasOne(s => s.Subject)
-                .WithMany(s => s.Teachers)
+                .WithMany(s => s.TeacherIds)
                 .HasForeignKey(s => s.SubjectId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);

@@ -21,6 +21,21 @@ namespace Migrations.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("SubjectTeacher", b =>
+                {
+                    b.Property<int>("SubjectsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TeachersId")
+                        .HasColumnType("int");
+
+                    b.HasKey("SubjectsId", "TeachersId");
+
+                    b.HasIndex("TeachersId");
+
+                    b.ToTable("SubjectTeacher");
+                });
+
             modelBuilder.Entity("UniversityTimetable.Shared.Models.Auditory", b =>
                 {
                     b.Property<int>("Id")
@@ -185,9 +200,6 @@ namespace Migrations.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
                     b.Property<int>("SubjectId")
                         .HasColumnType("int");
 
@@ -231,6 +243,21 @@ namespace Migrations.Migrations
                     b.HasIndex("DepartmentId");
 
                     b.ToTable("Teachers");
+                });
+
+            modelBuilder.Entity("SubjectTeacher", b =>
+                {
+                    b.HasOne("UniversityTimetable.Shared.Models.Subject", null)
+                        .WithMany()
+                        .HasForeignKey("SubjectsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("UniversityTimetable.Shared.Models.Teacher", null)
+                        .WithMany()
+                        .HasForeignKey("TeachersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("UniversityTimetable.Shared.Models.Class", b =>
@@ -293,13 +320,13 @@ namespace Migrations.Migrations
             modelBuilder.Entity("UniversityTimetable.Shared.Models.SubjectTeacher", b =>
                 {
                     b.HasOne("UniversityTimetable.Shared.Models.Subject", "Subject")
-                        .WithMany("Teachers")
+                        .WithMany("TeacherIds")
                         .HasForeignKey("SubjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("UniversityTimetable.Shared.Models.Teacher", "Teacher")
-                        .WithMany("Subjects")
+                        .WithMany("SubjectIds")
                         .HasForeignKey("TeacherId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -346,14 +373,14 @@ namespace Migrations.Migrations
                 {
                     b.Navigation("Classes");
 
-                    b.Navigation("Teachers");
+                    b.Navigation("TeacherIds");
                 });
 
             modelBuilder.Entity("UniversityTimetable.Shared.Models.Teacher", b =>
                 {
                     b.Navigation("Classes");
 
-                    b.Navigation("Subjects");
+                    b.Navigation("SubjectIds");
                 });
 #pragma warning restore 612, 618
         }
