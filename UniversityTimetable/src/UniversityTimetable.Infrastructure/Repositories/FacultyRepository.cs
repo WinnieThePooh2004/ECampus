@@ -33,7 +33,7 @@ namespace UniversityTimetable.Infrastructure.Repositories
 
         public async Task<Faculty> GetByIdAsync(int id)
         {
-            var facultacy = await _context.Facultacies.FirstOrDefaultAsync(f => f.Id == id);
+            var facultacy = await _context.Faculties.FirstOrDefaultAsync(f => f.Id == id);
             if (facultacy == null)
             {
                 throw new Exception();
@@ -43,7 +43,7 @@ namespace UniversityTimetable.Infrastructure.Repositories
 
         public async Task<ListWithPaginationData<Faculty>> GetByParameters(FacultyParameters parameters)
         {
-            var entities = _context.Facultacies.Filter(parameters);
+            var entities = _context.Faculties.Filter(parameters);
 
             int totalCount = await entities.CountAsync();
 
