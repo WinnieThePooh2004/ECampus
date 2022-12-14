@@ -17,14 +17,14 @@ namespace UniversityTimetable.Api.Controllers
 
         // GET: Facultacies
         [HttpGet]
-        public async Task<IActionResult> Index([FromQuery] FacultyParameters parameters)
+        public async Task<IActionResult> Get([FromQuery] FacultyParameters parameters)
         {
             return Ok(await _service.GetByParametersAsync(parameters));
         }
 
         // GET: Facultacies/Details/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Get(int? id)
         {
             return Ok(await _service.GetByIdAsync(id));
         }
@@ -33,7 +33,7 @@ namespace UniversityTimetable.Api.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public async Task<IActionResult> Create([Bind("Name")] FacultyDTO facultacy)
+        public async Task<IActionResult> Post([Bind("Name")] FacultyDTO facultacy)
         {
             if (!ModelState.IsValid)
             {
@@ -47,7 +47,7 @@ namespace UniversityTimetable.Api.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPut]
-        public async Task<IActionResult> Edit(FacultyDTO facultacy)
+        public async Task<IActionResult> Put(FacultyDTO facultacy)
         {
             if (!ModelState.IsValid)
             {
@@ -59,7 +59,7 @@ namespace UniversityTimetable.Api.Controllers
 
         // POST: Facultacies/Delete/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteConfirmed(int? id)
+        public async Task<IActionResult> Delete(int? id)
         {
             await _service.DeleteAsync(id);
             return Ok(id);

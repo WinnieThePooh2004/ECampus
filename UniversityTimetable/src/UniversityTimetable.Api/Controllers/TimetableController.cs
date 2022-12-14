@@ -38,7 +38,7 @@ namespace UniversityTimetable.Api.Controllers
 
         // GET: Classes/Details/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Get(int? id)
         {
             return Ok(await _service.GetByIdAsync(id));
         }
@@ -46,19 +46,19 @@ namespace UniversityTimetable.Api.Controllers
 
         // GET: Classes/Create
         [HttpPost]
-        public async Task<IActionResult> Create(ClassDTO @class)
+        public async Task<IActionResult> Post(ClassDTO @class)
         {
             return Ok(await _service.CreateAsync(@class));
         }
 
         [HttpPut]
-        public async Task<IActionResult> Edit(ClassDTO @class)
+        public async Task<IActionResult> Put(ClassDTO @class)
         {
             return Ok(await _service.UpdateAsync(@class));
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             await _service.DeleteAsync(id);
             return Ok(id);

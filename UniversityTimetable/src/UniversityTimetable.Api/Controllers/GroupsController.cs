@@ -18,14 +18,14 @@ namespace UniversityTimetable.Api.Controllers
 
         // GET: Groups
         [HttpGet]
-        public async Task<IActionResult> Index([FromQuery] GroupParameters parameters)
+        public async Task<IActionResult> Get([FromQuery] GroupParameters parameters)
         {
             return Ok(await _service.GetByParametersAsync(parameters));
         }
 
         // GET: Groups/Details/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Get(int? id)
         {
             return Ok(await _service.GetByIdAsync(id));
         }
@@ -34,7 +34,7 @@ namespace UniversityTimetable.Api.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public async Task<IActionResult> Create(GroupDTO group)
+        public async Task<IActionResult> Post(GroupDTO group)
         {
             if (!ModelState.IsValid || group.DepartmentId == 0)
             {
@@ -48,7 +48,7 @@ namespace UniversityTimetable.Api.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPut]
-        public async Task<IActionResult> Edit(GroupDTO group)
+        public async Task<IActionResult> Put(GroupDTO group)
         {
             if (!ModelState.IsValid)
             {
@@ -60,8 +60,7 @@ namespace UniversityTimetable.Api.Controllers
 
         // POST: Groups/Delete/5
         [HttpDelete("{id}")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             await _service.DeleteAsync(id);
             return Ok(id);

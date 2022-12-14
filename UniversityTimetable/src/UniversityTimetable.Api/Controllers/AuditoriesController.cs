@@ -18,20 +18,20 @@ namespace UniversityTimetable.Api.Controllers
 
         // GET: Auditories
         [HttpGet]
-        public async Task<IActionResult> Index([FromQuery] AuditoryParameters parameters)
+        public async Task<IActionResult> Get([FromQuery] AuditoryParameters parameters)
         {
             return Ok(await _service.GetByParametersAsync(parameters));
         }
 
         // GET: Auditories/Details/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Get(int? id)
         {
             return Ok(await _service.GetByIdAsync(id));
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(AuditoryDTO auditory)
+        public async Task<IActionResult> Post(AuditoryDTO auditory)
         {
             if (!ModelState.IsValid)
             {
@@ -42,7 +42,7 @@ namespace UniversityTimetable.Api.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Edit(AuditoryDTO auditory)
+        public async Task<IActionResult> Put(AuditoryDTO auditory)
         {
             if (!ModelState.IsValid)
             {
@@ -54,7 +54,7 @@ namespace UniversityTimetable.Api.Controllers
 
         // POST: Auditories/Delete/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteConfirmed(int? id)
+        public async Task<IActionResult> Delete(int? id)
         {
             await _service.DeleteAsync(id);
             return Ok(id);

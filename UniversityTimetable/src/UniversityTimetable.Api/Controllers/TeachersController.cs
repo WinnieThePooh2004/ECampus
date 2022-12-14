@@ -18,27 +18,27 @@ namespace UniversityTimetable.Api.Controllers
 
         // GET: Teachers
         [HttpGet]
-        public async Task<IActionResult> Index([FromQuery] TeacherParameters parameters)
+        public async Task<IActionResult> Get([FromQuery] TeacherParameters parameters)
         {
             return Ok(await _service.GetByParametersAsync(parameters));
         }
 
         // GET: Teachers/Details/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Get(int? id)
         {
             return Ok(await _service.GetByIdAsync(id));
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(TeacherDTO teacher)
+        public async Task<IActionResult> Post(TeacherDTO teacher)
         {
             await _service.CreateAsync(teacher);
             return Ok(teacher);
         }
 
         [HttpPut]
-        public async Task<IActionResult> Edit(TeacherDTO teacher)
+        public async Task<IActionResult> Put(TeacherDTO teacher)
         {
             await _service.UpdateAsync(teacher);
             return Ok(teacher);
@@ -46,7 +46,7 @@ namespace UniversityTimetable.Api.Controllers
 
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteConfirmed(int? id)
+        public async Task<IActionResult> Delete(int? id)
         {
             await _service.DeleteAsync(id);
             return Ok(id);
