@@ -64,9 +64,9 @@ namespace UniversityTimetable.Infrastructure.Repositories
 
             _context.RemoveRange(allSubjects.Where(st => !entity.Subjects.Any(s => s.Id == st.SubjectId)));
             _context.AddRange(entity.Subjects
-                .Where(s => !allSubjects
-                .Any(st => s.Id == st.SubjectId))
+                .Where(s => !allSubjects.Any(st => s.Id == st.SubjectId))
                 .Select(s => new SubjectTeacher { TeacherId = entity.Id, SubjectId = s.Id }));
+
             entity.Subjects?.Clear();
             entity.SubjectIds?.Clear();
             _context.Update(entity);

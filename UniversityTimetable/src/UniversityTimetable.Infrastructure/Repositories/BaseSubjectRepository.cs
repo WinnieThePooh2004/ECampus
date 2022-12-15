@@ -57,8 +57,17 @@ namespace UniversityTimetable.Infrastructure.Repositories
 
         public async Task<Subject> UpdateAsync(Subject entity)
         {
-            _context.RemoveRange(await _context.SubjectTeachers.Where(st => st.SubjectId == entity.Id).ToListAsync());
-            entity.TeacherIds = entity.Teachers.Select(t => new SubjectTeacher { TeacherId = t.Id, SubjectId = entity.Id }).ToList();
+            var allTeachers = await _context.SubjectTeachers
+                .Where(st => st.SubjectId == entity.Id)
+                .ToListAsync();
+
+            _context.RemoveRange(allTeachers.Where(st => !entity.Teachers.Any(t => t.Id == st.TeacherId)));
+            _context.AddRange(entity.Teachers
+                .Where(s => !allTeachers.Any(st => s.Id == st.TeacherId))
+                .Select(s => new SubjectTeacher { SubjectId = entity.Id, TeacherId = s.Id }));
+
+            entity.Teachers?.Clear();
+            entity.TeacherIds?.Clear();
             _context.Update(entity);
             try
             {
