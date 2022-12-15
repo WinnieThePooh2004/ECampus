@@ -13,68 +13,61 @@ namespace UniversityTimetable.Domain.Services
         private readonly ILogger<ClassService> _logger;
         private readonly IClassRepository _repository;
         private readonly IMapper _mapper;
+        private readonly IBaseService<ClassDTO> _baseService;
 
-        public ClassService(ILogger<ClassService> logger, IClassRepository repository, IMapper mapper)
+        public ClassService(ILogger<ClassService> logger, IClassRepository repository, IMapper mapper, IBaseService<ClassDTO> baseService)
         {
             _logger = logger;
             _repository = repository;
             _mapper = mapper;
+            _baseService = baseService;
         }
 
-        public async Task<ClassDTO> CreateAsync(ClassDTO entity)
-        {
-            var @class = _mapper.Map<Class>(entity);
-            return _mapper.Map<ClassDTO>(await _repository.CreateAsync(@class));
-        }
+        public Task<ClassDTO> CreateAsync(ClassDTO entity)
+            => _baseService.CreateAsync(entity);
 
         public Task DeleteAsync(int? id)
-        {
-            if (id is null)
-            {
-                throw new ArgumentNullException(nameof(id));
-            }
-            return _repository.DeleteAsync((int)id);
-        }
+            => _baseService.DeleteAsync(id);
 
-        public async Task<ClassDTO> GetByIdAsync(int? id)
-        {
-            if(id is null)
-            {
-                throw new ArgumentNullException(nameof(id));
-            }
-            return _mapper.Map<ClassDTO>(await _repository.GetByIdAsync((int)id));
-        }
+        public Task<ClassDTO> GetByIdAsync(int? id)
+            => _baseService.GetByIdAsync(id);
 
         public async Task<Timetable> GetTimetableForAuditoryAsync(int auditoryId)
         {
             _logger.LogInformation("Getting auditory for group with id={id}", auditoryId);
             var timetable = await _repository.GetTimetableForAuditoryAsync(auditoryId);
-            return _mapper.Map<Timetable>(timetable);
+            return new Timetable(_mapper.Map<IEnumerable<ClassDTO>>(timetable.Classes))
+            {
+                Auditory = _mapper.Map<AuditoryDTO>(timetable.Auditory),
+            };
         }
 
         public async Task<Timetable> GetTimetableForGroupAsync(int groupId)
         {
             _logger.LogInformation("Getting timetable for group with id={id}", groupId);
             var timetable = await _repository.GetTimetableForGroupAsync(groupId);
-            return _mapper.Map<Timetable>(timetable);
+            return new Timetable(_mapper.Map<IEnumerable<ClassDTO>>(timetable.Classes))
+            {
+                Group = _mapper.Map<GroupDTO>(timetable.Group),
+            };
         }
 
         public async Task<Timetable> GetTimetableForTeacherAsync(int teacherId)
         {
             _logger.LogInformation("Getting teacher for group with id={id}", teacherId);
             var timetable = await _repository.GetTimetableForTeacherAsync(teacherId);
-            return _mapper.Map<Timetable>(timetable);
+            return new Timetable(_mapper.Map<IEnumerable<ClassDTO>>(timetable.Classes))
+            {
+                Teacher = _mapper.Map<TeacherDTO>(timetable.Teacher),
+            };
         }
 
-        public async Task<ClassDTO> UpdateAsync(ClassDTO entity)
-        {
-            var @class = _mapper.Map<Class>(entity);
-            return _mapper.Map<ClassDTO>(await _repository.UpdateAsync(@class));
-        }
+        public Task<ClassDTO> UpdateAsync(ClassDTO entity) 
+            => _baseService.UpdateAsync(entity);
 
         public Task<List<string>> ValidateAsync(ClassDTO @class)
         {
-            return _repository.ValidateAsync(@class);
+            return _repository.ValidateAsync(_mapper.Map<Class>(@class));
         }
     }
 }

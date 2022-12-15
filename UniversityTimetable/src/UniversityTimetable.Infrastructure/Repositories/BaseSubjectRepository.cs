@@ -1,19 +1,18 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using UniversityTimetable.Shared.DataContainers;
+using UniversityTimetable.Shared.Exceptions.InfrastructureExceptions;
 using UniversityTimetable.Shared.Extentions;
 using UniversityTimetable.Shared.Interfaces.Repositories;
 using UniversityTimetable.Shared.Models;
-using UniversityTimetable.Shared.QueryParameters;
 
 namespace UniversityTimetable.Infrastructure.Repositories
 {
-    public class SubjectRepository : IRepository<Subject, SubjectParameters>
+    public class BaseSubjectRepository : IBaseRepository<Subject>
     {
-        private readonly ILogger<SubjectRepository> _logger;
+        private readonly ILogger<BaseSubjectRepository> _logger;
         private readonly ApplicationDbContext _context;
 
-        public SubjectRepository(ILogger<SubjectRepository> logger, ApplicationDbContext context)
+        public BaseSubjectRepository(ILogger<BaseSubjectRepository> logger, ApplicationDbContext context)
         {
             _logger = logger;
             _context = context;
@@ -32,7 +31,14 @@ namespace UniversityTimetable.Infrastructure.Repositories
         {
             _context.Remove(new Subject { Id = id });
             _context.RemoveRange(await _context.SubjectTeachers.Where(st => st.SubjectId == id).ToListAsync());
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch(DbUpdateConcurrencyException)
+            {
+                _logger.LogAndThrowException(new ObjectNotFoundByIdException(typeof(Subject), id));
+            }
         }
 
         public async Task<Subject> GetByIdAsync(int id)
@@ -43,26 +49,10 @@ namespace UniversityTimetable.Infrastructure.Repositories
                 .FirstOrDefaultAsync(t => t.Id == id);
             if (subject is null)
             {
-                throw new Exception();
+                _logger.LogAndThrowException(new ObjectNotFoundByIdException(typeof(Subject), id));
             }
             subject.Teachers = subject.TeacherIds.Select(t => t.Teacher).ToList();
             return subject;
-        }
-
-        public async Task<ListWithPaginationData<Subject>> GetByParameters(SubjectParameters parameters)
-        {
-            var query = _context.Subjects
-                .Include(s => s.TeacherIds)
-                .Filter(parameters);
-                
-            var totalCount = await query.CountAsync();
-
-            var pagedItems = await query
-                .OrderBy(c => c.Name)
-                .Skip((parameters.PageNumber - 1) * parameters.PageSize)
-                .Take(parameters.PageSize)
-                .ToListAsync();
-            return new ListWithPaginationData<Subject>(pagedItems, totalCount, parameters.PageNumber, parameters.PageSize);
         }
 
         public async Task<Subject> UpdateAsync(Subject entity)
@@ -70,7 +60,14 @@ namespace UniversityTimetable.Infrastructure.Repositories
             _context.RemoveRange(await _context.SubjectTeachers.Where(st => st.SubjectId == entity.Id).ToListAsync());
             entity.TeacherIds = entity.Teachers.Select(t => new SubjectTeacher { TeacherId = t.Id, SubjectId = entity.Id }).ToList();
             _context.Update(entity);
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                _logger.LogAndThrowException(new ObjectNotFoundByIdException(typeof(Subject), entity.Id));
+            }
             return entity;
         }
     }

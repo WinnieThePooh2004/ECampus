@@ -1,6 +1,8 @@
-﻿namespace UniversityTimetable.Shared.Interfaces.Services
+﻿using UniversityTimetable.Shared.Interfaces.Data;
+
+namespace UniversityTimetable.Shared.Interfaces.Services
 {
-    public interface IBaseService<TEntity> where TEntity : class
+    public interface IBaseService<TEntity> where TEntity : class, IDataTransferObject
     {
         public Task<TEntity> GetByIdAsync(int? id);
         public Task<TEntity> CreateAsync(TEntity entity);

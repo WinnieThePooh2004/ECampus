@@ -2,11 +2,11 @@
 
 namespace UniversityTimetable.Shared.Exceptions
 {
-    public class HttpResponseExeption : Exception
+    public class HttpResponseException : Exception
     {
         public int StatusCode{ get; }
         public object Object { get; }
-        public HttpResponseExeption(HttpStatusCode statusCode, string message = "", object @object = null)
+        public HttpResponseException(HttpStatusCode statusCode, string message = "", object @object = null)
             :base(message)
         {
             StatusCode = (int)statusCode;

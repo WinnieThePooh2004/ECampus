@@ -1,4 +1,7 @@
-﻿namespace UniversityTimetable.Shared.QueryParameters
+﻿using Microsoft.EntityFrameworkCore;
+using UniversityTimetable.Shared.Interfaces.Data;
+
+namespace UniversityTimetable.Shared.QueryParameters
 {
     public interface IQueryParameters
     {
@@ -7,7 +10,8 @@
         string SearchTerm { get; set; }
     }
 
-    public interface IQueryParameters<T> where T : class
+    public interface IQueryParameters<T> : IQueryParameters
+        where T : class, IModel
     {
         IQueryable<T> Filter(IQueryable<T> items);
     }

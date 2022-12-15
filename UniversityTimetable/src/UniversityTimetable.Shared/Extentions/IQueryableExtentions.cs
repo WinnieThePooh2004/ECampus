@@ -1,5 +1,6 @@
-﻿
+﻿using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using UniversityTimetable.Shared.Interfaces.Data;
 using UniversityTimetable.Shared.QueryParameters;
 
 namespace UniversityTimetable.Shared.Extentions
@@ -32,7 +33,7 @@ namespace UniversityTimetable.Shared.Extentions
         }
 
         public static IQueryable<T> Filter<T, TParams>(this IQueryable<T> sourse, TParams parameters)
-            where T : class
+            where T : class, IModel
             where TParams : IQueryParameters<T>
             => parameters.Filter(sourse);
     }

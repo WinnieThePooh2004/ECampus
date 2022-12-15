@@ -1,6 +1,8 @@
-﻿namespace UniversityTimetable.Shared.Interfaces.Repositories
+﻿using UniversityTimetable.Shared.Interfaces.Data;
+
+namespace UniversityTimetable.Shared.Interfaces.Repositories
 {
-    public interface IBaseRepository<TEntity> where TEntity : class
+    public interface IBaseRepository<TEntity> where TEntity : class, IModel
     {
         public Task<TEntity> GetByIdAsync(int id);
         public Task<TEntity> CreateAsync(TEntity entity);

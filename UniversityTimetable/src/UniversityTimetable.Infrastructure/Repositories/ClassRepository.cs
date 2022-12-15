@@ -4,9 +4,7 @@ using UniversityTimetable.Shared.Interfaces.Repositories;
 using UniversityTimetable.Shared.Models;
 using UniversityTimetable.Shared.Exceptions.InfrastructureExceptions;
 using UniversityTimetable.Shared.DataContainers;
-using System.Text.RegularExpressions;
-using UniversityTimetable.Shared.DataTransferObjects;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using UniversityTimetable.Shared.Extentions;
 
 namespace UniversityTimetable.Infrastructure.Repositories
 {
@@ -22,37 +20,12 @@ namespace UniversityTimetable.Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task<Class> CreateAsync(Class entity)
-        {
-            _context.Add(entity);
-            await _context.SaveChangesAsync();
-            return entity;
-        }
-
-        public async Task DeleteAsync(int id)
-        {
-            _context.Remove(new Class { Id = id });
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task<Class> GetByIdAsync(int id)
-        {
-            var @class = await _context
-                .Classes
-                .FirstOrDefaultAsync(c => c.Id == id);
-            if (@class is null)
-            {
-                throw new Exception();
-            }
-            return @class;
-        }
-
         public async Task<TimetableData> GetTimetableForAuditoryAsync(int auditoryId)
         {
             var auditory = await _context.Auditories.FirstOrDefaultAsync(g => g.Id == auditoryId);
             if (auditory is null)
             {
-                throw new ObjectNotFoundByIdException(typeof(Auditory), auditoryId);
+                _logger.LogAndThrowException(new ObjectNotFoundByIdException(typeof(Auditory), auditoryId));
             }
             var timetable = new TimetableData()
             {
@@ -72,7 +45,7 @@ namespace UniversityTimetable.Infrastructure.Repositories
             var group = await _context.Groups.FirstOrDefaultAsync(g => g.Id == groupId);
             if (group is null)
             {
-                throw new ObjectNotFoundByIdException(typeof(Shared.Models.Group), groupId);
+                _logger.LogAndThrowException(new ObjectNotFoundByIdException(typeof(Shared.Models.Group), groupId));
             }
             var timetable = new TimetableData()
             {
@@ -93,7 +66,7 @@ namespace UniversityTimetable.Infrastructure.Repositories
             var teacher = await _context.Teachers.FirstOrDefaultAsync(t => t.Id == teacherId);
             if (teacher is null)
             {
-                throw new ObjectNotFoundByIdException(typeof(Teacher), teacherId);
+                _logger.LogAndThrowException(new ObjectNotFoundByIdException(typeof(Teacher), teacherId));
             }
             var timetable = new TimetableData()
             {
@@ -108,14 +81,7 @@ namespace UniversityTimetable.Infrastructure.Repositories
             return timetable;
         }
 
-        public async Task<Class> UpdateAsync(Class entity)
-        {
-            _context.Update(entity);
-            await _context.SaveChangesAsync();
-            return entity;
-        }
-
-        public async Task<List<string>> ValidateAsync(ClassDTO @class)
+        public async Task<List<string>> ValidateAsync(Class @class)
         {
             var errors = new List<string>();
             var teacher = await _context.Teachers.Include(t => t.SubjectIds)
