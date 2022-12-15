@@ -1,0 +1,14 @@
+﻿@page "/auditories/edit/{Id:int}"
+@inherits EditPageBase<AuditoryDTO>
+
+@if(Model is null)
+{
+    <p><em>Loading...</em></p>
+    return;
+}
+
+<AuditoryEditForm Model="Model" OnSubmited="Save"/>
+
+@code {
+    protected override string PageAfterSave => "/auditories";
+}

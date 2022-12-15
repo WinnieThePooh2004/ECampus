@@ -1,12 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using NuGet.DependencyResolver;
-using UniversityTimetable.Presentation.Models;
+using UniversityTimetable.Api.Models;
 using UniversityTimetable.Shared.DataTransferObjects;
-using UniversityTimetable.Shared.Interfaces;
-using UniversityTimetable.Shared.Models;
+using UniversityTimetable.Shared.Interfaces.Services;
 using UniversityTimetable.Shared.QueryParameters;
 
-namespace UniversityTimetable.Presentation.Controllers
+namespace UniversityTimetable.Api.Controllers
 {
     public class TeachersController : Controller
     {
@@ -31,9 +29,9 @@ namespace UniversityTimetable.Presentation.Controllers
         }
 
         // GET: Teachers/Create
-        public IActionResult Create([FromQuery] int depatmentId)
+        public IActionResult Create([FromQuery] int departmentId)
         {
-            var teacher = new TeacherDTO { DepartmentId = depatmentId };
+            var teacher = new TeacherDTO { DepartmentId = departmentId };
             return View(teacher);
         }
 
@@ -42,9 +40,9 @@ namespace UniversityTimetable.Presentation.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,ScienceDegree,DepartmentId")] TeacherDTO teacher)
+        public async Task<IActionResult> Create([Bind("FirstName,LastName,ScienceDegree,DepartmentId")] TeacherDTO teacher)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return View(teacher);
             }
@@ -63,7 +61,7 @@ namespace UniversityTimetable.Presentation.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit([Bind("Id,FirstName,LastName,ScienceDegree,DepartmentName")] TeacherDTO teacher)
+        public async Task<IActionResult> Edit([Bind("Id,FirstName,LastName,ScienceDegree,DepartmentId")] TeacherDTO teacher)
         {
             if (!ModelState.IsValid)
             {

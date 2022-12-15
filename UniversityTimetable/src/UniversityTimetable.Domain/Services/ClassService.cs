@@ -1,59 +1,73 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
+using UniversityTimetable.Shared.DataContainers;
 using UniversityTimetable.Shared.DataTransferObjects;
-using UniversityTimetable.Shared.Interfaces;
+using UniversityTimetable.Shared.Interfaces.Repositories;
+using UniversityTimetable.Shared.Interfaces.Services;
 using UniversityTimetable.Shared.Models;
-using UniversityTimetable.Shared.Pagination;
-using UniversityTimetable.Shared.QueryParameters;
 
 namespace UniversityTimetable.Domain.Services
 {
-    public class ClassService : IService<ClassDTO, ClassParameters>
+    public class ClassService : IClassService
     {
         private readonly ILogger<ClassService> _logger;
-        private readonly IRepository<Class, ClassParameters> _repository;
+        private readonly IClassRepository _repository;
         private readonly IMapper _mapper;
+        private readonly IBaseService<ClassDTO> _baseService;
 
-        public ClassService(ILogger<ClassService> logger, IRepository<Class, ClassParameters> repository, IMapper mapper)
+        public ClassService(ILogger<ClassService> logger, IClassRepository repository, IMapper mapper, IBaseService<ClassDTO> baseService)
         {
             _logger = logger;
             _repository = repository;
             _mapper = mapper;
+            _baseService = baseService;
         }
 
-        public async Task<ClassDTO> CreateAsync(ClassDTO entity)
-        {
-            var @class = _mapper.Map<Class>(entity);
-            return _mapper.Map<ClassDTO>(await _repository.CreateAsync(@class));
-        }
+        public Task<ClassDTO> CreateAsync(ClassDTO entity)
+            => _baseService.CreateAsync(entity);
 
         public Task DeleteAsync(int? id)
+            => _baseService.DeleteAsync(id);
+
+        public Task<ClassDTO> GetByIdAsync(int? id)
+            => _baseService.GetByIdAsync(id);
+
+        public async Task<Timetable> GetTimetableForAuditoryAsync(int auditoryId)
         {
-            if (id is null)
+            _logger.LogInformation("Getting auditory for group with id={id}", auditoryId);
+            var timetable = await _repository.GetTimetableForAuditoryAsync(auditoryId);
+            return new Timetable(_mapper.Map<IEnumerable<ClassDTO>>(timetable.Classes))
             {
-                throw new ArgumentNullException(nameof(id));
-            }
-            return _repository.DeleteAsync((int)id);
+                Auditory = _mapper.Map<AuditoryDTO>(timetable.Auditory),
+            };
         }
 
-        public async Task<ClassDTO> GetByIdAsync(int? id)
+        public async Task<Timetable> GetTimetableForGroupAsync(int groupId)
         {
-            if(id is null)
+            _logger.LogInformation("Getting timetable for group with id={id}", groupId);
+            var timetable = await _repository.GetTimetableForGroupAsync(groupId);
+            return new Timetable(_mapper.Map<IEnumerable<ClassDTO>>(timetable.Classes))
             {
-                throw new ArgumentNullException(nameof(id));
-            }
-            return _mapper.Map<ClassDTO>(await _repository.GetByIdAsync((int)id));
+                Group = _mapper.Map<GroupDTO>(timetable.Group),
+            };
         }
 
-        public async Task<ListWithPaginationData<ClassDTO>> GetByParametersAsync(ClassParameters parameters)
+        public async Task<Timetable> GetTimetableForTeacherAsync(int teacherId)
         {
-            return _mapper.Map<ListWithPaginationData<ClassDTO>>(await _repository.GetByParameters(parameters));
+            _logger.LogInformation("Getting teacher for group with id={id}", teacherId);
+            var timetable = await _repository.GetTimetableForTeacherAsync(teacherId);
+            return new Timetable(_mapper.Map<IEnumerable<ClassDTO>>(timetable.Classes))
+            {
+                Teacher = _mapper.Map<TeacherDTO>(timetable.Teacher),
+            };
         }
 
-        public async Task<ClassDTO> UpdateAsync(ClassDTO entity)
+        public Task<ClassDTO> UpdateAsync(ClassDTO entity) 
+            => _baseService.UpdateAsync(entity);
+
+        public Task<List<string>> ValidateAsync(ClassDTO @class)
         {
-            var @class = _mapper.Map<Class>(entity);
-            return _mapper.Map<ClassDTO>(await _repository.UpdateAsync(@class));
+            return _repository.ValidateAsync(_mapper.Map<Class>(@class));
         }
     }
 }

@@ -1,0 +1,10 @@
+﻿@page "/faculties"
+<h1>Faculties</h1>
+
+<IndexPageModel TData="FacultyDTO" TParameters="FacultyParameters"
+    TableHeaders="@(new(){ "Name" })"
+    TableData="@(new(){ f => f.Name })"
+    CreateLink="/faculties/Create"
+    EditLink="/faculties/edit"
+    ActionLinks="@(new(){ ("View departments", f => $"/Departments/{f.Id}") })"
+    />

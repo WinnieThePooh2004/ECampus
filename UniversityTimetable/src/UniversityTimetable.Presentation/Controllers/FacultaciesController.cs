@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using UniversityTimetable.Shared.DataTransferObjects;
-using UniversityTimetable.Shared.Interfaces;
 using UniversityTimetable.Shared.QueryParameters;
-using UniversityTimetable.Presentation.Models;
+using UniversityTimetable.Api.Models;
+using UniversityTimetable.Shared.Interfaces.Services;
 
-namespace UniversityTimetable.Presentation.Controllers
+namespace UniversityTimetable.Api.Controllers
 {
     public class FacultaciesController : Controller
     {

@@ -1,0 +1,39 @@
+﻿@inherits DataTableBase<TData, TParameters>
+@typeparam TData
+@typeparam TParameters
+
+@if(Data is null)
+{
+    <p><em>Loading...</em></p>
+    return;
+}
+<table>
+    <thead>
+        <input type="text" @bind-value="@Parameters.SearchTerm" @onblur="RefreshData" style="background-color: rgb(235, 235, 235)"
+               placeholder="Search" />
+        <tr>
+            @foreach (var propertyName in PropertyNames)
+            {
+                <th>@propertyName</th>
+            }
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Data.Data)
+        {
+            <tr>
+                @foreach (var property in PropertiesToShow)
+                {
+                    <td>@property(item)</td>
+                }
+                <td>
+                    <MudCheckBox T="bool" Color="Color.Primary" @bind-Checked="this[item]" />
+                </td>
+            </tr>
+        }
+    </tbody>
+    <DataPageSelect MaxPageNumber="Data.Metadata.MaxPageNumber" OnPageNumberChanged="@(PageNumberChanged)" />
+    <br />
+    <DataPageSizeSelect OnPageSizeChanged="@(PageSizeChanged)" PageSize="Parameters.PageSize" />
+</table>

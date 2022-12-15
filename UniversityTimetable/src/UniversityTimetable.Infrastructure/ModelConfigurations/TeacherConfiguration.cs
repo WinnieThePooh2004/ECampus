@@ -12,6 +12,7 @@ namespace UniversityTimetable.Infrastructure.ModelConfigurations
                 .HasOne(t => t.Department)
                 .WithMany(d => d.Teachers)
                 .HasForeignKey(t => t.DepartmentId)
+                .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

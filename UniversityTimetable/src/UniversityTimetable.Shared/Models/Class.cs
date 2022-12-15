@@ -1,23 +1,24 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using UniversityTimetable.Shared.General;
+﻿using UniversityTimetable.Shared.General;
+using UniversityTimetable.Shared.Interfaces.Data;
 
 namespace UniversityTimetable.Shared.Models
 {
-    public class Class : IIsDeleted
+    public class Class : IIsDeleted, IModel
     {
         public int Id { get; set; }
         public ClassType ClassType { get; set; }
         public int Number { get; set; }
-        public int DayOfTheWeek { get; set; }
+        public int DayOfWeek { get; set; }
         public bool IsDeleted { get; set; }
-        public string SubjectName { get; set; }
-        public WeekDependency WeekDependency { get; set; }
-
+        public int SubjectId { get; set; }
+        public WeekDependency WeekDependency { get; set; } = WeekDependency.None;
+        
         public int TeacherId { get; set; }
-        public Teacher Teacher { get; set; }
+        public Teacher Teacher { get; set; } = null;
         public int GroupId { get; set; }
-        public Group Group { get; set; }
+        public Group Group { get; set; } = null;
         public int AuditoryId { get; set; }
-        public Auditory Auditory { get; set; }
+        public Auditory Auditory { get; set; } = null;
+        public Subject Subject { get; set; }
     }
 }

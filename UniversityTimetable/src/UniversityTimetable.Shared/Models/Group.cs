@@ -1,8 +1,9 @@
 ﻿using UniversityTimetable.Shared.General;
+using UniversityTimetable.Shared.Interfaces.Data;
 
 namespace UniversityTimetable.Shared.Models
 {
-    public class Group : IIsDeleted
+    public class Group : IIsDeleted, IModel
     {
         public int Id { get; set; }
         public string Name { get; set; }

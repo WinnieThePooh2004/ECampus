@@ -1,8 +1,13 @@
-﻿namespace UniversityTimetable.Shared.QueryParameters
+﻿using UniversityTimetable.Shared.Extentions;
+using UniversityTimetable.Shared.Models;
+
+namespace UniversityTimetable.Shared.QueryParameters
 {
-    public class GroupParameters : QueryParameters
+    public class GroupParameters : QueryParameters, IQueryParameters<Group>
     {
-        public string GroupName { get; set; }
         public int DepartmentId { get; set; }
+
+        public IQueryable<Group> Filter(IQueryable<Group> items)
+            => items.Search(g => g.Name, SearchTerm).Where(g => DepartmentId == 0 || g.DepartmentId == DepartmentId);
     }
 }

@@ -1,0 +1,5 @@
+﻿@page "/faculties/Create"
+@inherits CreatePageBase<FacultyDTO>
+<h3>Create</h3>
+<FacultyEditForm Model="new()" OnSubmited="@(async model => await Save(model))" />
+<a role="button" class="btn-link" href="/faculties">Back</a>

@@ -1,0 +1,5 @@
+﻿@page "/Timetable/create/{Mode:int}/{Id:int}"
+
+@inherits CreatePageBase<ClassDTO>
+
+<ClassEditForm Model="CreateModel()" OnSubmited="Save" TimetableMode="(TimetableMode)Mode" />

@@ -1,0 +1,11 @@
+﻿@page "/departments/edit/{FacultyId:int}"
+@inherits EditPageBase<DepartmentDTO>
+@if(Model is null)
+{
+    <p><em>Loading...</em></p>
+    return;
+}
+
+<DepartmentEditForm Model="Model" OnSubmited="@(async model => await Save(model))" />
+
+<a role="button" class="btn-danger" href="@($"/departments/{Model.FacultacyId}")">Back</a>

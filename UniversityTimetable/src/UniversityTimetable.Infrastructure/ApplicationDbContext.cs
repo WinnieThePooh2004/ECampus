@@ -13,9 +13,11 @@ namespace UniversityTimetable.Infrastructure
         public DbSet<Auditory> Auditories { get; set; }
         public DbSet<Class> Classes { get; set; }
         public DbSet<Department> Departments { get; set; }
-        public DbSet<Facultacy> Facultacies { get; set; }
+        public DbSet<Faculty> Faculties { get; set; }
         public DbSet<Group> Groups { get; set; }
         public DbSet<Teacher> Teachers { get; set; }
+        public DbSet<Subject> Subjects { get; set; }
+        public DbSet<SubjectTeacher> SubjectTeachers { get; set; }
 
         public override int SaveChanges()
         {

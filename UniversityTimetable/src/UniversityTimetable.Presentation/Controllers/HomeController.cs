@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using UniversityTimetable.Presentation.Models;
+using UniversityTimetable.Api.Models;
 
-namespace UniversityTimetable.Presentation.Controllers
+namespace UniversityTimetable.Api.Controllers
 {
     public class HomeController : Controller
     {

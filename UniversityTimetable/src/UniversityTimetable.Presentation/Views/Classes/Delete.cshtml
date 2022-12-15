@@ -1,4 +1,4 @@
-﻿@model UniversityTimetable.Shared.Models.Class
+﻿@model ClassDTO
 
 @{
     ViewData["Title"] = "Delete";
@@ -18,40 +18,33 @@
             @Html.DisplayFor(model => model.ClassType)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsDeleted)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsDeleted)
-        </dd>
-        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.SubjectName)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.SubjectName)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Teacher)
+            @Html.DisplayNameFor(model => model.Teacher.FullName)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Teacher.Id)
+            <a asp-action="TeacherTimetable" asp-route-TeacherId="@Model.Teacher.Id">@Model.Teacher.FullName</a>
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Group)
+            Group
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Group.Id)
+            <a asp-action="GroupTimetable" asp-route-GroupId="@Model.Group.Id">@Model.Group.Name</a>
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Auditory)
+            Auditory
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Auditory.Id)
+            <a asp-action="AuditoryTimetable" asp-route-AuditoryId="@Model.Auditory.Id">@Model.Auditory.FullName</a>
         </dd>
     </dl>
     
-    <form asp-action="Delete">
+    <form asp-action="Delete" asp-route-groupId="@Model.GroupId">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <input type="submit" value="Delete" class="btn btn-danger" />
     </form>
 </div>
