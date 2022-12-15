@@ -12,6 +12,8 @@ using FluentValidation.AspNetCore;
 using FluentValidation;
 using UniversityTimetable.Api.MiddlewareFilters;
 using UniversityTimetable.Api.Extentions;
+using UniversityTimetable.Shared.Interfaces.Data;
+using UniversityTimetable.Infrastructure.DataSelectors;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,6 +33,13 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
         ?? throw new InvalidOperationException("Connection string 'ApplicationDbContext' not found.")));
 
 builder.Services.AddAutoMapper(Assembly.Load("UniversityTimetable.Domain"));
+
+builder.Services.AddDataSelector<Auditory, AuditoryParameters, AuditorySelector>();
+builder.Services.AddDataSelector<Department, DepartmentParameters, DepartmentSelector>();
+builder.Services.AddDataSelector<Faculty, FacultyParameters, FacultySelector>();
+builder.Services.AddDataSelector<Group, GroupParameters, GroupSelector>();
+builder.Services.AddDataSelector<Subject, SubjectParameters, SubjectSelector>();
+builder.Services.AddDataSelector<Teacher, TeacherParameters, TeacherSelector>();
 
 builder.Services.AddDefaultRepositoryWithDefaultService<Auditory, AuditoryDTO, AuditoryParameters>();
 builder.Services.AddDefaultRepositoryWithDefaultService<Department, DepartmentDTO, DepartmentParameters>();

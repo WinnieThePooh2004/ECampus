@@ -16,12 +16,14 @@ namespace UniversityTimetable.Infrastructure.Repositories
         private readonly ApplicationDbContext _context;
         private readonly ILogger<Repository<TModel, TParameters>> _logger;
         private readonly IBaseRepository<TModel> _baseRepository;
-
-        public Repository(ApplicationDbContext context, ILogger<Repository<TModel, TParameters>> logger, IBaseRepository<TModel> baseRepository)
+        private readonly IDataSelector<TModel, TParameters> _dataSelector;
+        public Repository(ApplicationDbContext context, ILogger<Repository<TModel, TParameters>> logger,
+            IBaseRepository<TModel> baseRepository, IDataSelector<TModel, TParameters> dataSelector)
         {
             _context = context;
             _logger = logger;
             _baseRepository = baseRepository;
+            _dataSelector = dataSelector;
         }
 
         public Task<TModel> CreateAsync(TModel entity)
@@ -35,7 +37,7 @@ namespace UniversityTimetable.Infrastructure.Repositories
 
         public async Task<ListWithPaginationData<TModel>> GetByParameters(TParameters parameters)
         {
-            var query = parameters.Filter(_context.Set<TModel>());
+            var query = _dataSelector.SelectData(_context.Set<TModel>(), parameters);
             var totalCount = await query.CountAsync();
             var pagedItems = await query
                 .OrderBy(a => a.Id)

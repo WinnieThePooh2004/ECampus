@@ -46,5 +46,12 @@ namespace UniversityTimetable.Api.Extentions
             => services.AddRepositoryWithService<TModel, TDTO, TParameters, Repository<TModel, TParameters>, Service<TDTO, TParameters, TModel>>()
             .AddScoped<IBaseService<TDTO>, BaseService<TDTO, TModel>>()
             .AddScoped<IBaseRepository<TModel>, BaseRepository<TModel>>();
+
+        public static IServiceCollection AddDataSelector<TModel, TParameters, TImplementation>(this IServiceCollection services)
+            where TModel : class, IModel
+            where TParameters : IQueryParameters<TModel>
+            where TImplementation : class, IDataSelector<TModel, TParameters>
+            => services.AddScoped<IDataSelector<TModel, TParameters>, TImplementation>();
+            
     }
 }
