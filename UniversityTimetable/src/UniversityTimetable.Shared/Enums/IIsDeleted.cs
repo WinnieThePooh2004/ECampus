@@ -1,4 +1,4 @@
-﻿namespace UniversityTimetable.Shared.General
+﻿namespace UniversityTimetable.Shared.Enums
 {
     public interface IIsDeleted
     {
