@@ -8,7 +8,7 @@ namespace UniversityTimetable.Shared.DataContainers
     /// </summary>
     public class TimetableData
     {
-        public IEnumerable<Class> Classes { get; set; }
+        public IEnumerable<Class> Classes { get; set; } = default!;
         public Auditory? Auditory { get; set; }
         public Group? Group { get; set; }
         public Teacher? Teacher { get; set; }
