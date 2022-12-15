@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore;
-using UniversityTimetable.Shared.Enums;
+using UniversityTimetable.Shared.Interfaces.Data;
 
 namespace UniversityTimetable.Shared.Extentions
 {

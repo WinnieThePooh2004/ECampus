@@ -1,5 +1,4 @@
-﻿using UniversityTimetable.Shared.Enums;
-using UniversityTimetable.Shared.Interfaces.Data;
+﻿using UniversityTimetable.Shared.Interfaces.Data;
 
 namespace UniversityTimetable.Shared.Models
 {
