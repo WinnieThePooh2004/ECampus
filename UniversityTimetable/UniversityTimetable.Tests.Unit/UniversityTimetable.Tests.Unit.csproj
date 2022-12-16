@@ -28,7 +28,6 @@
 
   <ItemGroup>
     <Folder Include="BackEnd\Domain\" />
-    <Folder Include="BackEnd\Infrastructure\" />
   </ItemGroup>
 
 </Project>
