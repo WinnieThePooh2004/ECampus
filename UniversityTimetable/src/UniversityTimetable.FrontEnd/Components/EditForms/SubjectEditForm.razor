@@ -1,41 +1,36 @@
-﻿@inherits EditForm<SubjectDTO>
+﻿@inherits ModelEditForm<SubjectDTO>
 <div class="row">
     <div class="col-md-4">
-        <form>
-            <div class="form-group">
-                <label for="@Model.Name">Name</label>
-                <br />
-                <InputText class="form-control" @bind-Value="Model.Name" />
-            </div>
-            <br />
-            <table class="table">
+        <p>
+            <label for="@Model.Name">Name</label>
+            <InputText @bind-Value="Model.Name" />
+        </p>
+        <table class="table">
+            <tr>
+                <th>
+                    First name
+                </th>
+                <th>
+                    Last name
+                </th>
+            </tr>
+            @foreach (var teacher in Model.Teachers)
+            {
                 <tr>
-                    <th>
-                        First name
-                    </th>
-                    <th>
-                        Last name
-                    </th>
+                    <td>
+                        @teacher.FirstName
+                    </td>
+                    <td>
+                        @teacher.LastName
+                    </td>
                 </tr>
-                @foreach (var teacher in Model.Teachers)
-                {
-                    <tr>
-                        <td>
-                            @teacher.FirstName
-                        </td>
-                        <td>
-                            @teacher.LastName
-                        </td>
-                    </tr>
-                }
-            </table>
-            <br /><br />
-            <MultipleItemsSelect TData="TeacherDTO" TParameters="TeacherParameters" OnAdd="OnTeacherAdd" OnDelete="OnTeacherRemove"
-                SelectTo="@Model.Teachers"
-                PropertyNames="@(new(){ "First name", "Last name" })" PropertiesToShow="@(new(){ t => t.FirstName, t => t.LastName })" />
-            <div class="form-group">
-                <div role="button" class="btn btn-primary" onclick="@(async () => await Submit())">Save</div>
-            </div>
-        </form>
+            }
+        </table>
+        <br /><br />
+        <MultipleItemsSelect TData="TeacherDTO" TParameters="TeacherParameters" OnAdd="OnTeacherAdd" OnDelete="OnTeacherRemove"
+                             SelectTo="@Model.Teachers"
+                             PropertyNames="@(new(){ "First name", "Last name" })" PropertiesToShow="@(new(){ t => t.FirstName, t => t.LastName })" />
+        <br />
+        <button type="submit">Save</button>
     </div>
 </div>

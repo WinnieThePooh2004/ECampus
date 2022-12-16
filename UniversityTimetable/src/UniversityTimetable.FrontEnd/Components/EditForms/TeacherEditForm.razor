@@ -1,17 +1,26 @@
-﻿@inherits EditForm<TeacherDTO>
+﻿@inherits ModelEditForm<TeacherDTO>
 <div class="row">
     <div class="col-md-4">
-        <form>
-            <div class="form-group">
+
+        <EditForm Model="Model" OnValidSubmit="Submit">
+            <FluentValidationValidator Validator="Validator" />
+            <ValidationSummary />
+            <p>
                 <label for="@Model.FirstName">First name</label>
-                <br />
                 <InputText class="form-control" @bind-Value="Model.FirstName" />
+            </p>
+            <p>
                 <label for="@Model.LastName">Last name</label>
-                <br />
                 <InputText class="form-control" @bind-Value="Model.LastName" />
-            </div>
-            <br />
-            <table class="table">
+            </p>
+            <p>
+                <label for="@Model.ScienceDegree">Science Degree</label>
+                <InputSelect TValue="ScienceDegree" @bind-Value="Model.ScienceDegree">
+                    <option value="@ScienceDegree.Master">Master</option>
+                    <option value="@ScienceDegree.PhD">PhD</option>
+                </InputSelect>
+            </p>
+            <table width="30%">
                 <tr>
                     <th>
                         Name
@@ -27,12 +36,10 @@
                 }
             </table>
             <br /><br />
-            <MultipleItemsSelect TData="SubjectDTO" TParameters="SubjectParameters" 
-                SelectTo="Model.Subjects" OnAdd="AddSubject" OnDelete="DeleteSubject"
-                          PropertyNames="@(new(){ "Name" })" PropertiesToShow="@(new(){ t => t.Name })" />
-            <div class="form-group">
-                <div role="button" class="btn btn-primary" onclick="@(async () => await Submit())">Save</div>
-            </div>
-        </form>
+            <MultipleItemsSelect TData="SubjectDTO" TParameters="SubjectParameters"
+                                 SelectTo="Model.Subjects" OnAdd="AddSubject" OnDelete="DeleteSubject"
+                                 PropertyNames="@(new(){ "Name" })" PropertiesToShow="@(new(){ t => t.Name })" />
+            <button type="submit" class="btn btn-success">Save</button>
+        </EditForm>
     </div>
 </div>

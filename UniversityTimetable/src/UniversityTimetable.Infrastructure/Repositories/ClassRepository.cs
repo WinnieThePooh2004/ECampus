@@ -84,32 +84,23 @@ namespace UniversityTimetable.Infrastructure.Repositories
         public async Task<List<string>> ValidateAsync(Class @class)
         {
             var errors = new List<string>();
-            var teacher = await _context.Teachers.Include(t => t.SubjectIds)
+            errors.AddRange(await ValidateTeacher(@class));
+            return errors;
+        }
+
+        private async Task<List<string>> ValidateTeacher(Class @class)
+        {
+            var errors = new List<string>();
+            var teacher = await _context.Teachers.Include(t => t.Classes).Include(t => t.SubjectIds)
                 .FirstOrDefaultAsync(t => t.Id == @class.TeacherId);
-            if(teacher is null)
+            if (teacher is null)
             {
                 errors.Add("Teacher does not exist");
-            }
-            var auditory = await _context.Auditories.Include(a => a.Classes)
-                .FirstOrDefaultAsync(a => a.Id == @class.AuditoryId);
-            if (auditory is null)
-            {
-            }
-            var subject = await _context.Subjects
-                .FirstOrDefaultAsync(t => t.Id == @class.SubjectId);
-            if (subject is null)
-            {
-                errors.Add("Subject does not exist");
-            }
-            var group = await _context.Groups.Include(g => g.Classes)
-                .FirstOrDefaultAsync(t => t.Id == @class.GroupId);
-            if (group is null)
-            {
-                errors.Add("Group does not exist");
-            }
-            if(errors.Any())
-            {
                 return errors;
+            }
+            if(!teacher.SubjectIds.Any(s => s.SubjectId == @class.SubjectId))
+            {
+                errors.Add($"Teacher {teacher.FirstName} {teacher.LastName} does not teach subject this subject");
             }
             return errors;
         }

@@ -1,4 +1,6 @@
+using FluentValidation;
 using MudBlazor.Services;
+using UniversityTimetable.Domain.Validation;
 using UniversityTimetable.FrontEnd.Extentions;
 using UniversityTimetable.FrontEnd.Requests;
 using UniversityTimetable.FrontEnd.Requests.Interfaces;
@@ -18,6 +20,14 @@ builder.Services.AddRequests<DepartmentDTO, DepartmentParameters>();
 builder.Services.AddRequests<TeacherDTO, TeacherParameters>();
 builder.Services.AddRequests<SubjectDTO, SubjectParameters>();
 builder.Services.AddRequests<AuditoryDTO, AuditoryParameters>();
+
+builder.Services.AddScoped<AbstractValidator<FacultyDTO>, FacultyDTOValidator>();
+builder.Services.AddScoped<AbstractValidator<AuditoryDTO>, AuditoryDTOValidator>();
+builder.Services.AddScoped<AbstractValidator<TeacherDTO>, TeacherDTOValidator>();
+builder.Services.AddScoped<AbstractValidator<GroupDTO>, GroupDTOValidator>();
+builder.Services.AddScoped<AbstractValidator<ClassDTO>, ClassDTOValidator>();
+builder.Services.AddScoped<AbstractValidator<SubjectDTO>, SubjectDTOValidator>();
+builder.Services.AddScoped<AbstractValidator<DepartmentDTO>, DepartmentDTOValidator>();
 
 builder.Services.AddScoped<IClassRequests, ClassRequests>();
 builder.Services.AddScoped<IBaseRequests<ClassDTO>, ClassRequests>();
