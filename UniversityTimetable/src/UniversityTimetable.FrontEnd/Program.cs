@@ -26,10 +26,10 @@ builder.Services.AddScoped<IValidator<FacultyDTO>, FacultyDTOValidator>();
 builder.Services.AddScoped<IValidator<AuditoryDTO>, AuditoryDTOValidator>();
 builder.Services.AddScoped<IValidator<TeacherDTO>, TeacherDTOValidator>();
 builder.Services.AddScoped<IValidator<GroupDTO>, GroupDTOValidator>();
-builder.Services.AddScoped<IValidator<ClassDTO>, ClassDTOValidator>();
 builder.Services.AddScoped<IValidator<SubjectDTO>, SubjectDTOValidator>();
 builder.Services.AddScoped<IValidator<DepartmentDTO>, DepartmentDTOValidator>();
 
+builder.Services.AddScoped<IValidator<ClassDTO>, ClassDTOValidator>();
 builder.Services.Decorate<IValidator<ClassDTO>, ExtendedClassDTOValidator>();
 
 builder.Services.AddScoped<IClassRequests, ClassRequests>();
