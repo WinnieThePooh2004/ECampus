@@ -1,14 +1,15 @@
 ﻿@inherits ModelEditForm<AuditoryDTO>
 <EditForm Model="Model" OnValidSubmit="Submit">
     <FluentValidationValidator Validator="Validator" />
-    <ValidationSummary />
     <p>
         <label for="@Model.Building">Building</label>
         <InputText @bind-Value="Model.Building" />
+        <ValidationMessage For="@(() => Model.Building)" />
     </p>
     <p>
         <label for="@Model.Name">Name</label>
         <InputText @bind-Value="Model.Name" />
+        <ValidationMessage For="@(() => Model.Name)" />
     </p>
     <button type="submit" class="btn btn-success">Save</button>
 </EditForm>

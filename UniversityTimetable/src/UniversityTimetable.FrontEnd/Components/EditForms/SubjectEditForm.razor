@@ -4,6 +4,7 @@
         <p>
             <label for="@Model.Name">Name</label>
             <InputText @bind-Value="Model.Name" />
+            <ValidationMessage For="@(() => Model.Name)" />
         </p>
         <table class="table">
             <tr>
