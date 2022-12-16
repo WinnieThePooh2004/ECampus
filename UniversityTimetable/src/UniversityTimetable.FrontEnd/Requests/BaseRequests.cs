@@ -7,9 +7,9 @@ namespace UniversityTimetable.FrontEnd.Requests
 {
     public class BaseRequests<TData> : IBaseRequests<TData>
     {
-        protected readonly string _controllerName;
-        protected readonly HttpClient _client;
-        protected readonly JsonSerializerOptions _options;
+        private readonly string _controllerName;
+        private readonly HttpClient _client;
+        private readonly JsonSerializerOptions _options;
         public BaseRequests(IHttpClientFactory clientFactory)
         {
             _client = clientFactory.CreateClient("UTApi");

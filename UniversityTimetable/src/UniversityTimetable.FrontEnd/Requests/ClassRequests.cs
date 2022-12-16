@@ -60,5 +60,10 @@ namespace UniversityTimetable.FrontEnd.Requests
             response.EnsureSuccessStatusCode();
             return JsonSerializer.Deserialize<ClassDTO>(await response.Content.ReadAsStringAsync(), _options);
         }
+
+        public Task<List<string>> Validate(ClassDTO model)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
