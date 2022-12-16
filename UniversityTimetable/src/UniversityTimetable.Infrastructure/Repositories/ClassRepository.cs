@@ -156,7 +156,8 @@ namespace UniversityTimetable.Infrastructure.Repositories
                 errors.Add(nameof(@class.GroupId), "Subject does not exist");
                 return errors;
             }
-            @class.Auditory = await _context.Auditories.AsNoTracking().FirstOrDefaultAsync(s => s.Id == @class.AuditoryId);
+            @class.Auditory = await _context.Auditories.AsNoTracking()
+                .Include(a => a.Classes).FirstOrDefaultAsync(s => s.Id == @class.AuditoryId);
             if (@class.Auditory is null)
             {
                 errors.Add(nameof(@class.AuditoryId), "Subject does not exist");
