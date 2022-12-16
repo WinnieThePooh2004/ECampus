@@ -12,9 +12,9 @@ namespace UniversityTimetable.FrontEnd.Components.PageModels
         /// provide it without id
         /// </summary>
         [Parameter] public string EditLink { get; set; } = null;
-        [Parameter] public List<string> TableHeaders { get; set; }
-        [Parameter] public List<Func<TData, string>> TableData { get; set; }
-        [Parameter] public List<(string, Func<TData, string>)> ActionLinks { get; set; }
+        [Parameter] public List<string> TableHeaders { get; set; } = new();
+        [Parameter] public List<Func<TData, string>> TableData { get; set; } = new();
+        [Parameter] public List<(string, Func<TData, string>)> ActionLinks { get; set; } = new(); 
 
         [Parameter] public Action<TParameters> ParameterOptions { get; set; } = opt => { };
 

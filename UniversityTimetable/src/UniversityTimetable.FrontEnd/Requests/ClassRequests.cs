@@ -20,26 +20,6 @@ namespace UniversityTimetable.FrontEnd.Requests
             return JsonSerializer.Deserialize<Timetable>(await response.Content.ReadAsStringAsync(), _options);
         }
 
-        public async Task<ClassDTO> CreateAsync(ClassDTO entity)
-        {
-            var response = await _client.PostAsJsonAsync($"/api/Timetable", entity);
-            response.EnsureSuccessStatusCode();
-            return JsonSerializer.Deserialize<ClassDTO>(await response.Content.ReadAsStringAsync(), _options);
-        }
-
-        public async Task DeleteAsync(int id)
-        {
-            var response = await _client.DeleteAsync($"/api/Timetable/{id}");
-            response.EnsureSuccessStatusCode();
-        }
-
-        public async Task<ClassDTO> GetByIdAsync(int id)
-        {
-            var response = await _client.GetAsync($"/api/Timetable/{id}");
-            response.EnsureSuccessStatusCode();
-            return JsonSerializer.Deserialize<ClassDTO>(await response.Content.ReadAsStringAsync(), _options);
-        }
-
         public async Task<Timetable> GroupTimetable(int groupId)
         {
             var response = await _client.GetAsync($"/api/Timetable/Group/{groupId}");
@@ -54,16 +34,11 @@ namespace UniversityTimetable.FrontEnd.Requests
             return JsonSerializer.Deserialize<Timetable>(await response.Content.ReadAsStringAsync(), _options);
         }
 
-        public async Task<ClassDTO> UpdateAsync(ClassDTO entity)
+        public async Task<Dictionary<string, string>> ValidateAsync(ClassDTO model)
         {
-            var response = await _client.PutAsJsonAsync($"/api/Timetable", entity);
+            var response = await _client.PutAsJsonAsync("/api/Timetable/Validate", model);
             response.EnsureSuccessStatusCode();
-            return JsonSerializer.Deserialize<ClassDTO>(await response.Content.ReadAsStringAsync(), _options);
-        }
-
-        public Task<List<string>> Validate(ClassDTO model)
-        {
-            throw new NotImplementedException();
+            return JsonSerializer.Deserialize<Dictionary<string, string>>(await response.Content.ReadAsStringAsync());
         }
     }
 }

@@ -8,7 +8,7 @@ namespace UniversityTimetable.FrontEnd.Components.EditForms
         [Parameter] public TModel Model { get; set; }
         [Parameter] public EventCallback<TModel> OnSubmited { get; set; }
 
-        [Inject] protected AbstractValidator<TModel> Validator { get; set; }
+        [Inject] protected IValidator<TModel> Validator { get; set; }
 
         protected virtual async Task Submit()
         {

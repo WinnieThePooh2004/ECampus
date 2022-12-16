@@ -12,7 +12,6 @@ using FluentValidation.AspNetCore;
 using FluentValidation;
 using UniversityTimetable.Api.MiddlewareFilters;
 using UniversityTimetable.Api.Extentions;
-using UniversityTimetable.Shared.Interfaces.Data;
 using UniversityTimetable.Infrastructure.DataSelectors;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -57,6 +56,7 @@ builder.Services.AddScoped<IService<TeacherDTO, TeacherParameters>, Service<Teac
 builder.Services.AddScoped<IRepository<Teacher, TeacherParameters>, Repository<Teacher, TeacherParameters>>();
 
 builder.Services.AddScoped<IBaseService<ClassDTO>, BaseService<ClassDTO, Class>>();
+builder.Services.Decorate<IBaseService<ClassDTO>, BaseClassService>();
 builder.Services.AddScoped<IBaseRepository<Class>, BaseRepository<Class>>();
 builder.Services.AddScoped<IClassService, ClassService>();
 builder.Services.AddScoped<IClassRepository, ClassRepository>();

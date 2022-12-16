@@ -1,7 +1,10 @@
 ﻿@inherits ModelEditForm<ClassDTO>
 <div class="row">
     <div class="col-md-4">
-        <form>
+        <EditForm Model="Model" on OnValidSubmit="Submit">
+            <button type="submit" class="btn btn-success">Save</button>
+            <FluentValidationValidator Validator="Validator" />
+            <ValidationSummary />
             <div class="form-group">
                 <label>Class type</label>
                 <br />
@@ -25,7 +28,9 @@
             </div>
             @if (TimetableMode != TimetableMode.Teacher)
             {
-                <p>Select teacher</p>
+                <p>
+                    <label for="@Model.TeacherId">Select teacher</label>
+                </p>
                 <SingleItemSelect TData="TeacherDTO" TParameters="TeacherParameters" PropertyNames="@(new(){ "First name", "Last name"})"
                               PropertiesToShow="@(new(){ t => t.FirstName, t => t.LastName })" @bind-SelectedId="Model.TeacherId" />
                 <br />
@@ -33,26 +38,28 @@
             @if (TimetableMode != TimetableMode.Auditory)
             {
 
-                <p>Select auditory</p>
+                <p>
+                    <label for="@Model.AuditoryId">Select auditory</label>
+                </p>
                 <SingleItemSelect TData="AuditoryDTO" TParameters="AuditoryParameters" PropertyNames="@(new(){ "Building", "Name" })"
                               PropertiesToShow=@(new(){ a => a.Building, a => a.Name }) @bind-SelectedId="Model.AuditoryId" />
                 <br />
             }
             @if (TimetableMode != TimetableMode.Group)
             {
-                <p>Select subject</p>
+                <p>
+                    <label for="@Model.GroupId">Select teacher</label>
+                </p>
                 <SingleItemSelect TData="GroupDTO" TParameters="GroupParameters" PropertyNames="@(new(){ "Name" })"
                               PropertiesToShow=@(new(){ s => s.Name }) @bind-SelectedId="Model.GroupId" />
                 <br />
             }
-            <p>Select subject</p>
+            <p>
+                <label for="@Model.SubjectId">Select teacher</label>
+            </p>
             <SingleItemSelect TData="SubjectDTO" TParameters="SubjectParameters" PropertyNames="@(new(){ "Name" })"
                               PropertiesToShow=@(new(){ s => s.Name }) @bind-SelectedId="Model.SubjectId" />
             <br />
-
-            <div class="form-group">
-                <div role="button" class="btn btn-primary" onclick="@(async () => await Submit())">Save</div>
-            </div>
-        </form>
+        </EditForm>
     </div>
 </div>

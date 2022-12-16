@@ -63,5 +63,11 @@ namespace UniversityTimetable.Api.Controllers
             await _service.DeleteAsync(id);
             return Ok(id);
         }
+
+        [HttpPut("Validate")]
+        public async Task<IActionResult> Validate(ClassDTO model)
+        {
+            return Ok(await _service.ValidateAsync(model));
+        }
     }
 }
