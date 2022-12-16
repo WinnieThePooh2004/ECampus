@@ -1,6 +1,6 @@
 ﻿using UniversityTimetable.Shared.DataContainers;
 using UniversityTimetable.Shared.Models;
-using FluentValidation.Results;
+
 namespace UniversityTimetable.Shared.Interfaces.Repositories
 {
     public interface IClassRepository
