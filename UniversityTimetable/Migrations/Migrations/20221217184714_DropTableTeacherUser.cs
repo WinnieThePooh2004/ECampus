@@ -5,18 +5,18 @@
 namespace Migrations.Migrations
 {
     /// <inheritdoc />
-    public partial class RenamedFacultaciesToFaculties : Migration
+    public partial class DropTableTeacherUser : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.RenameTable("Facultacies, Faculties");
+            migrationBuilder.DropTable("TeacherUser");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            
+
         }
     }
 }
