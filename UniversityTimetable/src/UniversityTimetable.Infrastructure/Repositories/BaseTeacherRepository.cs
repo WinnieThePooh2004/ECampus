@@ -11,35 +11,26 @@ namespace UniversityTimetable.Infrastructure.Repositories
     {
         private readonly ILogger<BaseTeacherRepository> _logger;
         private readonly ApplicationDbContext _context;
+        private readonly IRelationshipsRepository<Teacher, Subject, SubjectTeacher> _relationships;
+        private readonly IBaseRepository<Teacher> _baseRepository;
 
-        public BaseTeacherRepository(ILogger<BaseTeacherRepository> logger, ApplicationDbContext context)
+        public BaseTeacherRepository(ILogger<BaseTeacherRepository> logger, ApplicationDbContext context,
+            IRelationshipsRepository<Teacher, Subject, SubjectTeacher> relationships, IBaseRepository<Teacher> baseRepository)
         {
             _logger = logger;
             _context = context;
+            _relationships = relationships;
+            _baseRepository = baseRepository;
         }
 
         public async Task<Teacher> CreateAsync(Teacher entity)
         {
-            entity.SubjectIds = entity.Subjects.Select(s => new SubjectTeacher { SubjectId = s.Id }).ToList();
-            entity.Subjects = null;
-            _context.Add(entity);
-            await _context.SaveChangesAsync();
-            return entity;
+            _relationships.CreateRelationModels(entity);
+            return await _baseRepository.CreateAsync(entity);
         }
 
-        public async Task DeleteAsync(int id)
-        {
-            _context.Remove(new Teacher { Id = id });
-            _context.RemoveRange(await _context.SubjectTeachers.Where(st => st.TeacherId == id).ToListAsync());
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                _logger.LogAndThrowException(new ObjectNotFoundByIdException(typeof(Teacher), id));
-            }
-        }
+        public Task DeleteAsync(int id)
+            => _baseRepository.DeleteAsync(id);
 
         public async Task<Teacher> GetByIdAsync(int id)
         {
@@ -58,27 +49,8 @@ namespace UniversityTimetable.Infrastructure.Repositories
 
         public async Task<Teacher> UpdateAsync(Teacher entity)
         {
-            var allSubjects = await _context.SubjectTeachers
-                .Where(st => st.TeacherId == entity.Id)
-                .ToListAsync();
-
-            _context.RemoveRange(allSubjects.Where(st => !entity.Subjects.Any(s => s.Id == st.SubjectId)));
-            _context.AddRange(entity.Subjects
-                .Where(s => !allSubjects.Any(st => s.Id == st.SubjectId))
-                .Select(s => new SubjectTeacher { TeacherId = entity.Id, SubjectId = s.Id }));
-
-            entity.Subjects?.Clear();
-            entity.SubjectIds?.Clear();
-            _context.Update(entity);
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                _logger.LogAndThrowException(new ObjectNotFoundByIdException(typeof(Teacher), entity.Id));
-            }
-            return entity;
+            await _relationships.UpdateRelations(entity);
+            return await _baseRepository.UpdateAsync(entity);
         }
     }
 }

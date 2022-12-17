@@ -11,20 +11,22 @@ namespace UniversityTimetable.Infrastructure.Repositories
     {
         private readonly ILogger<BaseSubjectRepository> _logger;
         private readonly ApplicationDbContext _context;
+        private readonly IBaseRepository<Subject> _baseRepository;
+        private readonly IRelationshipsRepository<Subject, Teacher, SubjectTeacher> _relations;
 
-        public BaseSubjectRepository(ILogger<BaseSubjectRepository> logger, ApplicationDbContext context)
+        public BaseSubjectRepository(ILogger<BaseSubjectRepository> logger, ApplicationDbContext context,
+            IBaseRepository<Subject> baseRepository, IRelationshipsRepository<Subject, Teacher, SubjectTeacher> relations)
         {
             _logger = logger;
             _context = context;
+            _baseRepository = baseRepository;
+            _relations = relations;
         }
 
         public async Task<Subject> CreateAsync(Subject entity)
         {
-            entity.TeacherIds = entity.Teachers.Select(t => new SubjectTeacher { TeacherId = t.Id }).ToList();
-            entity.Teachers = null;
-            _context.Add(entity);
-            await _context.SaveChangesAsync();
-            return entity;
+            _relations.CreateRelationModels(entity);
+            return await _baseRepository.CreateAsync(entity);
         }
 
         public async Task DeleteAsync(int id)
@@ -57,27 +59,8 @@ namespace UniversityTimetable.Infrastructure.Repositories
 
         public async Task<Subject> UpdateAsync(Subject entity)
         {
-            var allTeachers = await _context.SubjectTeachers
-                .Where(st => st.SubjectId == entity.Id)
-                .ToListAsync();
-
-            _context.RemoveRange(allTeachers.Where(st => !entity.Teachers.Any(t => t.Id == st.TeacherId)));
-            _context.AddRange(entity.Teachers
-                .Where(s => !allTeachers.Any(st => s.Id == st.TeacherId))
-                .Select(s => new SubjectTeacher { SubjectId = entity.Id, TeacherId = s.Id }));
-
-            entity.Teachers?.Clear();
-            entity.TeacherIds?.Clear();
-            _context.Update(entity);
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                _logger.LogAndThrowException(new ObjectNotFoundByIdException(typeof(Subject), entity.Id));
-            }
-            return entity;
+            await _relations.UpdateRelations(entity);
+            return await _baseRepository.UpdateAsync(entity);
         }
     }
 }

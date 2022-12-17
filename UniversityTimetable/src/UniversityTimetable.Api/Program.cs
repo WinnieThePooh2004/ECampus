@@ -45,15 +45,19 @@ builder.Services.AddDefaultRepositoryWithDefaultService<Department, DepartmentDT
 builder.Services.AddDefaultRepositoryWithDefaultService<Faculty, FacultyDTO, FacultyParameters>();
 builder.Services.AddDefaultRepositoryWithDefaultService<Group, GroupDTO, GroupParameters>();
 
-builder.Services.AddScoped<IBaseRepository<Subject>, BaseSubjectRepository>();
+builder.Services.AddScoped<IBaseRepository<Subject>, BaseRepository<Subject>>();
 builder.Services.AddScoped<IBaseService<SubjectDTO>, BaseService<SubjectDTO, Subject>>();
 builder.Services.AddScoped<IService<SubjectDTO, SubjectParameters>, Service<SubjectDTO, SubjectParameters, Subject>>();
 builder.Services.AddScoped<IRepository<Subject, SubjectParameters>, Repository<Subject, SubjectParameters>>();
+builder.Services.AddScoped<IRelationshipsRepository<Subject, Teacher, SubjectTeacher>, RelationshipsRepository<Subject, Teacher, SubjectTeacher>>();
+builder.Services.Decorate<IBaseRepository<Subject>, BaseSubjectRepository>();
 
-builder.Services.AddScoped<IBaseRepository<Teacher>, BaseTeacherRepository>();
+builder.Services.AddScoped<IBaseRepository<Teacher>, BaseRepository<Teacher>>();
 builder.Services.AddScoped<IBaseService<TeacherDTO>, BaseService<TeacherDTO, Teacher>>();
 builder.Services.AddScoped<IService<TeacherDTO, TeacherParameters>, Service<TeacherDTO, TeacherParameters, Teacher>>();
 builder.Services.AddScoped<IRepository<Teacher, TeacherParameters>, Repository<Teacher, TeacherParameters>>();
+builder.Services.AddScoped<IRelationshipsRepository<Teacher, Subject, SubjectTeacher>, RelationshipsRepository<Teacher, Subject, SubjectTeacher>>();
+builder.Services.Decorate<IBaseRepository<Teacher>, BaseTeacherRepository>();
 
 builder.Services.AddScoped<IBaseService<ClassDTO>, BaseService<ClassDTO, Class>>();
 builder.Services.Decorate<IBaseService<ClassDTO>, BaseClassService>();
