@@ -19,9 +19,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{BF044F28
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniversityTimetable.Tests.Shared", "tests\UniversityTimetable.Tests.Shared\UniversityTimetable.Tests.Shared.csproj", "{693D7204-7790-404F-B589-612E0239D19B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniversityTimetable.Tests.Unit", "UniversityTimetable.Tests.Unit\UniversityTimetable.Tests.Unit.csproj", "{14612C61-126B-4A60-8456-0225D021E85C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniversityTimetable.Tests.Unit", "tests\UniversityTimetable.Tests.Unit\UniversityTimetable.Tests.Unit.csproj", "{14612C61-126B-4A60-8456-0225D021E85C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniversityTimetable.Tests.Integration", "UniversityTimetable.Tests.Integration\UniversityTimetable.Tests.Integration.csproj", "{99301C1C-C5CE-4B13-97D5-706250C6506C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniversityTimetable.Tests.Integration", "tests\UniversityTimetable.Tests.Integration\UniversityTimetable.Tests.Integration.csproj", "{99301C1C-C5CE-4B13-97D5-706250C6506C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
