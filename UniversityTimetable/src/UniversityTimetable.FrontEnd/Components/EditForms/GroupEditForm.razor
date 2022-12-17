@@ -1,15 +1,11 @@
-﻿@inherits EditForm<GroupDTO>
-<div class="row">
-    <div class="col-md-4">
-        <form>
-            <div class="form-group">
-                <label for="@Model.Name">Name</label>
-                <InputText @bind-Value="Model.Name" />
-            </div>
-            <br />
-            <div class="form-group">
-                <div role="button" class="btn btn-primary" onclick="@(async () => await Submit())">Save</div>
-            </div>
-        </form>
-    </div>
-</div>
+﻿@inherits ModelEditForm<GroupDTO>
+<EditForm Model="Model" OnValidSubmit="Submit">
+    <FluentValidationValidator Validator="Validator" />
+    <ValidationSummary />
+    <p>
+        <label>Name</label>
+        <InputText @bind-Value="Model.Name" />
+        <ValidationMessage For="@(() => Model.Name)" />
+    </p>
+    <button type="submit" class="btn btn-success">Save</button>
+</EditForm>

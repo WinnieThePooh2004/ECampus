@@ -1,8 +1,11 @@
+using FluentValidation;
 using MudBlazor.Services;
+using UniversityTimetable.Domain.Validation;
 using UniversityTimetable.FrontEnd.Extentions;
 using UniversityTimetable.FrontEnd.Requests;
 using UniversityTimetable.FrontEnd.Requests.Interfaces;
 using UniversityTimetable.FrontEnd.Requests.Options;
+using UniversityTimetable.FrontEnd.Validation;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,8 +22,18 @@ builder.Services.AddRequests<TeacherDTO, TeacherParameters>();
 builder.Services.AddRequests<SubjectDTO, SubjectParameters>();
 builder.Services.AddRequests<AuditoryDTO, AuditoryParameters>();
 
+builder.Services.AddScoped<IValidator<FacultyDTO>, FacultyDTOValidator>();
+builder.Services.AddScoped<IValidator<AuditoryDTO>, AuditoryDTOValidator>();
+builder.Services.AddScoped<IValidator<TeacherDTO>, TeacherDTOValidator>();
+builder.Services.AddScoped<IValidator<GroupDTO>, GroupDTOValidator>();
+builder.Services.AddScoped<IValidator<SubjectDTO>, SubjectDTOValidator>();
+builder.Services.AddScoped<IValidator<DepartmentDTO>, DepartmentDTOValidator>();
+
+builder.Services.AddScoped<IValidator<ClassDTO>, ClassDTOValidator>();
+builder.Services.Decorate<IValidator<ClassDTO>, ExtendedClassDTOValidator>();
+
 builder.Services.AddScoped<IClassRequests, ClassRequests>();
-builder.Services.AddScoped<IBaseRequests<ClassDTO>, ClassRequests>();
+builder.Services.AddScoped<IBaseRequests<ClassDTO>, BaseRequests<ClassDTO>>();
 
 builder.Services.AddMudServices();
 

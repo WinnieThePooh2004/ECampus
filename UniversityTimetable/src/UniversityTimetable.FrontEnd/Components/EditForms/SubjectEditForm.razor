@@ -1,13 +1,13 @@
-﻿@inherits EditForm<SubjectDTO>
-<div class="row">
-    <div class="col-md-4">
-        <form>
-            <div class="form-group">
+﻿@inherits ModelEditForm<SubjectDTO>
+<EditForm Model="Model" OnValidSubmit="Submit">
+    <FluentValidationValidator Validator="Validator" />
+    <div class="row">
+        <div class="col-md-4">
+            <p>
                 <label for="@Model.Name">Name</label>
-                <br />
-                <InputText class="form-control" @bind-Value="Model.Name" />
-            </div>
-            <br />
+                <InputText @bind-Value="Model.Name" />
+                <ValidationMessage For="@(() => Model.Name)" />
+            </p>
             <table class="table">
                 <tr>
                     <th>
@@ -31,11 +31,10 @@
             </table>
             <br /><br />
             <MultipleItemsSelect TData="TeacherDTO" TParameters="TeacherParameters" OnAdd="OnTeacherAdd" OnDelete="OnTeacherRemove"
-                SelectTo="@Model.Teachers"
-                PropertyNames="@(new(){ "First name", "Last name" })" PropertiesToShow="@(new(){ t => t.FirstName, t => t.LastName })" />
-            <div class="form-group">
-                <div role="button" class="btn btn-primary" onclick="@(async () => await Submit())">Save</div>
-            </div>
-        </form>
+                                 SelectTo="@Model.Teachers"
+                                 PropertyNames="@(new(){ "First name", "Last name" })" PropertiesToShow="@(new(){ t => t.FirstName, t => t.LastName })" />
+            <br />
+            <button type="submit" class="btn btn-success">Save</button>
+        </div>
     </div>
-</div>
+</EditForm>

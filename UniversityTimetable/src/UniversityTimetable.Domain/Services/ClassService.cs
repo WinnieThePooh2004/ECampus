@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentValidation.Results;
 using Microsoft.Extensions.Logging;
 using UniversityTimetable.Shared.DataContainers;
 using UniversityTimetable.Shared.DataTransferObjects;
@@ -65,7 +66,7 @@ namespace UniversityTimetable.Domain.Services
         public Task<ClassDTO> UpdateAsync(ClassDTO entity) 
             => _baseService.UpdateAsync(entity);
 
-        public Task<List<string>> ValidateAsync(ClassDTO @class)
+        public Task<Dictionary<string, string>> ValidateAsync(ClassDTO @class)
         {
             return _repository.ValidateAsync(_mapper.Map<Class>(@class));
         }

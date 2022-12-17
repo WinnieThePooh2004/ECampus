@@ -10,6 +10,7 @@ namespace UniversityTimetable.Infrastructure
         {
 
         }
+
         public DbSet<Auditory> Auditories { get; set; }
         public DbSet<Class> Classes { get; set; }
         public DbSet<Department> Departments { get; set; }
@@ -18,6 +19,7 @@ namespace UniversityTimetable.Infrastructure
         public DbSet<Teacher> Teachers { get; set; }
         public DbSet<Subject> Subjects { get; set; }
         public DbSet<SubjectTeacher> SubjectTeachers { get; set; }
+        public DbSet<User> Users { get; set; }
 
         public override int SaveChanges()
         {

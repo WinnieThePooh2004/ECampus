@@ -1,5 +1,5 @@
 ﻿using UniversityTimetable.Shared.DataTransferObjects;
-using UniversityTimetable.Shared.General;
+using UniversityTimetable.Shared.Enums;
 #nullable enable
 
 namespace UniversityTimetable.Shared.DataContainers

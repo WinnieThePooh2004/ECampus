@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 
-namespace UniversityTimetable.FrontEnd.Components.EditForms.Classes
+namespace UniversityTimetable.FrontEnd.Components.EditForms
 {
     public partial class ClassEditForm
     {

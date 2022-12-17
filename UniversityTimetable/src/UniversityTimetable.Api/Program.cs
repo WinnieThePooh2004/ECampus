@@ -12,6 +12,7 @@ using FluentValidation.AspNetCore;
 using FluentValidation;
 using UniversityTimetable.Api.MiddlewareFilters;
 using UniversityTimetable.Api.Extentions;
+using UniversityTimetable.Infrastructure.DataSelectors;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,22 +33,34 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddAutoMapper(Assembly.Load("UniversityTimetable.Domain"));
 
+builder.Services.AddDataSelector<Auditory, AuditoryParameters, AuditorySelector>();
+builder.Services.AddDataSelector<Department, DepartmentParameters, DepartmentSelector>();
+builder.Services.AddDataSelector<Faculty, FacultyParameters, FacultySelector>();
+builder.Services.AddDataSelector<Group, GroupParameters, GroupSelector>();
+builder.Services.AddDataSelector<Subject, SubjectParameters, SubjectSelector>();
+builder.Services.AddDataSelector<Teacher, TeacherParameters, TeacherSelector>();
+
 builder.Services.AddDefaultRepositoryWithDefaultService<Auditory, AuditoryDTO, AuditoryParameters>();
 builder.Services.AddDefaultRepositoryWithDefaultService<Department, DepartmentDTO, DepartmentParameters>();
 builder.Services.AddDefaultRepositoryWithDefaultService<Faculty, FacultyDTO, FacultyParameters>();
 builder.Services.AddDefaultRepositoryWithDefaultService<Group, GroupDTO, GroupParameters>();
 
-builder.Services.AddScoped<IBaseRepository<Subject>, BaseSubjectRepository>();
+builder.Services.AddScoped<IBaseRepository<Subject>, BaseRepository<Subject>>();
 builder.Services.AddScoped<IBaseService<SubjectDTO>, BaseService<SubjectDTO, Subject>>();
 builder.Services.AddScoped<IService<SubjectDTO, SubjectParameters>, Service<SubjectDTO, SubjectParameters, Subject>>();
 builder.Services.AddScoped<IRepository<Subject, SubjectParameters>, Repository<Subject, SubjectParameters>>();
+builder.Services.AddScoped<IRelationshipsRepository<Subject, Teacher, SubjectTeacher>, RelationshipsRepository<Subject, Teacher, SubjectTeacher>>();
+builder.Services.Decorate<IBaseRepository<Subject>, BaseSubjectRepository>();
 
-builder.Services.AddScoped<IBaseRepository<Teacher>, BaseTeacherRepository>();
+builder.Services.AddScoped<IBaseRepository<Teacher>, BaseRepository<Teacher>>();
 builder.Services.AddScoped<IBaseService<TeacherDTO>, BaseService<TeacherDTO, Teacher>>();
 builder.Services.AddScoped<IService<TeacherDTO, TeacherParameters>, Service<TeacherDTO, TeacherParameters, Teacher>>();
 builder.Services.AddScoped<IRepository<Teacher, TeacherParameters>, Repository<Teacher, TeacherParameters>>();
+builder.Services.AddScoped<IRelationshipsRepository<Teacher, Subject, SubjectTeacher>, RelationshipsRepository<Teacher, Subject, SubjectTeacher>>();
+builder.Services.Decorate<IBaseRepository<Teacher>, BaseTeacherRepository>();
 
 builder.Services.AddScoped<IBaseService<ClassDTO>, BaseService<ClassDTO, Class>>();
+builder.Services.Decorate<IBaseService<ClassDTO>, BaseClassService>();
 builder.Services.AddScoped<IBaseRepository<Class>, BaseRepository<Class>>();
 builder.Services.AddScoped<IClassService, ClassService>();
 builder.Services.AddScoped<IClassRepository, ClassRepository>();

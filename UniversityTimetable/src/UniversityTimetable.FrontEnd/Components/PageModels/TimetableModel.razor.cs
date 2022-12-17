@@ -14,11 +14,11 @@ namespace UniversityTimetable.FrontEnd.Components.PageModels
         /// provide it without id
         /// </summary>
         [Parameter] public string EditLink { get; set; }
-        [Parameter] public Func<IClassRequests, Task<UniversityTimetable.Shared.DataContainers.Timetable>> RefreshData { get; set; }
+        [Parameter] public Func<IClassRequests, Task<Timetable>> RefreshData { get; set; }
 
         [Inject] private IClassRequests Requests { get; set; }
-
-        private UniversityTimetable.Shared.DataContainers.Timetable _timetable;
+        [Inject] private IBaseRequests<ClassDTO> BaseRequests { get; set; }
+        private Timetable _timetable;
 
         protected override Task OnInitializedAsync()
         {
@@ -31,7 +31,7 @@ namespace UniversityTimetable.FrontEnd.Components.PageModels
             {
                 return;
             }
-            await Requests.DeleteAsync((int)id);
+            await BaseRequests.DeleteAsync((int)id);
             await Refresh();
         }
 

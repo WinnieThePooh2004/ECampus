@@ -1,7 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
-using UniversityTimetable.Shared.Interfaces.Data;
-using UniversityTimetable.Shared.QueryParameters;
+﻿using System.Linq.Expressions;
 
 namespace UniversityTimetable.Shared.Extentions
 {
@@ -31,10 +28,5 @@ namespace UniversityTimetable.Shared.Extentions
 
             return source.Provider.CreateQuery<T>(methodCallExpression);
         }
-
-        public static IQueryable<T> Filter<T, TParams>(this IQueryable<T> sourse, TParams parameters)
-            where T : class, IModel
-            where TParams : IQueryParameters<T>
-            => parameters.Filter(sourse);
     }
 }

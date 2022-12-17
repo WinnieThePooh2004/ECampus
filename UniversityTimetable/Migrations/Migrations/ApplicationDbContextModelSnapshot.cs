@@ -248,6 +248,33 @@ namespace Migrations.Migrations
                     b.ToTable("Teachers");
                 });
 
+            modelBuilder.Entity("UniversityTimetable.Shared.Models.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Password")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Role")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Username")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id", "Email");
+
+                    b.HasAlternateKey("Email");
+
+                    b.ToTable("Users");
+                });
+
             modelBuilder.Entity("SubjectTeacher", b =>
                 {
                     b.HasOne("UniversityTimetable.Shared.Models.Subject", null)

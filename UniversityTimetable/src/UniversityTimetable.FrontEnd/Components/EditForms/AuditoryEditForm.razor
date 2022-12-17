@@ -1,19 +1,15 @@
-﻿@inherits EditForm<AuditoryDTO>
-<div class="row">
-    <div class="col-md-4">
-        <form>
-            <div class="form-group">
-                <label for="@Model.Name">Name</label>
-                <InputText @bind-Value="Model.Name" />
-            </div>
-            <div class="form-group">
-                <label for="@Model.Building">Building</label>
-                <InputText @bind-Value="Model.Building" />
-            </div>
-            <br />
-            <div class="form-group">
-                <div role="button" class="btn btn-primary" onclick="@(async () => await Submit())">Save</div>
-            </div>
-        </form>
-    </div>
-</div>
+﻿@inherits ModelEditForm<AuditoryDTO>
+<EditForm Model="Model" OnValidSubmit="Submit">
+    <FluentValidationValidator Validator="Validator" />
+    <p>
+        <label for="@Model.Building">Building</label>
+        <InputText @bind-Value="Model.Building" />
+        <ValidationMessage For="@(() => Model.Building)" />
+    </p>
+    <p>
+        <label for="@Model.Name">Name</label>
+        <InputText @bind-Value="Model.Name" />
+        <ValidationMessage For="@(() => Model.Name)" />
+    </p>
+    <button type="submit" class="btn btn-success">Save</button>
+</EditForm>

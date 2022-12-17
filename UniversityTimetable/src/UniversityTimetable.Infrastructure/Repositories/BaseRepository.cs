@@ -14,6 +14,7 @@ namespace UniversityTimetable.Infrastructure.Repositories
         private readonly ApplicationDbContext _context;
         private readonly ILogger<BaseRepository<TModel>> _logger;
 
+
         public BaseRepository(ApplicationDbContext context, ILogger<BaseRepository<TModel>> logger)
         {
             _context = context;

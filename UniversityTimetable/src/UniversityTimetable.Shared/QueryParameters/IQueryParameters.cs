@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using UniversityTimetable.Shared.Interfaces.Data;
+﻿using UniversityTimetable.Shared.Interfaces.Data;
 
 namespace UniversityTimetable.Shared.QueryParameters
 {
@@ -13,6 +12,5 @@ namespace UniversityTimetable.Shared.QueryParameters
     public interface IQueryParameters<T> : IQueryParameters
         where T : class, IModel
     {
-        IQueryable<T> Filter(IQueryable<T> items);
     }
 }

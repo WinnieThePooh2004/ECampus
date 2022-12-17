@@ -1,4 +1,5 @@
-﻿using UniversityTimetable.Shared.DataContainers;
+﻿using FluentValidation.Results;
+using UniversityTimetable.Shared.DataContainers;
 using UniversityTimetable.Shared.DataTransferObjects;
 
 namespace UniversityTimetable.Shared.Interfaces.Services
@@ -8,6 +9,6 @@ namespace UniversityTimetable.Shared.Interfaces.Services
         Task<Timetable> GetTimetableForGroupAsync(int groupId);
         Task<Timetable> GetTimetableForTeacherAsync(int teacherId);
         Task<Timetable> GetTimetableForAuditoryAsync(int auditoryId);
-        Task<List<string>> ValidateAsync(ClassDTO @class);
+        Task<Dictionary<string, string>> ValidateAsync(ClassDTO @class);
     }
 }

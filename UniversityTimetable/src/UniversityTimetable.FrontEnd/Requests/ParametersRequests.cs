@@ -4,13 +4,19 @@ using UniversityTimetable.Shared.Extentions;
 
 namespace UniversityTimetable.FrontEnd.Requests
 {
-    public class Requests<TData, TParameters> : BaseRequests<TData>, IRequests<TData, TParameters>
+    public class ParametersRequests<TData, TParameters> : IParametersIRequests<TData, TParameters>
         where TData : class
         where TParameters : IQueryParameters
     {
-        public Requests(IHttpClientFactory clientFactory) : base(clientFactory)
-        {
+        private readonly string _controllerName;
+        private readonly HttpClient _client;
+        private readonly JsonSerializerOptions _options;
 
+        public ParametersRequests(IHttpClientFactory clientFactory)
+        {
+            _client = clientFactory.CreateClient("UTApi");
+            _options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            _controllerName = Options.Requests.ControllerNames[typeof(TData)];
         }
 
         public async Task<ListWithPaginationData<TData>> GetByParametersAsync(TParameters parameters)

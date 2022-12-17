@@ -26,9 +26,4 @@
     <ProjectReference Include="..\tests\UniversityTimetable.Tests.Shared\UniversityTimetable.Tests.Shared.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="BackEnd\Domain\" />
-    <Folder Include="BackEnd\Infrastructure\" />
-  </ItemGroup>
-
 </Project>
