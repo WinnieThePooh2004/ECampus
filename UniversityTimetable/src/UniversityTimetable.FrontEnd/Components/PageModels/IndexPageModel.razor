@@ -45,10 +45,10 @@
                     @foreach(var link in ActionLinks)
                     {
                         <a role="button" href="@link.Item2(item)" class="btn btn-info">@link.Item1</a>
-                        <text> | </text>
                     }
                     @if (_isAdmin)
                     {
+                        <text> | </text>
                         <a role="button" class="btn btn-danger" onclick="@(() => Delete(item.Id))">Delete</a>
                     }
                 </td>
