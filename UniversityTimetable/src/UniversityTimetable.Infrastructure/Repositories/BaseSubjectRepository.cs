@@ -4,6 +4,7 @@ using UniversityTimetable.Shared.Exceptions.InfrastructureExceptions;
 using UniversityTimetable.Shared.Extentions;
 using UniversityTimetable.Shared.Interfaces.Repositories;
 using UniversityTimetable.Shared.Models;
+using UniversityTimetable.Shared.Models.RelationModels;
 
 namespace UniversityTimetable.Infrastructure.Repositories
 {

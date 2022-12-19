@@ -1,15 +1,13 @@
-﻿using UniversityTimetable.Shared.Interfaces.Data;
+﻿using System.Linq.Expressions;
+using UniversityTimetable.Shared.Interfaces.Data;
 
 namespace UniversityTimetable.Shared.Interfaces.ModelsRelationships
 {
-    public interface IRelationModel<TRightTable, TLeftTable> : IModel
-        where TRightTable : class, IModel, new()
-        where TLeftTable : class, IModel, new()
+    public interface IRelationModel<TLeftTable, TRightTable> : IModel
+        where TLeftTable: class, IModel
+        where  TRightTable: class, IModel
     {
-        public int RightTableId { get; set; }
-        public int LeftTableId { get; set; }
-
-        public TRightTable RightTableObject { get; set; }
-        public TLeftTable LeftTableObject { get; set; }
+        int RightTableId { get; set; }
+        int LeftTableId { get; set; }
     }
 }

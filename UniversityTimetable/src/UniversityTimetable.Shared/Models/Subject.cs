@@ -1,10 +1,11 @@
 ﻿using System.Linq.Expressions;
 using UniversityTimetable.Shared.Interfaces.Data;
 using UniversityTimetable.Shared.Interfaces.ModelsRelationships;
+using UniversityTimetable.Shared.Models.RelationModels;
 
 namespace UniversityTimetable.Shared.Models
 {
-    public class Subject : IIsDeleted, IModel, IModelWithRelations<SubjectTeacher>, IModelWithRelations<Teacher>
+    public class Subject : IIsDeleted, IModel, IModelWithManyToManyRelations<Teacher>, IModelWithOneToManyRelations<SubjectTeacher>
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -13,16 +14,15 @@ namespace UniversityTimetable.Shared.Models
         public List<SubjectTeacher> TeacherIds { get; set; }
         public List<Teacher> Teachers { get; set; }
 
-        Expression<Func<Teacher, bool>> IModelWithRelations<Teacher>.IsRelated => subject => false;
-        Expression<Func<SubjectTeacher, bool>> IModelWithRelations<SubjectTeacher>.IsRelated => st => st.SubjectId == Id;
+        Expression<Func<SubjectTeacher, bool>> IModelWithOneToManyRelations<SubjectTeacher>.IsRelated => st => st.SubjectId == Id;
 
-        List<Teacher> IModelWithRelations<Teacher>.Relationships
+        List<Teacher> IModelWithManyToManyRelations<Teacher>.RelatedModels
         {
             get => Teachers;
             set => Teachers = value;
         }
 
-        List<SubjectTeacher> IModelWithRelations<SubjectTeacher>.Relationships
+        List<SubjectTeacher> IModelWithOneToManyRelations<SubjectTeacher>.RelatedModels
         {
             get => TeacherIds;
             set => TeacherIds = value;

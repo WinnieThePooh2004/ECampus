@@ -1,4 +1,5 @@
 using FluentValidation;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using MudBlazor.Services;
 using UniversityTimetable.Domain.Validation;
 using UniversityTimetable.FrontEnd.Extentions;
@@ -36,6 +37,17 @@ builder.Services.AddScoped<IClassRequests, ClassRequests>();
 builder.Services.AddScoped<IBaseRequests<ClassDTO>, BaseRequests<ClassDTO>>();
 
 builder.Services.AddMudServices();
+builder.Services.Configure<CookiePolicyOptions>(options =>
+{
+    options.CheckConsentNeeded = context => true;
+    options.MinimumSameSitePolicy = SameSiteMode.None;
+});
+builder.Services.AddAuthentication(opt =>
+{
+    opt.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    opt.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    opt.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+}).AddCookie();
 
 builder.Services.AddHttpClient("UTApi", client =>
 {
@@ -57,7 +69,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
 

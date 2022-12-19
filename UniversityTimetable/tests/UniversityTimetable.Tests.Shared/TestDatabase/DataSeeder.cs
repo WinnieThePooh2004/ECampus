@@ -1,6 +1,7 @@
 ﻿using System.Collections.Immutable;
 using UniversityTimetable.Infrastructure;
 using UniversityTimetable.Shared.Models;
+using UniversityTimetable.Shared.Models.RelationModels;
 
 namespace UniversityTimetable.Tests.Shared.TestDatabase
 {

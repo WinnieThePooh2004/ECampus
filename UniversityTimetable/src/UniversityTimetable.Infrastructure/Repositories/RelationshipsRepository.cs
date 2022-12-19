@@ -11,7 +11,7 @@ namespace UniversityTimetable.Infrastructure.Repositories
 {
     public class RelationshipsRepository<TRightTable, TLeftTable, TRelations>
         : IRelationshipsRepository<TRightTable, TLeftTable, TRelations>
-        where TRightTable : class, IModel, IModelWithRelations<TLeftTable>, IModelWithRelations<TRelations>, new()
+        where TRightTable : class, IModel, IModelWithManyToManyRelations<TLeftTable>, IModelWithOneToManyRelations<TRelations>, new()
         where TLeftTable : class, IModel, new()
         where TRelations : class, IRelationModel<TRightTable, TLeftTable>, new()
     {
@@ -26,30 +26,31 @@ namespace UniversityTimetable.Infrastructure.Repositories
 
         public void CreateRelationModels(TRightTable model)
         {
-            ((IModelWithRelations<TRelations>)model).Relationships = ((IModelWithRelations<TLeftTable>)model).Relationships
+            ((IModelWithOneToManyRelations<TRelations>)model).RelatedModels = ((IModelWithManyToManyRelations<TLeftTable>)model).RelatedModels
                 .Select(r => new TRelations { LeftTableId = r.Id }).ToList();
-            ((IModelWithRelations<TRelations>)model).Relationships = null;
+            ((IModelWithManyToManyRelations<TRelations>)model).RelatedModels = null;
         }
 
         public void UpdateLoadedRelations(TRightTable model)
         {
-            var modelAsRelatedToTRelations = (IModelWithRelations<TRelations>)model;
-            var modelRelations = modelAsRelatedToTRelations.Relationships;
+            var modelAsRelatedToTRelations = (IModelWithOneToManyRelations<TRelations>)model;
+            var modelRelations = modelAsRelatedToTRelations.RelatedModels;
 
-            var modelAsRelatedToLeftTable = (IModelWithRelations<TLeftTable>)model;
-            _context.RemoveRange(modelRelations.Where(st => !modelAsRelatedToLeftTable.Relationships.Any(s => s.Id == st.LeftTableId)));
-            _context.AddRange(modelAsRelatedToLeftTable.Relationships
+            var modelAsRelatedToLeftTable = (IModelWithManyToManyRelations<TLeftTable>)model;
+            _context.RemoveRange(modelRelations.Where(st => 
+                !modelAsRelatedToLeftTable.RelatedModels.Any(s => s.Id == st.LeftTableId)));
+            _context.AddRange(modelAsRelatedToLeftTable.RelatedModels
                 .Where(s => !modelRelations.Any(st => s.Id == st.LeftTableId))
                 .Select(s => new TRelations { RightTableId = model.Id, LeftTableId = s.Id }));
 
-            modelAsRelatedToLeftTable.Relationships = null;
-            ((IModelWithRelations<TRelations>)model).Relationships = null;
+            modelAsRelatedToLeftTable.RelatedModels = null;
+            ((IModelWithOneToManyRelations<TRelations>)model).RelatedModels = null;
         }
 
         public async Task UpdateRelations(TRightTable model)
         {
-            (model as IModelWithRelations<TRelations>).Relationships =
-                await _context.Set<TRelations>().Where((model as IModelWithRelations<TRelations>).IsRelated).ToListAsync();
+            (model as IModelWithOneToManyRelations<TRelations>).RelatedModels =
+                await _context.Set<TRelations>().Where((model as IModelWithOneToManyRelations<TRelations>).IsRelated).ToListAsync();
             UpdateLoadedRelations(model);
         }
     }

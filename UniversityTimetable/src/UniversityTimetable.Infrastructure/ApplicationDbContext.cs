@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using UniversityTimetable.Shared.Extentions;
 using UniversityTimetable.Shared.Models;
+using UniversityTimetable.Shared.Models.RelationModels;
 
 namespace UniversityTimetable.Infrastructure
 {
@@ -20,6 +21,9 @@ namespace UniversityTimetable.Infrastructure
         public DbSet<Subject> Subjects { get; set; }
         public DbSet<SubjectTeacher> SubjectTeachers { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<UserAuditory> UserAuditories { get; set; }
+        public DbSet<UserGroup> UserGroups { get; set; }
+        public DbSet<UserTeacher> UserTeachers { get; set; }
 
         public override int SaveChanges()
         {
