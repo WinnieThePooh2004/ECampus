@@ -10,9 +10,13 @@ using UniversityTimetable.Shared.Models;
 using UniversityTimetable.Shared.QueryParameters;
 using FluentValidation.AspNetCore;
 using FluentValidation;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using UniversityTimetable.Api.MiddlewareFilters;
 using UniversityTimetable.Api.Extentions;
+using UniversityTimetable.Domain.Authorization;
+using UniversityTimetable.Infrastructure.Auth;
 using UniversityTimetable.Infrastructure.DataSelectors;
+using UniversityTimetable.Shared.Interfaces.Authorization;
 using UniversityTimetable.Shared.Models.RelationModels;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -60,10 +64,18 @@ builder.Services.AddScoped<IBaseRepository<Class>, BaseRepository<Class>>();
 builder.Services.AddScoped<IClassService, ClassService>();
 builder.Services.AddScoped<IClassRepository, ClassRepository>();
 
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
+builder.Services.AddAuthentication(opt =>
+{
+    opt.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    opt.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    opt.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+}).AddCookie();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -73,6 +85,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCookiePolicy(new CookiePolicyOptions{ MinimumSameSitePolicy = SameSiteMode.Strict });
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

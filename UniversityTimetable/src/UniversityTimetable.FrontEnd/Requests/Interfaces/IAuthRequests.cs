@@ -1,7 +1,7 @@
 ﻿namespace UniversityTimetable.FrontEnd.Requests.Interfaces;
 
-public interface IAuthInterface
+public interface IAuthRequests
 {
     Task<UserDTO> LoginAsync(LoginDTO login);
-    Task Logout();
+    Task LogoutAsync();
 }

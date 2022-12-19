@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using UniversityTimetable.Shared.DataTransferObjects;
+using UniversityTimetable.Shared.Enums;
 using UniversityTimetable.Shared.QueryParameters;
 using UniversityTimetable.Shared.Interfaces.Services;
 
@@ -15,24 +18,20 @@ namespace UniversityTimetable.Api.Controllers
             _service = service;
         }
 
-        // GET: Facultacies
         [HttpGet]
         public async Task<IActionResult> Get([FromQuery] FacultyParameters parameters)
         {
             return Ok(await _service.GetByParametersAsync(parameters));
         }
 
-        // GET: Facultacies/Details/5
-        [HttpGet("{id}")]
+        [HttpGet("{id:int?}")]
         public async Task<IActionResult> Get(int? id)
         {
             return Ok(await _service.GetByIdAsync(id));
         }
 
-        // POST: Facultacies/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = nameof(UserRole.Admin))]
         public async Task<IActionResult> Post([Bind("Name")] FacultyDTO facultacy)
         {
             if (!ModelState.IsValid)
@@ -43,22 +42,19 @@ namespace UniversityTimetable.Api.Controllers
             return Ok(facultacy);
         }
 
-        // POST: Facultacies/Edit
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPut]
-        public async Task<IActionResult> Put(FacultyDTO facultacy)
+        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = nameof(UserRole.Admin))]
+        public async Task<IActionResult> Put(FacultyDTO faculty)
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(facultacy);
+                return BadRequest(faculty);
             }
-            await _service.UpdateAsync(facultacy);
-            return Ok(facultacy);
+            await _service.UpdateAsync(faculty);
+            return Ok(faculty);
         }
 
-        // POST: Facultacies/Delete/5
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int?}")]
         public async Task<IActionResult> Delete(int? id)
         {
             await _service.DeleteAsync(id);

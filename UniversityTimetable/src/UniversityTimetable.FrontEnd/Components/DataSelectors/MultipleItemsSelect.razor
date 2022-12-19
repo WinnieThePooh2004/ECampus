@@ -2,7 +2,7 @@
 @typeparam TData
 @typeparam TParameters
 
-@if (Data is null || Data.Data is null || Select is null)
+@if (Data?.Data is null || Select is null)
 {
     <p><em>Loading...</em></p>
     return;

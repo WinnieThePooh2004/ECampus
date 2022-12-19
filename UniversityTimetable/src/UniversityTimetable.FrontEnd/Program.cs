@@ -36,6 +36,8 @@ builder.Services.Decorate<IValidator<ClassDTO>, ExtendedClassDTOValidator>();
 builder.Services.AddScoped<IClassRequests, ClassRequests>();
 builder.Services.AddScoped<IBaseRequests<ClassDTO>, BaseRequests<ClassDTO>>();
 
+builder.Services.AddScoped<IAuthRequests, AuthRequests>();
+
 builder.Services.AddMudServices();
 builder.Services.Configure<CookiePolicyOptions>(options =>
 {
@@ -71,7 +73,10 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
-app.MapBlazorHub();
+app.UseCookiePolicy();
+
 app.MapFallbackToPage("/_Host");
+app.MapBlazorHub();
+app.MapRazorPages();
 
 app.Run();

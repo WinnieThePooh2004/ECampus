@@ -1,5 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using UniversityTimetable.Shared.DataTransferObjects;
+using UniversityTimetable.Shared.Enums;
 using UniversityTimetable.Shared.Interfaces.Services;
 
 namespace UniversityTimetable.Api.Controllers
@@ -21,18 +25,21 @@ namespace UniversityTimetable.Api.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Post(UserDTO user)
         {
             return Ok(await _service.CreateAsync(user));
         }
 
         [HttpPut]
+        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
         public async Task<IActionResult> Put(UserDTO user)
         {
             return Ok(await _service.UpdateAsync(user));
         }
 
         [HttpDelete("{id:int?}")]
+        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
         public async Task<IActionResult> Delete(int? id)
         {
             await _service.DeleteAsync(id);

@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using UniversityTimetable.Shared.DataTransferObjects;
+using UniversityTimetable.Shared.Enums;
 using UniversityTimetable.Shared.QueryParameters;
 using UniversityTimetable.Shared.Interfaces.Services;
 
@@ -16,21 +19,20 @@ namespace UniversityTimetable.Api.Controllers
             _service = service;
         }
 
-        // GET: Auditories
         [HttpGet]
         public async Task<IActionResult> Get([FromQuery] AuditoryParameters parameters)
         {
             return Ok(await _service.GetByParametersAsync(parameters));
         }
 
-        // GET: Auditories/Details/5
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> Get(int? id)
         {
             return Ok(await _service.GetByIdAsync(id));
         }
 
         [HttpPost]
+        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = nameof(UserRole.Admin))]
         public async Task<IActionResult> Post(AuditoryDTO auditory)
         {
             if (!ModelState.IsValid)
@@ -42,6 +44,7 @@ namespace UniversityTimetable.Api.Controllers
         }
 
         [HttpPut]
+        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = nameof(UserRole.Admin))]
         public async Task<IActionResult> Put(AuditoryDTO auditory)
         {
             if (!ModelState.IsValid)
@@ -52,8 +55,8 @@ namespace UniversityTimetable.Api.Controllers
             return Ok(auditory);
         }
 
-        // POST: Auditories/Delete/5
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int?}")]
+        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = nameof(UserRole.Admin))]
         public async Task<IActionResult> Delete(int? id)
         {
             await _service.DeleteAsync(id);

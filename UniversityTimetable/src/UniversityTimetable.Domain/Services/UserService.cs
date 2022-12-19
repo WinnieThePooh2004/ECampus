@@ -12,7 +12,7 @@ namespace UniversityTimetable.Domain.Services
     public class UserService : IUserService
     {
         private readonly IUserRepository _repository;
-        public readonly IMapper _mapper;
+        private readonly IMapper _mapper;
         private readonly ILogger<UserService> _logger;
         private readonly IBaseService<UserDTO> _baseService;
 

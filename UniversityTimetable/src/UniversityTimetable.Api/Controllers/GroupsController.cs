@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using UniversityTimetable.Shared.DataTransferObjects;
+using UniversityTimetable.Shared.Enums;
 using UniversityTimetable.Shared.Interfaces.Services;
 using UniversityTimetable.Shared.QueryParameters;
 
@@ -24,16 +27,14 @@ namespace UniversityTimetable.Api.Controllers
         }
 
         // GET: Groups/Details/5
-        [HttpGet("{id}")]
+        [HttpGet("{id:int?}")]
         public async Task<IActionResult> Get(int? id)
         {
             return Ok(await _service.GetByIdAsync(id));
         }
 
-        // POST: Groups/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = nameof(UserRole.Admin))]
         public async Task<IActionResult> Post(GroupDTO group)
         {
             if (!ModelState.IsValid || group.DepartmentId == 0)
@@ -44,10 +45,8 @@ namespace UniversityTimetable.Api.Controllers
             return Ok(group);
         }
 
-        // POST: Groups/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPut]
+        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = nameof(UserRole.Admin))]
         public async Task<IActionResult> Put(GroupDTO group)
         {
             if (!ModelState.IsValid)
@@ -59,7 +58,8 @@ namespace UniversityTimetable.Api.Controllers
         }
 
         // POST: Groups/Delete/5
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int?}")]
+        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = nameof(UserRole.Admin))]
         public async Task<IActionResult> Delete(int id)
         {
             await _service.DeleteAsync(id);

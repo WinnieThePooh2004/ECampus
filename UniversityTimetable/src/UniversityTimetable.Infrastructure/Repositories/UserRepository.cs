@@ -41,22 +41,7 @@ namespace UniversityTimetable.Infrastructure.Repositories
         {
             return _baseService.DeleteAsync(id);
         }
-
-        public async Task<User> SignIn(User user)
-        {
-            var userFromDb = await _context.Users.FirstOrDefaultAsync(u => u.Email == user.Email);
-            if(userFromDb is null)
-            {
-                _logger.LogAndThrowException(new InfrastructureExceptions(HttpStatusCode.NotFound, "No user with this email found", user));
-                return null;
-            }
-            if(userFromDb.Password != user.Password)
-            {
-                _logger.LogAndThrowException(new InfrastructureExceptions(HttpStatusCode.BadRequest, "Invalid password of email"));
-            }
-            return userFromDb;
-        }
-
+        
         public async Task<User> GetByIdAsync(int id)
         {
             var user = await _context.Users
@@ -93,7 +78,7 @@ namespace UniversityTimetable.Infrastructure.Repositories
             var errors = new Dictionary<string, string>();
             if(user.Role == UserRole.Admin)
             {
-                errors.Add(nameof(user.Role), "Cannot registed new admin");
+                errors.Add(nameof(user.Role), "Cannot register new admin");
             }
 
             return Task.FromResult(errors);

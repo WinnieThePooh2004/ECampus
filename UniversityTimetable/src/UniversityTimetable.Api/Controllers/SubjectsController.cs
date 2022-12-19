@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using UniversityTimetable.Shared.DataTransferObjects;
+using UniversityTimetable.Shared.Enums;
 using UniversityTimetable.Shared.Interfaces.Services;
 using UniversityTimetable.Shared.QueryParameters;
 
@@ -23,38 +26,34 @@ namespace UniversityTimetable.Api.Controllers
         }
 
         // GET: Subjects/Details/5
-        [HttpGet("{id}")]
+        [HttpGet("{id:int?}")]
         public async Task<IActionResult> Get(int? id)
         {
             return Ok(await _service.GetByIdAsync(id));
         }
 
-        // POST: Subjects/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public async Task<IActionResult> Post(SubjectDTO Subject)
+        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = nameof(UserRole.Admin))]
+        public async Task<IActionResult> Post(SubjectDTO subject)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
-            await _service.CreateAsync(Subject);
-            return Ok(Subject);
+            await _service.CreateAsync(subject);
+            return Ok(subject);
         }
 
-        // POST: Subjects/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPut]
-        public async Task<IActionResult> Put(SubjectDTO Subject)
+        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = nameof(UserRole.Admin))]
+        public async Task<IActionResult> Put(SubjectDTO subject)
         {
-            await _service.UpdateAsync(Subject);
-            return Ok(Subject);
+            await _service.UpdateAsync(subject);
+            return Ok(subject);
         }
 
-        // GET: Subjects/Delete/5
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int?}")]
+        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = nameof(UserRole.Admin))]
         public async Task<IActionResult> Delete(int? id)
         {
             await _service.DeleteAsync(id);

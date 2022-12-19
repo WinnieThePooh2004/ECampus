@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Shared.Interfaces.Authorization;
@@ -26,9 +27,10 @@ namespace UniversityTimetable.Api.Controllers
 
         [HttpDelete]
         [Route("logout")]
-        public async Task<IActionResult> Logout(string username)
+        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> Logout()
         {
-            await _authService.Logout(username);
+            await _authService.Logout(HttpContext);
             return Ok();
         }
     }
