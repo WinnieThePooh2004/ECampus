@@ -1,9 +1,10 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using UniversityTimetable.Shared.Interfaces.Data;
 
 namespace UniversityTimetable.Shared.Comparing
 {
-    public class IdComparer<T> : IEqualityComparer<T>
-        where T : class
+    public class DataTransferObjectComparer<T> : IEqualityComparer<T>
+        where T : class, IDataTransferObject
     {
         public bool Equals(T x, T y)
         {
@@ -11,14 +12,12 @@ namespace UniversityTimetable.Shared.Comparing
             {
                 return x == y;
             }
-            return GetHashCode(x) == GetHashCode(y);
+            return x.Id == y.Id;
         }
 
         public int GetHashCode([DisallowNull] T obj)
         {
-            var idProperty = typeof(T).GetProperty("Id");
-            var id = (int)idProperty.GetValue(obj, null);
-            return id;
+            return obj.Id;
         }
     }
 }

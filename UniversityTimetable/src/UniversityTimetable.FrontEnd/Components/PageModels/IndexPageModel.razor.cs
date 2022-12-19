@@ -6,7 +6,7 @@ namespace UniversityTimetable.FrontEnd.Components.PageModels
 {
     public partial class IndexPageModel<TData, TParameters>
         where TData : class, IDataTransferObject
-        where TParameters : IQueryParameters, new()
+        where TParameters : class, IQueryParameters, new()
     {
         [Parameter] public string CreateLink { get; set; } = null;
         /// <summary>
@@ -18,11 +18,11 @@ namespace UniversityTimetable.FrontEnd.Components.PageModels
         [Parameter] public List<(string, Func<TData, string>)> ActionLinks { get; set; } = new();
         [Parameter] public Action<TParameters> ParameterOptions { get; set; } = opt => { };
             
-        [Inject] private AuthenticationStateProvider _authProvider { get; set; }
+        [Inject] private AuthenticationStateProvider AuthProvider { get; set; }
         private bool _isAdmin;
         protected override async Task OnInitializedAsync()
         {
-            var authState = await _authProvider.GetAuthenticationStateAsync();
+            var authState = await AuthProvider.GetAuthenticationStateAsync();
             _isAdmin = authState.User.IsInRole(nameof(UserRole.Admin));
             ParameterOptions(Parameters);
             await base.OnInitializedAsync();

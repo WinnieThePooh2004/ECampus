@@ -5,11 +5,11 @@ namespace UniversityTimetable.FrontEnd.Components.PageBases
 {
     public class DataTableBase<TData, TParameters> : ComponentBase
         where TData : class
-        where TParameters : IQueryParameters, new()
+        where TParameters : class, IQueryParameters, new()
     {
         [Inject] protected IParametersIRequests<TData, TParameters> DataRequests { get; set; }
-        protected ListWithPaginationData<TData> Data { get; set; } = null;
-        protected TParameters Parameters { get; set; } = new();
+        protected ListWithPaginationData<TData> Data { get; private set; } = null;
+        protected TParameters Parameters { get; } = new();
 
         protected virtual async Task RefreshData()
         {

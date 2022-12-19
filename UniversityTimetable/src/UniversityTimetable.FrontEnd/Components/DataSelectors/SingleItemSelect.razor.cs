@@ -4,9 +4,9 @@ using UniversityTimetable.Shared.Interfaces.Data;
 
 namespace UniversityTimetable.FrontEnd.Components.DataSelectors
 {
-    public partial class SingleItemSelect<TData, TParameters>
+    public sealed partial class SingleItemSelect<TData, TParameters>
         where TData : class, IDataTransferObject, new()
-        where TParameters : IQueryParameters, new()
+        where TParameters : class, IQueryParameters, new()
     {
         [Parameter] public EventCallback<int> SelectedIdChanged { get; set; }
         [Parameter] public List<string> PropertyNames { get; set; }
@@ -14,7 +14,7 @@ namespace UniversityTimetable.FrontEnd.Components.DataSelectors
 
         [Parameter] public int SelectedId { get; set; }
 
-        protected Dictionary<TData, bool> Select { get; set; } = new(new IdComparer<TData>());
+        private Dictionary<TData, bool> Select { get; set; } = new(new DataTransferObjectComparer<TData>());
 
         private bool this[TData item]
         {
