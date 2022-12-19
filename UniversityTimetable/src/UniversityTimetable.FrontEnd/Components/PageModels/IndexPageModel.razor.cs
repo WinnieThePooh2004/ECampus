@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using UniversityTimetable.Shared.Interfaces.Data;
 
 namespace UniversityTimetable.FrontEnd.Components.PageModels
@@ -14,14 +15,17 @@ namespace UniversityTimetable.FrontEnd.Components.PageModels
         [Parameter] public string EditLink { get; set; } = null;
         [Parameter] public List<string> TableHeaders { get; set; } = new();
         [Parameter] public List<Func<TData, string>> TableData { get; set; } = new();
-        [Parameter] public List<(string, Func<TData, string>)> ActionLinks { get; set; } = new(); 
-
+        [Parameter] public List<(string, Func<TData, string>)> ActionLinks { get; set; } = new();
         [Parameter] public Action<TParameters> ParameterOptions { get; set; } = opt => { };
-
-        protected override Task OnInitializedAsync()
+            
+        [Inject] private AuthenticationStateProvider _authProvider { get; set; }
+        private bool _isAdmin;
+        protected override async Task OnInitializedAsync()
         {
+            var authState = await _authProvider.GetAuthenticationStateAsync();
+            _isAdmin = authState.User.IsInRole(nameof(UserRole.Admin));
             ParameterOptions(Parameters);
-            return base.OnInitializedAsync();
+            await base.OnInitializedAsync();
         }
     }
 }

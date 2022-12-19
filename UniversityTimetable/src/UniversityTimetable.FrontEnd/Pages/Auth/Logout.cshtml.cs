@@ -14,13 +14,13 @@ public class Logout : PageModel
     {
         _requests = requests;
     }
-    
+
     public async Task<IActionResult> OnGetAsync()
     {
+        await _requests.LogoutAsync();
         await HttpContext
             .SignOutAsync(
                 CookieAuthenticationDefaults.AuthenticationScheme);
-        await _requests.LogoutAsync();
         return LocalRedirect(Url.Content("~/"));
     }
 }
