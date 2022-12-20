@@ -1,21 +1,17 @@
 ﻿using IdentityServer4.Extensions;
 using Microsoft.AspNetCore.Components;
-using UniversityTimetable.FrontEnd.Requests.Interfaces;
 
 namespace UniversityTimetable.FrontEnd.Pages.Timetable;
 
-public partial class Auditory
+public sealed partial class Auditory
 {
     [Parameter] public int AuditoryId { get; set; }
-    [Inject] private IUserRequests UserRequests { get; set; }
-    [Inject] private IHttpContextAccessor Context { get; set; }
 
-    private UserDto _user;
-    private bool _isSaved = false;
+    private bool _isSaved;
 
     protected override async Task OnInitializedAsync()
     {
-        if (!(Context.HttpContext?.User.IsAuthenticated() ?? false))
+        if (!(HttpContextAccessor.HttpContext?.User.IsAuthenticated() ?? false))
         {
             return;
         }
@@ -23,22 +19,22 @@ public partial class Auditory
         await RefreshData();
     }
 
-    private async Task SaveAuditory()
+    protected override async Task RefreshData()
+    {
+        await base.RefreshData();
+        _isSaved = User.SavedAuditories.Any(a => a.Id == AuditoryId);
+        StateHasChanged();
+    }
+
+    protected override async Task OnSave()
     {
         await UserRequests.SaveAuditory(AuditoryId);
         await RefreshData();
     }
 
-    private async Task RemoveAuditory()
+    protected override async Task OnSaveRemoved()
     {
         await UserRequests.RemoveSavedAuditory(AuditoryId);
         await RefreshData();
-    }
-
-    private async Task RefreshData()
-    {
-        _user = await UserRequests.GetCurrentUserAsync();
-        _isSaved = _user.SavedAuditories.Any(a => a.Id == AuditoryId);
-        StateHasChanged();
     }
 }

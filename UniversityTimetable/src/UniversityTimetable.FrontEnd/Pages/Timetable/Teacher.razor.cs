@@ -2,23 +2,25 @@
 
 namespace UniversityTimetable.FrontEnd.Pages.Timetable;
 
-public partial class Group
+public partial class Teacher
 {
-    [Parameter] public int GroupId { get; set; }
+    [Parameter] public int TeacherId { get; set; }
+
     private bool _isSaved;
+
     protected override async Task OnSave()
     {
-        await UserRequests.SaveGroup(GroupId);
+        await UserRequests.SaveTeacher(TeacherId);
     }
 
     protected override async Task OnSaveRemoved()
     {
-        await UserRequests.RemoveSavedGroup(GroupId);
+        await UserRequests.RemoveSavedTeacher(TeacherId);
     }
 
     protected override async Task RefreshData()
     {
         await base.RefreshData();
-        _isSaved = User.SavedGroups.Any(g => g.Id == GroupId);
+        _isSaved = User.SavedTeachers.Any(t => t.Id == TeacherId);
     }
 }

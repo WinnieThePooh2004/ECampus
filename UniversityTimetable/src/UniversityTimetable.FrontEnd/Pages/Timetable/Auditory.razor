@@ -1,21 +1,23 @@
 ﻿@page "/timetable/auditory/{AuditoryId:int}"
+@inherits TimetablePageBase
 
-<TimetableModel CreateLink="@((day, number) => $"timetable/Create/{(int)TimetableMode.Auditory}/{AuditoryId}")"
+<TimetableModel CreateLink="@($"timetable/Create/{(int)TimetableMode.Auditory}/{AuditoryId}")"
                 EditLink="@($"timetable/edit/{(int)TimetableMode.Auditory}")"
-                DescriptionList="@(new() { c => $"{c.Subject.Name} {c.ClassType}",
+                DescriptionList="@(new List<Func<ClassDto, string>> { c => $"{c.Subject.Name} {c.ClassType}",
                                      c => $"Group {c.Group.Name}", c => $"Teacher: {c.Teacher.FullName}" })"
-                RefreshData="@(requests => requests.AuditoryTimetable(AuditoryId))"/>
+                RefreshData="@(requests => requests.AuditoryTimetable(AuditoryId))" />
 
-@if (_user is null)
+<br />
+@if (User is null)
 {
     return;
 }
 
 @if (!_isSaved)
 {
-    <a role="button" class="bnt btn-success" @onclick="async () => await SaveAuditory()">Save</a>
+    <a role="button" class="bnt btn-success" @onclick="async () => await OnSave()">Save</a>
 }
 else
 {
-    <a role="button" class="bnt btn-danger" @onclick="async () => await RemoveAuditory()">Remove save</a>
+    <a role="button" class="bnt btn-danger" @onclick="async () => await OnSaveRemoved()">Remove save</a>
 }

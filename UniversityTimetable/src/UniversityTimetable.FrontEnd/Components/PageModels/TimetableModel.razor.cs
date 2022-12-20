@@ -9,7 +9,7 @@ namespace UniversityTimetable.FrontEnd.Components.PageModels
         /// <summary>
         /// takes day of week and number of class as parameters
         /// </summary>
-        [Parameter] public Func<int, int, string> CreateLink { get; set; }
+        [Parameter] public string CreateLink { get; set; }
         /// <summary>
         /// provide it without id
         /// </summary>
