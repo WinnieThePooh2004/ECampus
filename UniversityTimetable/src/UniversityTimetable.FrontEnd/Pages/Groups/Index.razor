@@ -1,5 +1,5 @@
 ﻿@page "/groups/{DepartmentId:int}"
-<IndexPageModel TData="GroupDTO" TParameters="GroupParameters"
+<IndexPageModel TData="GroupDto" TParameters="GroupParameters"
                 ParameterOptions="p => p.DepartmentId = DepartmentId"
                 TableHeaders="@(new(){ "Last name", "First name" })"
                 TableData="@(new(){ g => g.Name })"

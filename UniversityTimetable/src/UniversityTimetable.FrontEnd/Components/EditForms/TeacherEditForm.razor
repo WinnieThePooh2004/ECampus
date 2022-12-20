@@ -1,4 +1,4 @@
-﻿@inherits ModelEditForm<TeacherDTO>
+﻿@inherits ModelEditForm<TeacherDto>
 <div class="row">
     <div class="col-md-4">
 
@@ -38,7 +38,7 @@
                 }
             </table>
             <br /><br />
-            <MultipleItemsSelect TData="SubjectDTO" TParameters="SubjectParameters"
+            <MultipleItemsSelect TData="SubjectDto" TParameters="SubjectParameters"
                                  SelectTo="Model.Subjects" OnAdd="AddSubject" OnDelete="DeleteSubject"
                                  PropertyNames="@(new(){ "Name" })" PropertiesToShow="@(new(){ t => t.Name })" />
             <button type="submit" class="btn btn-success">Save</button>

@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Logging;
 using UniversityTimetable.Shared.DataContainers;
 using UniversityTimetable.Shared.Exceptions.InfrastructureExceptions;
-using UniversityTimetable.Shared.Extentions;
+using UniversityTimetable.Shared.Extensions;
 using UniversityTimetable.Shared.Interfaces.Data;
 using UniversityTimetable.Shared.Interfaces.Repositories;
 

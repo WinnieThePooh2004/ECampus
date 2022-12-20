@@ -8,16 +8,16 @@ namespace UniversityTimetable.FrontEnd.Components.PageModels
         where TData : class, IDataTransferObject
         where TParameters : class, IQueryParameters, new()
     {
-        [Parameter] public string CreateLink { get; set; } = null;
+        [Parameter] public string CreateLink { get; set; }
         /// <summary>
         /// provide it without id
         /// </summary>
-        [Parameter] public string EditLink { get; set; } = null;
+        [Parameter] public string EditLink { get; set; }
         [Parameter] public List<string> TableHeaders { get; set; } = new();
         [Parameter] public List<Func<TData, string>> TableData { get; set; } = new();
         [Parameter] public List<(string, Func<TData, string>)> ActionLinks { get; set; } = new();
-        [Parameter] public Action<TParameters> ParameterOptions { get; set; } = opt => { };
-            
+        [Parameter] public Action<TParameters> ParameterOptions { get; set; } = _ => { };
+        
         [Inject] private AuthenticationStateProvider AuthProvider { get; set; }
         private bool _isAdmin;
         protected override async Task OnInitializedAsync()

@@ -3,7 +3,7 @@ using UniversityTimetable.Shared.Interfaces.Data;
 
 namespace UniversityTimetable.Shared.DataTransferObjects
 {
-    public class ClassDTO : IDataTransferObject
+    public class ClassDto : IDataTransferObject
     {
         public int Id { get; set; }
         public ClassType ClassType { get; set; } = ClassType.Lecture;
@@ -15,10 +15,10 @@ namespace UniversityTimetable.Shared.DataTransferObjects
         public int GroupId { get; set; }
         public int AuditoryId { get; set; }
         public int SubjectId { get; set; }
-        public AuditoryDTO Auditory { get; set; } = null;
-        public TeacherDTO Teacher { get; set; } = null;
-        public GroupDTO Group { get; set; } = null;
-        public SubjectDTO Subject { get; set; }
+        public AuditoryDto Auditory { get; set; } = null;
+        public TeacherDto Teacher { get; set; } = null;
+        public GroupDto Group { get; set; } = null;
+        public SubjectDto Subject { get; set; }
 
         public override string ToString()
         {

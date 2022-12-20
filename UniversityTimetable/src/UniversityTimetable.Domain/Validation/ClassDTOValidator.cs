@@ -3,7 +3,7 @@ using UniversityTimetable.Shared.DataTransferObjects;
 
 namespace UniversityTimetable.Domain.Validation
 {
-    public class ClassDTOValidator : AbstractValidator<ClassDTO>
+    public class ClassDTOValidator : AbstractValidator<ClassDto>
     {
         public ClassDTOValidator()
         {

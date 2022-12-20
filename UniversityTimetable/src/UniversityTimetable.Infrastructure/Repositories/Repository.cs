@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using UniversityTimetable.Shared.Extentions;
+using UniversityTimetable.Shared.Extensions;
 using UniversityTimetable.Shared.Interfaces.Data;
 using UniversityTimetable.Shared.QueryParameters;
 using UniversityTimetable.Shared.Exceptions.InfrastructureExceptions;

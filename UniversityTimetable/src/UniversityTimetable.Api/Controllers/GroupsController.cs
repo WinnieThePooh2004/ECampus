@@ -12,9 +12,9 @@ namespace UniversityTimetable.Api.Controllers
     [Route("api/[controller]")]
     public class GroupsController : ControllerBase
     {
-        private readonly IService<GroupDTO, GroupParameters> _service;
+        private readonly IService<GroupDto, GroupParameters> _service;
 
-        public GroupsController(IService<GroupDTO, GroupParameters> service)
+        public GroupsController(IService<GroupDto, GroupParameters> service)
         {
             _service = service;
         }
@@ -35,7 +35,7 @@ namespace UniversityTimetable.Api.Controllers
 
         [HttpPost]
         [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = nameof(UserRole.Admin))]
-        public async Task<IActionResult> Post(GroupDTO group)
+        public async Task<IActionResult> Post(GroupDto group)
         {
             if (!ModelState.IsValid || group.DepartmentId == 0)
             {
@@ -47,7 +47,7 @@ namespace UniversityTimetable.Api.Controllers
 
         [HttpPut]
         [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = nameof(UserRole.Admin))]
-        public async Task<IActionResult> Put(GroupDTO group)
+        public async Task<IActionResult> Put(GroupDto group)
         {
             if (!ModelState.IsValid)
             {

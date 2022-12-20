@@ -13,9 +13,9 @@ namespace UniversityTimetable.Shared.Models.RelationModels
         public Subject Subject { get; set; }
         public bool IsDeleted { get; set; }
 
-        int IRelationModel<Subject, Teacher>.RightTableId { get => SubjectId; set => SubjectId = value; }
-        int IRelationModel<Subject, Teacher>.LeftTableId { get => TeacherId; set => TeacherId = value; }
-        int IRelationModel<Teacher, Subject>.RightTableId { get => TeacherId; set => TeacherId = value; }
-        int IRelationModel<Teacher, Subject>.LeftTableId { get => SubjectId; set => SubjectId = value; }
+        int IRelationModel<Subject, Teacher>.RightTableId { init => SubjectId = value; }
+        int IRelationModel<Subject, Teacher>.LeftTableId { get => TeacherId; init => TeacherId = value; }
+        int IRelationModel<Teacher, Subject>.RightTableId { init => TeacherId = value; }
+        int IRelationModel<Teacher, Subject>.LeftTableId { get => SubjectId; init => SubjectId = value; }
     }
 }

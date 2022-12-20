@@ -13,10 +13,10 @@ using FluentValidation;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using UniversityTimetable.Api.MiddlewareFilters;
 using UniversityTimetable.Api.Extentions;
-using UniversityTimetable.Domain.Authorization;
+using UniversityTimetable.Domain.Auth;
 using UniversityTimetable.Infrastructure.Auth;
 using UniversityTimetable.Infrastructure.DataSelectors;
-using UniversityTimetable.Shared.Interfaces.Authorization;
+using UniversityTimetable.Shared.Interfaces.Auth;
 using UniversityTimetable.Shared.Models.RelationModels;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -45,12 +45,12 @@ builder.Services.AddDataSelector<Group, GroupParameters, GroupSelector>();
 builder.Services.AddDataSelector<Subject, SubjectParameters, SubjectSelector>();
 builder.Services.AddDataSelector<Teacher, TeacherParameters, TeacherSelector>();
 
-builder.Services.AddDefaultServices<Auditory, AuditoryDTO, AuditoryParameters>();
+builder.Services.AddDefaultServices<Auditory, AuditoryDto, AuditoryParameters>();
 builder.Services.AddDefaultServices<Department, DepartmentDTO, DepartmentParameters>();
-builder.Services.AddDefaultServices<Faculty, FacultyDTO, FacultyParameters>();
-builder.Services.AddDefaultServices<Group, GroupDTO, GroupParameters>();
-builder.Services.AddDefaultServices<Subject, SubjectDTO, SubjectParameters>();
-builder.Services.AddDefaultServices<Teacher, TeacherDTO, TeacherParameters>();
+builder.Services.AddDefaultServices<Faculty, FacultyDto, FacultyParameters>();
+builder.Services.AddDefaultServices<Group, GroupDto, GroupParameters>();
+builder.Services.AddDefaultServices<Subject, SubjectDto, SubjectParameters>();
+builder.Services.AddDefaultServices<Teacher, TeacherDto, TeacherParameters>();
 
 builder.Services.AddScoped<IRelationshipsRepository<Subject, Teacher, SubjectTeacher>, RelationshipsRepository<Subject, Teacher, SubjectTeacher>>();
 builder.Services.Decorate<IBaseRepository<Subject>, BaseSubjectRepository>();
@@ -58,14 +58,27 @@ builder.Services.Decorate<IBaseRepository<Subject>, BaseSubjectRepository>();
 builder.Services.AddScoped<IRelationshipsRepository<Teacher, Subject, SubjectTeacher>, RelationshipsRepository<Teacher, Subject, SubjectTeacher>>();
 builder.Services.Decorate<IBaseRepository<Teacher>, BaseTeacherRepository>();
 
-builder.Services.AddScoped<IBaseService<ClassDTO>, BaseService<ClassDTO, Class>>();
-builder.Services.Decorate<IBaseService<ClassDTO>, BaseClassService>();
+builder.Services.AddScoped<IBaseService<ClassDto>, BaseService<ClassDto, Class>>();
+builder.Services.Decorate<IBaseService<ClassDto>, BaseClassService>();
 builder.Services.AddScoped<IBaseRepository<Class>, BaseRepository<Class>>();
 builder.Services.AddScoped<IClassService, ClassService>();
 builder.Services.AddScoped<IClassRepository, ClassRepository>();
 
-builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+builder.Services.AddScoped<IRelationshipsRepository<User, Auditory, UserAuditory>, RelationshipsRepository<User, Auditory, UserAuditory>>();
+builder.Services.AddScoped<IRelationshipsRepository<User, Group, UserGroup>, RelationshipsRepository<User, Group, UserGroup>>();
+builder.Services.AddScoped<IRelationshipsRepository<User, Teacher, UserTeacher>, RelationshipsRepository<User, Teacher, UserTeacher>>();
+builder.Services.AddScoped<IRelationRepository<User, Auditory, UserAuditory>, RelationRepository<User, Auditory, UserAuditory>>();
+builder.Services.AddScoped<IRelationRepository<User, Group, UserGroup>, RelationRepository<User, Group, UserGroup>>();
+builder.Services.AddScoped<IRelationRepository<User, Teacher, UserTeacher>, RelationRepository<User, Teacher, UserTeacher>>();
+builder.Services.AddScoped<IBaseService<UserDto>, BaseService<UserDto, User>>();
+builder.Services.AddScoped<IBaseRepository<User>, BaseRepository<User>>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+
+builder.Services.AddScoped<IAuthorizationService, AuthorizationService>();
+builder.Services.AddScoped<IAuthorizationRepository, AuthorizationRepository>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

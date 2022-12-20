@@ -7,6 +7,6 @@ namespace UniversityTimetable.FrontEnd.Requests.Interfaces
         Task<Timetable> GroupTimetable(int groupId);
         Task<Timetable> TeacherTimetable(int groupId);
         Task<Timetable> AuditoryTimetable(int groupId);
-        Task<Dictionary<string, string>> ValidateAsync(ClassDTO model);
+        Task<Dictionary<string, string>> ValidateAsync(ClassDto model);
     }
 }

@@ -1,11 +1,21 @@
 ﻿@page "/timetable/auditory/{AuditoryId:int}"
 
 <TimetableModel CreateLink="@((day, number) => $"timetable/Create/{(int)TimetableMode.Auditory}/{AuditoryId}")"
-        EditLink="@($"timetable/edit/{(int)TimetableMode.Auditory}")"
-        DescriptionList="@(new(){ c => $"{c.Subject.Name} {c.ClassType}", c => $"Group {c.Group.Name}",
-        c => $"Teacher: {c.Teacher.FullName}"})"
-        RefreshData="@(requests => requests.AuditoryTimetable(AuditoryId))" />
+                EditLink="@($"timetable/edit/{(int)TimetableMode.Auditory}")"
+                DescriptionList="@(new() { c => $"{c.Subject.Name} {c.ClassType}",
+                                     c => $"Group {c.Group.Name}", c => $"Teacher: {c.Teacher.FullName}" })"
+                RefreshData="@(requests => requests.AuditoryTimetable(AuditoryId))"/>
 
-@code {
-    [Parameter] public int AuditoryId { get; set; }
+@if (_user is null)
+{
+    return;
+}
+
+@if (!_isSaved)
+{
+    <a role="button" class="bnt btn-success" @onclick="async () => await SaveAuditory()">Save</a>
+}
+else
+{
+    <a role="button" class="bnt btn-danger" @onclick="async () => await RemoveAuditory()">Remove save</a>
 }

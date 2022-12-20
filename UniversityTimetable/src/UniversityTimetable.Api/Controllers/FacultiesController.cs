@@ -12,8 +12,8 @@ namespace UniversityTimetable.Api.Controllers
     [Route("api/[controller]")]
     public class FacultiesController : ControllerBase
     {
-        private IService<FacultyDTO, FacultyParameters> _service;
-        public FacultiesController(IService<FacultyDTO, FacultyParameters> service)
+        private IService<FacultyDto, FacultyParameters> _service;
+        public FacultiesController(IService<FacultyDto, FacultyParameters> service)
         {
             _service = service;
         }
@@ -32,7 +32,7 @@ namespace UniversityTimetable.Api.Controllers
 
         [HttpPost]
         [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = nameof(UserRole.Admin))]
-        public async Task<IActionResult> Post([Bind("Name")] FacultyDTO facultacy)
+        public async Task<IActionResult> Post([Bind("Name")] FacultyDto facultacy)
         {
             if (!ModelState.IsValid)
             {
@@ -44,7 +44,7 @@ namespace UniversityTimetable.Api.Controllers
 
         [HttpPut]
         [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = nameof(UserRole.Admin))]
-        public async Task<IActionResult> Put(FacultyDTO faculty)
+        public async Task<IActionResult> Put(FacultyDto faculty)
         {
             if (!ModelState.IsValid)
             {

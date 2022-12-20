@@ -7,7 +7,7 @@ namespace UniversityTimetable.FrontEnd.Components.PageBases
         where TData : class
         where TParameters : class, IQueryParameters, new()
     {
-        [Inject] protected IParametersIRequests<TData, TParameters> DataRequests { get; set; }
+        [Inject] protected IParametersRequests<TData, TParameters> DataRequests { get; set; }
         protected ListWithPaginationData<TData> Data { get; private set; } = null;
         protected TParameters Parameters { get; } = new();
 

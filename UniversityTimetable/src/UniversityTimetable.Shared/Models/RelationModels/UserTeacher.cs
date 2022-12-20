@@ -12,7 +12,7 @@ namespace UniversityTimetable.Shared.Models.RelationModels
 
         public User User { get; set; }
         public Teacher Teacher { get; set; }
-        int IRelationModel<User, Teacher>.RightTableId { get => UserId; set => UserId = value; }
-        int IRelationModel<User, Teacher>.LeftTableId { get => TeacherId; set => TeacherId = value; }
+        int IRelationModel<User, Teacher>.RightTableId { init => UserId = value; }
+        int IRelationModel<User, Teacher>.LeftTableId { get => TeacherId; init => TeacherId = value; }
     }
 }

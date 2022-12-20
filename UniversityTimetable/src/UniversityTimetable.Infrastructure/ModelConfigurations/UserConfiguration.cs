@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using UniversityTimetable.Shared.Models;
+using UniversityTimetable.Shared.Models.RelationModels;
 
 namespace UniversityTimetable.Infrastructure.ModelConfigurations
 {

@@ -1,4 +1,4 @@
-﻿@inherits ModelEditForm<SubjectDTO>
+﻿@inherits ModelEditForm<SubjectDto>
 <EditForm Model="Model" OnValidSubmit="Submit">
     <FluentValidationValidator Validator="Validator" />
     <div class="row">
@@ -30,7 +30,7 @@
                 }
             </table>
             <br /><br />
-            <MultipleItemsSelect TData="TeacherDTO" TParameters="TeacherParameters" OnAdd="OnTeacherAdd" OnDelete="OnTeacherRemove"
+            <MultipleItemsSelect TData="TeacherDto" TParameters="TeacherParameters" OnAdd="OnTeacherAdd" OnDelete="OnTeacherRemove"
                                  SelectTo="@Model.Teachers"
                                  PropertyNames="@(new(){ "First name", "Last name" })" PropertiesToShow="@(new(){ t => t.FirstName, t => t.LastName })" />
             <br />

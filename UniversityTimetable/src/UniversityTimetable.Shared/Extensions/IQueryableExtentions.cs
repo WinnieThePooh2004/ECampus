@@ -1,8 +1,8 @@
 ﻿using System.Linq.Expressions;
 
-namespace UniversityTimetable.Shared.Extentions
+namespace UniversityTimetable.Shared.Extensions
 {
-    public static class IQueryableExtentions
+    public static class QueryableExtensions
     {
         public static IQueryable<T> Search<T>(this IQueryable<T> source, Expression<Func<T, string>> propertySelector, string searchTerm)
         {

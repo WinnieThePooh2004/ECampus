@@ -4,7 +4,7 @@ using UniversityTimetable.Shared.Interfaces.Data;
 
 namespace UniversityTimetable.Shared.DataTransferObjects
 {
-    public class TeacherDTO : IDataTransferObject
+    public class TeacherDto : IDataTransferObject
     {
         public int Id { get; set; }
         public string FirstName { get; set; }
@@ -12,7 +12,7 @@ namespace UniversityTimetable.Shared.DataTransferObjects
         public ScienceDegree ScienceDegree { get; set; }
 
         public int DepartmentId { get; set; }
-        public List<SubjectDTO> Subjects { get; set; } = new();
+        public List<SubjectDto> Subjects { get; set; } = new();
         [JsonIgnore] public string FullName => $"{FirstName[0]}. {LastName}";
     }
 }

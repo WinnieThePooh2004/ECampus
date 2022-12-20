@@ -1,8 +1,8 @@
 ﻿using System.Web;
 
-namespace UniversityTimetable.Shared.Extentions
+namespace UniversityTimetable.Shared.Extensions
 {
-    public static class QueryParametersExtentions
+    public static class QueryParametersExtensions
     {
         public static string ToQueryString<TParams>(this TParams parameters)
         {

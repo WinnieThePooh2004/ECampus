@@ -12,8 +12,8 @@ namespace UniversityTimetable.Api.Controllers
     [Route("api/[controller]")]
     public class SubjectsController : ControllerBase
     {
-        private readonly IService<SubjectDTO, SubjectParameters> _service;
-        public SubjectsController(IService<SubjectDTO, SubjectParameters> service)
+        private readonly IService<SubjectDto, SubjectParameters> _service;
+        public SubjectsController(IService<SubjectDto, SubjectParameters> service)
         {
             _service = service;
         }
@@ -34,7 +34,7 @@ namespace UniversityTimetable.Api.Controllers
 
         [HttpPost]
         [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = nameof(UserRole.Admin))]
-        public async Task<IActionResult> Post(SubjectDTO subject)
+        public async Task<IActionResult> Post(SubjectDto subject)
         {
             if (!ModelState.IsValid)
             {
@@ -46,7 +46,7 @@ namespace UniversityTimetable.Api.Controllers
 
         [HttpPut]
         [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = nameof(UserRole.Admin))]
-        public async Task<IActionResult> Put(SubjectDTO subject)
+        public async Task<IActionResult> Put(SubjectDto subject)
         {
             await _service.UpdateAsync(subject);
             return Ok(subject);

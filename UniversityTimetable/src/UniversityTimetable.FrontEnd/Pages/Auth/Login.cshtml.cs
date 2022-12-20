@@ -6,6 +6,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Components;
 using UniversityTimetable.FrontEnd.Requests.Interfaces;
+using UniversityTimetable.Shared.Extensions;
 
 namespace UniversityTimetable.FrontEnd.Pages.Auth
 {
@@ -22,26 +23,14 @@ namespace UniversityTimetable.FrontEnd.Pages.Auth
         public async Task<IActionResult> OnGetAsync(string username, string password)
         {
             var returnUrl = Url.Content("~/");
-            var login = new LoginDTO { Email = "vova2004hunko@icloud.com", Password = "Vova1234#" };
-            var user = await _authRequests.LoginAsync(login);
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, user.Username),
-                new Claim(ClaimTypes.Role, user.Role.ToString()),
-                new Claim(ClaimTypes.Email, user.Email)
-            };
-            var claimsIdentity = new ClaimsIdentity(
-                claims, CookieAuthenticationDefaults.AuthenticationScheme);
             var authProperties = new AuthenticationProperties
             {
                 IsPersistent = true,
-                RedirectUri = this.Request.Host.Value
+                RedirectUri = Request.Host.Value
             };
-
-            await HttpContext.SignInAsync(
-                CookieAuthenticationDefaults.AuthenticationScheme,
-                new ClaimsPrincipal(claimsIdentity),
-                authProperties);
+            var login = new LoginDto { Email = "vova2004hunko@icloud.com", Password = "Vova1234#" };
+            var user = await _authRequests.LoginAsync(login);
+            await HttpContext.SignInAsync(user, authProperties);
 
             return LocalRedirect(returnUrl);
         }

@@ -2,7 +2,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UniversityTimetable.Shared.DataTransferObjects;
-using UniversityTimetable.Shared.Interfaces.Authorization;
+using UniversityTimetable.Shared.Interfaces.Auth;
+using IAuthorizationService = UniversityTimetable.Shared.Interfaces.Auth.IAuthorizationService;
 
 namespace UniversityTimetable.Api.Controllers
 {
@@ -10,19 +11,19 @@ namespace UniversityTimetable.Api.Controllers
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
-        private readonly IAuthService _authService;
+        private readonly IAuthorizationService _authorizationService;
 
-        public AuthController(IAuthService authService)
+        public AuthController(IAuthorizationService authorizationService)
         {
-            _authService = authService;
+            _authorizationService = authorizationService;
         }
 
         [HttpPost]
         [AllowAnonymous]
         [Route("login")]
-        public async Task<IActionResult> Login(LoginDTO login)
+        public async Task<IActionResult> Login(LoginDto login)
         {
-            return Ok(await _authService.Login(login, HttpContext));
+            return Ok(await _authorizationService.Login(login, HttpContext));
         }
 
         [HttpDelete]
@@ -30,7 +31,7 @@ namespace UniversityTimetable.Api.Controllers
         [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
         public async Task<IActionResult> Logout()
         {
-            await _authService.Logout(HttpContext);
+            await _authorizationService.Logout(HttpContext);
             return Ok();
         }
     }

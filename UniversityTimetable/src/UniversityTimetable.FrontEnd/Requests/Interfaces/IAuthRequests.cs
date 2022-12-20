@@ -2,6 +2,6 @@
 
 public interface IAuthRequests
 {
-    Task<UserDTO> LoginAsync(LoginDTO login);
+    Task<UserDto> LoginAsync(LoginDto login);
     Task LogoutAsync();
 }

@@ -3,7 +3,7 @@ using UniversityTimetable.Shared.Models;
 using UniversityTimetable.Shared.Enums;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
-using UniversityTimetable.Shared.Extentions;
+using UniversityTimetable.Shared.Extensions;
 using System.Net;
 using UniversityTimetable.Shared.Exceptions.InfrastructureExceptions;
 using UniversityTimetable.Shared.Models.RelationModels;
@@ -44,13 +44,7 @@ namespace UniversityTimetable.Infrastructure.Repositories
         
         public async Task<User> GetByIdAsync(int id)
         {
-            var user = await _context.Users
-                .Include(u => u.SavedGroupsIds)
-                .ThenInclude(g => g.Group)
-                .Include(u => u.SavedAuditoriesIds)
-                .ThenInclude(a => a.Auditory)
-                .Include(u => u.SavedTeachersIds)
-                .ThenInclude(t => t.Teacher)
+            var user = await DbSetWithAllRelatedData()
                 .FirstOrDefaultAsync(u => u.Id == id);
             if(user is null)
             {
@@ -83,5 +77,14 @@ namespace UniversityTimetable.Infrastructure.Repositories
 
             return Task.FromResult(errors);
         }
+        
+        private IQueryable<User> DbSetWithAllRelatedData()
+            => _context.Users
+                .Include(u => u.SavedGroupsIds)
+                .ThenInclude(g => g.Group)
+                .Include(u => u.SavedAuditoriesIds)
+                .ThenInclude(a => a.Auditory)
+                .Include(u => u.SavedTeachersIds)
+                .ThenInclude(t => t.Teacher);
     }
 }

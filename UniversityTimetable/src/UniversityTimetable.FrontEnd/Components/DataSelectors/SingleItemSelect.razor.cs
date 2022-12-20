@@ -8,6 +8,7 @@ namespace UniversityTimetable.FrontEnd.Components.DataSelectors
         where TData : class, IDataTransferObject, new()
         where TParameters : class, IQueryParameters, new()
     {
+        [Parameter] public string Title { get; set; }
         [Parameter] public EventCallback<int> SelectedIdChanged { get; set; }
         [Parameter] public List<string> PropertyNames { get; set; }
         [Parameter] public List<Func<TData, object>> PropertiesToShow { get; set; }

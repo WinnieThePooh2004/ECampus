@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.Logging;
 using UniversityTimetable.Shared.Exceptions;
 
-namespace UniversityTimetable.Shared.Extentions
+namespace UniversityTimetable.Shared.Extensions
 {
-    public static class ILoggerExtentions
+    public static class LoggerExtensions
     {
         public static void LogAndThrowException(this ILogger logger, HttpResponseException exception)
         {

@@ -1,8 +1,8 @@
 ﻿@page "/subjects"
 
-<IndexPageModel TData="SubjectDTO" TParameters="SubjectParameters"
+<IndexPageModel TData="SubjectDto" TParameters="SubjectParameters"
                 TableHeaders="@(new List<string> { "Name" })"
-                TableData="@(new List<Func<SubjectDTO, string>> { s => s.Name })"
+                TableData="@(new List<Func<SubjectDto, string>> { s => s.Name })"
                 CreateLink="@($"/subjects/Create")"
                 EditLink="/subjects/edit"
 />

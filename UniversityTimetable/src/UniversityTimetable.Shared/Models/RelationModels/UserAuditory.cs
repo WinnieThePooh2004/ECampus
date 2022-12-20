@@ -12,7 +12,7 @@ namespace UniversityTimetable.Shared.Models.RelationModels
 
         public Auditory Auditory { get; set; }
         public User User { get; set; }
-        int IRelationModel<User, Auditory>.RightTableId { get => UserId; set => UserId = value; }
-        int IRelationModel<User, Auditory>.LeftTableId { get => AuditoryId; set => AuditoryId = value; }
+        int IRelationModel<User, Auditory>.RightTableId { init => UserId = value; }
+        int IRelationModel<User, Auditory>.LeftTableId { get => AuditoryId; init => AuditoryId = value; }
     }
 }

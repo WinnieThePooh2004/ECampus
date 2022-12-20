@@ -12,9 +12,9 @@ namespace UniversityTimetable.Api.Controllers
     [Route("api/[controller]")]
     public class AuditoriesController : ControllerBase
     {
-        private readonly IService<AuditoryDTO, AuditoryParameters> _service;
+        private readonly IService<AuditoryDto, AuditoryParameters> _service;
 
-        public AuditoriesController(IService<AuditoryDTO, AuditoryParameters> service)
+        public AuditoriesController(IService<AuditoryDto, AuditoryParameters> service)
         {
             _service = service;
         }
@@ -33,7 +33,7 @@ namespace UniversityTimetable.Api.Controllers
 
         [HttpPost]
         [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = nameof(UserRole.Admin))]
-        public async Task<IActionResult> Post(AuditoryDTO auditory)
+        public async Task<IActionResult> Post(AuditoryDto auditory)
         {
             if (!ModelState.IsValid)
             {
@@ -45,7 +45,7 @@ namespace UniversityTimetable.Api.Controllers
 
         [HttpPut]
         [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = nameof(UserRole.Admin))]
-        public async Task<IActionResult> Put(AuditoryDTO auditory)
+        public async Task<IActionResult> Put(AuditoryDto auditory)
         {
             if (!ModelState.IsValid)
             {

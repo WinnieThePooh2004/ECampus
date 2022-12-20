@@ -4,11 +4,11 @@ using UniversityTimetable.FrontEnd.Requests.Interfaces;
 
 namespace UniversityTimetable.FrontEnd.Validation
 {
-    public class ExtendedClassDTOValidator : IValidator<ClassDTO>
+    public class ExtendedClassDTOValidator : IValidator<ClassDto>
     {
-        private IValidator<ClassDTO> _baseValidator;
+        private IValidator<ClassDto> _baseValidator;
         private IClassRequests _requests;
-        public ExtendedClassDTOValidator(IValidator<ClassDTO> baseValidator, IClassRequests requests)
+        public ExtendedClassDTOValidator(IValidator<ClassDto> baseValidator, IClassRequests requests)
         {
             _baseValidator = baseValidator;
             _requests = requests;
@@ -20,13 +20,13 @@ namespace UniversityTimetable.FrontEnd.Validation
         public IValidatorDescriptor CreateDescriptor()
             => _baseValidator.CreateDescriptor();
 
-        public ValidationResult Validate(ClassDTO instance)
+        public ValidationResult Validate(ClassDto instance)
             => _baseValidator.Validate(instance);
 
         public ValidationResult Validate(IValidationContext context)
             => _baseValidator.Validate(context);
 
-        public async Task<ValidationResult> ValidateAsync(ClassDTO instance, CancellationToken cancellation = default)
+        public async Task<ValidationResult> ValidateAsync(ClassDto instance, CancellationToken cancellation = default)
         {
             var baseResult = await _baseValidator.ValidateAsync(instance, cancellation);
             if(baseResult.Errors.Any())
@@ -44,7 +44,7 @@ namespace UniversityTimetable.FrontEnd.Validation
             {
                 return baseResult;
             }
-            baseResult.Errors.AddRange((await _requests.ValidateAsync((ClassDTO)context.InstanceToValidate))
+            baseResult.Errors.AddRange((await _requests.ValidateAsync((ClassDto)context.InstanceToValidate))
                 .Select(error => new ValidationFailure(error.Key, error.Value)));
             return baseResult;
         }

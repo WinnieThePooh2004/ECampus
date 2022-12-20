@@ -8,9 +8,9 @@ namespace UniversityTimetable.FrontEnd.Extentions
         public static IServiceCollection AddRequests<TData, TParameters, TImplementation>(this IServiceCollection services)
             where TData : class
             where TParameters : IQueryParameters
-            where TImplementation : class, IParametersIRequests<TData, TParameters>
+            where TImplementation : class, IParametersRequests<TData, TParameters>
         {
-            return services.AddScoped<IParametersIRequests<TData, TParameters>, TImplementation>();
+            return services.AddScoped<IParametersRequests<TData, TParameters>, TImplementation>();
         }
 
         public static IServiceCollection AddRequests<TData, TParameters>(this IServiceCollection services)

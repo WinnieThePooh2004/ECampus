@@ -1,0 +1,9 @@
+﻿@page "/profile"
+
+@if (_user is null)
+{
+    <p><em>Loading...</em></p>
+    return;
+}
+
+<h2>Welcome back, @_user.Username</h2>

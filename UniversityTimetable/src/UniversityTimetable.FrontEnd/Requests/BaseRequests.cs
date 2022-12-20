@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
 using System.Text.Json;
 using UniversityTimetable.FrontEnd.Requests.Interfaces;
-using UniversityTimetable.Shared.Extentions;
+using UniversityTimetable.Shared.Extensions;
 
 namespace UniversityTimetable.FrontEnd.Requests
 {
@@ -10,10 +10,10 @@ namespace UniversityTimetable.FrontEnd.Requests
         private readonly string _controllerName;
         private readonly HttpClient _client;
         private readonly JsonSerializerOptions _options;
-        public BaseRequests(IHttpClientFactory clientFactory)
+        public BaseRequests(IHttpClientFactory clientFactory, JsonSerializerOptions options)
         {
+            _options = options;
             _client = clientFactory.CreateClient("UTApi");
-            _options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
             _controllerName = Options.Requests.ControllerNames[typeof(TData)];
         }
         public async Task<TData> CreateAsync(TData entity)

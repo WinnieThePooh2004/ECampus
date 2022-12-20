@@ -2,13 +2,13 @@
 {
     public partial class TeacherEditForm
     {
-        private void AddSubject(SubjectDTO subject)
+        private void AddSubject(SubjectDto subject)
         {
             Model.Subjects.Add(subject);
             StateHasChanged();
         }
 
-        private void DeleteSubject(SubjectDTO subject)
+        private void DeleteSubject(SubjectDto subject)
         {
             Model.Subjects.Remove(Model.Subjects.FirstOrDefault(s => s.Id == subject.Id));
             StateHasChanged();

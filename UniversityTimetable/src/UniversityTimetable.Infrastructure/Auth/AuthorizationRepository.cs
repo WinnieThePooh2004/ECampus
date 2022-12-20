@@ -3,18 +3,18 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Shared.Exceptions.InfrastructureExceptions;
-using UniversityTimetable.Shared.Extentions;
-using UniversityTimetable.Shared.Interfaces.Authorization;
+using UniversityTimetable.Shared.Extensions;
+using UniversityTimetable.Shared.Interfaces.Auth;
 using UniversityTimetable.Shared.Models;
 
 namespace UniversityTimetable.Infrastructure.Auth;
 
-public class AuthRepository : IAuthRepository
+public class AuthorizationRepository : IAuthorizationRepository
 {
-    private readonly ILogger<AuthRepository> _logger;
+    private readonly ILogger<AuthorizationRepository> _logger;
     private readonly ApplicationDbContext _context;
 
-    public AuthRepository(ILogger<AuthRepository> logger, ApplicationDbContext context)
+    public AuthorizationRepository(ILogger<AuthorizationRepository> logger, ApplicationDbContext context)
     {
         _logger = logger;
         _context = context;

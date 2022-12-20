@@ -4,7 +4,7 @@ using UniversityTimetable.Shared.DataTransferObjects;
 
 namespace UniversityTimetable.Domain.Validation
 {
-    public class AuditoryDTOValidator : AbstractValidator<AuditoryDTO>
+    public class AuditoryDTOValidator : AbstractValidator<AuditoryDto>
     {
         public AuditoryDTOValidator()
         {

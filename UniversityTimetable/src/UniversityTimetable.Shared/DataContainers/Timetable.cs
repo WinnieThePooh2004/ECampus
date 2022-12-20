@@ -11,12 +11,12 @@ namespace UniversityTimetable.Shared.DataContainers
         /// </summary>
         private const int _workDaysInWeek = 6;
         private const int _maxClassesPerDay = 5;
-        public AuditoryDTO? Auditory { get; set; }
-        public GroupDTO? Group { get; set; }
-        public TeacherDTO? Teacher { get; set; }
-        public ClassDTO?[][] DailyClasses { get; set; }
+        public AuditoryDto? Auditory { get; set; }
+        public GroupDto? Group { get; set; }
+        public TeacherDto? Teacher { get; set; }
+        public ClassDto?[][] DailyClasses { get; set; }
 
-        public Timetable(IEnumerable<ClassDTO> classes)
+        public Timetable(IEnumerable<ClassDto> classes)
         {
             DailyClasses = CreateEmptyDataTable();
             foreach (var @class in classes)
@@ -30,7 +30,7 @@ namespace UniversityTimetable.Shared.DataContainers
             DailyClasses = CreateEmptyDataTable();
         }
 
-        public ClassDTO? GetClass(int dayOfWeek, int number, WeekDependency weekDependency = WeekDependency.None)
+        public ClassDto? GetClass(int dayOfWeek, int number, WeekDependency weekDependency = WeekDependency.None)
         {
             if (weekDependency == WeekDependency.AppearsOnEvenWeeks)
             {
@@ -38,7 +38,7 @@ namespace UniversityTimetable.Shared.DataContainers
             }
             return DailyClasses[dayOfWeek][number * 2];
         }
-        public void Add(ClassDTO @class)
+        public void Add(ClassDto @class)
         {
             if (@class.WeekDependency == WeekDependency.AppearsOnEvenWeeks)
             {
@@ -48,12 +48,12 @@ namespace UniversityTimetable.Shared.DataContainers
             DailyClasses[@class.DayOfWeek][@class.Number * 2] = @class;
         }
 
-        private static ClassDTO?[][] CreateEmptyDataTable()
+        private static ClassDto?[][] CreateEmptyDataTable()
         {
-            ClassDTO[][] table = new ClassDTO[_workDaysInWeek][];
+            ClassDto[][] table = new ClassDto[_workDaysInWeek][];
             for(int i = 0; i < _workDaysInWeek; i++)
             {
-                table[i] = new ClassDTO[_maxClassesPerDay * 2];
+                table[i] = new ClassDto[_maxClassesPerDay * 2];
             }
             return table;
         }

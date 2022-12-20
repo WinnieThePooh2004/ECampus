@@ -1,5 +1,5 @@
 ﻿@page "/groups/create/{DepartmentId:int}"
-@inherits CreatePageBase<GroupDTO>
+@inherits CreatePageBase<GroupDto>
 
 <GroupEditForm Model="new(){DepartmentId = DepartmentId}" OnSubmited="Save" />
 

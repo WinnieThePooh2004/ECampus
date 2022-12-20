@@ -50,14 +50,14 @@ namespace UniversityTimetable.Api.Controllers
         // GET: Classes/Create
         [HttpPost]
         [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = nameof(UserRole.Admin))]
-        public async Task<IActionResult> Post(ClassDTO @class)
+        public async Task<IActionResult> Post(ClassDto @class)
         {
             return Ok(await _service.CreateAsync(@class));
         }
 
         [HttpPut]
         [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = nameof(UserRole.Admin))]
-        public async Task<IActionResult> Put(ClassDTO @class)
+        public async Task<IActionResult> Put(ClassDto @class)
         {
             return Ok(await _service.UpdateAsync(@class));
         }
@@ -71,7 +71,7 @@ namespace UniversityTimetable.Api.Controllers
         }
 
         [HttpPut("Validate")]
-        public async Task<IActionResult> Validate(ClassDTO model)
+        public async Task<IActionResult> Validate(ClassDto model)
         {
             return Ok(await _service.ValidateAsync(model));
         }

@@ -6,17 +6,18 @@ namespace UniversityTimetable.FrontEnd.Requests;
 public class AuthRequests : IAuthRequests
 {
     private readonly IHttpClientFactory _client;
-    private readonly JsonSerializerOptions _options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-    public AuthRequests(IHttpClientFactory client)
+    private readonly JsonSerializerOptions _options;
+    public AuthRequests(IHttpClientFactory client, JsonSerializerOptions options)
     {
         _client = client;
+        _options = options;
     }
 
-    public async Task<UserDTO> LoginAsync(LoginDTO login)
+    public async Task<UserDto> LoginAsync(LoginDto login)
     {
         var response = await _client.CreateClient("UTApi").PostAsJsonAsync("api/Auth/login", login);
         response.EnsureSuccessStatusCode();
-        return JsonSerializer.Deserialize<UserDTO>(await response.Content.ReadAsStringAsync(), _options);
+        return JsonSerializer.Deserialize<UserDto>(await response.Content.ReadAsStringAsync(), _options);
     }
 
     public async Task LogoutAsync()

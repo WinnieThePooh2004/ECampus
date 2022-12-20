@@ -4,38 +4,43 @@
 
 @if (Data?.Data is null || Select is null)
 {
-    <p><em>Loading...</em></p>
+    <p>
+        <em>Loading...</em>
+    </p>
     return;
 }
 <table>
     <thead>
-        <input type="text" @bind-value="@Parameters.SearchTerm" @onblur="RefreshData" style="background-color: rgb(235, 235, 235)"
-               placeholder="Search" />
-        <tr>
-            @foreach (var propertyName in PropertyNames)
-            {
-                <th>@propertyName</th>
-            }
-            <th></th>
-        </tr>
+    @if (!string.IsNullOrWhiteSpace(Title))
+    {
+        <H3>@Title</H3>
+    }
+    <input type="text" @bind-value="@Parameters.SearchTerm" @onblur="RefreshData" style="background-color: rgb(235, 235, 235)"
+           placeholder="Search"/>
+    <tr>
+        @foreach (var propertyName in PropertyNames)
+        {
+            <th>@propertyName</th>
+        }
+        <th></th>
+    </tr>
     </thead>
     <tbody>
-        @foreach (var item in Data.Data)
-        {
-            <tr>
-                @foreach (var property in PropertiesToShow)
-                {
-                    <td>@property(item)</td>
-                }
-                <td>
-                    <MudCheckBox T="bool" Checked="@this[item]" Color="Color.Primary"
-                        CheckedChanged="@(isChecked => ValueChecked(isChecked, item))" />
-                </td>
-            </tr>
-        }
+    @foreach (var item in Data.Data)
+    {
+        <tr>
+            @foreach (var property in PropertiesToShow)
+            {
+                <td>@property(item)</td>
+            }
+            <td>
+                <MudCheckBox T="bool" Checked="@this[item]" Color="Color.Primary"
+                             CheckedChanged="@(isChecked => ValueChecked(isChecked, item))"/>
+            </td>
+        </tr>
+    }
     </tbody>
-    <DataPageSelect MaxPageNumber="Data.Metadata.MaxPageNumber" OnPageNumberChanged="@(PageNumberChanged)" />
-    <br />
-    <DataPageSizeSelect OnPageSizeChanged="@(PageSizeChanged)" PageSize="Parameters.PageSize" />
+    <DataPageSelect MaxPageNumber="Data.Metadata.MaxPageNumber" OnPageNumberChanged="@(PageNumberChanged)"/>
+    <br/>
+    <DataPageSizeSelect OnPageSizeChanged="@(PageSizeChanged)" PageSize="Parameters.PageSize"/>
 </table>
-

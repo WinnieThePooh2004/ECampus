@@ -6,7 +6,7 @@ using UniversityTimetable.Shared.Models.RelationModels;
 
 namespace UniversityTimetable.Shared.Models
 {
-    public class Teacher : IIsDeleted, IModel, IModelWithManyToManyRelations<Subject>, IModelWithOneToManyRelations<SubjectTeacher>
+    public class Teacher : IIsDeleted, IModel, IModelWithManyToManyRelations<Subject, SubjectTeacher>
     {
         public int Id { get; set; }
         public string FirstName { get; set; }
@@ -23,18 +23,10 @@ namespace UniversityTimetable.Shared.Models
         public List<User> Users { get; set; }
         public List<UserTeacher> UsersIds { get; set; }
 
-        Expression<Func<SubjectTeacher, bool>> IModelWithOneToManyRelations<SubjectTeacher>.IsRelated => st => st.TeacherId == Id;
+        Expression<Func<SubjectTeacher, bool>> IModelWithManyToManyRelations<Subject, SubjectTeacher>.IsRelated => st => st.TeacherId == Id;
 
-        List<Subject> IModelWithManyToManyRelations<Subject>.RelatedModels 
-        {
-            get => Subjects;
-            set => Subjects = value;
-        }
+        List<Subject> IModelWithManyToManyRelations<Subject, SubjectTeacher>.RelatedModels => Subjects;
 
-        List<SubjectTeacher> IModelWithOneToManyRelations<SubjectTeacher>.RelatedModels
-        {
-            get => SubjectIds;
-            set => SubjectIds = value;
-        }
+        List<SubjectTeacher> IModelWithManyToManyRelations<Subject, SubjectTeacher>.RelationModels => SubjectIds;
     }
 }
