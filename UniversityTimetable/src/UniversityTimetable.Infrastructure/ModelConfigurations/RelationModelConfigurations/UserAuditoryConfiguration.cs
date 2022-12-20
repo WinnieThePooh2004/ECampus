@@ -8,8 +8,9 @@ namespace UniversityTimetable.Infrastructure.ModelConfigurations.RelationModelCo
     {
         public void Configure(EntityTypeBuilder<UserAuditory> builder)
         {
-            builder.HasQueryFilter(s => !s.IsDeleted)
-                .HasOne(s => s.User)
+            builder.HasKey(s => new{ s.UserId, s.AuditoryId });
+
+            builder.HasOne(s => s.User)
                 .WithMany(s => s.SavedAuditoriesIds)
                 .HasForeignKey(s => s.UserId)
                 .IsRequired()

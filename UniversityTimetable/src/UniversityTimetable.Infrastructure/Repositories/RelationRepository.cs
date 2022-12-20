@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using UniversityTimetable.Shared.Exceptions.InfrastructureExceptions;
 using UniversityTimetable.Shared.Extensions;
@@ -11,7 +12,7 @@ namespace UniversityTimetable.Infrastructure.Repositories;
 public class RelationRepository<TLeftTable, TRightTable, TRelations> : IRelationRepository<TLeftTable, TRightTable, TRelations>
     where TLeftTable: class, IModel, IModelWithManyToManyRelations<TRightTable, TRelations>, new()
     where TRightTable: class, IModel
-    where TRelations: class, IModel, IRelationModel<TLeftTable, TRightTable>, new()
+    where TRelations: class, IRelationModel<TLeftTable, TRightTable>, new()
 {
     private readonly ILogger<RelationRepository<TLeftTable, TRightTable, TRelations>> _logger;
     private readonly ApplicationDbContext _context;
@@ -30,7 +31,7 @@ public class RelationRepository<TLeftTable, TRightTable, TRelations> : IRelation
         {
             await _context.SaveChangesAsync();
         }
-        catch
+        catch(DbUpdateException)
         {
             _logger.LogAndThrowException(new InfrastructureExceptions(HttpStatusCode.NotFound,
                 $"cannot find object of type {typeof(TLeftTable)} with id={leftTableId} " +
@@ -47,7 +48,7 @@ public class RelationRepository<TLeftTable, TRightTable, TRelations> : IRelation
         {
             await _context.SaveChangesAsync();
         }
-        catch
+        catch(DbUpdateException)
         {
             _logger.LogAndThrowException(new InfrastructureExceptions(HttpStatusCode.NotFound,
                 $"cannot find object of relation model of type {typeof(TRelations)}" +

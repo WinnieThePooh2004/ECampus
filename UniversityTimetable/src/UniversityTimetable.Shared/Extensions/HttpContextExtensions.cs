@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using UniversityTimetable.Shared.Auth;
 using UniversityTimetable.Shared.DataTransferObjects;
+
 namespace UniversityTimetable.Shared.Extensions;
 
 public static class HttpContextExtensions

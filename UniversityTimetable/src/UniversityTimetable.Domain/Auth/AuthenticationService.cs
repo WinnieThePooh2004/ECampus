@@ -1,10 +1,8 @@
 ﻿using System.Net;
 using System.Security.Claims;
 using IdentityServer4.Extensions;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using UniversityTimetable.Shared.Auth;
-using UniversityTimetable.Shared.Enums;
 using UniversityTimetable.Shared.Exceptions.DomainExceptions;
 using UniversityTimetable.Shared.Extensions;
 using UniversityTimetable.Shared.Interfaces.Auth;
@@ -22,7 +20,6 @@ public class AuthenticationService : IAuthenticationService
 
     public void VerifyUser(ClaimsPrincipal user)
     {
-        object context;
         if (!user.IsAuthenticated())
         {
             _logger.LogAndThrowException(new DomainException(HttpStatusCode.Unauthorized));

@@ -8,8 +8,9 @@ public class UserTeacherConfiguration : IEntityTypeConfiguration<UserTeacher>
 {
     public void Configure(EntityTypeBuilder<UserTeacher> builder)
     {
-        builder.HasQueryFilter(s => !s.IsDeleted)
-            .HasOne(s => s.User)
+        builder.HasKey(s => new{ s.UserId, s.TeacherId });
+
+        builder.HasOne(s => s.User)
             .WithMany(s => s.SavedTeachersIds)
             .HasForeignKey(s => s.UserId)
             .IsRequired()

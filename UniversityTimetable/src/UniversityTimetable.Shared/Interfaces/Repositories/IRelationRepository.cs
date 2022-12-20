@@ -12,7 +12,7 @@ namespace UniversityTimetable.Shared.Interfaces.Repositories;
 public interface IRelationRepository<TLeftTable, TRightTable, TRelations>
     where TLeftTable: class, IModel
     where TRightTable: class, IModel
-    where TRelations: class, IModel, IRelationModel<TLeftTable, TRightTable>
+    where TRelations: class, IRelationModel<TLeftTable, TRightTable>
 {
     Task<TRelations> CreateRelation(int leftTableId, int rightTableId);
     Task<TRelations> DeleteRelation(int leftTableId, int rightTableId);

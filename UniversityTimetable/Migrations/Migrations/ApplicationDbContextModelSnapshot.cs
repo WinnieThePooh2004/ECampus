@@ -16,7 +16,7 @@ namespace Migrations.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.0")
+                .HasAnnotation("ProductVersion", "7.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -220,104 +220,60 @@ namespace Migrations.Migrations
 
             modelBuilder.Entity("UniversityTimetable.Shared.Models.RelationModels.SubjectTeacher", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("TeacherId")
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
 
                     b.Property<int>("SubjectId")
                         .HasColumnType("int");
 
-                    b.Property<int>("TeacherId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
+                    b.HasKey("TeacherId", "SubjectId");
 
                     b.HasIndex("SubjectId");
-
-                    b.HasIndex("TeacherId");
 
                     b.ToTable("SubjectTeachers");
                 });
 
             modelBuilder.Entity("UniversityTimetable.Shared.Models.RelationModels.UserAuditory", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("AuditoryId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
+                    b.HasKey("UserId", "AuditoryId");
 
                     b.HasIndex("AuditoryId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("UserAuditories");
                 });
 
             modelBuilder.Entity("UniversityTimetable.Shared.Models.RelationModels.UserGroup", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("GroupId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
+                    b.HasKey("UserId", "GroupId");
 
                     b.HasIndex("GroupId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("UserGroups");
                 });
 
             modelBuilder.Entity("UniversityTimetable.Shared.Models.RelationModels.UserTeacher", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
 
                     b.Property<int>("TeacherId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
+                    b.HasKey("UserId", "TeacherId");
 
                     b.HasIndex("TeacherId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("UserTeachers");
                 });
@@ -541,7 +497,7 @@ namespace Migrations.Migrations
             modelBuilder.Entity("UniversityTimetable.Shared.Models.RelationModels.UserAuditory", b =>
                 {
                     b.HasOne("UniversityTimetable.Shared.Models.Auditory", "Auditory")
-                        .WithMany("UserIds")
+                        .WithMany("UsersIds")
                         .HasForeignKey("AuditoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -560,13 +516,13 @@ namespace Migrations.Migrations
             modelBuilder.Entity("UniversityTimetable.Shared.Models.RelationModels.UserGroup", b =>
                 {
                     b.HasOne("UniversityTimetable.Shared.Models.Group", "Group")
-                        .WithMany("UserIds")
+                        .WithMany("UsersIds")
                         .HasForeignKey("GroupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("UniversityTimetable.Shared.Models.User", "User")
-                        .WithMany("SavedGroupIds")
+                        .WithMany("SavedGroupsIds")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -585,7 +541,7 @@ namespace Migrations.Migrations
                         .IsRequired();
 
                     b.HasOne("UniversityTimetable.Shared.Models.User", "User")
-                        .WithMany("SavedTeacherIds")
+                        .WithMany("SavedTeachersIds")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -610,7 +566,7 @@ namespace Migrations.Migrations
                 {
                     b.Navigation("Classes");
 
-                    b.Navigation("UserIds");
+                    b.Navigation("UsersIds");
                 });
 
             modelBuilder.Entity("UniversityTimetable.Shared.Models.Department", b =>
@@ -629,7 +585,7 @@ namespace Migrations.Migrations
                 {
                     b.Navigation("Classes");
 
-                    b.Navigation("UserIds");
+                    b.Navigation("UsersIds");
                 });
 
             modelBuilder.Entity("UniversityTimetable.Shared.Models.Subject", b =>
@@ -652,9 +608,9 @@ namespace Migrations.Migrations
                 {
                     b.Navigation("SavedAuditoriesIds");
 
-                    b.Navigation("SavedGroupIds");
+                    b.Navigation("SavedGroupsIds");
 
-                    b.Navigation("SavedTeacherIds");
+                    b.Navigation("SavedTeachersIds");
                 });
 #pragma warning restore 612, 618
         }

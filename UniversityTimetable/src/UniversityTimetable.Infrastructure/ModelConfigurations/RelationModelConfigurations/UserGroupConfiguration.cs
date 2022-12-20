@@ -8,8 +8,9 @@ public class UserGroupConfiguration : IEntityTypeConfiguration<UserGroup>
 {
     public void Configure(EntityTypeBuilder<UserGroup> builder)
     {
-        builder.HasQueryFilter(s => !s.IsDeleted)
-            .HasOne(s => s.User)
+        builder.HasKey(s => new{ s.UserId, s.GroupId });
+
+        builder.HasOne(s => s.User)
             .WithMany(s => s.SavedGroupsIds)
             .HasForeignKey(s => s.UserId)
             .IsRequired()
