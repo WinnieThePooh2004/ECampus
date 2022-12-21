@@ -20,16 +20,16 @@ public class UserService : IUserService
     private readonly IMapper _mapper;
     private readonly ILogger<UserService> _logger;
     private readonly IBaseService<UserDto> _baseService;
-    private readonly IRelationRepository<User, Auditory, UserAuditory> _userAuditoryRelations;
-    private readonly IRelationRepository<User, Group, UserGroup> _userGroupRelations;
-    private readonly IRelationRepository<User, Teacher, UserTeacher> _userTeacherRelations;
+    private readonly IRelationshipsRepository<User, Auditory, UserAuditory> _userAuditoryRelations;
+    private readonly IRelationshipsRepository<User, Group, UserGroup> _userGroupRelations;
+    private readonly IRelationshipsRepository<User, Teacher, UserTeacher> _userTeacherRelations;
     private readonly IAuthenticationService _authenticationService;
 
     public UserService(IUserRepository repository, IMapper mapper, ILogger<UserService> logger,
         IBaseService<UserDto> baseService,
-        IRelationRepository<User, Auditory, UserAuditory> userAuditoryRelations,
-        IRelationRepository<User, Group, UserGroup> userGroupRelations,
-        IRelationRepository<User, Teacher, UserTeacher> userTeacherRelations,
+        IRelationshipsRepository<User, Auditory, UserAuditory> userAuditoryRelations,
+        IRelationshipsRepository<User, Group, UserGroup> userGroupRelations,
+        IRelationshipsRepository<User, Teacher, UserTeacher> userTeacherRelations,
         IAuthenticationService authenticationService)
     {
         _repository = repository;
@@ -42,16 +42,8 @@ public class UserService : IUserService
         _authenticationService = authenticationService;
     }
 
-    public async Task<UserDto> CreateAsync(UserDto entity)
-    {
-        // var errors = await ValidateAsync(entity);
-        // if (errors.Any())
-        // {
-        //     _logger.LogAndThrowException(new ValidationException(typeof(UserDto), errors));
-        // }
-
-        return await _baseService.CreateAsync(entity);
-    }
+    public Task<UserDto> CreateAsync(UserDto entity) 
+        => _baseService.CreateAsync(entity);
 
     public Task DeleteAsync(int? id)
         => _baseService.DeleteAsync(id);
@@ -62,20 +54,12 @@ public class UserService : IUserService
         {
             throw new NullIdException();
         }
-
+        
         return _mapper.Map<UserDto>(await _repository.GetByIdAsync((int)id));
     }
 
-    public async Task<UserDto> UpdateAsync(UserDto entity)
-    {
-        // var errors = await ValidateAsync(entity);
-        // if (errors.Any())
-        // {
-        //     _logger.LogAndThrowException(new ValidationException(typeof(UserDto), errors));
-        // }
-
-        return await _baseService.UpdateAsync(entity);
-    }
+    public Task<UserDto> UpdateAsync(UserDto entity) => 
+        _baseService.UpdateAsync(entity);
 
     public async Task<Dictionary<string, string>> ValidateAsync(UserDto user, HttpContext context)
     {
