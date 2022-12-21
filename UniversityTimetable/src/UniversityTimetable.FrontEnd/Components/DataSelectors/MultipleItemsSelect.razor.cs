@@ -11,6 +11,7 @@ namespace UniversityTimetable.FrontEnd.Components.DataSelectors
     {
         [Parameter] public string Title { get; set; }
         [Parameter] public List<string> PropertyNames { get; set; }
+        [Parameter] public Action OnChanged { get; set; }
         [Parameter] public List<Func<TData, object>> PropertiesToShow { get; set; }
         [Parameter] public Func<TData, bool> ShowOnly { get; set; } = item => true;
         [Parameter] public List<TData> SelectTo { get; set; }
@@ -30,11 +31,11 @@ namespace UniversityTimetable.FrontEnd.Components.DataSelectors
             if(!isChecked && selectInSourceList is not null)
             {
                 SelectTo.Remove(selectInSourceList);
-                Select[item] = false;
+                this[item] = false;
                 return;
             }
             SelectTo.Add(item);
-            Select[item] = true;
+            this[item] = true;
         }
 
         private bool this[TData item]
@@ -47,7 +48,11 @@ namespace UniversityTimetable.FrontEnd.Components.DataSelectors
                 }
                 return Select[item];
             }
-            set => Select[item] = value;
+            set
+            {
+                Select[item] = value;
+                OnChanged();
+            }
         }
     }
 }

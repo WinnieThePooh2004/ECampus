@@ -39,7 +39,7 @@
             </table>
             <br/><br/>
             <MultipleItemsSelect TData="SubjectDto" TParameters="SubjectParameters"
-                                 SelectTo="Model.Subjects"
+                                 SelectTo="Model.Subjects" OnChanged="@StateHasChanged"
                                  PropertyNames="@(new List<string> { "Name" })"
                                  PropertiesToShow="@(new List<Func<SubjectDto, object>> { t => t.Name })"/>
             <button type="submit" class="btn btn-success">Save</button>
