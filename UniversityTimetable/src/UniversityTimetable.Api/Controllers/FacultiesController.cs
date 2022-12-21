@@ -1,6 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using UniversityTimetable.Domain.Auth;
 using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Shared.Enums;
 using UniversityTimetable.Shared.QueryParameters;
@@ -31,7 +30,7 @@ namespace UniversityTimetable.Api.Controllers
         }
 
         [HttpPost]
-        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = nameof(UserRole.Admin))]
+        [Authorize(UserRole.Admin)]
         public async Task<IActionResult> Post([Bind("Name")] FacultyDto facultacy)
         {
             if (!ModelState.IsValid)
@@ -43,7 +42,7 @@ namespace UniversityTimetable.Api.Controllers
         }
 
         [HttpPut]
-        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = nameof(UserRole.Admin))]
+        [Authorize(UserRole.Admin)]
         public async Task<IActionResult> Put(FacultyDto faculty)
         {
             if (!ModelState.IsValid)
@@ -55,6 +54,7 @@ namespace UniversityTimetable.Api.Controllers
         }
 
         [HttpDelete("{id:int?}")]
+        [Authorize(UserRole.Admin)]
         public async Task<IActionResult> Delete(int? id)
         {
             await _service.DeleteAsync(id);

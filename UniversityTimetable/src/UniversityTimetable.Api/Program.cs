@@ -67,11 +67,9 @@ builder.Services.AddScoped<IClassRepository, ClassRepository>();
 builder.Services.AddScoped<IRelationshipsRepository<User, Auditory, UserAuditory>, RelationshipsRepository<User, Auditory, UserAuditory>>();
 builder.Services.AddScoped<IRelationshipsRepository<User, Group, UserGroup>, RelationshipsRepository<User, Group, UserGroup>>();
 builder.Services.AddScoped<IRelationshipsRepository<User, Teacher, UserTeacher>, RelationshipsRepository<User, Teacher, UserTeacher>>();
-builder.Services.AddScoped<IRelationRepository<User, Auditory, UserAuditory>, RelationRepository<User, Auditory, UserAuditory>>();
-builder.Services.AddScoped<IRelationRepository<User, Group, UserGroup>, RelationRepository<User, Group, UserGroup>>();
-builder.Services.AddScoped<IRelationRepository<User, Teacher, UserTeacher>, RelationRepository<User, Teacher, UserTeacher>>();
 builder.Services.AddScoped<IBaseService<UserDto>, BaseService<UserDto, User>>();
 builder.Services.AddScoped<IBaseRepository<User>, BaseRepository<User>>();
+builder.Services.Decorate<IBaseRepository<User>, BaseUserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 

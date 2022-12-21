@@ -1,6 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using UniversityTimetable.Domain.Auth;
 using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Shared.Enums;
 using UniversityTimetable.Shared.Interfaces.Services;
@@ -49,21 +48,21 @@ namespace UniversityTimetable.Api.Controllers
 
         // GET: Classes/Create
         [HttpPost]
-        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = nameof(UserRole.Admin))]
+        [Authorize(UserRole.Admin)]
         public async Task<IActionResult> Post(ClassDto @class)
         {
             return Ok(await _service.CreateAsync(@class));
         }
 
         [HttpPut]
-        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = nameof(UserRole.Admin))]
+        [Authorize(UserRole.Admin)]
         public async Task<IActionResult> Put(ClassDto @class)
         {
             return Ok(await _service.UpdateAsync(@class));
         }
 
         [HttpDelete("{id:int?}")]
-        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = nameof(UserRole.Admin))]
+        [Authorize(UserRole.Admin)]
         public async Task<IActionResult> Delete(int id)
         {
             await _service.DeleteAsync(id);

@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using UniversityTimetable.Domain.Auth;
 using UniversityTimetable.Shared.DataTransferObjects;
+using UniversityTimetable.Shared.Enums;
 using UniversityTimetable.Shared.Interfaces.Services;
 
 namespace UniversityTimetable.Api.Controllers;
@@ -23,21 +23,21 @@ public class UsersController : ControllerBase
     }
 
     [HttpPost]
-    [AllowAnonymous]
+    [Microsoft.AspNetCore.Authorization.AllowAnonymous]
     public async Task<IActionResult> Post(UserDto user)
     {
         return Ok(await _service.CreateAsync(user));
     }
 
     [HttpPut]
-    [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
+    [Domain.Auth.Authorize(UserRole.Admin)]
     public async Task<IActionResult> Put(UserDto user)
     {
         return Ok(await _service.UpdateAsync(user));
     }
 
     [HttpDelete("{id:int?}")]
-    [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
+    [Authorize(UserRole.Admin)]
     public async Task<IActionResult> Delete(int? id)
     {
         await _service.DeleteAsync(id);
@@ -51,7 +51,7 @@ public class UsersController : ControllerBase
     }
         
     [HttpPost("auditory/{auditoryId:int}")]
-    [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
+    [Authorize]
     public async Task<IActionResult> SaveAuditory(int auditoryId)
     {
         await _service.SaveAuditory(HttpContext.User, auditoryId);
@@ -59,7 +59,7 @@ public class UsersController : ControllerBase
     }
         
     [HttpDelete("auditory/{auditoryId:int}")]
-    [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
+    [Authorize]
     public async Task<IActionResult> DeleteAuditory(int auditoryId)
     {
         await _service.RemoveSavedAuditory(HttpContext.User, auditoryId);
@@ -67,7 +67,7 @@ public class UsersController : ControllerBase
     }
 
     [HttpPost("group/{groupId:int}")]
-    [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
+    [Authorize]
     public async Task<IActionResult> SaveGroup(int groupId)
     {
         await _service.SaveGroup(HttpContext.User, groupId);
@@ -75,7 +75,7 @@ public class UsersController : ControllerBase
     }
         
     [HttpDelete("group/{groupId:int}")]
-    [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
+    [Authorize]
     public async Task<IActionResult> RemoveGroup(int groupId)
     {
         await _service.RemoveSavedGroup(HttpContext.User, groupId);
@@ -83,7 +83,7 @@ public class UsersController : ControllerBase
     }
 
     [HttpPost("teacher/{teacherId:int}")]
-    [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
+    [Authorize]
     public async Task<IActionResult> SaveTeacher(int teacherId)
     {
         await _service.SaveTeacher(HttpContext.User, teacherId);
@@ -91,7 +91,7 @@ public class UsersController : ControllerBase
     }
         
     [HttpDelete("teacher/{teacherId:int}")]
-    [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
+    [Authorize]
     public async Task<IActionResult> RemoveTeacher(int teacherId)
     {
         await _service.RemoveSavedTeacher(HttpContext.User, teacherId);
