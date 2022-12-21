@@ -17,7 +17,7 @@ namespace UniversityTimetable.FrontEnd.Pages.Timetable
 
         protected override string PageAfterSave => $"/Timetable/{(TimetableMode)Mode}/{Id}";
 
-        private ClassDTO CreateModel()
+        private ClassDto CreateModel()
             => (TimetableMode)Mode switch
             {
                 TimetableMode.Teacher => new() { Number = Number, DayOfWeek = DayOfWeek, TeacherId = Id },

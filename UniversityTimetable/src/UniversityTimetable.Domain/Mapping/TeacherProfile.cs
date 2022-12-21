@@ -3,14 +3,13 @@ using UniversityTimetable.Domain.Mapping.Converters;
 using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Shared.Models;
 
-namespace UniversityTimetable.Domain.Mapping
+namespace UniversityTimetable.Domain.Mapping;
+
+public class TeacherProfile : Profile
 {
-    public class TeacherProfile : Profile
+    public TeacherProfile()
     {
-        public TeacherProfile()
-        {
-            CreateMap<Teacher, TeacherDTO>().ReverseMap();
-            this.CreateListWithPaginationDataMap<Teacher, TeacherDTO>();
-        }
+        CreateMap<Teacher, TeacherDto>().ReverseMap();
+        this.CreateListWithPaginationDataMap<Teacher, TeacherDto>();
     }
 }

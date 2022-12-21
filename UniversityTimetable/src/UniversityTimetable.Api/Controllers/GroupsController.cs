@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using UniversityTimetable.Domain.Auth;
 using UniversityTimetable.Shared.DataTransferObjects;
+using UniversityTimetable.Shared.Enums;
 using UniversityTimetable.Shared.Interfaces.Services;
 using UniversityTimetable.Shared.QueryParameters;
 
@@ -9,9 +11,9 @@ namespace UniversityTimetable.Api.Controllers
     [Route("api/[controller]")]
     public class GroupsController : ControllerBase
     {
-        private readonly IService<GroupDTO, GroupParameters> _service;
+        private readonly IService<GroupDto, GroupParameters> _service;
 
-        public GroupsController(IService<GroupDTO, GroupParameters> service)
+        public GroupsController(IService<GroupDto, GroupParameters> service)
         {
             _service = service;
         }
@@ -24,17 +26,15 @@ namespace UniversityTimetable.Api.Controllers
         }
 
         // GET: Groups/Details/5
-        [HttpGet("{id}")]
+        [HttpGet("{id:int?}")]
         public async Task<IActionResult> Get(int? id)
         {
             return Ok(await _service.GetByIdAsync(id));
         }
 
-        // POST: Groups/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public async Task<IActionResult> Post(GroupDTO group)
+        [Authorize(UserRole.Admin)]
+        public async Task<IActionResult> Post(GroupDto group)
         {
             if (!ModelState.IsValid || group.DepartmentId == 0)
             {
@@ -44,11 +44,9 @@ namespace UniversityTimetable.Api.Controllers
             return Ok(group);
         }
 
-        // POST: Groups/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPut]
-        public async Task<IActionResult> Put(GroupDTO group)
+        [Authorize(UserRole.Admin)]
+        public async Task<IActionResult> Put(GroupDto group)
         {
             if (!ModelState.IsValid)
             {
@@ -59,7 +57,8 @@ namespace UniversityTimetable.Api.Controllers
         }
 
         // POST: Groups/Delete/5
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int?}")]
+        [Authorize(UserRole.Admin)]
         public async Task<IActionResult> Delete(int id)
         {
             await _service.DeleteAsync(id);

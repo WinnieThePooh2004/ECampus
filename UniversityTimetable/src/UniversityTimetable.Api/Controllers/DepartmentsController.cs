@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using UniversityTimetable.Domain.Auth;
 using UniversityTimetable.Shared.DataTransferObjects;
+using UniversityTimetable.Shared.Enums;
 using UniversityTimetable.Shared.Interfaces.Services;
 using UniversityTimetable.Shared.QueryParameters;
 
@@ -23,7 +25,7 @@ namespace UniversityTimetable.Api.Controllers
         }
 
         // GET: Departments/Details/5
-        [HttpGet("{id}")]
+        [HttpGet("{id:int?}")]
         public async Task<IActionResult> Get(int? id)
         {
             return Ok(await _service.GetByIdAsync(id));
@@ -33,6 +35,7 @@ namespace UniversityTimetable.Api.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize(UserRole.Admin)]
         public async Task<IActionResult> Post(DepartmentDTO department)
         {
             if (!ModelState.IsValid)
@@ -43,10 +46,8 @@ namespace UniversityTimetable.Api.Controllers
             return Ok(department);
         }
 
-        // POST: Departments/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPut]
+        [Authorize(UserRole.Admin)]
         public async Task<IActionResult> Put(DepartmentDTO department)
         {
             await _service.UpdateAsync(department);
@@ -54,7 +55,8 @@ namespace UniversityTimetable.Api.Controllers
         }
 
         // GET: Departments/Delete/5
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int?}")]
+        [Authorize(UserRole.Admin)]
         public async Task<IActionResult> Delete(int? id)
         {
             await _service.DeleteAsync(id);

@@ -1,0 +1,31 @@
+﻿@page "/loginControl"
+@using System.Web;
+<AuthorizeView>
+    <Authorized>
+        <a class="ml-md-auto btn btn-primary"
+           href="/logout?returnUrl=/"
+           target="_top">Logout</a>
+    </Authorized>
+    <NotAuthorized>
+        <input type="text"
+               placeholder="Email"
+               @bind="@_email" />
+        &nbsp;&nbsp;
+        <input type="password"
+               placeholder="Password"
+               @bind="@_password" />
+        <a class="ml-md-auto btn btn-primary"
+           href="/login?Email=@_email&Password=@_password"
+           target="_top">Login</a>
+        <a class="ml-md-auto btn btn-primary" target="_top" href="/SignUp">Sign up</a>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    string _email = "";
+    string _password = "";
+    private static string Encode(string param)
+    {
+        return HttpUtility.UrlEncode(param);
+    }
+}

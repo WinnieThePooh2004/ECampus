@@ -7,7 +7,7 @@ namespace UniversityTimetable.Api.MiddlewareFilters
 {
 	public class MiddlewareExceptionFilter : IActionFilter, IOrderedFilter
 	{
-		private readonly ILogger _logger;
+		private readonly ILogger<MiddlewareExceptionFilter> _logger;
 		public MiddlewareExceptionFilter(ILogger<MiddlewareExceptionFilter> logger)
 		{
 			_logger = logger;
@@ -21,9 +21,9 @@ namespace UniversityTimetable.Api.MiddlewareFilters
 				return;
 			}
 			context.ExceptionHandled = true;
-			if (context.Exception is HttpResponseException httpResponseExeption)
+			if (context.Exception is HttpResponseException httpResponseException)
 			{
-				context.Result = FilterHttpResponseException(httpResponseExeption);
+				context.Result = FilterHttpResponseException(httpResponseException);
 				return;
 			}
 			_logger.LogError(context.Exception, "Unhandled exception occured");
@@ -35,10 +35,10 @@ namespace UniversityTimetable.Api.MiddlewareFilters
 
 		public void OnActionExecuting(ActionExecutingContext context)
 		{
-
+			
 		}
 
-		private IActionResult FilterHttpResponseException(HttpResponseException exception)
+		private static IActionResult FilterHttpResponseException(HttpResponseException exception)
 		{
 			var responseObject = new BadResponseObject
 			{

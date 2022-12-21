@@ -4,13 +4,14 @@
     {
         public static Dictionary<Type, string> ControllerNames = new()
         {
-            [typeof(FacultyDTO)] = "Faculties",
-            [typeof(TeacherDTO)] = "Teachers",
-            [typeof(AuditoryDTO)] = "Auditories",
-            [typeof(ClassDTO)] = "Timetable",
-            [typeof(GroupDTO)] = "Groups",
-            [typeof(SubjectDTO)] = "Subjects",
+            [typeof(FacultyDto)] = "Faculties",
+            [typeof(TeacherDto)] = "Teachers",
+            [typeof(AuditoryDto)] = "Auditories",
+            [typeof(ClassDto)] = "Timetable",
+            [typeof(GroupDto)] = "Groups",
+            [typeof(SubjectDto)] = "Subjects",
             [typeof(DepartmentDTO)] = "Departments",
+            [typeof(UserDto)] = "Users"
         };
     }
 }

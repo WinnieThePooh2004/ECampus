@@ -1,4 +1,5 @@
 ﻿using UniversityTimetable.Shared.Interfaces.Data;
+using UniversityTimetable.Shared.Models.RelationModels;
 
 namespace UniversityTimetable.Shared.Models
 {
@@ -12,5 +13,7 @@ namespace UniversityTimetable.Shared.Models
         public int DepartmentId { get; set; }
 
         public List<Class> Classes { get; set; }
+        public List<User> Users { get; set; }
+        public List<UserGroup> UsersIds { get; set; }
     }
 }

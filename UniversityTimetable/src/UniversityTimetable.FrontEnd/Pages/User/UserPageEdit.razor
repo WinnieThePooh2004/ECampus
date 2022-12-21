@@ -1,0 +1,34 @@
+﻿@page "/profile/edit"
+@if (_model is null)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+    return;
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <EditForm Model="_model" OnSubmit="@Save">
+            <button type="submit" class="btn btn-success">Save</button>
+            <FluentValidationValidator Validator="Validator"/>
+            <p>
+                <label for="@_model.Username">Username</label>
+                <InputText @bind-Value="@_model.Username"/>
+                <ValidationMessage For="@(() => _model.Username)"/>
+            </p>
+            <MultipleItemsSelect TData="AuditoryDto" TParameters="AuditoryParameters" SelectTo="_model.SavedAuditories"
+                                 Title="Auditories" PropertyNames="@(new List<string> { "Building", "Name" })"
+                                 PropertiesToShow="@(new List<Func<AuditoryDto, object>> { a => a.Building, a => a.Name })"/>
+            <br/>
+            <MultipleItemsSelect TData="GroupDto" TParameters="GroupParameters" SelectTo="_model.SavedGroups"
+                                 Title="Auditories" PropertyNames="@(new List<string> { "Name" })"
+                                 PropertiesToShow="@(new List<Func<GroupDto, object>> { g => g.Name })"/>
+            <br/>
+            <MultipleItemsSelect TData="TeacherDto" TParameters="TeacherParameters" SelectTo="_model.SavedTeachers"
+                                 Title="Auditories" PropertyNames="@(new List<string> { "First name", "Last name" })"
+                                 PropertiesToShow="@(new List<Func<TeacherDto, object>> { t => t.FirstName, t => t.LastName })"/>
+            <br/>
+        </EditForm>
+    </div>
+</div>

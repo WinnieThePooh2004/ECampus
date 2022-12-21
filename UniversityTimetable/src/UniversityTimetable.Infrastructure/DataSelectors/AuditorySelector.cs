@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using UniversityTimetable.Shared.Extentions;
+using UniversityTimetable.Shared.Extensions;
 using UniversityTimetable.Shared.Interfaces.Data;
 using UniversityTimetable.Shared.Models;
 using UniversityTimetable.Shared.QueryParameters;

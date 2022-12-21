@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using UniversityTimetable.Domain.Auth;
 using UniversityTimetable.Shared.DataTransferObjects;
+using UniversityTimetable.Shared.Enums;
 using UniversityTimetable.Shared.QueryParameters;
 using UniversityTimetable.Shared.Interfaces.Services;
 
@@ -9,29 +11,28 @@ namespace UniversityTimetable.Api.Controllers
     [Route("api/[controller]")]
     public class AuditoriesController : ControllerBase
     {
-        private readonly IService<AuditoryDTO, AuditoryParameters> _service;
+        private readonly IService<AuditoryDto, AuditoryParameters> _service;
 
-        public AuditoriesController(IService<AuditoryDTO, AuditoryParameters> service)
+        public AuditoriesController(IService<AuditoryDto, AuditoryParameters> service)
         {
             _service = service;
         }
 
-        // GET: Auditories
         [HttpGet]
         public async Task<IActionResult> Get([FromQuery] AuditoryParameters parameters)
         {
             return Ok(await _service.GetByParametersAsync(parameters));
         }
 
-        // GET: Auditories/Details/5
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> Get(int? id)
         {
             return Ok(await _service.GetByIdAsync(id));
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(AuditoryDTO auditory)
+        [Authorize(UserRole.Admin)]
+        public async Task<IActionResult> Post(AuditoryDto auditory)
         {
             if (!ModelState.IsValid)
             {
@@ -42,7 +43,8 @@ namespace UniversityTimetable.Api.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Put(AuditoryDTO auditory)
+        [Authorize(UserRole.Admin)]
+        public async Task<IActionResult> Put(AuditoryDto auditory)
         {
             if (!ModelState.IsValid)
             {
@@ -52,8 +54,8 @@ namespace UniversityTimetable.Api.Controllers
             return Ok(auditory);
         }
 
-        // POST: Auditories/Delete/5
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int?}")]
+        [Authorize(UserRole.Admin)]
         public async Task<IActionResult> Delete(int? id)
         {
             await _service.DeleteAsync(id);

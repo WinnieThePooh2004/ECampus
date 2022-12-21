@@ -1,10 +1,10 @@
 ﻿@page "/subjects/edit/{Id:int}"
-@inherits EditPageBase<SubjectDTO>
+@inherits EditPageBase<SubjectDto>
 
 @if(Model is null)
 {
     <p><em>Loading...</em></p>
     return;
 }
-<SubjectEditForm Model="Model" OnSubmited="Save" />
+<SubjectEditForm Model="Model" OnSubmit="Save" />
 <a role="button" class="btn-link" href="/subjects">Back</a>

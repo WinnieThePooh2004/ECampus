@@ -6,21 +6,21 @@ namespace UniversityTimetable.FrontEnd.Components.EditForms
     public class ModelEditForm<TModel> : ComponentBase where TModel : class
     {
         [Parameter] public TModel Model { get; set; }
-        [Parameter] public EventCallback<TModel> OnSubmited { get; set; }
+        [Parameter] public EventCallback<TModel> OnSubmit { get; set; }
 
         [Inject] protected IValidator<TModel> Validator { get; set; }
 
-        protected virtual async Task Submit()
+        protected async Task Submit()
         {
             if(!await ValidateAsync(Model))
             {
                 return;
             }
 
-            await OnSubmited.InvokeAsync(Model);
+            await OnSubmit.InvokeAsync(Model);
         }
 
-        protected virtual async Task<bool> ValidateAsync(TModel model)
+        private async Task<bool> ValidateAsync(TModel model)
         {
             return !(await Validator.ValidateAsync(Model)).Errors.Any();
         }

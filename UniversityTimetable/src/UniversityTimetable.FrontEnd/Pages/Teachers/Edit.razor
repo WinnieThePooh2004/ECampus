@@ -1,11 +1,11 @@
 ﻿@page "/teachers/edit/{Id:int}"
-@inherits EditPageBase<TeacherDTO>
+@inherits EditPageBase<TeacherDto>
 @if(Model is null)
 {
     <p><em>Loading...</em></p>
     return;
 }
-<TeacherEditForm Model="@Model" OnSubmited="Save" />
+<TeacherEditForm Model="@Model" OnSubmit="Save" />
 
 @code{
     protected override string PageAfterSave => $"teachers/{Model.DepartmentId}";

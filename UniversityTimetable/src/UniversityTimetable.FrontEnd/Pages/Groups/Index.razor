@@ -1,8 +1,8 @@
 ﻿@page "/groups/{DepartmentId:int}"
-<IndexPageModel TData="GroupDTO" TParameters="GroupParameters"
+<DataTable TData="GroupDto" TParameters="GroupParameters"
                 ParameterOptions="p => p.DepartmentId = DepartmentId"
-                TableHeaders="@(new(){ "Last name", "First name" })"
-                TableData="@(new(){ g => g.Name })"
+                TableHeaders="@(new List<string> { "Last name", "First name" })"
+                TableData="@(new List<Func<GroupDto, string>> { g => g.Name })"
                 CreateLink="@($"/groups/Create/{DepartmentId}")"
                 EditLink="/groups/edit"
-                ActionLinks="@(new(){ ("Timetable", d => $"/timetable/group/{d.Id}")})" />
+                ActionLinks="@(new List<(string, Func<GroupDto, string>)> { ("Timetable", d => $"/timetable/group/{d.Id}")})" />

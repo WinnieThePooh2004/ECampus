@@ -12,7 +12,7 @@ namespace UniversityTimetable.Tests.Unit.BackEnd.Domain
 {
     public class BaseClassServiceTests
     {
-        private readonly IBaseService<ClassDTO> _baseService;
+        private readonly IBaseService<ClassDto> _baseService;
         private readonly BaseClassService _service;
         private readonly IMapper _mapper;
         private readonly ILogger<BaseClassService> _logger;
@@ -22,7 +22,7 @@ namespace UniversityTimetable.Tests.Unit.BackEnd.Domain
         public BaseClassServiceTests()
         {
             _logger = Substitute.For<ILogger<BaseClassService>>();
-            _baseService = Substitute.For<IBaseService<ClassDTO>>();
+            _baseService = Substitute.For<IBaseService<ClassDto>>();
             _repository = Substitute.For<IClassRepository>();
             _mapper = new MapperConfiguration(cfg => cfg.AddProfile<ClassProfile>()).CreateMapper();
             _service = new BaseClassService(_baseService, _logger, _repository, _mapper);
@@ -33,7 +33,7 @@ namespace UniversityTimetable.Tests.Unit.BackEnd.Domain
         [Fact]
         public async Task GetById_ReturnsFromBaseService()
         {
-            var entity = _fixture.Create<ClassDTO>();
+            var entity = _fixture.Create<ClassDto>();
             _baseService.GetByIdAsync(1).Returns(entity);
 
             var result = await _service.GetByIdAsync(1);
@@ -44,12 +44,12 @@ namespace UniversityTimetable.Tests.Unit.BackEnd.Domain
         [Fact]
         public async Task Update_NoValidationErrors_ShouldReturnFromBaseService()
         {
-            var entity = _fixture.Create<ClassDTO>();
+            var entity = _fixture.Create<ClassDto>();
             _baseService.UpdateAsync(entity).Returns(entity);
             _repository.ValidateAsync(Arg.Any<Class>()).Returns(new Dictionary<string, string>());
 
             var result = await _service.UpdateAsync(entity);
-            result.Should().BeEquivalentTo(entity, opt => opt.ComparingByMembers<ClassDTO>());
+            result.Should().BeEquivalentTo(entity, opt => opt.ComparingByMembers<ClassDto>());
         }
 
         [Fact]
@@ -65,12 +65,12 @@ namespace UniversityTimetable.Tests.Unit.BackEnd.Domain
         [Fact]
         public async Task Create_NoValidationErrors_ShouldReturnFromBaseService()
         {
-            var entity = _fixture.Create<ClassDTO>();
+            var entity = _fixture.Create<ClassDto>();
             _baseService.CreateAsync(entity).Returns(entity);
             _repository.ValidateAsync(Arg.Any<Class>()).Returns(new Dictionary<string, string>());
 
             var result = await _service.CreateAsync(entity);
-            result.Should().BeEquivalentTo(entity, opt => opt.ComparingByMembers<ClassDTO>());
+            result.Should().BeEquivalentTo(entity, opt => opt.ComparingByMembers<ClassDto>());
         }
 
         [Fact]

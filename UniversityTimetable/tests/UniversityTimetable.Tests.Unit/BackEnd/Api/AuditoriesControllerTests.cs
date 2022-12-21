@@ -10,7 +10,7 @@ namespace UniversityTimetable.Tests.Unit.BackEnd.Api
 {
     public class AuditoriesControllerTests
     {
-        private readonly IService<AuditoryDTO, AuditoryParameters> _service = Substitute.For<IService<AuditoryDTO, AuditoryParameters>>();
+        private readonly IService<AuditoryDto, AuditoryParameters> _service = Substitute.For<IService<AuditoryDto, AuditoryParameters>>();
         private readonly AuditoriesController _controller;
         private readonly Fixture _fixture;
         public AuditoriesControllerTests()
@@ -23,7 +23,7 @@ namespace UniversityTimetable.Tests.Unit.BackEnd.Api
         [Fact]
         public async Task GetById_ReturnsFromService()
         {
-            var data = _fixture.Build<AuditoryDTO>().With(t => t.Id, 10).Create();
+            var data = _fixture.Build<AuditoryDto>().With(t => t.Id, 10).Create();
 
             _service.GetByIdAsync(10).Returns(data);
             var actionResult = await _controller.Get(10);
@@ -44,7 +44,7 @@ namespace UniversityTimetable.Tests.Unit.BackEnd.Api
         [Fact]
         public async Task Create_ReturnsFromService()
         {
-            var data = _fixture.Create<AuditoryDTO>();
+            var data = _fixture.Create<AuditoryDto>();
             _service.CreateAsync(data).Returns(data);
 
             var actionResult = await _controller.Post(data);
@@ -56,7 +56,7 @@ namespace UniversityTimetable.Tests.Unit.BackEnd.Api
         [Fact]
         public async Task Update_ReturnsFromService()
         {
-            var data = _fixture.Create<AuditoryDTO>();
+            var data = _fixture.Create<AuditoryDto>();
             _service.UpdateAsync(data).Returns(data);
 
             var actionResult = await _controller.Put(data);
@@ -68,8 +68,8 @@ namespace UniversityTimetable.Tests.Unit.BackEnd.Api
         [Fact]
         public async Task GetByParameters_ReturnsFromService()
         {
-            var data = _fixture.Build<ListWithPaginationData<AuditoryDTO>>()
-                .With(l => l.Data, Enumerable.Range(0, 5).Select(i => _fixture.Create<AuditoryDTO>()).ToList())
+            var data = _fixture.Build<ListWithPaginationData<AuditoryDto>>()
+                .With(l => l.Data, Enumerable.Range(0, 5).Select(i => _fixture.Create<AuditoryDto>()).ToList())
                 .Create();
 
             _service.GetByParametersAsync(Arg.Any<AuditoryParameters>()).Returns(data);
@@ -82,8 +82,8 @@ namespace UniversityTimetable.Tests.Unit.BackEnd.Api
         [Fact]
         public void PassedInvalidItem_ShouldHaveValidationError()
         {
-            var invalidItem = new AuditoryDTO { Name = "", Building = "" };
-            var validator = new AuditoryDTOValidator();
+            var invalidItem = new AuditoryDto { Name = "", Building = "" };
+            var validator = new AuditoryDtoValidator();
 
             var errors = validator.Validate(invalidItem).Errors.Select(e => e.ErrorMessage).ToList();
             var expectedErrors = new List<string>

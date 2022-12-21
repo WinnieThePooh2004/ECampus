@@ -10,7 +10,7 @@ namespace UniversityTimetable.Tests.Unit.BackEnd.Api
 {
     public class FacultiesControllerTests
     {
-        private readonly IService<FacultyDTO, FacultyParameters> _service = Substitute.For<IService<FacultyDTO, FacultyParameters>>();
+        private readonly IService<FacultyDto, FacultyParameters> _service = Substitute.For<IService<FacultyDto, FacultyParameters>>();
         private readonly FacultiesController _controller;
         private readonly Fixture _fixture;
         public FacultiesControllerTests()
@@ -23,7 +23,7 @@ namespace UniversityTimetable.Tests.Unit.BackEnd.Api
         [Fact]
         public async Task GetById_ReturnsFromService()
         {
-            var data = _fixture.Build<FacultyDTO>().With(t => t.Id, 10).Create();
+            var data = _fixture.Build<FacultyDto>().With(t => t.Id, 10).Create();
 
             _service.GetByIdAsync(10).Returns(data);
             var actionResult = await _controller.Get(10);
@@ -44,7 +44,7 @@ namespace UniversityTimetable.Tests.Unit.BackEnd.Api
         [Fact]
         public async Task Create_ReturnsFromService()
         {
-            var data = _fixture.Create<FacultyDTO>();
+            var data = _fixture.Create<FacultyDto>();
             _service.CreateAsync(data).Returns(data);
 
             var actionResult = await _controller.Post(data);
@@ -56,7 +56,7 @@ namespace UniversityTimetable.Tests.Unit.BackEnd.Api
         [Fact]
         public async Task Update_ReturnsFromService()
         {
-            var data = _fixture.Create<FacultyDTO>();
+            var data = _fixture.Create<FacultyDto>();
             _service.UpdateAsync(data).Returns(data);
 
             var actionResult = await _controller.Put(data);
@@ -68,8 +68,8 @@ namespace UniversityTimetable.Tests.Unit.BackEnd.Api
         [Fact]
         public async Task GetByParameters_ReturnsFromService()
         {
-            var data = _fixture.Build<ListWithPaginationData<FacultyDTO>>()
-                .With(l => l.Data, Enumerable.Range(0, 5).Select(i => _fixture.Create<FacultyDTO>()).ToList())
+            var data = _fixture.Build<ListWithPaginationData<FacultyDto>>()
+                .With(l => l.Data, Enumerable.Range(0, 5).Select(i => _fixture.Create<FacultyDto>()).ToList())
                 .Create();
 
             _service.GetByParametersAsync(Arg.Any<FacultyParameters>()).Returns(data);
@@ -82,8 +82,8 @@ namespace UniversityTimetable.Tests.Unit.BackEnd.Api
         [Fact]
         public void PassedInvalidItem_ShouldHaveValidationError()
         {
-            var invalidItem = new FacultyDTO { Name = "" };
-            var validator = new FacultyDTOValidator();
+            var invalidItem = new FacultyDto { Name = "" };
+            var validator = new FacultyDtoValidator();
 
             var errors = validator.Validate(invalidItem).Errors.Select(e => e.ErrorMessage).ToList();
             var expectedErrors = new List<string>

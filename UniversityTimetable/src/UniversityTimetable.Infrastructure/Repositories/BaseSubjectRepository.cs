@@ -1,9 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using UniversityTimetable.Shared.Exceptions.InfrastructureExceptions;
-using UniversityTimetable.Shared.Extentions;
+using UniversityTimetable.Shared.Extensions;
 using UniversityTimetable.Shared.Interfaces.Repositories;
 using UniversityTimetable.Shared.Models;
+using UniversityTimetable.Shared.Models.RelationModels;
 
 namespace UniversityTimetable.Infrastructure.Repositories
 {
@@ -52,6 +53,7 @@ namespace UniversityTimetable.Infrastructure.Repositories
             if (subject is null)
             {
                 _logger.LogAndThrowException(new ObjectNotFoundByIdException(typeof(Subject), id));
+                return null;
             }
             subject.Teachers = subject.TeacherIds.Select(t => t.Teacher).ToList();
             return subject;

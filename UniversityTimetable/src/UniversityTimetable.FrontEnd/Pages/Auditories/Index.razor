@@ -1,9 +1,9 @@
 ﻿@page "/auditories"
 <h3>Auditories</h3>
-<IndexPageModel TData="AuditoryDTO" TParameters="AuditoryParameters"
-    TableHeaders="@(new(){ "building", "name" })"
-    TableData="@(new(){ a => a.Building, a => a.Name })"
+<DataTable TData="AuditoryDto" TParameters="AuditoryParameters"
+    TableHeaders="@(new List<string> { "building", "name" })"
+    TableData="@(new List<Func<AuditoryDto, string>> { a => a.Building, a => a.Name })"
     CreateLink="/auditories/create"
     EditLink="/auditories/edit"
-    ActionLinks="@(new(){ ("Timetable", a => $"/Timetable/auditory/{a.Id}") })"
+    ActionLinks="@(new List<(string, Func<AuditoryDto, string>)> { ("Timetable", a => $"/Timetable/auditory/{a.Id}") })"
     />

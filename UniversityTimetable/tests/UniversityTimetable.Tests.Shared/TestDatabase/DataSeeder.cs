@@ -1,6 +1,7 @@
 ﻿using System.Collections.Immutable;
 using UniversityTimetable.Infrastructure;
 using UniversityTimetable.Shared.Models;
+using UniversityTimetable.Shared.Models.RelationModels;
 
 namespace UniversityTimetable.Tests.Shared.TestDatabase
 {
@@ -21,7 +22,7 @@ namespace UniversityTimetable.Tests.Shared.TestDatabase
                 Name = "calculus",
                 TeacherIds = new List<SubjectTeacher>
                 {
-                    new SubjectTeacher{ Id = 1, SubjectId = 1, TeacherId = 1 }
+                    new SubjectTeacher{ SubjectId = 1, TeacherId = 1 }
                 }
             },
             new Subject
@@ -30,7 +31,7 @@ namespace UniversityTimetable.Tests.Shared.TestDatabase
                 Name = "calculus2",
                 TeacherIds = new List<SubjectTeacher>
                 {
-                    new SubjectTeacher{ Id = 2, SubjectId = 2, TeacherId = 2 }
+                    new SubjectTeacher{ SubjectId = 2, TeacherId = 2 }
                 }
             },
             new Subject
@@ -39,7 +40,7 @@ namespace UniversityTimetable.Tests.Shared.TestDatabase
                 Name = "calculus3",
                 TeacherIds = new List<SubjectTeacher>
                 {
-                    new SubjectTeacher{ Id = 3, SubjectId = 3, TeacherId = 3 }
+                    new SubjectTeacher{ SubjectId = 3, TeacherId = 3 }
                 }
             }
         };

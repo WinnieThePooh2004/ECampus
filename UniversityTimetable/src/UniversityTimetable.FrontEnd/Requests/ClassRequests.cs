@@ -7,10 +7,10 @@ namespace UniversityTimetable.FrontEnd.Requests
     {
         private readonly HttpClient _client;
         private readonly JsonSerializerOptions _options;
-        public ClassRequests(IHttpClientFactory clientFactory)
+        public ClassRequests(IHttpClientFactory clientFactory, JsonSerializerOptions options)
         {
+            _options = options;
             _client = clientFactory.CreateClient("UTApi");
-            _options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true, IncludeFields = true };
         }
 
         public async Task<Timetable> AuditoryTimetable(int groupId)
@@ -34,7 +34,7 @@ namespace UniversityTimetable.FrontEnd.Requests
             return JsonSerializer.Deserialize<Timetable>(await response.Content.ReadAsStringAsync(), _options);
         }
 
-        public async Task<Dictionary<string, string>> ValidateAsync(ClassDTO model)
+        public async Task<Dictionary<string, string>> ValidateAsync(ClassDto model)
         {
             var response = await _client.PutAsJsonAsync("/api/Timetable/Validate", model);
             response.EnsureSuccessStatusCode();

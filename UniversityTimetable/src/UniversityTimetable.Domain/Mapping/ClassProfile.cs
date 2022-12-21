@@ -2,7 +2,7 @@
 using UniversityTimetable.Domain.Mapping.Converters;
 using UniversityTimetable.Shared.DataContainers;
 using UniversityTimetable.Shared.DataTransferObjects;
-using UniversityTimetable.Shared.Extentions;
+using UniversityTimetable.Shared.Extensions;
 using UniversityTimetable.Shared.Models;
 
 namespace UniversityTimetable.Domain.Mapping
@@ -11,8 +11,8 @@ namespace UniversityTimetable.Domain.Mapping
     {
         public ClassProfile()
         {
-            CreateMap<Class, ClassDTO>();
-            CreateMap<ClassDTO, Class>()
+            CreateMap<Class, ClassDto>();
+            CreateMap<ClassDto, Class>()
                 .IgnoreMember(dest => dest.Group)
                 .IgnoreMember(dest => dest.Auditory)
                 .IgnoreMember(dest => dest.Teacher)

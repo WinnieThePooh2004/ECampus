@@ -1,56 +1,84 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using System.Net;
+using Microsoft.Extensions.Logging;
 using UniversityTimetable.Shared.Interfaces.Data;
 using UniversityTimetable.Shared.Interfaces.ModelsRelationships;
 using UniversityTimetable.Shared.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
-using UniversityTimetable.Shared.Models;
-using System.Linq.Expressions;
-using System.Linq;
+using UniversityTimetable.Shared.Exceptions.InfrastructureExceptions;
 
-namespace UniversityTimetable.Infrastructure.Repositories
+namespace UniversityTimetable.Infrastructure.Repositories;
+
+public class RelationshipsRepository<TLeftTable, TRightTable, TRelations> : IRelationshipsRepository<TLeftTable, TRightTable, TRelations>
+    where TLeftTable : class, IModel, IModelWithManyToManyRelations<TRightTable, TRelations>, new()
+    where TRightTable : class, IModel, new()
+    where TRelations : class, IRelationModel<TLeftTable, TRightTable>, new()
 {
-    public class RelationshipsRepository<TRightTable, TLeftTable, TRelations>
-        : IRelationshipsRepository<TRightTable, TLeftTable, TRelations>
-        where TRightTable : class, IModel, IModelWithRelations<TLeftTable>, IModelWithRelations<TRelations>, new()
-        where TLeftTable : class, IModel, new()
-        where TRelations : class, IRelationModel<TRightTable, TLeftTable>, new()
+    private readonly ApplicationDbContext _context;
+    private readonly ILogger<RelationshipsRepository<TLeftTable, TRightTable, TRelations>> _logger;
+
+    public RelationshipsRepository(ApplicationDbContext context,
+        ILogger<RelationshipsRepository<TLeftTable, TRightTable, TRelations>> logger)
     {
-        private readonly ApplicationDbContext _context;
-        private readonly ILogger<RelationshipsRepository<TRightTable, TLeftTable, TRelations>> _logger;
-
-        public RelationshipsRepository(ApplicationDbContext context, ILogger<RelationshipsRepository<TRightTable, TLeftTable, TRelations>> logger)
-        {
-            _context = context;
-            _logger = logger;
-        }
-
-        public void CreateRelationModels(TRightTable model)
-        {
-            ((IModelWithRelations<TRelations>)model).Relationships = ((IModelWithRelations<TLeftTable>)model).Relationships
-                .Select(r => new TRelations { LeftTableId = r.Id }).ToList();
-            ((IModelWithRelations<TRelations>)model).Relationships = null;
-        }
-
-        public void UpdateLoadedRelations(TRightTable model)
-        {
-            var modelAsRelatedToTRelations = (IModelWithRelations<TRelations>)model;
-            var modelRelations = modelAsRelatedToTRelations.Relationships;
-
-            var modelAsRelatedToLeftTable = (IModelWithRelations<TLeftTable>)model;
-            _context.RemoveRange(modelRelations.Where(st => !modelAsRelatedToLeftTable.Relationships.Any(s => s.Id == st.LeftTableId)));
-            _context.AddRange(modelAsRelatedToLeftTable.Relationships
-                .Where(s => !modelRelations.Any(st => s.Id == st.LeftTableId))
-                .Select(s => new TRelations { RightTableId = model.Id, LeftTableId = s.Id }));
-
-            modelAsRelatedToLeftTable.Relationships = null;
-            ((IModelWithRelations<TRelations>)model).Relationships = null;
-        }
-
-        public async Task UpdateRelations(TRightTable model)
-        {
-            (model as IModelWithRelations<TRelations>).Relationships =
-                await _context.Set<TRelations>().Where((model as IModelWithRelations<TRelations>).IsRelated).ToListAsync();
-            UpdateLoadedRelations(model);
-        }
+        _context = context;
+        _logger = logger;
     }
+
+    public void CreateRelationModels(TLeftTable model)
+    {
+        model.RelationModels.AddRange(model.RelatedModels.Select(r => new TRelations { RightTableId = r.Id }));
+        model.RelatedModels = null;
+    }
+
+    public void UpdateLoadedRelations(TLeftTable model)
+    {
+        _context.RemoveRange(model.RelationModels.Where(st => model.RelatedModels.All(s => s.Id != st.RightTableId)));
+        _context.AddRange(model.RelatedModels.Where(s => model.RelationModels.All(st => s.Id != st.RightTableId))
+                .Select(s => new TRelations { LeftTableId = model.Id, RightTableId = s.Id }));
+        model.RelationModels = null;
+        model.RelatedModels = null;
+    }
+
+    public async Task UpdateRelations(TLeftTable model)
+    {
+        model.RelationModels = await _context.Set<TRelations>().Where(model.IsRelated).ToListAsync();
+        UpdateLoadedRelations(model);
+    }
+    
+    public async Task<TRelations> CreateRelation(int leftTableId, int rightTableId)
+    {
+        var relation = new TRelations { RightTableId = rightTableId, LeftTableId = leftTableId };
+        _context.Add(relation);
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch(Exception e)
+        {
+            _logger.LogError(e, "cannot add relation between object of type {LeftTable} with id={RightTableId} " +
+                                "on between object of type {RightTable} with id={LeftTableId} ", typeof(TRightTable),
+                rightTableId, typeof(TLeftTable), leftTableId);
+            throw new InfrastructureExceptions(HttpStatusCode.NotFound,e.Message);
+        }
+        return relation;
+    }
+
+    public async Task<TRelations> DeleteRelation(int leftTableId, int rightTableId)
+    {
+        var relation = new TRelations { RightTableId = rightTableId, LeftTableId = leftTableId };
+        _context.Remove(relation);
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch(Exception e)
+        {
+            _logger.LogError(e, "cannot delete relation between object of type {LeftTable} with id={RightTableId} " +
+                                "on between object of type {RightTable} with id={LeftTableId} ", typeof(TRightTable),
+                rightTableId, typeof(TLeftTable), leftTableId);
+            throw new InfrastructureExceptions(HttpStatusCode.NotFound, e.Message);
+        }
+
+        return relation;
+    }
+    
 }

@@ -4,7 +4,7 @@ using UniversityTimetable.Shared.Interfaces.Repositories;
 using UniversityTimetable.Shared.Models;
 using UniversityTimetable.Shared.Exceptions.InfrastructureExceptions;
 using UniversityTimetable.Shared.DataContainers;
-using UniversityTimetable.Shared.Extentions;
+using UniversityTimetable.Shared.Extensions;
 using UniversityTimetable.Shared.Enums;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 

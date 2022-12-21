@@ -1,5 +1,5 @@
 ﻿@page "/groups/edit/{Id:int}"
-@inherits EditPageBase<GroupDTO>
+@inherits EditPageBase<GroupDto>
 
 @if(Model is null)
 {
@@ -7,7 +7,7 @@
     return;
 }
 
-<GroupEditForm Model="Model" OnSubmited="Save" />
+<GroupEditForm Model="Model" OnSubmit="Save" />
 
 @code{
     protected override string PageAfterSave => $"/groups/{Model.DepartmentId}";

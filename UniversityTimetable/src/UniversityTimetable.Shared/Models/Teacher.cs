@@ -2,10 +2,11 @@
 using UniversityTimetable.Shared.Enums;
 using UniversityTimetable.Shared.Interfaces.Data;
 using UniversityTimetable.Shared.Interfaces.ModelsRelationships;
+using UniversityTimetable.Shared.Models.RelationModels;
 
 namespace UniversityTimetable.Shared.Models
 {
-    public class Teacher : IIsDeleted, IModel, IModelWithRelations<Subject>, IModelWithRelations<SubjectTeacher>
+    public class Teacher : IIsDeleted, IModel, IModelWithManyToManyRelations<Subject, SubjectTeacher>
     {
         public int Id { get; set; }
         public string FirstName { get; set; }
@@ -16,20 +17,22 @@ namespace UniversityTimetable.Shared.Models
         public int DepartmentId { get; set; }
         public Department Department { get; set; }
 
-        public List<SubjectTeacher> SubjectIds { get; set; }
-        public List<Subject> Subjects { get; set; }
-        public List<Class> Classes { get; set; }
+        public List<SubjectTeacher> SubjectIds { get; set; } = new();
+        public List<Subject> Subjects { get; set; } = new();
+        public List<Class> Classes { get; set; } = new();
+        public List<User> Users { get; set; } = new();
+        public List<UserTeacher> UsersIds { get; set; } = new();
 
-        Expression<Func<Subject, bool>> IModelWithRelations<Subject>.IsRelated => subject => false;
-        Expression<Func<SubjectTeacher, bool>> IModelWithRelations<SubjectTeacher>.IsRelated => st => st.TeacherId == Id;
+        Expression<Func<SubjectTeacher, bool>> IModelWithManyToManyRelations<Subject, SubjectTeacher>.IsRelated 
+            => st => st.TeacherId == Id;
 
-        List<Subject> IModelWithRelations<Subject>.Relationships 
+        List<Subject> IModelWithManyToManyRelations<Subject, SubjectTeacher>.RelatedModels
         {
             get => Subjects;
             set => Subjects = value;
         }
 
-        List<SubjectTeacher> IModelWithRelations<SubjectTeacher>.Relationships
+        List<SubjectTeacher> IModelWithManyToManyRelations<Subject, SubjectTeacher>.RelationModels
         {
             get => SubjectIds;
             set => SubjectIds = value;

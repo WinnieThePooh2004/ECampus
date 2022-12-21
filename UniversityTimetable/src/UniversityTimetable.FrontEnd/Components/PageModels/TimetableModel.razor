@@ -27,7 +27,7 @@
                     @if (_timetable?.GetClass(day, number) is null)
                     {
                         <td rowspan="@(_timetable?.GetClass(day, number, WeekDependency.AppearsOnEvenWeeks) is null ? 2 : 1)" width="15%">
-                            <a role="button" class="btn-info" href="@($"{CreateLink(day, number)}?DayOfWeek={day}&Number={number}")">Create</a>
+                            <a role="button" class="btn-info" href="@($"{CreateLink}?DayOfWeek={day}&Number={number}")">Create</a>
                         </td>
                     }
                     else
@@ -39,8 +39,8 @@
                                     @description(_timetable?.GetClass(day, number))
                                     <br />
                                 }
-                                <a role="button" href="@($"{EditLink}/{(_timetable?.GetClass(day, number).Id)}")">Edit</a> |
-                                <button role="button" class="btn-danger" onclick="@(() => Delete(_timetable?.GetClass(day, number).Id))">Delete</button>
+                                <a role="button" href="@($"{EditLink}/{(_timetable?.GetClass(day, number)?.Id)}")">Edit</a> |
+                                <button role="button" class="btn-danger" onclick="@(() => Delete(_timetable?.GetClass(day, number)?.Id))">Delete</button>
                             </p>
                         </td>
                     }
@@ -57,7 +57,7 @@
                         @if (_timetable?.GetClass(day, number, WeekDependency.AppearsOnEvenWeeks) is null)
                         {
                             <td style="border: 1px solid black;border-collapse: collapse;" width="15%">
-                                <a role="button" class="btn-info" href="@($"{CreateLink(day, number)}?DayOfWeek={day}&Number={number}")">Create</a>
+                                <a role="button" class="btn-info" href="@($"{CreateLink}?DayOfWeek={day}&Number={number}")">Create</a>
                             </td>
                         }
                         else
@@ -69,15 +69,16 @@
                                         @description(_timetable?.GetClass(day, number, WeekDependency.AppearsOnEvenWeeks))
                                         <br />
                                     }
-                                    <a role="button" href="@($"{EditLink}/{(_timetable?.GetClass(day, number, WeekDependency.AppearsOnEvenWeeks).Id)}")">Edit</a> |
-                                    <button role="button" class="btn-danger" onclick="@(() => Delete(_timetable?.GetClass(day, number, WeekDependency.AppearsOnEvenWeeks).Id))">Delete</button>
+                                    <a role="button" href="@($"{EditLink}/{(_timetable?.GetClass(day, number, WeekDependency.AppearsOnEvenWeeks)?.Id)}")">Edit</a> |
+                                    <button role="button" class="btn-danger" 
+                                            onclick="@(() => Delete(_timetable?.GetClass(day, number, WeekDependency.AppearsOnEvenWeeks)?.Id))">Delete</button>
                                 </p>
                             </td>
                         }
                     }
                     else
                     {
-                        @if (_timetable.GetClass(day, number, WeekDependency.AppearsOnEvenWeeks) is not null)
+                        @if (_timetable?.GetClass(day, number, WeekDependency.AppearsOnEvenWeeks) is not null)
                         {
                             <td width="15%">
                                 <p>
@@ -86,8 +87,9 @@
                                         @description(_timetable?.GetClass(day, number, WeekDependency.AppearsOnEvenWeeks))
                                         <br />
                                     }
-                                    <a role="button" href="@($"{EditLink}/{(_timetable?.GetClass(day, number, WeekDependency.AppearsOnEvenWeeks).Id)}")">Edit</a> |
-                                    <button role="button" class="btn-danger" onclick="@(() => Delete(_timetable?.GetClass(day, number, WeekDependency.AppearsOnEvenWeeks).Id))">Delete</button>
+                                    <a role="button" href="@($"{EditLink}/{(_timetable?.GetClass(day, number, WeekDependency.AppearsOnEvenWeeks)?.Id)}")">Edit</a> |
+                                    <button role="button" class="btn-danger" 
+                                            onclick="@(() => Delete(_timetable?.GetClass(day, number, WeekDependency.AppearsOnEvenWeeks)?.Id))">Delete</button>
                                 </p>
                             </td>
                         }

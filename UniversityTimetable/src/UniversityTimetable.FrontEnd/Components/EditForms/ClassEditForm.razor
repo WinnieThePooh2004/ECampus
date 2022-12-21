@@ -1,70 +1,62 @@
-﻿@inherits ModelEditForm<ClassDTO>
+﻿@inherits ModelEditForm<ClassDto>
 <div class="row">
     <div class="col-md-4">
         <EditForm Model="Model" on OnValidSubmit="Submit">
             <button type="submit" class="btn btn-success">Save</button>
-            <FluentValidationValidator Validator="Validator" />
+            <FluentValidationValidator Validator="Validator"/>
             <div class="form-group">
                 <label>Class type</label>
-                <br />
+                <br/>
                 <InputSelect @bind-Value="Model.ClassType">
                     @foreach (var type in Enum.GetValues<ClassType>())
                     {
                         <option value="@type">@type</option>
                     }
-                    <ValidationMessage For="@(() => Model.ClassType)" />
+                    <ValidationMessage For="@(() => Model.ClassType)"/>
                 </InputSelect>
-                <br />
+                <br/>
                 <label>Week dependency</label>
-                <br />
+                <br/>
                 <InputSelect @bind-Value="Model.WeekDependency">
                     @foreach (var weekDependency in Enum.GetValues<WeekDependency>())
                     {
                         <option value="@weekDependency">@weekDependency</option>
                     }
-                    <ValidationMessage For="@(() => Model.WeekDependency)" />
+                    <ValidationMessage For="@(() => Model.WeekDependency)"/>
                 </InputSelect>
-                <br />
-                <br />
+                <br/>
+                <br/>
             </div>
             @if (TimetableMode != TimetableMode.Teacher)
             {
-                <p>
-                    <label for="@Model.TeacherId">Select teacher</label>
-                    <ValidationMessage For="@(() => Model.TeacherId)" />
-                </p>
-                <SingleItemSelect TData="TeacherDTO" TParameters="TeacherParameters" PropertyNames="@(new(){ "First name", "Last name"})"
-                              PropertiesToShow="@(new(){ t => t.FirstName, t => t.LastName })" @bind-SelectedId="Model.TeacherId" />
+                <ValidationMessage For="@(() => Model.TeacherId)"/>
+                <SingleItemSelect TData="TeacherDto" TParameters="TeacherParameters" PropertyNames="@(new() { "First name", "Last name" })"
+                                  PropertiesToShow="@(new List<Func<TeacherDto, object>> { t => t.FirstName, t => t.LastName })"
+                                  @bind-SelectedId="Model.TeacherId" Title="Select teacher"/>
                 <br />
             }
             @if (TimetableMode != TimetableMode.Auditory)
             {
-
-                <p>
-                    <label for="@Model.AuditoryId">Select auditory</label>
-                    <ValidationMessage For="@(() => Model.AuditoryId)" />
-                </p>
-                <SingleItemSelect TData="AuditoryDTO" TParameters="AuditoryParameters" PropertyNames="@(new(){ "Building", "Name" })"
-                              PropertiesToShow=@(new(){ a => a.Building, a => a.Name }) @bind-SelectedId="Model.AuditoryId" />
+                <ValidationMessage For="@(() => Model.AuditoryId)"/>
+                <SingleItemSelect TData="AuditoryDto" TParameters="AuditoryParameters" PropertyNames="@(new() { "Building", "Name" })"
+                                  PropertiesToShow=@(new List<Func<AuditoryDto, object>> { a => a.Building, a => a.Name }) 
+                                  @bind-SelectedId="Model.AuditoryId" Title="Select auditory"/>
                 <br />
             }
             @if (TimetableMode != TimetableMode.Group)
             {
-                <p>
-                    <label for="@Model.GroupId">Select teacher</label>
-                    <ValidationMessage For="@(() => Model.GroupId)" />
-                </p>
-                <SingleItemSelect TData="GroupDTO" TParameters="GroupParameters" PropertyNames="@(new(){ "Name" })"
-                              PropertiesToShow=@(new(){ s => s.Name }) @bind-SelectedId="Model.GroupId" />
+                <ValidationMessage For="@(() => Model.GroupId)"/>
+                <SingleItemSelect TData="GroupDto" TParameters="GroupParameters" PropertyNames="@(new() { "Name" })"
+                                  PropertiesToShow=@(new() { s => s.Name }) @bind-SelectedId="Model.GroupId"
+                                  Title="Select group"/>
                 <br />
             }
-            <p>
-                <label for="@Model.SubjectId">Select teacher</label>
-                <ValidationMessage For="@(() => Model.SubjectId)" />
-            </p>
-            <SingleItemSelect TData="SubjectDTO" TParameters="SubjectParameters" PropertyNames="@(new(){ "Name" })"
-                              PropertiesToShow=@(new(){ s => s.Name }) @bind-SelectedId="Model.SubjectId" />
-            <br />
+
+            <ValidationMessage For="@(() => Model.SubjectId)"/>
+            <SingleItemSelect TData="SubjectDto" TParameters="SubjectParameters" PropertyNames="@(new() { "Name" })"
+                              PropertiesToShow="@(new List<Func<SubjectDto, object>> { s => s.Name })"
+                              @bind-SelectedId="Model.SubjectId" Title="Select subject" />
+            
         </EditForm>
     </div>
 </div>

@@ -15,7 +15,7 @@ namespace UniversityTimetable.Tests.Unit.BackEnd.Infrastructure
         public BaseSubjectRepositoryTests()
         {
             _context = TestDatabaseFactory.CreateContext();
-            _repository = new BaseSubjectRepository(Substitute.For<ILogger<BaseSubjectRepository>>(), _context);
+            //_repository = new BaseSubjectRepository(Substitute.For<ILogger<BaseSubjectRepository>>(), _context);
             _context.Database.EnsureCreated();
             _context.SeedData();
         }

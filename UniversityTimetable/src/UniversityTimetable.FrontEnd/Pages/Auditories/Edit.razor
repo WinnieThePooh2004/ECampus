@@ -1,5 +1,5 @@
 ﻿@page "/auditories/edit/{Id:int}"
-@inherits EditPageBase<AuditoryDTO>
+@inherits EditPageBase<AuditoryDto>
 
 @if(Model is null)
 {
@@ -7,7 +7,7 @@
     return;
 }
 
-<AuditoryEditForm Model="Model" OnSubmited="Save"/>
+<AuditoryEditForm Model="Model" OnSubmit="Save"/>
 
 @code {
     protected override string PageAfterSave => "/auditories";

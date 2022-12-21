@@ -1,4 +1,6 @@
+using System.Text.Json;
 using FluentValidation;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using MudBlazor.Services;
 using UniversityTimetable.Domain.Validation;
 using UniversityTimetable.FrontEnd.Extentions;
@@ -15,32 +17,55 @@ builder.Services.AddServerSideBlazor();
 
 builder.Services.Configure<Requests>(builder.Configuration.GetSection("Requests"));
 
-builder.Services.AddRequests<FacultyDTO, FacultyParameters>();
-builder.Services.AddRequests<GroupDTO, GroupParameters>();
+builder.Services.AddRequests<FacultyDto, FacultyParameters>();
+builder.Services.AddRequests<GroupDto, GroupParameters>();
 builder.Services.AddRequests<DepartmentDTO, DepartmentParameters>();
-builder.Services.AddRequests<TeacherDTO, TeacherParameters>();
-builder.Services.AddRequests<SubjectDTO, SubjectParameters>();
-builder.Services.AddRequests<AuditoryDTO, AuditoryParameters>();
+builder.Services.AddRequests<TeacherDto, TeacherParameters>();
+builder.Services.AddRequests<SubjectDto, SubjectParameters>();
+builder.Services.AddRequests<AuditoryDto, AuditoryParameters>();
 
-builder.Services.AddScoped<IValidator<FacultyDTO>, FacultyDTOValidator>();
-builder.Services.AddScoped<IValidator<AuditoryDTO>, AuditoryDTOValidator>();
-builder.Services.AddScoped<IValidator<TeacherDTO>, TeacherDTOValidator>();
-builder.Services.AddScoped<IValidator<GroupDTO>, GroupDTOValidator>();
-builder.Services.AddScoped<IValidator<SubjectDTO>, SubjectDTOValidator>();
-builder.Services.AddScoped<IValidator<DepartmentDTO>, DepartmentDTOValidator>();
+builder.Services.AddScoped<IValidator<FacultyDto>, FacultyDtoValidator>();
+builder.Services.AddScoped<IValidator<AuditoryDto>, AuditoryDtoValidator>();
+builder.Services.AddScoped<IValidator<TeacherDto>, TeacherDtoValidator>();
+builder.Services.AddScoped<IValidator<GroupDto>, GroupDtoValidator>();
+builder.Services.AddScoped<IValidator<SubjectDto>, SubjectDtoValidator>();
+builder.Services.AddScoped<IValidator<DepartmentDTO>, DepartmentDtoValidator>();
 
-builder.Services.AddScoped<IValidator<ClassDTO>, ClassDTOValidator>();
-builder.Services.Decorate<IValidator<ClassDTO>, ExtendedClassDTOValidator>();
+builder.Services.AddScoped<IValidator<UserDto>, UserDtoValidator>();
+builder.Services.Decorate<IValidator<UserDto>, ExtendedUserValidator>();
+
+builder.Services.AddScoped<IValidator<ClassDto>, ClassDtoValidator>();
+builder.Services.Decorate<IValidator<ClassDto>, ExtendedClassDTOValidator>();
 
 builder.Services.AddScoped<IClassRequests, ClassRequests>();
-builder.Services.AddScoped<IBaseRequests<ClassDTO>, BaseRequests<ClassDTO>>();
+builder.Services.AddScoped<IBaseRequests<ClassDto>, BaseRequests<ClassDto>>();
+
+builder.Services.AddScoped<IBaseRequests<UserDto>, BaseRequests<UserDto>>();
+builder.Services.AddScoped<IUserRequests, UserRequests>();
+
+builder.Services.AddScoped<IAuthRequests, AuthRequests>();
 
 builder.Services.AddMudServices();
+builder.Services.Configure<CookiePolicyOptions>(options =>
+{
+    options.CheckConsentNeeded = context => true;
+    options.MinimumSameSitePolicy = SameSiteMode.None;
+});
+builder.Services.AddAuthentication(opt =>
+{
+    opt.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    opt.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    opt.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+}).AddCookie();
 
 builder.Services.AddHttpClient("UTApi", client =>
 {
     client.BaseAddress = new Uri("https://localhost:7219/");
 });
+
+builder.Services.AddSingleton<JsonSerializerOptions>(new JsonSerializerOptions{ PropertyNameCaseInsensitive = true});
+
+builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 
@@ -57,8 +82,12 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseAuthentication();
+app.UseAuthorization();
+app.UseCookiePolicy();
 
-app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
+app.MapBlazorHub();
+app.MapRazorPages();
 
 app.Run();

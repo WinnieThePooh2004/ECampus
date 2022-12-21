@@ -24,7 +24,7 @@ namespace UniversityTimetable.Tests.Unit.BackEnd.Api
         [Fact]
         public async Task GetById_ReturnsFromService()
         {
-            var data = _fixture.Build<ClassDTO>().With(t => t.Id, 10).Create();
+            var data = _fixture.Build<ClassDto>().With(t => t.Id, 10).Create();
 
             _service.GetByIdAsync(10).Returns(data);
             var actionResult = await _controller.Get(10);
@@ -45,7 +45,7 @@ namespace UniversityTimetable.Tests.Unit.BackEnd.Api
         [Fact]
         public async Task Create_ReturnsFromService()
         {
-            var data = _fixture.Create<ClassDTO>();
+            var data = _fixture.Create<ClassDto>();
             _service.CreateAsync(data).Returns(data);
 
             var actionResult = await _controller.Post(data);
@@ -57,7 +57,7 @@ namespace UniversityTimetable.Tests.Unit.BackEnd.Api
         [Fact]
         public async Task Update_ReturnsFromService()
         {
-            var data = _fixture.Create<ClassDTO>();
+            var data = _fixture.Create<ClassDto>();
             _service.UpdateAsync(data).Returns(data);
 
             var actionResult = await _controller.Put(data);
@@ -69,8 +69,8 @@ namespace UniversityTimetable.Tests.Unit.BackEnd.Api
         [Fact]
         public void PassedInvalidItem_ShouldHaveValidationError()
         {
-            var invalidItem = new ClassDTO { TeacherId = 0, GroupId = 0, AuditoryId = 0, SubjectId = 0 };
-            var validator = new ClassDTOValidator();
+            var invalidItem = new ClassDto { TeacherId = 0, GroupId = 0, AuditoryId = 0, SubjectId = 0 };
+            var validator = new ClassDtoValidator();
 
             var errors = validator.Validate(invalidItem).Errors.Select(e => e.ErrorMessage).ToList();
             var expectedErrors = new List<string>
@@ -125,7 +125,7 @@ namespace UniversityTimetable.Tests.Unit.BackEnd.Api
         {
             var rand = new Random();
             return new Timetable(Enumerable.Range(0, 10)
-                .Select(i => _fixture.Build<ClassDTO>()
+                .Select(i => _fixture.Build<ClassDto>()
                 .With(c => c.Number, rand.Next(0, 5))
                 .With(c => c.DayOfWeek, rand.Next(0, 6))
                 .Create()));

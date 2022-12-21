@@ -1,4 +1,5 @@
 ﻿using UniversityTimetable.Shared.Interfaces.Data;
+using UniversityTimetable.Shared.Models.RelationModels;
 
 namespace UniversityTimetable.Shared.Models
 {
@@ -10,5 +11,7 @@ namespace UniversityTimetable.Shared.Models
 
         public List<Class> Classes { get; set; }
         public bool IsDeleted { get; set; }
+        public List<User> Users { get; set; }
+        public List<UserAuditory> UsersIds { get; set; }
     }
 }
