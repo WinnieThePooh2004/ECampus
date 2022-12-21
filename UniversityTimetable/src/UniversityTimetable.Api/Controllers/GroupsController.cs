@@ -33,7 +33,7 @@ namespace UniversityTimetable.Api.Controllers
         }
 
         [HttpPost]
-        [Authorize(UserRole.Admin)]
+        [Authorized(UserRole.Admin)]
         public async Task<IActionResult> Post(GroupDto group)
         {
             if (!ModelState.IsValid || group.DepartmentId == 0)
@@ -45,7 +45,7 @@ namespace UniversityTimetable.Api.Controllers
         }
 
         [HttpPut]
-        [Authorize(UserRole.Admin)]
+        [Authorized(UserRole.Admin)]
         public async Task<IActionResult> Put(GroupDto group)
         {
             if (!ModelState.IsValid)
@@ -58,7 +58,7 @@ namespace UniversityTimetable.Api.Controllers
 
         // POST: Groups/Delete/5
         [HttpDelete("{id:int?}")]
-        [Authorize(UserRole.Admin)]
+        [Authorized(UserRole.Admin)]
         public async Task<IActionResult> Delete(int id)
         {
             await _service.DeleteAsync(id);

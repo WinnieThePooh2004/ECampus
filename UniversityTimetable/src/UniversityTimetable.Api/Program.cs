@@ -81,12 +81,27 @@ builder.Services.AddScoped<IAuthorizationRepository, AuthorizationRepository>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.Configure<CookiePolicyOptions>(options =>
+{
+    options.CheckConsentNeeded = _ => true;
+    options.MinimumSameSitePolicy = SameSiteMode.None;
+});
+
 builder.Services.AddAuthentication(opt =>
 {
     opt.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
     opt.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
     opt.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-}).AddCookie();
+}).AddCookie(options =>
+{
+    options.Events.OnRedirectToLogin = context =>
+    {
+        context.Response.Headers["Locations"] = context.RedirectUri;
+        context.Response.StatusCode = 401;
+        return Task.CompletedTask;
+    };
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

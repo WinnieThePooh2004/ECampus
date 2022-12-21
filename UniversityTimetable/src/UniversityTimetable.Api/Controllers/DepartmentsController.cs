@@ -35,7 +35,7 @@ namespace UniversityTimetable.Api.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [Authorize(UserRole.Admin)]
+        [Authorized(UserRole.Admin)]
         public async Task<IActionResult> Post(DepartmentDTO department)
         {
             if (!ModelState.IsValid)
@@ -47,7 +47,7 @@ namespace UniversityTimetable.Api.Controllers
         }
 
         [HttpPut]
-        [Authorize(UserRole.Admin)]
+        [Authorized(UserRole.Admin)]
         public async Task<IActionResult> Put(DepartmentDTO department)
         {
             await _service.UpdateAsync(department);
@@ -56,7 +56,7 @@ namespace UniversityTimetable.Api.Controllers
 
         // GET: Departments/Delete/5
         [HttpDelete("{id:int?}")]
-        [Authorize(UserRole.Admin)]
+        [Authorized(UserRole.Admin)]
         public async Task<IActionResult> Delete(int? id)
         {
             await _service.DeleteAsync(id);

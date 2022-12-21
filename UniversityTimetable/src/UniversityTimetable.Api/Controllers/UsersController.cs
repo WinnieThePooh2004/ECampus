@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using UniversityTimetable.Domain.Auth;
 using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Shared.Enums;
@@ -30,28 +31,35 @@ public class UsersController : ControllerBase
     }
 
     [HttpPut]
-    [Domain.Auth.Authorize(UserRole.Admin)]
+    [Domain.Auth.Authorized(UserRole.Admin)]
     public async Task<IActionResult> Put(UserDto user)
     {
         return Ok(await _service.UpdateAsync(user));
     }
 
     [HttpDelete("{id:int?}")]
-    [Authorize(UserRole.Admin)]
+    [Authorized(UserRole.Admin)]
     public async Task<IActionResult> Delete(int? id)
     {
         await _service.DeleteAsync(id);
         return Ok(id);
     }
 
-    [HttpPut("Validate")]
-    public async Task<IActionResult> Validate(UserDto user)
+    [HttpPut("Validate/Create")]
+    public async Task<IActionResult> ValidateCreate(UserDto user)
     {
-        return Ok(await _service.ValidateAsync(user, HttpContext));
+        return Ok(await _service.ValidateCreateAsync(user, HttpContext));
     }
-        
+
+    [HttpPut("Validate/Update")]
+    [Authorized]
+    public async Task<IActionResult> ValidateUpdate(UserDto user)
+    {
+        return Ok(await _service.ValidateUpdateAsync(user));
+    }
+
     [HttpPost("auditory/{auditoryId:int}")]
-    [Authorize]
+    [Authorized]
     public async Task<IActionResult> SaveAuditory(int auditoryId)
     {
         await _service.SaveAuditory(HttpContext.User, auditoryId);
@@ -59,7 +67,7 @@ public class UsersController : ControllerBase
     }
         
     [HttpDelete("auditory/{auditoryId:int}")]
-    [Authorize]
+    [Authorized]
     public async Task<IActionResult> DeleteAuditory(int auditoryId)
     {
         await _service.RemoveSavedAuditory(HttpContext.User, auditoryId);
@@ -67,15 +75,15 @@ public class UsersController : ControllerBase
     }
 
     [HttpPost("group/{groupId:int}")]
-    [Authorize]
+    [Authorized]
     public async Task<IActionResult> SaveGroup(int groupId)
     {
         await _service.SaveGroup(HttpContext.User, groupId);
         return NoContent();
     }
-        
+    
     [HttpDelete("group/{groupId:int}")]
-    [Authorize]
+    [Authorized]
     public async Task<IActionResult> RemoveGroup(int groupId)
     {
         await _service.RemoveSavedGroup(HttpContext.User, groupId);
@@ -83,7 +91,7 @@ public class UsersController : ControllerBase
     }
 
     [HttpPost("teacher/{teacherId:int}")]
-    [Authorize]
+    [Authorized]
     public async Task<IActionResult> SaveTeacher(int teacherId)
     {
         await _service.SaveTeacher(HttpContext.User, teacherId);
@@ -91,7 +99,7 @@ public class UsersController : ControllerBase
     }
         
     [HttpDelete("teacher/{teacherId:int}")]
-    [Authorize]
+    [Authorized]
     public async Task<IActionResult> RemoveTeacher(int teacherId)
     {
         await _service.RemoveSavedTeacher(HttpContext.User, teacherId);
