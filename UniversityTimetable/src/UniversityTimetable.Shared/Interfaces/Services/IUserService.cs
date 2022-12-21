@@ -7,7 +7,8 @@ namespace UniversityTimetable.Shared.Interfaces.Services;
 
 public interface IUserService : IBaseService<UserDto>
 {
-    Task<Dictionary<string, string>> ValidateAsync(UserDto user, HttpContext context);
+    Task<Dictionary<string, string>> ValidateCreateAsync(UserDto user, HttpContext context);
+    Task<Dictionary<string, string>> ValidateUpdateAsync(UserDto user);
     Task SaveAuditory(ClaimsPrincipal user, int auditoryId);
     Task RemoveSavedAuditory(ClaimsPrincipal user, int auditoryId);
     Task SaveGroup(ClaimsPrincipal user, int groupId);

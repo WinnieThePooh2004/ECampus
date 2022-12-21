@@ -31,7 +31,7 @@ namespace UniversityTimetable.Api.Controllers
         }
 
         [HttpPost]
-        [Authorize(UserRole.Admin)]
+        [Authorized(UserRole.Admin)]
         public async Task<IActionResult> Post(AuditoryDto auditory)
         {
             if (!ModelState.IsValid)
@@ -43,7 +43,7 @@ namespace UniversityTimetable.Api.Controllers
         }
 
         [HttpPut]
-        [Authorize(UserRole.Admin)]
+        [Authorized(UserRole.Admin)]
         public async Task<IActionResult> Put(AuditoryDto auditory)
         {
             if (!ModelState.IsValid)
@@ -55,7 +55,7 @@ namespace UniversityTimetable.Api.Controllers
         }
 
         [HttpDelete("{id:int?}")]
-        [Authorize(UserRole.Admin)]
+        [Authorized(UserRole.Admin)]
         public async Task<IActionResult> Delete(int? id)
         {
             await _service.DeleteAsync(id);

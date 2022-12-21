@@ -4,13 +4,13 @@ using UniversityTimetable.FrontEnd.Requests.Interfaces;
 
 namespace UniversityTimetable.FrontEnd.Validation;
 
-public class ExtendedUserValidator : IValidator<UserDto>
+public class CreateUserValidator : IValidator<UserDto>
 {
     private readonly IValidator<UserDto> _baseValidator;
     private readonly IUserRequests _requests;
     private readonly IHttpContextAccessor _contextAccessor;
 
-    public ExtendedUserValidator(IValidator<UserDto> baseValidator, IUserRequests requests, IHttpContextAccessor contextAccessor)
+    public CreateUserValidator(IValidator<UserDto> baseValidator, IUserRequests requests, IHttpContextAccessor contextAccessor)
     {
         _baseValidator = baseValidator;
         _requests = requests;
@@ -48,7 +48,7 @@ public class ExtendedUserValidator : IValidator<UserDto>
             return baseErrors;
         }
 
-        var extendedErrors = await _requests.ValidateAsync(instance);
+        var extendedErrors = await _requests.ValidateCreateAsync(instance);
         baseErrors.Errors.AddRange(extendedErrors
             .Select(error => new ValidationFailure(error.Key, error.Value)));
         return baseErrors;

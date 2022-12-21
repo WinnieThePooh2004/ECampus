@@ -1,33 +1,32 @@
-﻿@inherits ModelEditForm<UserDto>
-<EditForm Model="Model" OnValidSubmit="Submit">
-    <FluentValidationValidator Validator="Validator"/>
+﻿<EditForm Model="_model" OnValidSubmit="Submit">
+    <FluentValidationValidator Validator="_validator"/>
     <p>
-        <label for="@(() => Model.Email)">Email</label><br/>
-        <InputText @bind-Value="@Model.Email"/>
-        <ValidationMessage For="() => Model.Email"/>
+        <label for="@(() => _model.Email)">Email</label><br/>
+        <InputText @bind-Value="@_model.Email"/>
+        <ValidationMessage For="() => _model.Email"/>
     </p>
     <p>
-        <label for="@(() => Model.Password)">Password</label><br/>
-        <InputText @bind-Value="@Model.Password"/>
-        <ValidationMessage For="() => Model.Password"/>
+        <label for="@(() => _model.Password)">Password</label><br/>
+        <InputText @bind-Value="@_model.Password"/>
+        <ValidationMessage For="() => _model.Password"/>
     </p>
     <p>
-        <label for="@(() => Model.PasswordConfirm)">Password confirm</label><br/>
-        <InputText @bind-Value="@Model.PasswordConfirm"/>
-        <ValidationMessage For="() => Model.PasswordConfirm"/>
+        <label for="@(() => _model.PasswordConfirm)">Password confirm</label><br/>
+        <InputText @bind-Value="@_model.PasswordConfirm"/>
+        <ValidationMessage For="() => _model.PasswordConfirm"/>
     </p>
     <p>
-        <label for="@(() => Model.Username)">Username</label><br/>
-        <InputText @bind-Value="@Model.Username"/>
-        <ValidationMessage For="() => Model.Username"/>
+        <label for="@(() => _model.Username)">Username</label><br/>
+        <InputText @bind-Value="@_model.Username"/>
+        <ValidationMessage For="() => _model.Username"/>
     </p>
     <p>
-        <label for="@(() => Model.Role)">You are</label><br/>
-        <InputSelect TValue="UserRole" @bind-Value="Model.Role">
+        <label for="@(() => _model.Role)">You are</label><br/>
+        <InputSelect TValue="UserRole" @bind-Value="_model.Role">
             <option value="@UserRole.Student">I am student</option>
             <option value="@UserRole.Teacher">I am teacher</option>
         </InputSelect>
-        <ValidationMessage For="() => Model.Role"/>
+        <ValidationMessage For="() => _model.Role"/>
     </p>
     <button type="submit">Sign in</button>
 </EditForm>

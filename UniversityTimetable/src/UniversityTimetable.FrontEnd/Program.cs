@@ -8,6 +8,7 @@ using UniversityTimetable.FrontEnd.Requests;
 using UniversityTimetable.FrontEnd.Requests.Interfaces;
 using UniversityTimetable.FrontEnd.Requests.Options;
 using UniversityTimetable.FrontEnd.Validation;
+using UniversityTimetable.FrontEnd.Validation.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,9 +31,7 @@ builder.Services.AddScoped<IValidator<TeacherDto>, TeacherDtoValidator>();
 builder.Services.AddScoped<IValidator<GroupDto>, GroupDtoValidator>();
 builder.Services.AddScoped<IValidator<SubjectDto>, SubjectDtoValidator>();
 builder.Services.AddScoped<IValidator<DepartmentDTO>, DepartmentDtoValidator>();
-
 builder.Services.AddScoped<IValidator<UserDto>, UserDtoValidator>();
-builder.Services.Decorate<IValidator<UserDto>, ExtendedUserValidator>();
 
 builder.Services.AddScoped<IValidator<ClassDto>, ClassDtoValidator>();
 builder.Services.Decorate<IValidator<ClassDto>, ExtendedClassDTOValidator>();
@@ -44,6 +43,8 @@ builder.Services.AddScoped<IBaseRequests<UserDto>, BaseRequests<UserDto>>();
 builder.Services.AddScoped<IUserRequests, UserRequests>();
 
 builder.Services.AddScoped<IAuthRequests, AuthRequests>();
+
+builder.Services.AddScoped<IUserValidatorFactory, UserValidatorFactory>();
 
 builder.Services.AddMudServices();
 builder.Services.Configure<CookiePolicyOptions>(options =>

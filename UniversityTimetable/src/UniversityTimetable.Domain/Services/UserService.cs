@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System.Net;
+using System.Security.Claims;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
@@ -58,16 +59,29 @@ public class UserService : IUserService
         return _mapper.Map<UserDto>(await _repository.GetByIdAsync((int)id));
     }
 
-    public Task<UserDto> UpdateAsync(UserDto entity) => 
-        _baseService.UpdateAsync(entity);
+    public async Task<UserDto> UpdateAsync(UserDto entity)
+    {
+        var errors = await _repository.ValidateUpdateAsync(_mapper.Map<User>(entity));
+        if (errors.Any())
+        {
+            _logger.LogAndThrowException(new DomainException(HttpStatusCode.BadRequest,
+                "One ore more validation errors happened", errors));
+        }
+        return await _baseService.UpdateAsync(entity);
+    }
 
-    public async Task<Dictionary<string, string>> ValidateAsync(UserDto user, HttpContext context)
+    public async Task<Dictionary<string, string>> ValidateCreateAsync(UserDto user, HttpContext context)
     {
         if (user.Role == UserRole.Admin && !context.User.IsInRole(nameof(UserRole.Admin)))
         {
             return new Dictionary<string, string>{ [nameof(user.Role)] = "Cannot register new admin unless register account is not admin" };
         }
-        return await _repository.ValidateAsync(_mapper.Map<User>(user));
+        return await _repository.ValidateCreateAsync(_mapper.Map<User>(user));
+    }
+
+    public async Task<Dictionary<string, string>> ValidateUpdateAsync(UserDto user)
+    {
+        return await _repository.ValidateUpdateAsync(_mapper.Map<User>(user));
     }
 
     public Task SaveAuditory(ClaimsPrincipal user, int auditoryId)

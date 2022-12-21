@@ -26,7 +26,7 @@ namespace UniversityTimetable.Api.Controllers
 
         [HttpDelete]
         [Route("logout")]
-        [Domain.Auth.Authorize]
+        [Domain.Auth.Authorized]
         public async Task<IActionResult> Logout()
         {
             await _authorizationService.Logout(HttpContext);

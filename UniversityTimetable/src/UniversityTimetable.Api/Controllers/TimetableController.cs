@@ -48,21 +48,21 @@ namespace UniversityTimetable.Api.Controllers
 
         // GET: Classes/Create
         [HttpPost]
-        [Authorize(UserRole.Admin)]
+        [Authorized(UserRole.Admin)]
         public async Task<IActionResult> Post(ClassDto @class)
         {
             return Ok(await _service.CreateAsync(@class));
         }
 
         [HttpPut]
-        [Authorize(UserRole.Admin)]
+        [Authorized(UserRole.Admin)]
         public async Task<IActionResult> Put(ClassDto @class)
         {
             return Ok(await _service.UpdateAsync(@class));
         }
 
         [HttpDelete("{id:int?}")]
-        [Authorize(UserRole.Admin)]
+        [Authorized(UserRole.Admin)]
         public async Task<IActionResult> Delete(int id)
         {
             await _service.DeleteAsync(id);
