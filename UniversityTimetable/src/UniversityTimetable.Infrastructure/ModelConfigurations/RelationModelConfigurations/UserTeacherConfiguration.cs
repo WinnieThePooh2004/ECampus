@@ -9,6 +9,7 @@ public class UserTeacherConfiguration : IEntityTypeConfiguration<UserTeacher>
     public void Configure(EntityTypeBuilder<UserTeacher> builder)
     {
         builder.HasKey(s => new{ s.UserId, s.TeacherId });
+        builder.ToTable("UserTeachers");
 
         builder.HasOne(s => s.User)
             .WithMany(s => s.SavedTeachersIds)

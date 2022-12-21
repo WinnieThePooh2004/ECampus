@@ -10,9 +10,9 @@ using UniversityTimetable.Shared.Interfaces.Data;
 namespace UniversityTimetable.Infrastructure.Repositories;
 
 public class RelationRepository<TLeftTable, TRightTable, TRelations> : IRelationRepository<TLeftTable, TRightTable, TRelations>
-    where TLeftTable: class, IModel, IModelWithManyToManyRelations<TRightTable, TRelations>, new()
-    where TRightTable: class, IModel
-    where TRelations: class, IRelationModel<TLeftTable, TRightTable>, new()
+    where TLeftTable : class, IModel, IModelWithManyToManyRelations<TRightTable, TRelations>, new()
+    where TRightTable : class, IModel
+    where TRelations : class, IRelationModel<TLeftTable, TRightTable>, new()
 {
     private readonly ILogger<RelationRepository<TLeftTable, TRightTable, TRelations>> _logger;
     private readonly ApplicationDbContext _context;
@@ -36,7 +36,7 @@ public class RelationRepository<TLeftTable, TRightTable, TRelations> : IRelation
             _logger.LogError(e, "cannot add relation between object of type {LeftTable} with id={RightTableId} " +
                                 "on between object of type {RightTable} with id={LeftTableId} ", typeof(TRightTable),
                 rightTableId, typeof(TLeftTable), leftTableId);
-            throw new InfrastructureExceptions(HttpStatusCode.NotFound);
+            throw new InfrastructureExceptions(HttpStatusCode.NotFound,e.Message);
         }
         return relation;
     }
@@ -54,7 +54,7 @@ public class RelationRepository<TLeftTable, TRightTable, TRelations> : IRelation
             _logger.LogError(e, "cannot add relation between object of type {LeftTable} with id={RightTableId} " +
                                 "on between object of type {RightTable} with id={LeftTableId} ", typeof(TRightTable),
                 rightTableId, typeof(TLeftTable), leftTableId);
-            throw new InfrastructureExceptions(HttpStatusCode.NotFound);
+            throw new InfrastructureExceptions(HttpStatusCode.NotFound, e.Message);
         }
 
         return relation;

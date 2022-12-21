@@ -7,8 +7,8 @@ namespace UniversityTimetable.Shared.Interfaces.ModelsRelationships
         where TRightTable : class, IModel
         where TRelations : class
     {
-        List<TRightTable> RelatedModels { get; }
-        List<TRelations> RelationModels { get; }
+        List<TRightTable> RelatedModels { get; set; }
+        List<TRelations> RelationModels { get; set; }
         Expression<Func<TRelations, bool>> IsRelated { get; }
     }
 }

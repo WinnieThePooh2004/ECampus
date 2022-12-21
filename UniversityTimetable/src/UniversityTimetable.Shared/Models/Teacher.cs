@@ -23,10 +23,19 @@ namespace UniversityTimetable.Shared.Models
         public List<User> Users { get; set; } = new();
         public List<UserTeacher> UsersIds { get; set; } = new();
 
-        Expression<Func<SubjectTeacher, bool>> IModelWithManyToManyRelations<Subject, SubjectTeacher>.IsRelated => st => st.TeacherId == Id;
+        Expression<Func<SubjectTeacher, bool>> IModelWithManyToManyRelations<Subject, SubjectTeacher>.IsRelated 
+            => st => st.TeacherId == Id;
 
-        List<Subject> IModelWithManyToManyRelations<Subject, SubjectTeacher>.RelatedModels => Subjects;
+        List<Subject> IModelWithManyToManyRelations<Subject, SubjectTeacher>.RelatedModels
+        {
+            get => Subjects;
+            set => Subjects = value;
+        }
 
-        List<SubjectTeacher> IModelWithManyToManyRelations<Subject, SubjectTeacher>.RelationModels => SubjectIds;
+        List<SubjectTeacher> IModelWithManyToManyRelations<Subject, SubjectTeacher>.RelationModels
+        {
+            get => SubjectIds;
+            set => SubjectIds = value;
+        }
     }
 }

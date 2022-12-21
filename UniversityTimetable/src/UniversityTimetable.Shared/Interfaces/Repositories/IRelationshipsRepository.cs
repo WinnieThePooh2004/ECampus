@@ -26,6 +26,6 @@ namespace UniversityTimetable.Shared.Interfaces.Repositories
         /// <param name="model"></param>
         /// <returns></returns>
         Task UpdateRelations(TLeftTable model);
-        void UpdateLoadedRelations(TLeftTable model);
+        Task UpdateLoadedRelations(TLeftTable model);
     }
 }

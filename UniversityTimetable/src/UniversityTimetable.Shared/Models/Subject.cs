@@ -16,7 +16,15 @@ public class Subject : IIsDeleted, IModel, IModelWithManyToManyRelations<Teacher
 
     Expression<Func<SubjectTeacher, bool>> IModelWithManyToManyRelations<Teacher, SubjectTeacher>.IsRelated => st => st.SubjectId == Id;
 
-    List<Teacher> IModelWithManyToManyRelations<Teacher, SubjectTeacher>.RelatedModels => Teachers;
+    List<Teacher> IModelWithManyToManyRelations<Teacher, SubjectTeacher>.RelatedModels
+    {
+        get => Teachers;
+        set => Teachers = value;
+    }
 
-    List<SubjectTeacher> IModelWithManyToManyRelations<Teacher, SubjectTeacher>.RelationModels => TeacherIds;
+    List<SubjectTeacher> IModelWithManyToManyRelations<Teacher, SubjectTeacher>.RelationModels
+    {
+        get => TeacherIds;
+        set => TeacherIds = value;
+    }
 }

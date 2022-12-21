@@ -8,6 +8,7 @@ namespace UniversityTimetable.Infrastructure.ModelConfigurations.RelationModelCo
     {
         public void Configure(EntityTypeBuilder<UserAuditory> builder)
         {
+            builder.ToTable("UserAuditories");
             builder.HasKey(s => new{ s.UserId, s.AuditoryId });
 
             builder.HasOne(s => s.User)

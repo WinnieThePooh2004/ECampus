@@ -24,13 +24,42 @@ public class User : IModel, IIsDeleted,
     public List<UserGroup> SavedGroupsIds { get; set; } = new();
     public List<UserAuditory> SavedAuditoriesIds { get; set; } = new();
     public List<UserTeacher> SavedTeachersIds { get; set; } = new();
-    List<Auditory> IModelWithManyToManyRelations<Auditory, UserAuditory>.RelatedModels => SavedAuditories;
+    List<Auditory> IModelWithManyToManyRelations<Auditory, UserAuditory>.RelatedModels
+    {
+        get => SavedAuditories;
+        set => SavedAuditories = value;
+    }
+
     Expression<Func<UserTeacher, bool>> IModelWithManyToManyRelations<Teacher, UserTeacher>.IsRelated => ut => ut.UserId == Id;
-    List<UserTeacher> IModelWithManyToManyRelations<Teacher, UserTeacher>.RelationModels => SavedTeachersIds;
+    List<UserTeacher> IModelWithManyToManyRelations<Teacher, UserTeacher>.RelationModels
+    {
+        get => SavedTeachersIds;
+        set => SavedTeachersIds = value;
+    }
+
     Expression<Func<UserGroup, bool>> IModelWithManyToManyRelations<Group, UserGroup>.IsRelated => ug => ug.UserId == Id;
-    List<UserGroup> IModelWithManyToManyRelations<Group, UserGroup>.RelationModels => SavedGroupsIds;
+    List<UserGroup> IModelWithManyToManyRelations<Group, UserGroup>.RelationModels
+    {
+        get => SavedGroupsIds;
+        set => SavedGroupsIds = value;
+    }
+
     Expression<Func<UserAuditory, bool>> IModelWithManyToManyRelations<Auditory, UserAuditory>.IsRelated => ua => ua.UserId == Id;
-    List<Group> IModelWithManyToManyRelations<Group, UserGroup>.RelatedModels => SavedGroups;
-    List<Teacher> IModelWithManyToManyRelations<Teacher, UserTeacher>.RelatedModels => SavedTeachers;
-    List<UserAuditory> IModelWithManyToManyRelations<Auditory, UserAuditory>.RelationModels => SavedAuditoriesIds;
+    List<Group> IModelWithManyToManyRelations<Group, UserGroup>.RelatedModels
+    {
+        get => SavedGroups;
+        set => SavedGroups = value;
+    }
+
+    List<Teacher> IModelWithManyToManyRelations<Teacher, UserTeacher>.RelatedModels
+    {
+        get => SavedTeachers;
+        set => SavedTeachers = value;
+    }
+
+    List<UserAuditory> IModelWithManyToManyRelations<Auditory, UserAuditory>.RelationModels
+    {
+        get => SavedAuditoriesIds;
+        set => SavedAuditoriesIds = value;
+    }
 }

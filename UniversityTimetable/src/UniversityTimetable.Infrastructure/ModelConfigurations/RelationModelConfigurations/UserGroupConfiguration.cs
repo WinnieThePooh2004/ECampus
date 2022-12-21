@@ -9,6 +9,7 @@ public class UserGroupConfiguration : IEntityTypeConfiguration<UserGroup>
     public void Configure(EntityTypeBuilder<UserGroup> builder)
     {
         builder.HasKey(s => new{ s.UserId, s.GroupId });
+        builder.ToTable("UserGroups");
 
         builder.HasOne(s => s.User)
             .WithMany(s => s.SavedGroupsIds)
