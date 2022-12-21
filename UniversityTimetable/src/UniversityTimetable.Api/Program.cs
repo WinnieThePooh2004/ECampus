@@ -1,3 +1,4 @@
+using System.Net;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using UniversityTimetable.Domain.Services;
@@ -99,6 +100,12 @@ builder.Services.AddAuthentication(opt =>
     {
         context.Response.Headers["Locations"] = context.RedirectUri;
         context.Response.StatusCode = 401;
+        return Task.CompletedTask;
+    };
+    options.Events.OnRedirectToAccessDenied = context =>
+    {
+        context.Response.Headers["Locations"] = context.RedirectUri;
+        context.Response.StatusCode = 403;
         return Task.CompletedTask;
     };
 });
