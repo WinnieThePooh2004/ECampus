@@ -3,56 +3,54 @@ using Microsoft.AspNetCore.Components;
 using UniversityTimetable.Shared.Comparing;
 using UniversityTimetable.Shared.Interfaces.Data;
 
-namespace UniversityTimetable.FrontEnd.Components.DataSelectors
+namespace UniversityTimetable.FrontEnd.Components.DataSelectors;
+
+public sealed partial class MultipleItemsSelect<TData, TParameters>
+    where TData : class, IDataTransferObject, new()
+    where TParameters : class, IQueryParameters, new()
 {
-    public sealed partial class MultipleItemsSelect<TData, TParameters>
-        where TData : class, IDataTransferObject, new()
-        where TParameters : class, IQueryParameters, new()
+    [Parameter] public string Title { get; set; }
+    [Parameter] public List<string> PropertyNames { get; set; }
+    [Parameter] public Action OnChanged { get; set; } = () => { };
+    [Parameter] public List<Func<TData, object>> PropertiesToShow { get; set; }
+    [Parameter] public List<TData> SelectTo { get; set; }
+    private Dictionary<TData, bool> Select { get; set; } = null;
+
+    private DataTransferObjectComparer<TData> _comparer = new();
+
+    private int TotalColumns => PropertiesToShow.Count + 1;
+    protected override void OnInitialized()
     {
-        [Parameter] public string Title { get; set; }
-        [Parameter] public List<string> PropertyNames { get; set; }
-        [Parameter] public Action OnChanged { get; set; }
-        [Parameter] public List<Func<TData, object>> PropertiesToShow { get; set; }
-        [Parameter] public Func<TData, bool> ShowOnly { get; set; } = item => true;
-        [Parameter] public List<TData> SelectTo { get; set; }
-        private Dictionary<TData, bool> Select { get; set; } = null;
+        Select = new Dictionary<TData, bool>(_comparer);
+    }
 
-        private DataTransferObjectComparer<TData> _comparer = new();
-
-        private int TotalColumns => PropertiesToShow.Count + 1;
-        protected override void OnInitialized()
+    private void ValueChecked(bool isChecked, TData item)
+    {
+        var selectInSourceList = SelectTo.FirstOrDefault(i => i.Id == item.Id);
+        if(!isChecked && selectInSourceList is not null)
         {
-            Select = new Dictionary<TData, bool>(_comparer);
+            SelectTo.Remove(selectInSourceList);
+            this[item] = false;
+            return;
         }
+        SelectTo.Add(item);
+        this[item] = true;
+    }
 
-        private void ValueChecked(bool isChecked, TData item)
+    private bool this[TData item]
+    {
+        get
         {
-            var selectInSourceList = SelectTo.FirstOrDefault(i => i.Id == item.Id);
-            if(!isChecked && selectInSourceList is not null)
+            if (!Select.ContainsKey(item))
             {
-                SelectTo.Remove(selectInSourceList);
-                this[item] = false;
-                return;
+                Select.Add(item, SelectTo.Any(i => _comparer.Equals(i, item)));
             }
-            SelectTo.Add(item);
-            this[item] = true;
+            return Select[item];
         }
-
-        private bool this[TData item]
+        set
         {
-            get
-            {
-                if (!Select.ContainsKey(item))
-                {
-                    Select.Add(item, SelectTo.Any(i => _comparer.Equals(i, item)));
-                }
-                return Select[item];
-            }
-            set
-            {
-                Select[item] = value;
-                OnChanged();
-            }
+            Select[item] = value;
+            OnChanged();
         }
     }
 }
