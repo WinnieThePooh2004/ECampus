@@ -10,7 +10,11 @@ namespace UniversityTimetable.Infrastructure.ModelConfigurations
         public void Configure(EntityTypeBuilder<User> builder)
         {
             builder.HasQueryFilter(u => !u.IsDeleted)
-                .HasAlternateKey(u => u.Email);
+                .HasIndex(u => u.Email)
+                .IsUnique();
+
+            builder.HasIndex(u => u.Username)
+                .IsUnique();
         }
     }
 }

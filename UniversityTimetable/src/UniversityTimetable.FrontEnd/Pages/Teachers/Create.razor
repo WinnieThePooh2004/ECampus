@@ -1,7 +1,7 @@
 ﻿@page "/teachers/create/{DepartmentId:int}"
 @inherits CreatePageBase<TeacherDto>
 
-<TeacherEditForm Model="new(){ DepartmentId = DepartmentId }" OnSubmited="Save" />
+<TeacherEditForm Model="new(){ DepartmentId = DepartmentId }" OnSubmit="Save" />
 
 @code{
     [Parameter]

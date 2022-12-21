@@ -23,14 +23,14 @@ public class RelationshipsRepository<TLeftTable, TRightTable, TRelations> : IRel
 
     public void CreateRelationModels(TLeftTable model)
     {
-        model.RelationModels.AddRange(model.RelatedModels.Select(r => new TRelations { LeftTableId = r.Id }));
+        model.RelationModels.AddRange(model.RelatedModels.Select(r => new TRelations { RightTableId = r.Id }));
         model.RelatedModels.Clear();
     }
 
     public void UpdateLoadedRelations(TLeftTable model)
     {
-        _context.RemoveRange(model.RelationModels.Where(st => model.RelatedModels.All(s => s.Id != st.LeftTableId)));
-        _context.AddRange(model.RelatedModels.Where(s => model.RelationModels.All(st => s.Id != st.LeftTableId))
+        _context.RemoveRange(model.RelationModels.Where(st => model.RelatedModels.All(s => s.Id != st.RightTableId)));
+        _context.AddRange(model.RelatedModels.Where(s => model.RelationModels.All(st => s.Id != st.RightTableId))
             .Select(s => new TRelations { RightTableId = model.Id, LeftTableId = s.Id }));
         model.RelationModels.Clear();
         model.RelatedModels.Clear();

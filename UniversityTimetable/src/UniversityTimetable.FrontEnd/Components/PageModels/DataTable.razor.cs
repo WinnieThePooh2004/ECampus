@@ -4,11 +4,13 @@ using UniversityTimetable.Shared.Interfaces.Data;
 
 namespace UniversityTimetable.FrontEnd.Components.PageModels
 {
-    public partial class IndexPageModel<TData, TParameters>
+    public partial class DataTable<TData, TParameters>
         where TData : class, IDataTransferObject
         where TParameters : class, IQueryParameters, new()
     {
         [Parameter] public string CreateLink { get; set; }
+        [Parameter] public bool ShowDeleteButton { get; set; } = true;
+        [Parameter] public bool ShowEditButton { get; set; } = true;
         /// <summary>
         /// provide it without id
         /// </summary>
@@ -19,6 +21,7 @@ namespace UniversityTimetable.FrontEnd.Components.PageModels
         [Parameter] public Action<TParameters> ParameterOptions { get; set; } = _ => { };
         
         [Inject] private AuthenticationStateProvider AuthProvider { get; set; }
+        private int TotalLinks => ActionLinks.Count + (ShowDeleteButton ? 1 : 0) + (ShowEditButton ? 1 : 0);
         private bool _isAdmin;
         protected override async Task OnInitializedAsync()
         {

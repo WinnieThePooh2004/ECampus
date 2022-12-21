@@ -1,7 +1,7 @@
 ﻿@page "/faculties"
 <h1>Faculties</h1>
 
-<IndexPageModel TData="FacultyDto" TParameters="FacultyParameters"
+<DataTable TData="FacultyDto" TParameters="FacultyParameters"
                 TableHeaders="@(new(){ "Name" })"
                 TableData="@(new(){ f => f.Name })"
                 CreateLink="/faculties/Create"

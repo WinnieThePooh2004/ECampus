@@ -1,0 +1,33 @@
+﻿@inherits ModelEditForm<UserDto>
+<EditForm Model="Model" OnValidSubmit="Submit">
+    <FluentValidationValidator Validator="Validator"/>
+    <p>
+        <label for="@(() => Model.Email)">Email</label><br/>
+        <InputText @bind-Value="@Model.Email"/>
+        <ValidationMessage For="() => Model.Email"/>
+    </p>
+    <p>
+        <label for="@(() => Model.Password)">Password</label><br/>
+        <InputText @bind-Value="@Model.Password"/>
+        <ValidationMessage For="() => Model.Password"/>
+    </p>
+    <p>
+        <label for="@(() => Model.PasswordConfirm)">Password confirm</label><br/>
+        <InputText @bind-Value="@Model.PasswordConfirm"/>
+        <ValidationMessage For="() => Model.PasswordConfirm"/>
+    </p>
+    <p>
+        <label for="@(() => Model.Username)">Username</label><br/>
+        <InputText @bind-Value="@Model.Username"/>
+        <ValidationMessage For="() => Model.Username"/>
+    </p>
+    <p>
+        <label for="@(() => Model.Role)">You are</label><br/>
+        <InputSelect TValue="UserRole" @bind-Value="Model.Role">
+            <option value="@UserRole.Student">I am student</option>
+            <option value="@UserRole.Teacher">I am teacher</option>
+        </InputSelect>
+        <ValidationMessage For="() => Model.Role"/>
+    </p>
+    <button type="submit">Sign in</button>
+</EditForm>

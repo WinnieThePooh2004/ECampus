@@ -1,10 +1,9 @@
-﻿namespace UniversityTimetable.FrontEnd.Requests.Interfaces
+﻿namespace UniversityTimetable.FrontEnd.Requests.Interfaces;
+
+public interface IBaseRequests<TEntity>
 {
-    public interface IBaseRequests<TEntity>
-    {
-        Task<TEntity> GetByIdAsync(int id);
-        Task<TEntity> CreateAsync(TEntity entity);
-        Task<TEntity> UpdateAsync(TEntity entity);
-        Task DeleteAsync(int id);
-    }
+    Task<TEntity> GetByIdAsync(int id);
+    Task<TEntity> CreateAsync(TEntity entity);
+    Task<TEntity> UpdateAsync(TEntity entity);
+    Task DeleteAsync(int id);
 }

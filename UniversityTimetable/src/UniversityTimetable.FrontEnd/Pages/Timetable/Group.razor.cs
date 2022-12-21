@@ -9,11 +9,13 @@ public partial class Group
     protected override async Task OnSave()
     {
         await UserRequests.SaveGroup(GroupId);
+        await RefreshData();
     }
 
     protected override async Task OnSaveRemoved()
     {
         await UserRequests.RemoveSavedGroup(GroupId);
+        await RefreshData();
     }
 
     protected override async Task RefreshData()

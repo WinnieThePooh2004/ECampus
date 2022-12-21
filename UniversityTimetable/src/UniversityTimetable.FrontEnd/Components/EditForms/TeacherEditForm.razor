@@ -3,17 +3,17 @@
     <div class="col-md-4">
 
         <EditForm Model="Model" OnValidSubmit="Submit">
-            <FluentValidationValidator Validator="Validator" />
-            <ValidationSummary />
+            <FluentValidationValidator Validator="Validator"/>
+            <ValidationSummary/>
             <p>
                 <label for="@Model.FirstName">First name</label>
-                <InputText class="form-control" @bind-Value="Model.FirstName" />
-                <ValidationMessage For="@(() => Model.FirstName)" />
+                <InputText class="form-control" @bind-Value="Model.FirstName"/>
+                <ValidationMessage For="@(() => Model.FirstName)"/>
             </p>
             <p>
                 <label for="@Model.LastName">Last name</label>
-                <InputText class="form-control" @bind-Value="Model.LastName" />
-                <ValidationMessage For="@(() => Model.LastName)" />
+                <InputText class="form-control" @bind-Value="Model.LastName"/>
+                <ValidationMessage For="@(() => Model.LastName)"/>
             </p>
             <p>
                 <label for="@Model.ScienceDegree">Science Degree</label>
@@ -37,10 +37,11 @@
                     </tr>
                 }
             </table>
-            <br /><br />
+            <br/><br/>
             <MultipleItemsSelect TData="SubjectDto" TParameters="SubjectParameters"
-                                 SelectTo="Model.Subjects" OnAdd="AddSubject" OnDelete="DeleteSubject"
-                                 PropertyNames="@(new(){ "Name" })" PropertiesToShow="@(new(){ t => t.Name })" />
+                                 SelectTo="Model.Subjects"
+                                 PropertyNames="@(new List<string> { "Name" })"
+                                 PropertiesToShow="@(new List<Func<SubjectDto, object>> { t => t.Name })"/>
             <button type="submit" class="btn btn-success">Save</button>
         </EditForm>
     </div>

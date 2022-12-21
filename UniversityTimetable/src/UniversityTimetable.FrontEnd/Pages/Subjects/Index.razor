@@ -1,6 +1,6 @@
 ﻿@page "/subjects"
 
-<IndexPageModel TData="SubjectDto" TParameters="SubjectParameters"
+<DataTable TData="SubjectDto" TParameters="SubjectParameters"
                 TableHeaders="@(new List<string> { "Name" })"
                 TableData="@(new List<Func<SubjectDto, string>> { s => s.Name })"
                 CreateLink="@($"/subjects/Create")"

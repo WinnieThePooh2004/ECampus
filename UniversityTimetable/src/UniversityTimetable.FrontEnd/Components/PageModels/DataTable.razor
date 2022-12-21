@@ -23,7 +23,10 @@
                     @header
                 </th>
             }
-            <th></th>
+            @if (TotalLinks != 0)
+            {
+                <th></th>
+            }
         </tr>
     </thead>
     <tbody>
@@ -37,7 +40,7 @@
                     </td>
                 }
                 <td>
-                    @if (EditLink is not null && _isAdmin)
+                    @if (EditLink is not null && _isAdmin && ShowEditButton)
                     {
                         <a role="button" href="@($"{EditLink}/{item.Id}")" class="btn btn-info">Edit</a>
                         <text> | </text>
@@ -45,10 +48,10 @@
                     @foreach(var link in ActionLinks)
                     {
                         <a role="button" href="@link.Item2(item)" class="btn btn-info">@link.Item1</a>
-                    }
-                    @if (_isAdmin)
-                    {
                         <text> | </text>
+                    }
+                    @if (_isAdmin && ShowDeleteButton)
+                    {
                         <a role="button" class="btn btn-danger" onclick="@(() => Delete(item.Id))">Delete</a>
                     }
                 </td>

@@ -1,8 +1,8 @@
 ﻿@page "/teachers/{DepartmentId:int}"
-<IndexPageModel TData="TeacherDto" TParameters="TeacherParameters"
-                ParameterOptions="p => p.DepartmentId = DepartmentId"
-                TableHeaders="@(new(){ "Last name", "First name" })"
-                TableData="@(new(){ t => t.LastName, t => t.FirstName })"
-                CreateLink="@($"/teachers/Create/{DepartmentId}")"
-                EditLink="/teachers/edit"
-                ActionLinks="@(new(){ ("Timetable", d => $"/timetable/teacher/{d.Id}")})" />
+<DataTable TData="TeacherDto" TParameters="TeacherParameters"
+           ParameterOptions="p => p.DepartmentId = DepartmentId"
+           TableHeaders="@(new List<string> { "Last name", "First name" })"
+           TableData="@(new List<Func<TeacherDto, string>> { t => t.LastName, t => t.FirstName })"
+           CreateLink="@($"/teachers/Create/{DepartmentId}")"
+           EditLink="/teachers/edit"
+           ActionLinks="@(new List<(string, Func<TeacherDto, string>)> { ("Timetable", d => $"/timetable/teacher/{d.Id}")})" />

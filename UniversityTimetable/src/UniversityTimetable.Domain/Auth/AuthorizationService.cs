@@ -27,6 +27,7 @@ public class AuthorizationService : IAuthorizationService
 
     public async Task<UserDto> Login(LoginDto login, HttpContext context)
     {
+        _logger.LogInformation("Start login with email {Email}, password {Password}", login.Email, login.Password);
         var user = _mapper.Map<UserDto>(await _repository.GetByEmailAsync(login.Email));
         if (user.Password != login.Password)
         {

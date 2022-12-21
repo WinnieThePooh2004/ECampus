@@ -67,15 +67,18 @@ namespace UniversityTimetable.Infrastructure.Repositories
             return await _baseService.UpdateAsync(entity);
         }
 
-        public Task<Dictionary<string, string>> ValidateAsync(User user)
+        public async Task<Dictionary<string, string>> ValidateAsync(User user)
         {
             var errors = new Dictionary<string, string>();
-            if(user.Role == UserRole.Admin)
+            if (await _context.Users.AnyAsync(u => u.Email == user.Email && u.Id != user.Id))
             {
-                errors.Add(nameof(user.Role), "Cannot register new admin");
+                errors.Add(nameof(user.Email), "This email is already user");
             }
-
-            return Task.FromResult(errors);
+            if (await _context.Users.AnyAsync(u => u.Username == user.Username))
+            {
+                errors.Add(nameof(user.Email), "This username is already user");
+            }
+            return errors;
         }
         
         private IQueryable<User> DbSetWithAllRelatedData()

@@ -1,7 +1,7 @@
 ﻿@page "/departments/{FacultyId:int}"
 
 <h1>Departments</h1>
-<IndexPageModel TData="DepartmentDTO" TParameters="DepartmentParameters"
+<DataTable TData="DepartmentDTO" TParameters="DepartmentParameters"
                 ParameterOptions="p => p.FacultacyId = FacultyId"
                 TableHeaders="@(new(){ "Name" })"
                 TableData="@(new(){ f => f.Name })"

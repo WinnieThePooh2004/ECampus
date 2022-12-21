@@ -2,14 +2,12 @@ using System.Text.Json;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using MudBlazor.Services;
-using UniversityTimetable.Domain.Services;
 using UniversityTimetable.Domain.Validation;
 using UniversityTimetable.FrontEnd.Extentions;
 using UniversityTimetable.FrontEnd.Requests;
 using UniversityTimetable.FrontEnd.Requests.Interfaces;
 using UniversityTimetable.FrontEnd.Requests.Options;
 using UniversityTimetable.FrontEnd.Validation;
-using UniversityTimetable.Shared.Interfaces.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,14 +24,17 @@ builder.Services.AddRequests<TeacherDto, TeacherParameters>();
 builder.Services.AddRequests<SubjectDto, SubjectParameters>();
 builder.Services.AddRequests<AuditoryDto, AuditoryParameters>();
 
-builder.Services.AddScoped<IValidator<FacultyDto>, FacultyDTOValidator>();
-builder.Services.AddScoped<IValidator<AuditoryDto>, AuditoryDTOValidator>();
-builder.Services.AddScoped<IValidator<TeacherDto>, TeacherDTOValidator>();
-builder.Services.AddScoped<IValidator<GroupDto>, GroupDTOValidator>();
-builder.Services.AddScoped<IValidator<SubjectDto>, SubjectDTOValidator>();
-builder.Services.AddScoped<IValidator<DepartmentDTO>, DepartmentDTOValidator>();
+builder.Services.AddScoped<IValidator<FacultyDto>, FacultyDtoValidator>();
+builder.Services.AddScoped<IValidator<AuditoryDto>, AuditoryDtoValidator>();
+builder.Services.AddScoped<IValidator<TeacherDto>, TeacherDtoValidator>();
+builder.Services.AddScoped<IValidator<GroupDto>, GroupDtoValidator>();
+builder.Services.AddScoped<IValidator<SubjectDto>, SubjectDtoValidator>();
+builder.Services.AddScoped<IValidator<DepartmentDTO>, DepartmentDtoValidator>();
 
-builder.Services.AddScoped<IValidator<ClassDto>, ClassDTOValidator>();
+builder.Services.AddScoped<IValidator<UserDto>, UserDtoValidator>();
+builder.Services.Decorate<IValidator<UserDto>, ExtendedUserValidator>();
+
+builder.Services.AddScoped<IValidator<ClassDto>, ClassDtoValidator>();
 builder.Services.Decorate<IValidator<ClassDto>, ExtendedClassDTOValidator>();
 
 builder.Services.AddScoped<IClassRequests, ClassRequests>();

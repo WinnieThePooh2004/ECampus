@@ -17,11 +17,11 @@ namespace UniversityTimetable.Shared.Models
         public int DepartmentId { get; set; }
         public Department Department { get; set; }
 
-        public List<SubjectTeacher> SubjectIds { get; set; }
-        public List<Subject> Subjects { get; set; }
-        public List<Class> Classes { get; set; }
-        public List<User> Users { get; set; }
-        public List<UserTeacher> UsersIds { get; set; }
+        public List<SubjectTeacher> SubjectIds { get; set; } = new();
+        public List<Subject> Subjects { get; set; } = new();
+        public List<Class> Classes { get; set; } = new();
+        public List<User> Users { get; set; } = new();
+        public List<UserTeacher> UsersIds { get; set; } = new();
 
         Expression<Func<SubjectTeacher, bool>> IModelWithManyToManyRelations<Subject, SubjectTeacher>.IsRelated => st => st.TeacherId == Id;
 

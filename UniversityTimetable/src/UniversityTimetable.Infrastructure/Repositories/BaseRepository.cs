@@ -6,64 +6,65 @@ using UniversityTimetable.Shared.Extensions;
 using UniversityTimetable.Shared.Interfaces.Data;
 using UniversityTimetable.Shared.Interfaces.Repositories;
 
-namespace UniversityTimetable.Infrastructure.Repositories
+namespace UniversityTimetable.Infrastructure.Repositories;
+
+public class BaseRepository<TModel> : IBaseRepository<TModel>
+    where TModel : class, IModel, new()
 {
-    public class BaseRepository<TModel> : IBaseRepository<TModel>
-        where TModel : class, IModel, new()
+    private readonly ApplicationDbContext _context;
+    private readonly ILogger<BaseRepository<TModel>> _logger;
+
+
+    public BaseRepository(ApplicationDbContext context, ILogger<BaseRepository<TModel>> logger)
     {
-        private readonly ApplicationDbContext _context;
-        private readonly ILogger<BaseRepository<TModel>> _logger;
+        _context = context;
+        _logger = logger;
+    }
 
+    public async Task<TModel> CreateAsync(TModel entity)
+    {
+        _context.Add(entity);
+        await _context.SaveChangesAsync();
+        return entity;
+    }
 
-        public BaseRepository(ApplicationDbContext context, ILogger<BaseRepository<TModel>> logger)
+    public async Task DeleteAsync(int id)
+    {
+        var model = new TModel { Id = id };
+        _context.Remove(model);
+        try
         {
-            _context = context;
-            _logger = logger;
-        }
-
-        public async Task<TModel> CreateAsync(TModel entity)
-        {
-            _context.Add(entity);
             await _context.SaveChangesAsync();
-            return entity;
         }
-
-        public async Task DeleteAsync(int id)
+        catch (Exception e)
         {
-            var model = new TModel { Id = id };
-            _context.Remove(model);
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                _logger.LogAndThrowException(new ObjectNotFoundByIdException(typeof(TModel), id));
-            }
+            _logger.LogError(e, "Db update to successful");
+            _logger.LogAndThrowException(new ObjectNotFoundByIdException(typeof(TModel), id));
         }
+    }
 
-        public async Task<TModel> GetByIdAsync(int id)
+    public async Task<TModel> GetByIdAsync(int id)
+    {
+        var model = await _context.Set<TModel>().FirstOrDefaultAsync(m => m.Id == id);
+        if (model is null)
         {
-            var model = await _context.Set<TModel>().FirstOrDefaultAsync(m => m.Id == id);
-            if (model is null)
-            {
-                _logger.LogAndThrowException(new ObjectNotFoundByIdException(typeof(TModel), id));
-            }
-            return model;
+            _logger.LogAndThrowException(new ObjectNotFoundByIdException(typeof(TModel), id));
         }
+        return model;
+    }
 
-        public async Task<TModel> UpdateAsync(TModel entity)
+    public async Task<TModel> UpdateAsync(TModel entity)
+    {
+        _context.Update(entity);
+        try
         {
-            _context.Update(entity);
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                _logger.LogAndThrowException(new ObjectNotFoundByIdException(typeof(TModel), entity.Id));
-            }
-            return entity;
+            await _context.SaveChangesAsync();
         }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Db update to successful");
+            _logger.LogAndThrowException(new ObjectNotFoundByIdException(typeof(TModel), entity.Id));
+        }
+        return entity;
     }
 }

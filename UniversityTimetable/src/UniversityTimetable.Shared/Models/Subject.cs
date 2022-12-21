@@ -10,9 +10,9 @@ public class Subject : IIsDeleted, IModel, IModelWithManyToManyRelations<Teacher
     public int Id { get; set; }
     public string Name { get; set; }
     public bool IsDeleted { get; set; }
-    public List<Class> Classes { get; set; }
-    public List<SubjectTeacher> TeacherIds { get; set; }
-    public List<Teacher> Teachers { get; set; }
+    public List<Class> Classes { get; set; } = new();
+    public List<SubjectTeacher> TeacherIds { get; set; } = new();
+    public List<Teacher> Teachers { get; set; } = new();
 
     Expression<Func<SubjectTeacher, bool>> IModelWithManyToManyRelations<Teacher, SubjectTeacher>.IsRelated => st => st.SubjectId == Id;
 

@@ -31,11 +31,12 @@ public class RelationRepository<TLeftTable, TRightTable, TRelations> : IRelation
         {
             await _context.SaveChangesAsync();
         }
-        catch(DbUpdateException)
+        catch(Exception e)
         {
-            _logger.LogAndThrowException(new InfrastructureExceptions(HttpStatusCode.NotFound,
-                $"cannot find object of type {typeof(TLeftTable)} with id={leftTableId} " +
-                $"or object of type {typeof(TRightTable)} with id={rightTableId}"));
+            _logger.LogError(e, "cannot add relation between object of type {LeftTable} with id={RightTableId} " +
+                                "on between object of type {RightTable} with id={LeftTableId} ", typeof(TRightTable),
+                rightTableId, typeof(TLeftTable), leftTableId);
+            throw new InfrastructureExceptions(HttpStatusCode.NotFound);
         }
         return relation;
     }
@@ -48,12 +49,12 @@ public class RelationRepository<TLeftTable, TRightTable, TRelations> : IRelation
         {
             await _context.SaveChangesAsync();
         }
-        catch(DbUpdateException)
+        catch(Exception e)
         {
-            _logger.LogAndThrowException(new InfrastructureExceptions(HttpStatusCode.NotFound,
-                $"cannot find object of relation model of type {typeof(TRelations)}" +
-                $"with id of object of type {typeof(TLeftTable)} = {leftTableId} and " +
-                $"id of object of type {typeof(TRightTable)} = {rightTableId}"));
+            _logger.LogError(e, "cannot add relation between object of type {LeftTable} with id={RightTableId} " +
+                                "on between object of type {RightTable} with id={LeftTableId} ", typeof(TRightTable),
+                rightTableId, typeof(TLeftTable), leftTableId);
+            throw new InfrastructureExceptions(HttpStatusCode.NotFound);
         }
 
         return relation;

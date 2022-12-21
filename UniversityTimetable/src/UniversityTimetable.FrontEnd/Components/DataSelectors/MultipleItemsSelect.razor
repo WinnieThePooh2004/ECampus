@@ -20,9 +20,9 @@
     <tr>
         @foreach (var propertyName in PropertyNames)
         {
-            <th>@propertyName</th>
+            <th width="@(90 / TotalColumns)%">@propertyName</th>
         }
-        <th></th>
+        <th width="10%"></th>
     </tr>
     </thead>
     <tbody>
@@ -31,9 +31,9 @@
         <tr>
             @foreach (var property in PropertiesToShow)
             {
-                <td>@property(item)</td>
+                <td width="@(90 / TotalColumns)%">@property(item)</td>
             }
-            <td>
+            <td width="10%">
                 <MudCheckBox T="bool" Checked="@this[item]" Color="Color.Primary"
                              CheckedChanged="@(isChecked => ValueChecked(isChecked, item))"/>
             </td>

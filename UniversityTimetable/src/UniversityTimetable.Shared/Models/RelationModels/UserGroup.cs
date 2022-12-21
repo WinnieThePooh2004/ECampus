@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using UniversityTimetable.Shared.Interfaces.Data;
 using UniversityTimetable.Shared.Interfaces.ModelsRelationships;
 
 namespace UniversityTimetable.Shared.Models.RelationModels;
@@ -11,6 +10,6 @@ public class UserGroup: IRelationModel<User, Group>
 
     public User User { get; set; }
     public Group Group { get; set; }
-    int IRelationModel<User, Group>.RightTableId { init => UserId = value; }
-    int IRelationModel<User, Group>.LeftTableId { get => GroupId; init => GroupId = value; }
+    int IRelationModel<User, Group>.RightTableId { get => GroupId; init => GroupId = value; }
+    int IRelationModel<User, Group>.LeftTableId { init => UserId = value; }
 }

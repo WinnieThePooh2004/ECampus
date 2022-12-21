@@ -14,6 +14,6 @@ public class UserDto : IDataTransferObject
     public UserRole Role { get; set; }
 
     public List<AuditoryDto> SavedAuditories { get; set; } = default!;
-    public List<AuditoryDto> SavedGroups { get; set; } = default!;
-    public List<AuditoryDto> SavedTeachers { get; set; } = default!;
+    public List<GroupDto> SavedGroups { get; set; } = default!;
+    public List<TeacherDto> SavedTeachers { get; set; } = default!;
 }

@@ -21,24 +21,16 @@ public class UserRequests : IUserRequests
     }
 
     public Task<UserDto> GetByIdAsync(int id)
-    {
-        return _baseRequests.GetByIdAsync(id);
-    }
+        => _baseRequests.GetByIdAsync(id);
 
     public Task<UserDto> CreateAsync(UserDto entity)
-    {
-        return _baseRequests.CreateAsync(entity);
-    }
+        => _baseRequests.CreateAsync(entity);
 
     public Task<UserDto> UpdateAsync(UserDto entity)
-    {
-        return _baseRequests.UpdateAsync(entity);
-    }
+        => _baseRequests.UpdateAsync(entity);
 
     public Task DeleteAsync(int id)
-    {
-        return _baseRequests.DeleteAsync(id);
-    }
+        => _baseRequests.DeleteAsync(id);
 
     public Task<UserDto> GetCurrentUserAsync()
     {
@@ -50,6 +42,13 @@ public class UserRequests : IUserRequests
 
         var id = user.Claims.FirstOrDefault(claim => claim.Type == CustomClaimTypes.Id)?.Value ?? throw new UnauthorizedAccessException();
         return _baseRequests.GetByIdAsync(int.Parse(id));
+    }
+
+    public async Task<Dictionary<string, string>> ValidateAsync(UserDto user)
+    {
+        var response = await _client.CreateClient("UTApi").PutAsJsonAsync("api/Users/Validate", user);
+        response.EnsureSuccessStatusCode();
+        return JsonSerializer.Deserialize<Dictionary<string, string>>(await response.Content.ReadAsStringAsync(), _options);
     }
 
     public async Task SaveAuditory(int auditoryId)

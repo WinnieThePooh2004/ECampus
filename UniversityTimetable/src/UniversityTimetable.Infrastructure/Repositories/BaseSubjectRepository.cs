@@ -53,6 +53,7 @@ namespace UniversityTimetable.Infrastructure.Repositories
             if (subject is null)
             {
                 _logger.LogAndThrowException(new ObjectNotFoundByIdException(typeof(Subject), id));
+                return null;
             }
             subject.Teachers = subject.TeacherIds.Select(t => t.Teacher).ToList();
             return subject;

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using System.Collections.ObjectModel;
+using Microsoft.AspNetCore.Components;
 using UniversityTimetable.Shared.Comparing;
 using UniversityTimetable.Shared.Interfaces.Data;
 
@@ -9,9 +10,6 @@ namespace UniversityTimetable.FrontEnd.Components.DataSelectors
         where TParameters : class, IQueryParameters, new()
     {
         [Parameter] public string Title { get; set; }
-        [Parameter] public EventCallback<TData> OnAdd { get; set; }
-        [Parameter] public EventCallback<TData> OnDelete { get; set; }
-        [Parameter] public EventCallback<TData> SelectedValueChanged { get; set; }
         [Parameter] public List<string> PropertyNames { get; set; }
         [Parameter] public List<Func<TData, object>> PropertiesToShow { get; set; }
         [Parameter] public Func<TData, bool> ShowOnly { get; set; } = item => true;
@@ -20,6 +18,7 @@ namespace UniversityTimetable.FrontEnd.Components.DataSelectors
 
         private DataTransferObjectComparer<TData> _comparer = new();
 
+        private int TotalColumns => PropertiesToShow.Count + 1;
         protected override void OnInitialized()
         {
             Select = new Dictionary<TData, bool>(_comparer);
@@ -27,13 +26,14 @@ namespace UniversityTimetable.FrontEnd.Components.DataSelectors
 
         private void ValueChecked(bool isChecked, TData item)
         {
-            if(!isChecked && SelectTo.Any(i => _comparer.Equals(i, item)))
+            var selectInSourceList = SelectTo.FirstOrDefault(i => i.Id == item.Id);
+            if(!isChecked && selectInSourceList is not null)
             {
-                OnDelete.InvokeAsync(item);
+                SelectTo.Remove(selectInSourceList);
                 Select[item] = false;
                 return;
             }
-            OnAdd.InvokeAsync(item);
+            SelectTo.Add(item);
             Select[item] = true;
         }
 

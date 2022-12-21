@@ -18,12 +18,12 @@ public class User : IModel, IIsDeleted,
     public string Username { get; set; }
     public UserRole Role { get; set; }
 
-    public List<Group> SavedGroups { get; set; }
-    public List<Teacher> SavedTeachers { get; set; }
-    public List<Auditory> SavedAuditories { get; set; }
-    public List<UserGroup> SavedGroupsIds { get; set; }
-    public List<UserAuditory> SavedAuditoriesIds { get; set; }
-    public List<UserTeacher> SavedTeachersIds { get; set; }
+    public List<Group> SavedGroups { get; set; } = new();
+    public List<Teacher> SavedTeachers { get; set; } = new();
+    public List<Auditory> SavedAuditories { get; set; } = new();
+    public List<UserGroup> SavedGroupsIds { get; set; } = new();
+    public List<UserAuditory> SavedAuditoriesIds { get; set; } = new();
+    public List<UserTeacher> SavedTeachersIds { get; set; } = new();
     List<Auditory> IModelWithManyToManyRelations<Auditory, UserAuditory>.RelatedModels => SavedAuditories;
     Expression<Func<UserTeacher, bool>> IModelWithManyToManyRelations<Teacher, UserTeacher>.IsRelated => ut => ut.UserId == Id;
     List<UserTeacher> IModelWithManyToManyRelations<Teacher, UserTeacher>.RelationModels => SavedTeachersIds;

@@ -83,7 +83,7 @@ namespace UniversityTimetable.Tests.Unit.BackEnd.Api
         public void PassedInvalidItem_ShouldHaveValidationError()
         {
             var invalidItem = new AuditoryDto { Name = "", Building = "" };
-            var validator = new AuditoryDTOValidator();
+            var validator = new AuditoryDtoValidator();
 
             var errors = validator.Validate(invalidItem).Errors.Select(e => e.ErrorMessage).ToList();
             var expectedErrors = new List<string>

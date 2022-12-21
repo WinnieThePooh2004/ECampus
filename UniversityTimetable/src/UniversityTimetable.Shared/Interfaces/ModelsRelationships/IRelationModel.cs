@@ -6,6 +6,6 @@ public interface IRelationModel<TLeftTable, TRightTable>
     where TLeftTable : class, IModel
     where TRightTable : class, IModel
 {
-    int RightTableId { init; }
-    int LeftTableId { get; init; }
+    int RightTableId { get; init; }
+    int LeftTableId { init; }
 }

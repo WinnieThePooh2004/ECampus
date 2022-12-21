@@ -5,7 +5,7 @@
     <p><em>Loading...</em></p>
     return;
 }
-<TeacherEditForm Model="@Model" OnSubmited="Save" />
+<TeacherEditForm Model="@Model" OnSubmit="Save" />
 
 @code{
     protected override string PageAfterSave => $"teachers/{Model.DepartmentId}";

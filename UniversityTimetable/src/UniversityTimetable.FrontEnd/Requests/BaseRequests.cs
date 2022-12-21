@@ -3,44 +3,43 @@ using System.Text.Json;
 using UniversityTimetable.FrontEnd.Requests.Interfaces;
 using UniversityTimetable.Shared.Extensions;
 
-namespace UniversityTimetable.FrontEnd.Requests
+namespace UniversityTimetable.FrontEnd.Requests;
+
+public class BaseRequests<TData> : IBaseRequests<TData>
 {
-    public class BaseRequests<TData> : IBaseRequests<TData>
+    private readonly string _controllerName;
+    private readonly HttpClient _client;
+    private readonly JsonSerializerOptions _options;
+    public BaseRequests(IHttpClientFactory clientFactory, JsonSerializerOptions options)
     {
-        private readonly string _controllerName;
-        private readonly HttpClient _client;
-        private readonly JsonSerializerOptions _options;
-        public BaseRequests(IHttpClientFactory clientFactory, JsonSerializerOptions options)
-        {
-            _options = options;
-            _client = clientFactory.CreateClient("UTApi");
-            _controllerName = Options.Requests.ControllerNames[typeof(TData)];
-        }
-        public async Task<TData> CreateAsync(TData entity)
-        {
-            var response = await _client.PostAsJsonAsync($"/api/{_controllerName}", entity);
-            response.EnsureSuccessStatusCode();
-            return JsonSerializer.Deserialize<TData>(await response.Content.ReadAsStringAsync(), _options);
-        }
+        _options = options;
+        _client = clientFactory.CreateClient("UTApi");
+        _controllerName = Options.Requests.ControllerNames[typeof(TData)];
+    }
+    public async Task<TData> CreateAsync(TData entity)
+    {
+        var response = await _client.PostAsJsonAsync($"/api/{_controllerName}", entity);
+        response.EnsureSuccessStatusCode();
+        return JsonSerializer.Deserialize<TData>(await response.Content.ReadAsStringAsync(), _options);
+    }
 
-        public async Task DeleteAsync(int id)
-        {
-            var response = await _client.DeleteAsync($"/api/{_controllerName}/{id}");
-            response.EnsureSuccessStatusCode();
-        }
+    public async Task DeleteAsync(int id)
+    {
+        var response = await _client.DeleteAsync($"/api/{_controllerName}/{id}");
+        response.EnsureSuccessStatusCode();
+    }
 
-        public async Task<TData> GetByIdAsync(int id)
-        {
-            var response = await _client.GetAsync($"/api/{_controllerName}/{id}");
-            response.EnsureSuccessStatusCode();
-            return JsonSerializer.Deserialize<TData>(await response.Content.ReadAsStringAsync(), _options);
-        }
+    public async Task<TData> GetByIdAsync(int id)
+    {
+        var response = await _client.GetAsync($"/api/{_controllerName}/{id}");
+        response.EnsureSuccessStatusCode();
+        return JsonSerializer.Deserialize<TData>(await response.Content.ReadAsStringAsync(), _options);
+    }
 
-        public async Task<TData> UpdateAsync(TData entity)
-        {
-            var response = await _client.PutAsJsonAsync($"/api/{_controllerName}", entity);
-            response.EnsureSuccessStatusCode();
-            return JsonSerializer.Deserialize<TData>(await response.Content.ReadAsStringAsync(), _options);
-        }
+    public async Task<TData> UpdateAsync(TData entity)
+    {
+        var response = await _client.PutAsJsonAsync($"/api/{_controllerName}", entity);
+        response.EnsureSuccessStatusCode();
+        return JsonSerializer.Deserialize<TData>(await response.Content.ReadAsStringAsync(), _options);
     }
 }

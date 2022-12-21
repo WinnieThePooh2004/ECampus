@@ -1,7 +1,9 @@
 ﻿using System.Security.Claims;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using UniversityTimetable.Shared.DataTransferObjects;
+using UniversityTimetable.Shared.Enums;
 using UniversityTimetable.Shared.Exceptions.DomainExceptions;
 using UniversityTimetable.Shared.Extensions;
 using UniversityTimetable.Shared.Interfaces.Auth;
@@ -42,11 +44,11 @@ public class UserService : IUserService
 
     public async Task<UserDto> CreateAsync(UserDto entity)
     {
-        var errors = await ValidateAsync(entity);
-        if (errors.Any())
-        {
-            _logger.LogAndThrowException(new ValidationException(typeof(UserDto), errors));
-        }
+        // var errors = await ValidateAsync(entity);
+        // if (errors.Any())
+        // {
+        //     _logger.LogAndThrowException(new ValidationException(typeof(UserDto), errors));
+        // }
 
         return await _baseService.CreateAsync(entity);
     }
@@ -66,18 +68,22 @@ public class UserService : IUserService
 
     public async Task<UserDto> UpdateAsync(UserDto entity)
     {
-        var errors = await ValidateAsync(entity);
-        if (errors.Any())
-        {
-            _logger.LogAndThrowException(new ValidationException(typeof(UserDto), errors));
-        }
+        // var errors = await ValidateAsync(entity);
+        // if (errors.Any())
+        // {
+        //     _logger.LogAndThrowException(new ValidationException(typeof(UserDto), errors));
+        // }
 
         return await _baseService.UpdateAsync(entity);
     }
 
-    public Task<Dictionary<string, string>> ValidateAsync(UserDto user)
+    public async Task<Dictionary<string, string>> ValidateAsync(UserDto user, HttpContext context)
     {
-        return _repository.ValidateAsync(_mapper.Map<User>(user));
+        if (user.Role == UserRole.Admin && !context.User.IsInRole(nameof(UserRole.Admin)))
+        {
+            return new Dictionary<string, string>{ [nameof(user.Role)] = "Cannot register new admin unless register account is not admin" };
+        }
+        return await _repository.ValidateAsync(_mapper.Map<User>(user));
     }
 
     public Task SaveAuditory(ClaimsPrincipal user, int auditoryId)
