@@ -11,9 +11,9 @@ namespace UniversityTimetable.Api.Controllers
     [Route("api/[controller]")]
     public class AuditoriesController : ControllerBase
     {
-        private readonly IService<AuditoryDto, AuditoryParameters> _service;
+        private readonly IParametersService<AuditoryDto, AuditoryParameters> _service;
 
-        public AuditoriesController(IService<AuditoryDto, AuditoryParameters> service)
+        public AuditoriesController(IParametersService<AuditoryDto, AuditoryParameters> service)
         {
             _service = service;
         }

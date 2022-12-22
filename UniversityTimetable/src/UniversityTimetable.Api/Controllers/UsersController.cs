@@ -62,15 +62,15 @@ public class UsersController : ControllerBase
     [Authorized]
     public async Task<IActionResult> SaveAuditory(int auditoryId)
     {
-        await _service.SaveAuditory(HttpContext.User, auditoryId);
+        await _service.SaveAuditory(HttpContext?.User, auditoryId);
         return NoContent();
     }
         
     [HttpDelete("auditory/{auditoryId:int}")]
     [Authorized]
-    public async Task<IActionResult> DeleteAuditory(int auditoryId)
+    public async Task<IActionResult> RemoveAuditory(int auditoryId)
     {
-        await _service.RemoveSavedAuditory(HttpContext.User, auditoryId);
+        await _service.RemoveSavedAuditory(HttpContext?.User, auditoryId);
         return NoContent();
     }
 
@@ -78,7 +78,7 @@ public class UsersController : ControllerBase
     [Authorized]
     public async Task<IActionResult> SaveGroup(int groupId)
     {
-        await _service.SaveGroup(HttpContext.User, groupId);
+        await _service.SaveGroup(HttpContext?.User, groupId);
         return NoContent();
     }
     
@@ -86,7 +86,7 @@ public class UsersController : ControllerBase
     [Authorized]
     public async Task<IActionResult> RemoveGroup(int groupId)
     {
-        await _service.RemoveSavedGroup(HttpContext.User, groupId);
+        await _service.RemoveSavedGroup(HttpContext?.User, groupId);
         return NoContent();
     }
 
@@ -94,7 +94,7 @@ public class UsersController : ControllerBase
     [Authorized]
     public async Task<IActionResult> SaveTeacher(int teacherId)
     {
-        await _service.SaveTeacher(HttpContext.User, teacherId);
+        await _service.SaveTeacher(HttpContext?.User, teacherId);
         return NoContent();
     }
         
@@ -102,7 +102,7 @@ public class UsersController : ControllerBase
     [Authorized]
     public async Task<IActionResult> RemoveTeacher(int teacherId)
     {
-        await _service.RemoveSavedTeacher(HttpContext.User, teacherId);
+        await _service.RemoveSavedTeacher(HttpContext?.User, teacherId);
         return NoContent();
     }
 }

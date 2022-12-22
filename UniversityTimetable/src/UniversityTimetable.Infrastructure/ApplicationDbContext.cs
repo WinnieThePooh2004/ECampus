@@ -12,6 +12,10 @@ namespace UniversityTimetable.Infrastructure
 
         }
 
+        public ApplicationDbContext()
+        {
+        }
+
         public DbSet<Auditory> Auditories { get; set; }
         public DbSet<Class> Classes { get; set; }
         public DbSet<Department> Departments { get; set; }

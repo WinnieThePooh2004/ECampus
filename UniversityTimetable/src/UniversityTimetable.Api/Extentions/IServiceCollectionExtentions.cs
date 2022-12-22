@@ -21,9 +21,9 @@ public static class IServiceCollectionExtensions
         where TDto : class, IDataTransferObject, new()
     {
         services.AddScoped<IBaseRepository<TModel>, BaseRepository<TModel>>();
-        services.AddScoped<IService<TDto, TParameters>, Service<TDto, TParameters, TModel>>();
+        services.AddScoped<IParametersService<TDto, TParameters>, ParametersService<TDto, TParameters, TModel>>();
         services.AddScoped<IBaseService<TDto>, BaseService<TDto, TModel>>();
-        services.AddScoped<IRepository<TModel, TParameters>, Repository<TModel, TParameters>>();
+        services.AddScoped<IParametersRepository<TModel, TParameters>, ParametersRepository<TModel, TParameters>>();
         return services;
     }
 }

@@ -9,6 +9,7 @@ namespace UniversityTimetable.Infrastructure.DataSelectors
     public class DepartmentSelector : IDataSelector<Department, DepartmentParameters>
     {
         public IQueryable<Department> SelectData(DbSet<Department> data, DepartmentParameters parameters)
-            => data.Search(d => d.Name, parameters.SearchTerm).Where(d => d.FacultacyId == parameters.FacultacyId);
+            => data.Search(d => d.Name, parameters.SearchTerm)
+                .Where(d => parameters.FacultacyId == 0 || d.FacultyId == parameters.FacultacyId);
     }
 }

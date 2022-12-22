@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Net;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using UniversityTimetable.Shared.DataContainers;
 using UniversityTimetable.Shared.Exceptions.InfrastructureExceptions;
@@ -23,6 +24,11 @@ public class BaseRepository<TModel> : IBaseRepository<TModel>
 
     public async Task<TModel> CreateAsync(TModel entity)
     {
+        if (entity.Id != 0)
+        {
+            _logger.LogAndThrowException(new InfrastructureExceptions(HttpStatusCode.BadRequest,
+                "Cannot create add object to db if id != 0"));
+        }
         _context.Add(entity);
         await _context.SaveChangesAsync();
         return entity;

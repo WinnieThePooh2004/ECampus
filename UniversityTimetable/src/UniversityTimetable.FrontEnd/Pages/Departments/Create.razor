@@ -1,5 +1,5 @@
 ﻿@page "/departments/create/{FacultyId:int}"
 @inherits CreatePageBase<DepartmentDTO>
-<DepartmentEditForm Model="new(){ FacultacyId = FacultyId }" OnSubmit="@(async model => await Save(model))" />
+<DepartmentEditForm Model="new(){ FacultyId = FacultyId }" OnSubmit="@(async model => await Save(model))" />
 
 <a role="button" class="btn-danger" href="@($"/departments/{FacultyId}")">Back</a>
