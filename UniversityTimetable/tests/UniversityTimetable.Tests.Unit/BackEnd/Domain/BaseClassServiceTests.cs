@@ -14,19 +14,17 @@ namespace UniversityTimetable.Tests.Unit.BackEnd.Domain
     {
         private readonly IBaseService<ClassDto> _baseService;
         private readonly BaseClassService _service;
-        private readonly IMapper _mapper;
-        private readonly ILogger<BaseClassService> _logger;
         private readonly IClassRepository _repository;
         private readonly Fixture _fixture;
 
         public BaseClassServiceTests()
         {
-            _logger = Substitute.For<ILogger<BaseClassService>>();
+            var logger = Substitute.For<ILogger<BaseClassService>>();
             _baseService = Substitute.For<IBaseService<ClassDto>>();
             _repository = Substitute.For<IClassRepository>();
-            _mapper = new MapperConfiguration(cfg => cfg.AddProfile<ClassProfile>()).CreateMapper();
-            _service = new BaseClassService(_baseService, _logger, _repository, _mapper);
-            _fixture = new();
+            var mapper = new MapperConfiguration(cfg => cfg.AddProfile<ClassProfile>()).CreateMapper();
+            _service = new BaseClassService(_baseService, logger, _repository, mapper);
+            _fixture = new Fixture();
             _fixture.Behaviors.Add(new OmitOnRecursionBehavior());
         }
 

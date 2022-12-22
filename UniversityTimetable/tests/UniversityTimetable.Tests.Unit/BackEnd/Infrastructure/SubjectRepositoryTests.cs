@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace UniversityTimetable.Tests.Unit.BackEnd.Infrastructure
 {
-    internal class SubjectRepositoryTests
+    public class SubjectRepositoryTests
     {
     }
 }
