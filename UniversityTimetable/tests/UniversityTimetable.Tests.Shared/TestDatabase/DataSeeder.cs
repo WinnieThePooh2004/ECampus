@@ -55,7 +55,7 @@ namespace UniversityTimetable.Tests.Shared.TestDatabase
                 {
                     Id = 1,
                     Name = "Name",
-                    FacultacyId = 1,
+                    FacultyId = 1,
                     Teachers = new List<Teacher>
                     {
                         new Teacher
