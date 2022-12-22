@@ -16,13 +16,13 @@ namespace UniversityTimetable.Tests.Unit.BackEnd.Api
         private readonly Fixture _fixture;
         public TimetableControllerTests()
         {
-            _controller = new(_service);
+            _controller = new TimetableController(_service);
             _fixture = new Fixture();
             _fixture.Behaviors.Add(new OmitOnRecursionBehavior());
         }
 
         [Fact]
-        public async Task GetById_ReturnsFromService()
+        public async Task GetById_ReturnsFromService_ServiceCalled()
         {
             var data = _fixture.Build<ClassDto>().With(t => t.Id, 10).Create();
 
@@ -31,19 +31,21 @@ namespace UniversityTimetable.Tests.Unit.BackEnd.Api
 
             actionResult.Should().BeOfType<OkObjectResult>();
             actionResult.As<OkObjectResult>().Value.Should().Be(data);
+            await _service.Received().GetByIdAsync(10);
         }
 
         [Fact]
-        public async Task Delete_ReturnsIdFromService()
+        public async Task Delete_ReturnsIdFromService_ServiceCalled()
         {
             var actionResult = await _controller.Delete(10);
 
             actionResult.Should().BeOfType<OkObjectResult>();
             actionResult.As<OkObjectResult>().Value.Should().Be(10);
+            await _service.Received().DeleteAsync(10);
         }
 
         [Fact]
-        public async Task Create_ReturnsFromService()
+        public async Task Create_ReturnsFromService_ServiceCalled()
         {
             var data = _fixture.Create<ClassDto>();
             _service.CreateAsync(data).Returns(data);
@@ -52,10 +54,11 @@ namespace UniversityTimetable.Tests.Unit.BackEnd.Api
 
             actionResult.Should().BeOfType<OkObjectResult>();
             actionResult.As<OkObjectResult>().Value.Should().Be(data);
+            await _service.Received().CreateAsync(data);
         }
 
         [Fact]
-        public async Task Update_ReturnsFromService()
+        public async Task Update_ReturnsFromService_ServiceCalled()
         {
             var data = _fixture.Create<ClassDto>();
             _service.UpdateAsync(data).Returns(data);
@@ -64,6 +67,7 @@ namespace UniversityTimetable.Tests.Unit.BackEnd.Api
 
             actionResult.Should().BeOfType<OkObjectResult>();
             actionResult.As<OkObjectResult>().Value.Should().Be(data);
+            await _service.Received().UpdateAsync(data);
         }
 
         [Fact]
@@ -84,7 +88,7 @@ namespace UniversityTimetable.Tests.Unit.BackEnd.Api
         }
 
         [Fact]
-        public async Task TeacherTimetable_ReturnsFromService()
+        public async Task TeacherTimetable_ReturnsFromService_ServiceCalled()
         {
             var timetable = CreateTimetable();
             _service.GetTimetableForTeacherAsync(1).Returns(timetable);
@@ -93,10 +97,11 @@ namespace UniversityTimetable.Tests.Unit.BackEnd.Api
 
             actionResult.Should().BeOfType<OkObjectResult>();
             actionResult.As<OkObjectResult>().Value.Should().Be(timetable);
+            await _service.Received().GetTimetableForTeacherAsync(1);
         }
 
         [Fact]
-        public async Task GroupTimetable_ReturnsFromService()
+        public async Task GroupTimetable_ReturnsFromService_ServiceCalled()
         {
             var timetable = CreateTimetable();
             _service.GetTimetableForGroupAsync(1).Returns(timetable);
@@ -105,11 +110,11 @@ namespace UniversityTimetable.Tests.Unit.BackEnd.Api
 
             actionResult.Should().BeOfType<OkObjectResult>();
             actionResult.As<OkObjectResult>().Value.Should().Be(timetable);
-
+            await _service.Received().GetTimetableForGroupAsync(1);
         }
 
         [Fact]
-        public async Task AuditoryTimetable_ReturnsFromService()
+        public async Task AuditoryTimetable_ReturnsFromService_ServiceCalled()
         {
             var timetable = CreateTimetable();
             _service.GetTimetableForAuditoryAsync(1).Returns(timetable);
@@ -118,7 +123,21 @@ namespace UniversityTimetable.Tests.Unit.BackEnd.Api
 
             actionResult.Should().BeOfType<OkObjectResult>();
             actionResult.As<OkObjectResult>().Value.Should().Be(timetable);
+            await _service.Received().GetTimetableForAuditoryAsync(1);
+        }
+        
+        [Fact]
+        public async Task Validate_ReturnsFromService_ServiceCalled()
+        {
+            var errors = new Dictionary<string, string>(_fixture.CreateMany<KeyValuePair<string, string>>(5));
+            var @class = new ClassDto();
+            _service.ValidateAsync(@class).Returns(errors);
 
+            var actionResult = await _controller.Validate(@class);
+
+            actionResult.Should().BeOfType<OkObjectResult>();
+            actionResult.As<OkObjectResult>().Value.Should().Be(errors);
+            await _service.Received().ValidateAsync(@class);
         }
 
         private Timetable CreateTimetable()
