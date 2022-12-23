@@ -4,9 +4,9 @@ using UniversityTimetable.Shared.Interfaces.Data;
 using UniversityTimetable.Shared.Models;
 using UniversityTimetable.Shared.QueryParameters;
 
-namespace UniversityTimetable.Infrastructure.DataSelectors
+namespace UniversityTimetable.Infrastructure.DataSelectors.MultipleItemSelectors
 {
-    public class TeacherSelector : IDataSelector<Teacher, TeacherParameters>
+    public class TeacherSelector : IMultipleItemSelector<Teacher, TeacherParameters>
     {
         public IQueryable<Teacher> SelectData(DbSet<Teacher> data, TeacherParameters parameters)
             => data.Search(g => g.LastName, parameters.SearchTerm)

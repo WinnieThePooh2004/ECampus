@@ -25,7 +25,8 @@ public class RelationshipsRepository<TLeftTable, TRightTable, TRelations> : IRel
 
     public void CreateRelationModels(TLeftTable model)
     {
-        model.RelationModels.AddRange(model.RelatedModels.Select(r => new TRelations { RightTableId = r.Id }));
+        model.RelationModels.AddRange(model.RelatedModels
+            .Select(r => new TRelations { RightTableId = r.Id, LeftTableId = model.Id}));
         model.RelatedModels = null;
     }
 
@@ -57,7 +58,7 @@ public class RelationshipsRepository<TLeftTable, TRightTable, TRelations> : IRel
             _logger.LogError(e, "cannot add relation between object of type {LeftTable} with id={RightTableId} " +
                                 "on between object of type {RightTable} with id={LeftTableId} ", typeof(TRightTable),
                 rightTableId, typeof(TLeftTable), leftTableId);
-            throw new InfrastructureExceptions(HttpStatusCode.NotFound,e.Message);
+            throw new InfrastructureExceptions(HttpStatusCode.NotFound, e.Message);
         }
         return relation;
     }

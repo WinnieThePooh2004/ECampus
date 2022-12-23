@@ -1,4 +1,3 @@
-using System.Net;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using UniversityTimetable.Domain.Services;
@@ -13,12 +12,15 @@ using FluentValidation.AspNetCore;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using UniversityTimetable.Api.MiddlewareFilters;
-using UniversityTimetable.Api.Extentions;
 using UniversityTimetable.Domain.Auth;
 using UniversityTimetable.Infrastructure.Auth;
-using UniversityTimetable.Infrastructure.DataSelectors;
 using UniversityTimetable.Shared.Interfaces.Auth;
 using UniversityTimetable.Shared.Models.RelationModels;
+using Newtonsoft.Json;
+using UniversityTimetable.Api.Extensions;
+using UniversityTimetable.Infrastructure.DataSelectors.MultipleItemSelectors;
+using UniversityTimetable.Infrastructure.DataSelectors.SingleItemSelectors;
+using UniversityTimetable.Shared.Interfaces.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,7 +29,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers(options =>
 {
     options.Filters.Add<MiddlewareExceptionFilter>();
-});
+})
+    .AddNewtonsoftJson(options =>
+    {
+        options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+    });
 
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddFluentValidationClientsideAdapters();
@@ -39,12 +45,22 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddAutoMapper(Assembly.Load("UniversityTimetable.Domain"));
 
-builder.Services.AddDataSelector<Auditory, AuditoryParameters, AuditorySelector>();
-builder.Services.AddDataSelector<Department, DepartmentParameters, DepartmentSelector>();
-builder.Services.AddDataSelector<Faculty, FacultyParameters, FacultySelector>();
-builder.Services.AddDataSelector<Group, GroupParameters, GroupSelector>();
-builder.Services.AddDataSelector<Subject, SubjectParameters, SubjectSelector>();
-builder.Services.AddDataSelector<Teacher, TeacherParameters, TeacherSelector>();
+builder.Services.AddMultipleDataSelector<Auditory, AuditoryParameters, AuditorySelector>();
+builder.Services.AddMultipleDataSelector<Department, DepartmentParameters, DepartmentSelector>();
+builder.Services.AddMultipleDataSelector<Faculty, FacultyParameters, FacultySelector>();
+builder.Services.AddMultipleDataSelector<Group, GroupParameters, GroupSelector>();
+builder.Services.AddMultipleDataSelector<Subject, SubjectParameters, SubjectSelector>();
+builder.Services.AddMultipleDataSelector<Teacher, TeacherParameters, TeacherSelector>();
+
+builder.Services.AddDefaultSingleItemSelector<Auditory>();
+builder.Services.AddDefaultSingleItemSelector<Department>();
+builder.Services.AddDefaultSingleItemSelector<Faculty>();
+builder.Services.AddDefaultSingleItemSelector<Group>();
+builder.Services.AddDefaultSingleItemSelector<Class>();
+
+builder.Services.AddScoped<ISingleItemSelector<User>, SingleUserSelector>();
+builder.Services.AddScoped<ISingleItemSelector<Subject>, SingleSubjectSelector>();
+builder.Services.AddScoped<ISingleItemSelector<Teacher>, SingleTeacherSelector>();
 
 builder.Services.AddDefaultServices<Auditory, AuditoryDto, AuditoryParameters>();
 builder.Services.AddDefaultServices<Department, DepartmentDTO, DepartmentParameters>();
@@ -54,10 +70,10 @@ builder.Services.AddDefaultServices<Subject, SubjectDto, SubjectParameters>();
 builder.Services.AddDefaultServices<Teacher, TeacherDto, TeacherParameters>();
 
 builder.Services.AddScoped<IRelationshipsRepository<Subject, Teacher, SubjectTeacher>, RelationshipsRepository<Subject, Teacher, SubjectTeacher>>();
-builder.Services.Decorate<IBaseRepository<Subject>, BaseSubjectRepository>();
+builder.Services.Decorate<IBaseService<SubjectDto>, BaseSubjectService>();
 
 builder.Services.AddScoped<IRelationshipsRepository<Teacher, Subject, SubjectTeacher>, RelationshipsRepository<Teacher, Subject, SubjectTeacher>>();
-builder.Services.Decorate<IBaseRepository<Teacher>, BaseTeacherRepository>();
+builder.Services.Decorate<IBaseService<TeacherDto>, BaseTeacherService>();
 
 builder.Services.AddScoped<IBaseService<ClassDto>, BaseService<ClassDto, Class>>();
 builder.Services.Decorate<IBaseService<ClassDto>, BaseClassService>();
@@ -70,7 +86,6 @@ builder.Services.AddScoped<IRelationshipsRepository<User, Group, UserGroup>, Rel
 builder.Services.AddScoped<IRelationshipsRepository<User, Teacher, UserTeacher>, RelationshipsRepository<User, Teacher, UserTeacher>>();
 builder.Services.AddScoped<IBaseService<UserDto>, BaseService<UserDto, User>>();
 builder.Services.AddScoped<IBaseRepository<User>, BaseRepository<User>>();
-builder.Services.Decorate<IBaseRepository<User>, BaseUserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 

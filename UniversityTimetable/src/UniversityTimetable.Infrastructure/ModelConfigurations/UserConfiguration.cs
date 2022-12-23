@@ -15,6 +15,18 @@ namespace UniversityTimetable.Infrastructure.ModelConfigurations
 
             builder.HasIndex(u => u.Username)
                 .IsUnique();
+
+            builder.HasMany(u => u.SavedAuditories)
+                .WithMany(a => a.Users)
+                .UsingEntity<UserAuditory>();
+
+            builder.HasMany(u => u.SavedGroups)
+                .WithMany(g => g.Users)
+                .UsingEntity<UserGroup>();
+
+            builder.HasMany(u => u.SavedTeachers)
+                .WithMany(t => t.Users)
+                .UsingEntity<UserTeacher>();
         }
     }
 }
