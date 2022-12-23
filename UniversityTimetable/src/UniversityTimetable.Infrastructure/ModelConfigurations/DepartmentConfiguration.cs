@@ -9,9 +9,9 @@ namespace UniversityTimetable.Infrastructure.ModelConfigurations
         public void Configure(EntityTypeBuilder<Department> builder)
         {
             builder.HasQueryFilter(d => !d.IsDeleted)
-                .HasOne(d => d.Facultacy)
+                .HasOne(d => d.Faculty)
                 .WithMany(f => f.Departments)
-                .HasForeignKey(f => f.FacultacyId)
+                .HasForeignKey(f => f.FacultyId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

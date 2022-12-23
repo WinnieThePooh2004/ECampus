@@ -1,6 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Net;
 using Microsoft.Extensions.Logging;
-using UniversityTimetable.Shared.DataContainers;
 using UniversityTimetable.Shared.Exceptions.InfrastructureExceptions;
 using UniversityTimetable.Shared.Extensions;
 using UniversityTimetable.Shared.Interfaces.Data;
@@ -13,16 +12,22 @@ public class BaseRepository<TModel> : IBaseRepository<TModel>
 {
     private readonly ApplicationDbContext _context;
     private readonly ILogger<BaseRepository<TModel>> _logger;
+    private readonly ISingleItemSelector<TModel> _singleItemSelector;
 
-
-    public BaseRepository(ApplicationDbContext context, ILogger<BaseRepository<TModel>> logger)
+    public BaseRepository(ApplicationDbContext context, ILogger<BaseRepository<TModel>> logger, ISingleItemSelector<TModel> singleItemSelector)
     {
         _context = context;
         _logger = logger;
+        _singleItemSelector = singleItemSelector;
     }
 
     public async Task<TModel> CreateAsync(TModel entity)
     {
+        if (entity.Id != 0)
+        {
+            _logger.LogAndThrowException(new InfrastructureExceptions(HttpStatusCode.BadRequest,
+                "Cannot create add object to db if id != 0"));
+        }
         _context.Add(entity);
         await _context.SaveChangesAsync();
         return entity;
@@ -45,7 +50,7 @@ public class BaseRepository<TModel> : IBaseRepository<TModel>
 
     public async Task<TModel> GetByIdAsync(int id)
     {
-        var model = await _context.Set<TModel>().FirstOrDefaultAsync(m => m.Id == id);
+        var model = await _singleItemSelector.SelectModel(id, _context.Set<TModel>());
         if (model is null)
         {
             _logger.LogAndThrowException(new ObjectNotFoundByIdException(typeof(TModel), id));

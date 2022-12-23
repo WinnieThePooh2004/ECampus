@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using UniversityTimetable.Shared.Models;
+using UniversityTimetable.Shared.Models.RelationModels;
 
 namespace UniversityTimetable.Infrastructure.ModelConfigurations
 {
@@ -14,6 +15,10 @@ namespace UniversityTimetable.Infrastructure.ModelConfigurations
                 .HasForeignKey(t => t.DepartmentId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasMany(t => t.Subjects)
+                .WithMany(s => s.Teachers)
+                .UsingEntity<SubjectTeacher>();
         }
     }
 }

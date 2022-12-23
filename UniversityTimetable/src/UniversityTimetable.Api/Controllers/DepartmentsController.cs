@@ -11,8 +11,8 @@ namespace UniversityTimetable.Api.Controllers
     [Route("api/[controller]")]
     public class DepartmentsController : ControllerBase
     {
-        private readonly IService<DepartmentDTO, DepartmentParameters> _service;
-        public DepartmentsController(IService<DepartmentDTO, DepartmentParameters> service)
+        private readonly IParametersService<DepartmentDTO, DepartmentParameters> _service;
+        public DepartmentsController(IParametersService<DepartmentDTO, DepartmentParameters> service)
         {
             _service = service;
         }

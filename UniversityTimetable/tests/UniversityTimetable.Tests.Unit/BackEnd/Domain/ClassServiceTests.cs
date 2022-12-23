@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace UniversityTimetable.Tests.Unit.BackEnd.Domain
 {
-    internal class ClassServiceTests
+    public class ClassServiceTests
     {
     }
 }

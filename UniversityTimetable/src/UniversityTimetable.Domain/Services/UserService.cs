@@ -43,31 +43,29 @@ public class UserService : IUserService
         _authenticationService = authenticationService;
     }
 
-    public Task<UserDto> CreateAsync(UserDto entity) 
+    public Task<UserDto> CreateAsync(UserDto entity)
         => _baseService.CreateAsync(entity);
 
     public Task DeleteAsync(int? id)
         => _baseService.DeleteAsync(id);
 
-    public async Task<UserDto> GetByIdAsync(int? id)
-    {
-        if (id is null)
-        {
-            throw new NullIdException();
-        }
-        
-        return _mapper.Map<UserDto>(await _repository.GetByIdAsync((int)id));
-    }
+    public Task<UserDto> GetByIdAsync(int? id)
+        => _baseService.GetByIdAsync(id);
 
     public async Task<UserDto> UpdateAsync(UserDto entity)
     {
-        var errors = await _repository.ValidateUpdateAsync(_mapper.Map<User>(entity));
+        var model = _mapper.Map<User>(entity);
+        var errors = await _repository.ValidateUpdateAsync(model);
         if (errors.Any())
         {
             _logger.LogAndThrowException(new DomainException(HttpStatusCode.BadRequest,
                 "One ore more validation errors happened", errors));
         }
-        return await _baseService.UpdateAsync(entity);
+        await _userAuditoryRelations.UpdateRelations(model);
+        await _userGroupRelations.UpdateRelations(model);
+        await _userTeacherRelations.UpdateRelations(model);
+
+        return _mapper.Map<UserDto>(await _repository.UpdateAsync(model));
     }
 
     public async Task<Dictionary<string, string>> ValidateCreateAsync(UserDto user, HttpContext context)

@@ -11,9 +11,9 @@ namespace UniversityTimetable.Api.Controllers
     [Route("api/[controller]")]
     public class GroupsController : ControllerBase
     {
-        private readonly IService<GroupDto, GroupParameters> _service;
+        private readonly IParametersService<GroupDto, GroupParameters> _service;
 
-        public GroupsController(IService<GroupDto, GroupParameters> service)
+        public GroupsController(IParametersService<GroupDto, GroupParameters> service)
         {
             _service = service;
         }
@@ -52,7 +52,7 @@ namespace UniversityTimetable.Api.Controllers
             {
                 return BadRequest(group);
             }
-            await _service.CreateAsync(group);
+            await _service.UpdateAsync(group);
             return Ok(group);
         }
 

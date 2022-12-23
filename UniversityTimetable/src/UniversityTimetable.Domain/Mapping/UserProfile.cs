@@ -8,7 +8,12 @@ namespace UniversityTimetable.Domain.Mapping
     {
         public UserProfile()
         {
-            CreateMap<User, UserDto>().ReverseMap();
+            CreateMap<User, UserDto>().ForMember(
+                dest => dest.PasswordConfirm,
+                opt => opt.MapFrom(c => c.Password)
+                );
+
+            CreateMap<UserDto, User>();
         }
     }
 }

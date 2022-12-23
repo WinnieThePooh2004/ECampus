@@ -10,18 +10,19 @@ namespace UniversityTimetable.Tests.Unit.BackEnd.Api
 {
     public class DepartmentsControllerTests
     {
-        private readonly IService<DepartmentDTO, DepartmentParameters> _service = Substitute.For<IService<DepartmentDTO, DepartmentParameters>>();
+        private readonly IParametersService<DepartmentDTO, DepartmentParameters> _service =
+            Substitute.For<IParametersService<DepartmentDTO, DepartmentParameters>>();
         private readonly DepartmentsController _controller;
         private readonly Fixture _fixture;
         public DepartmentsControllerTests()
         {
-            _controller = new(_service);
+            _controller = new DepartmentsController(_service);
             _fixture = new Fixture();
             _fixture.Behaviors.Add(new OmitOnRecursionBehavior());
         }
 
         [Fact]
-        public async Task GetById_ReturnsFromService()
+        public async Task GetById_ReturnsFromService_ServiceCalled()
         {
             var data = _fixture.Build<DepartmentDTO>().With(t => t.Id, 10).Create();
 
@@ -30,19 +31,21 @@ namespace UniversityTimetable.Tests.Unit.BackEnd.Api
 
             actionResult.Should().BeOfType<OkObjectResult>();
             actionResult.As<OkObjectResult>().Value.Should().Be(data);
+            await _service.Received().GetByIdAsync(10);
         }
 
         [Fact]
-        public async Task Delete_ReturnsIdFromService()
+        public async Task Delete_ReturnsIdFromService_ServiceCalled()
         {
             var actionResult = await _controller.Delete(10);
 
             actionResult.Should().BeOfType<OkObjectResult>();
             actionResult.As<OkObjectResult>().Value.Should().Be(10);
+            await _service.Received().DeleteAsync(10);
         }
 
         [Fact]
-        public async Task Create_ReturnsFromService()
+        public async Task Create_ReturnsFromService_ServiceCalled()
         {
             var data = _fixture.Create<DepartmentDTO>();
             _service.CreateAsync(data).Returns(data);
@@ -51,10 +54,11 @@ namespace UniversityTimetable.Tests.Unit.BackEnd.Api
 
             actionResult.Should().BeOfType<OkObjectResult>();
             actionResult.As<OkObjectResult>().Value.Should().Be(data);
+            await _service.Received().CreateAsync(data);
         }
 
         [Fact]
-        public async Task Update_ReturnsFromService()
+        public async Task Update_ReturnsFromService_ServiceCalled()
         {
             var data = _fixture.Create<DepartmentDTO>();
             _service.UpdateAsync(data).Returns(data);
@@ -63,10 +67,11 @@ namespace UniversityTimetable.Tests.Unit.BackEnd.Api
 
             actionResult.Should().BeOfType<OkObjectResult>();
             actionResult.As<OkObjectResult>().Value.Should().Be(data);
+            await _service.Received().UpdateAsync(data);
         }
 
         [Fact]
-        public async Task GetByParameters_ReturnsFromService()
+        public async Task GetByParameters_ReturnsFromService_ServiceCalled()
         {
             var data = _fixture.Build<ListWithPaginationData<DepartmentDTO>>()
                 .With(l => l.Data, Enumerable.Range(0, 5).Select(i => _fixture.Create<DepartmentDTO>()).ToList())
@@ -77,10 +82,11 @@ namespace UniversityTimetable.Tests.Unit.BackEnd.Api
 
             actionResult.Should().BeOfType<OkObjectResult>();
             actionResult.As<OkObjectResult>().Value.Should().Be(data);
+            await _service.Received().GetByParametersAsync(Arg.Any<DepartmentParameters>());
         }
 
         [Fact]
-        public void PassedInvalidItem_ShouldHaveValidationError()
+        public void PassedInvalidItem_ShouldHaveValidationError_ServiceCalled()
         {
             var invalidItem = new DepartmentDTO { Name = "" };
             var validator = new DepartmentDtoValidator();

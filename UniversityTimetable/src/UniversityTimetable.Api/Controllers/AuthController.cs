@@ -30,7 +30,7 @@ namespace UniversityTimetable.Api.Controllers
         public async Task<IActionResult> Logout()
         {
             await _authorizationService.Logout(HttpContext);
-            return Ok();
+            return NoContent();
         }
     }
 }

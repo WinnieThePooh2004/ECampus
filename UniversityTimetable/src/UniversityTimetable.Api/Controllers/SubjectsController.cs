@@ -11,8 +11,8 @@ namespace UniversityTimetable.Api.Controllers
     [Route("api/[controller]")]
     public class SubjectsController : ControllerBase
     {
-        private readonly IService<SubjectDto, SubjectParameters> _service;
-        public SubjectsController(IService<SubjectDto, SubjectParameters> service)
+        private readonly IParametersService<SubjectDto, SubjectParameters> _service;
+        public SubjectsController(IParametersService<SubjectDto, SubjectParameters> service)
         {
             _service = service;
         }

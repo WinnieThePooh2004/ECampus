@@ -10,18 +10,18 @@ namespace UniversityTimetable.Tests.Unit.BackEnd.Api
 {
     public class GroupsControllerTests
     {
-        private readonly IService<GroupDto, GroupParameters> _service = Substitute.For<IService<GroupDto, GroupParameters>>();
+        private readonly IParametersService<GroupDto, GroupParameters> _service = Substitute.For<IParametersService<GroupDto, GroupParameters>>();
         private readonly GroupsController _controller;
         private readonly Fixture _fixture;
         public GroupsControllerTests()
         {
-            _controller = new(_service);
+            _controller = new GroupsController(_service);
             _fixture = new Fixture();
             _fixture.Behaviors.Add(new OmitOnRecursionBehavior());
         }
 
         [Fact]
-        public async Task GetById_ReturnsFromService()
+        public async Task GetById_ReturnsFromService_ServiceCalled()
         {
             var data = _fixture.Build<GroupDto>().With(t => t.Id, 10).Create();
 
@@ -30,6 +30,7 @@ namespace UniversityTimetable.Tests.Unit.BackEnd.Api
 
             actionResult.Should().BeOfType<OkObjectResult>();
             actionResult.As<OkObjectResult>().Value.Should().Be(data);
+            await _service.Received().GetByIdAsync(10);
         }
 
         [Fact]
@@ -39,6 +40,7 @@ namespace UniversityTimetable.Tests.Unit.BackEnd.Api
 
             actionResult.Should().BeOfType<OkObjectResult>();
             actionResult.As<OkObjectResult>().Value.Should().Be(10);
+            await _service.Received().DeleteAsync(10);
         }
 
         [Fact]
@@ -51,6 +53,7 @@ namespace UniversityTimetable.Tests.Unit.BackEnd.Api
 
             actionResult.Should().BeOfType<OkObjectResult>();
             actionResult.As<OkObjectResult>().Value.Should().Be(data);
+            await _service.Received().CreateAsync(data);
         }
 
         [Fact]
@@ -63,6 +66,7 @@ namespace UniversityTimetable.Tests.Unit.BackEnd.Api
 
             actionResult.Should().BeOfType<OkObjectResult>();
             actionResult.As<OkObjectResult>().Value.Should().Be(data);
+            await _service.Received().UpdateAsync(data);
         }
 
         [Fact]
@@ -77,6 +81,7 @@ namespace UniversityTimetable.Tests.Unit.BackEnd.Api
 
             actionResult.Should().BeOfType<OkObjectResult>();
             actionResult.As<OkObjectResult>().Value.Should().Be(data);
+            await _service.GetByParametersAsync(Arg.Any<GroupParameters>());
         }
 
         [Fact]
