@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using UniversityTimetable.Infrastructure;
 using UniversityTimetable.Infrastructure.Repositories;
@@ -17,7 +18,7 @@ public abstract class BaseRepositoryTests<TModel>
     private readonly List<TModel> _dataSource;
     private readonly Fixture _fixture;
     private readonly IAbstractFactory<TModel> _dataFactory;
-
+    private readonly ISingleItemSelector<TModel> _selector;
     protected BaseRepositoryTests(IAbstractFactory<TModel> dataFactory)
     {
         _dataFactory = dataFactory;
@@ -27,8 +28,8 @@ public abstract class BaseRepositoryTests<TModel>
         _context = Substitute.For<ApplicationDbContext>();
         var dataAccess = new DbSetMock<TModel>(_dataSource);
         _context.Set<TModel>().Returns(dataAccess.Object);
-
-        _repository = new BaseRepository<TModel>(_context, Substitute.For<ILogger<BaseRepository<TModel>>>());
+        _selector = Substitute.For<ISingleItemSelector<TModel>>();
+        _repository = new BaseRepository<TModel>(_context, Substitute.For<ILogger<BaseRepository<TModel>>>(), _selector);
     }
 
     protected virtual async Task Create_AddedToDb()
@@ -77,14 +78,16 @@ public abstract class BaseRepositoryTests<TModel>
             .ThrowAsync<ObjectNotFoundByIdException>();
     }
 
-    protected virtual async Task GetById_ReturnsFromDb_IfExistsInDb()
+    protected virtual async Task GetById_ReturnsFromSelector_IfSelectorReturnsItem()
     {
-        var model = await _repository.GetByIdAsync(_dataSource[0].Id);
+        var item = CreateModel();
+        _selector.SelectModel(1, Arg.Any<DbSet<TModel>>()).Returns(item);
+        var model = await _repository.GetByIdAsync(1);
 
-        model.Should().Be(_dataSource[0]);
+        model.Should().Be(item);
     }
 
-    protected virtual async Task GetByIdAsync_ShouldThrowException_WhenSetReturnsNull()
+    protected virtual async Task GetByIdAsync_ShouldThrowException_WhenSelectorReturnsNull()
     {
         await new Func<Task>(() => _repository.GetByIdAsync(-1)).Should().ThrowAsync<ObjectNotFoundByIdException>();
     }

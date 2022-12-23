@@ -13,9 +13,9 @@ public class BaseRepositoryGroupTests : BaseRepositoryTests<Group>, IClassFixtur
 
     [Fact] protected override Task Update_ShouldThrowException_IfSaveChangeThrowsException() => base.Update_ShouldThrowException_IfSaveChangeThrowsException();
 
-    [Fact] protected override Task GetById_ReturnsFromDb_IfExistsInDb() => base.GetById_ReturnsFromDb_IfExistsInDb();
+    [Fact] protected override Task GetById_ReturnsFromSelector_IfSelectorReturnsItem() => base.GetById_ReturnsFromSelector_IfSelectorReturnsItem();
 
-    [Fact] protected override Task GetByIdAsync_ShouldThrowException_WhenSetReturnsNull() => base.GetByIdAsync_ShouldThrowException_WhenSetReturnsNull();
+    [Fact] protected override Task GetByIdAsync_ShouldThrowException_WhenSelectorReturnsNull() => base.GetByIdAsync_ShouldThrowException_WhenSelectorReturnsNull();
 
     public BaseRepositoryGroupTests(GroupFactory dataFactory) : base(dataFactory)
     {

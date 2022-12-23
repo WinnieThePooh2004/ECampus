@@ -19,7 +19,7 @@ public class ParametersRepositoryTests<TModel, TParameters>
     private readonly ApplicationDbContext _context = Substitute.For<ApplicationDbContext>();
     private readonly IAbstractFactory<TModel> _factory;
 
-    protected ParametersRepositoryTests(IAbstractFactory<TModel> factory, IDataSelector<TModel, TParameters> selector)
+    protected ParametersRepositoryTests(IAbstractFactory<TModel> factory, IMultipleItemSelector<TModel, TParameters> selector)
     {
         _factory = factory;
         _fixture.Behaviors.Add(new OmitOnRecursionBehavior());
@@ -70,22 +70,13 @@ public class ParametersRepositoryTests<TModel, TParameters>
     protected virtual async Task GetByParameters_ReturnsFromDb()
     {
         var data = Enumerable.Range(0, 10).Select(i => _factory.CreateModel(_fixture)).ToList();
-        await GetByParameters(new TParameters { PageNumber = 0, PageSize = 5 }, data,
-            data.OrderBy(item => item.Id).Take(5).ToList());
-    }
-
-    protected async Task GetByParameters(TParameters parameters, List<TModel> source, List<TModel> expected)
-    {
-        var set = new DbSetMock<TModel>(source);
+        var parameters = new TParameters { PageNumber = 0, PageSize = 5 };
+        var set = new DbSetMock<TModel>(data);
         _context.Set<TModel>().Returns(set.Object);
         
         var result = await _repository.GetByParameters(parameters);
 
-        result.Data.Should().BeEquivalentTo(expected,
+        result.Data.Should().BeEquivalentTo(data.OrderBy(item => item.Id).Take(parameters.PageSize).ToList(),
             opt => opt.ComparingByMembers<TModel>());
-
     }
-
-    protected TModel CreateModel()
-        => _factory.CreateModel(_fixture);
 }

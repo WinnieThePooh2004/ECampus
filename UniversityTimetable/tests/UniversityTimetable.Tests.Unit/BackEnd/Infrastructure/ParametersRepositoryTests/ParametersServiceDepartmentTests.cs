@@ -1,4 +1,5 @@
 ﻿using UniversityTimetable.Infrastructure.DataSelectors;
+using UniversityTimetable.Infrastructure.DataSelectors.MultipleItemSelectors;
 using UniversityTimetable.Shared.Models;
 using UniversityTimetable.Shared.QueryParameters;
 using UniversityTimetable.Tests.Shared.DataFactories;
@@ -24,16 +25,4 @@ public class ParametersServiceDepartmentTests : ParametersRepositoryTests<Depart
 
     [Fact] protected override Task GetByParameters_ReturnsFromDb() => base.GetByParameters_ReturnsFromDb();
     
-    [Fact]
-    protected async Task GetByParameters_DepartmentId1_ReturnsListWhereDepartmentId1()
-    {
-        var data = Enumerable.Range(0, 10).Select(i => CreateModel()).ToList();
-        for (var i = 0; i < 3; ++i)
-        {
-            data[i].FacultyId = 1;
-        }
-        var expected = data.Where(t => t.FacultyId == 1).OrderBy(t => t.Id).ToList();
-
-        await GetByParameters(new DepartmentParameters { PageSize = 5, FacultacyId = 1 }, data, expected);
-    }
 }
