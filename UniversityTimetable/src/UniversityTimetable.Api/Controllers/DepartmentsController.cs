@@ -11,8 +11,8 @@ namespace UniversityTimetable.Api.Controllers
     [Route("api/[controller]")]
     public class DepartmentsController : ControllerBase
     {
-        private readonly IParametersService<DepartmentDTO, DepartmentParameters> _service;
-        public DepartmentsController(IParametersService<DepartmentDTO, DepartmentParameters> service)
+        private readonly IParametersService<DepartmentDto, DepartmentParameters> _service;
+        public DepartmentsController(IParametersService<DepartmentDto, DepartmentParameters> service)
         {
             _service = service;
         }
@@ -36,7 +36,7 @@ namespace UniversityTimetable.Api.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [Authorized(UserRole.Admin)]
-        public async Task<IActionResult> Post(DepartmentDTO department)
+        public async Task<IActionResult> Post(DepartmentDto department)
         {
             if (!ModelState.IsValid)
             {
@@ -48,7 +48,7 @@ namespace UniversityTimetable.Api.Controllers
 
         [HttpPut]
         [Authorized(UserRole.Admin)]
-        public async Task<IActionResult> Put(DepartmentDTO department)
+        public async Task<IActionResult> Put(DepartmentDto department)
         {
             await _service.UpdateAsync(department);
             return Ok(department);
