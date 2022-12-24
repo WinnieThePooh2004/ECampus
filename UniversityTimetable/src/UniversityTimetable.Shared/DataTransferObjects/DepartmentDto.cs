@@ -2,7 +2,7 @@
 
 namespace UniversityTimetable.Shared.DataTransferObjects
 {
-    public class DepartmentDTO : IDataTransferObject
+    public class DepartmentDto : IDataTransferObject
     {
         public int Id { get; set; }
         public string Name { get; set; } = default!;

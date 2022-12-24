@@ -8,7 +8,6 @@ using UniversityTimetable.Shared.Interfaces.Repositories;
 using UniversityTimetable.Shared.Interfaces.Services;
 using UniversityTimetable.Shared.Models;
 using UniversityTimetable.Shared.QueryParameters;
-using FluentValidation.AspNetCore;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using UniversityTimetable.Api.MiddlewareFilters;
@@ -18,13 +17,23 @@ using UniversityTimetable.Shared.Interfaces.Auth;
 using UniversityTimetable.Shared.Models.RelationModels;
 using Newtonsoft.Json;
 using UniversityTimetable.Api.Extensions;
+using UniversityTimetable.Domain.CreateUpdateValidators;
+using UniversityTimetable.Domain.CreateValidators;
+using UniversityTimetable.Domain.UpdateValidators;
+using UniversityTimetable.Domain.Validation;
+using UniversityTimetable.Infrastructure.DataCreate;
 using UniversityTimetable.Infrastructure.DataSelectors.MultipleItemSelectors;
 using UniversityTimetable.Infrastructure.DataSelectors.SingleItemSelectors;
+using UniversityTimetable.Infrastructure.DataUpdate;
+using UniversityTimetable.Infrastructure.ValidationRepositories;
 using UniversityTimetable.Shared.Interfaces.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("ApplicationDbContext")
+                         ?? throw new InvalidOperationException("Connection string 'ApplicationDbContext' not found.")));
 
 builder.Services.AddControllers(options =>
 {
@@ -35,13 +44,31 @@ builder.Services.AddControllers(options =>
         options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
     });
 
-builder.Services.AddFluentValidationAutoValidation();
-builder.Services.AddFluentValidationClientsideAdapters();
 builder.Services.AddValidatorsFromAssembly(Assembly.Load("UniversityTimetable.Domain"));
 
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("ApplicationDbContext")
-        ?? throw new InvalidOperationException("Connection string 'ApplicationDbContext' not found.")));
+builder.Services.AddScoped<IValidator<AuditoryDto>, AuditoryDtoValidator>();
+builder.Services.AddScoped<IValidator<ClassDto>, ClassDtoValidator>();
+builder.Services.AddScoped<IValidator<DepartmentDto>, DepartmentDtoValidator>();
+builder.Services.AddScoped<IValidator<FacultyDto>, FacultyDtoValidator>();
+builder.Services.AddScoped<IValidator<GroupDto>, GroupDtoValidator>();
+builder.Services.AddScoped<IValidator<SubjectDto>, SubjectDtoValidator>();
+builder.Services.AddScoped<IValidator<TeacherDto>, TeacherDtoValidator>();
+
+builder.Services.AddDefaultDomainServices<AuditoryDto>();
+builder.Services.AddDefaultDomainServices<DepartmentDto>();
+builder.Services.AddDefaultDomainServices<FacultyDto>();
+builder.Services.AddDefaultDomainServices<GroupDto>();
+builder.Services.AddDefaultDomainServices<SubjectDto>();
+builder.Services.AddDefaultDomainServices<TeacherDto>();
+builder.Services.AddDefaultDomainServices<UserDto>();
+
+builder.Services.AddScoped<IValidationRepository<User>, UserValidationRepository>();
+builder.Services.Decorate<IUpdateValidator<UserDto>, UserUpdateValidator>();
+builder.Services.Decorate<ICreateValidator<UserDto>, UserCreateValidator>();
+
+builder.Services.AddScoped<IValidationRepository<Class>, ClassValidationRepository>();
+builder.Services.AddScoped<IUpdateValidator<ClassDto>, ClassDtoCreateUpdateValidator>();
+builder.Services.AddScoped<ICreateValidator<ClassDto>, ClassDtoCreateUpdateValidator>();
 
 builder.Services.AddAutoMapper(Assembly.Load("UniversityTimetable.Domain"));
 
@@ -52,31 +79,40 @@ builder.Services.AddMultipleDataSelector<Group, GroupParameters, GroupSelector>(
 builder.Services.AddMultipleDataSelector<Subject, SubjectParameters, SubjectSelector>();
 builder.Services.AddMultipleDataSelector<Teacher, TeacherParameters, TeacherSelector>();
 
-builder.Services.AddDefaultSingleItemSelector<Auditory>();
-builder.Services.AddDefaultSingleItemSelector<Department>();
-builder.Services.AddDefaultSingleItemSelector<Faculty>();
-builder.Services.AddDefaultSingleItemSelector<Group>();
-builder.Services.AddDefaultSingleItemSelector<Class>();
+builder.Services.AddDefaultDataServices<Auditory>();
+builder.Services.AddDefaultDataServices<Department>();
+builder.Services.AddDefaultDataServices<Faculty>();
+builder.Services.AddDefaultDataServices<Group>();
+builder.Services.AddDefaultDataServices<Class>();
+
+builder.Services.AddDefaultDataServices<Subject>();
+builder.Services.Decorate<IDataUpdate<Subject>, SubjectUpdate>();
+builder.Services.Decorate<IDataCreate<Subject>, SubjectCreate>();
+
+builder.Services.AddDefaultDataServices<Teacher>();
+builder.Services.Decorate<IDataUpdate<Teacher>, TeacherUpdate>();
+builder.Services.Decorate<IDataCreate<Teacher>, TeacherCreate>();
+
+builder.Services.AddDefaultDataServices<User>();
+builder.Services.Decorate<IDataUpdate<User>, UserUpdate>();
+builder.Services.Decorate<IDataCreate<User>, UserCreate>();
 
 builder.Services.AddScoped<ISingleItemSelector<User>, SingleUserSelector>();
 builder.Services.AddScoped<ISingleItemSelector<Subject>, SingleSubjectSelector>();
 builder.Services.AddScoped<ISingleItemSelector<Teacher>, SingleTeacherSelector>();
 
-builder.Services.AddDefaultServices<Auditory, AuditoryDto, AuditoryParameters>();
-builder.Services.AddDefaultServices<Department, DepartmentDTO, DepartmentParameters>();
-builder.Services.AddDefaultServices<Faculty, FacultyDto, FacultyParameters>();
-builder.Services.AddDefaultServices<Group, GroupDto, GroupParameters>();
-builder.Services.AddDefaultServices<Subject, SubjectDto, SubjectParameters>();
-builder.Services.AddDefaultServices<Teacher, TeacherDto, TeacherParameters>();
+builder.Services.AddDefaultFacadeServices<Auditory, AuditoryDto, AuditoryParameters>();
+builder.Services.AddDefaultFacadeServices<Department, DepartmentDto, DepartmentParameters>();
+builder.Services.AddDefaultFacadeServices<Faculty, FacultyDto, FacultyParameters>();
+builder.Services.AddDefaultFacadeServices<Group, GroupDto, GroupParameters>();
+builder.Services.AddDefaultFacadeServices<Subject, SubjectDto, SubjectParameters>();
+builder.Services.AddDefaultFacadeServices<Teacher, TeacherDto, TeacherParameters>();
 
 builder.Services.AddScoped<IRelationshipsRepository<Subject, Teacher, SubjectTeacher>, RelationshipsRepository<Subject, Teacher, SubjectTeacher>>();
-builder.Services.Decorate<IBaseService<SubjectDto>, BaseSubjectService>();
 
 builder.Services.AddScoped<IRelationshipsRepository<Teacher, Subject, SubjectTeacher>, RelationshipsRepository<Teacher, Subject, SubjectTeacher>>();
-builder.Services.Decorate<IBaseService<TeacherDto>, BaseTeacherService>();
 
 builder.Services.AddScoped<IBaseService<ClassDto>, BaseService<ClassDto, Class>>();
-builder.Services.Decorate<IBaseService<ClassDto>, BaseClassService>();
 builder.Services.AddScoped<IBaseRepository<Class>, BaseRepository<Class>>();
 builder.Services.AddScoped<IClassService, ClassService>();
 builder.Services.AddScoped<IClassRepository, ClassRepository>();
@@ -87,7 +123,6 @@ builder.Services.AddScoped<IRelationshipsRepository<User, Teacher, UserTeacher>,
 builder.Services.AddScoped<IBaseService<UserDto>, BaseService<UserDto, User>>();
 builder.Services.AddScoped<IBaseRepository<User>, BaseRepository<User>>();
 builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 

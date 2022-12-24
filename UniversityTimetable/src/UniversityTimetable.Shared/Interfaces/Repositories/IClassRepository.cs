@@ -1,13 +1,11 @@
 ﻿using UniversityTimetable.Shared.DataContainers;
 using UniversityTimetable.Shared.Models;
 
-namespace UniversityTimetable.Shared.Interfaces.Repositories
+namespace UniversityTimetable.Shared.Interfaces.Repositories;
+
+public interface IClassRepository
 {
-    public interface IClassRepository
-    {
-        Task<TimetableData> GetTimetableForGroupAsync(int groupId);
-        Task<TimetableData> GetTimetableForTeacherAsync(int teacherId);
-        Task<TimetableData> GetTimetableForAuditoryAsync(int auditoryId);
-        Task<Dictionary<string, string>> ValidateAsync(Class @class);
-    }
+    Task<TimetableData> GetTimetableForGroupAsync(int groupId);
+    Task<TimetableData> GetTimetableForTeacherAsync(int teacherId);
+    Task<TimetableData> GetTimetableForAuditoryAsync(int auditoryId); 
 }

@@ -9,14 +9,16 @@ using UniversityTimetable.Shared.Interfaces.Repositories;
 namespace UniversityTimetable.Tests.Unit.BackEnd.Domain.BaseServiceTests;
 
 public abstract class BaseServiceTests<TDto, TModel>
-    where TDto: class, IDataTransferObject, new()
-    where TModel: class, IModel, new()
+    where TDto : class, IDataTransferObject, new()
+    where TModel : class, IModel, new()
 {
     private readonly BaseService<TDto, TModel> _service;
     private readonly IBaseRepository<TModel> _repository;
     private readonly Fixture _fixture;
     private readonly IMapper _mapper;
-    
+    private readonly ICreateValidator<TDto> _createValidator = Substitute.For<ICreateValidator<TDto>>();
+    private readonly IUpdateValidator<TDto> _updateValidator = Substitute.For<IUpdateValidator<TDto>>();
+
     protected BaseServiceTests()
     {
         _repository = Substitute.For<IBaseRepository<TModel>>();
@@ -31,14 +33,16 @@ public abstract class BaseServiceTests<TDto, TModel>
             new TeacherProfile(),
             new UserProfile()
         })).CreateMapper();
-        _service = new BaseService<TDto, TModel>(_repository, Substitute.For<ILogger<BaseService<TDto, TModel>>>(), _mapper);
+        _service = new BaseService<TDto, TModel>(_repository, Substitute.For<ILogger<BaseService<TDto, TModel>>>(),
+            _mapper, _createValidator, _updateValidator);
         _fixture = new Fixture();
         _fixture.Behaviors.Add(new OmitOnRecursionBehavior());
     }
 
-    protected virtual async Task Create_ReturnsFromService_ServiceCalled()
+    protected virtual async Task Create_ReturnsFromService_ServiceCalled_WhenNoValidationExceptions()
     {
         var item = _fixture.Create<TDto>();
+        _createValidator.ValidateAsync(item).Returns(new Dictionary<string, string>());
         _repository.CreateAsync(Arg.Any<TModel>()).Returns(_mapper.Map<TModel>(item));
 
         var result = await _service.CreateAsync(item);
@@ -48,9 +52,10 @@ public abstract class BaseServiceTests<TDto, TModel>
         await _repository.Received().CreateAsync(Arg.Any<TModel>());
     }
 
-    protected virtual async Task Update_ReturnsFromService()
+    protected virtual async Task Update_ReturnsFromService_WhenNoValidationExceptions()
     {
         var item = _fixture.Create<TDto>();
+        _updateValidator.ValidateAsync(item).Returns(new Dictionary<string, string>());
         _repository.UpdateAsync(Arg.Any<TModel>()).Returns(_mapper.Map<TModel>(item));
 
         var result = await _service.UpdateAsync(item);
@@ -60,10 +65,23 @@ public abstract class BaseServiceTests<TDto, TModel>
         await _repository.Received().UpdateAsync(Arg.Any<TModel>());
     }
 
+    protected virtual async Task Update_ThrowsValidationExceptionWhenValidationErrorOccured()
+    {
+        _updateValidator.ValidateAsync(Arg.Any<TDto>()).Returns(new Dictionary<string, string> { [""] = "" });
+        await new Func<Task>(() => _service.UpdateAsync(new TDto())).Should().ThrowAsync<ValidationException>();
+    }
+    
+    protected virtual async Task Create_ThrowsValidationExceptionWhenValidationErrorOccured()
+    {
+        _updateValidator.ValidateAsync(Arg.Any<TDto>()).Returns(new Dictionary<string, string> { [""] = "" });
+        await new Func<Task>(() => _service.UpdateAsync(new TDto())).Should().ThrowAsync<ValidationException>();
+    }
+
+
     protected virtual async Task Delete_ShouldThrowException_WhenIdIsNull()
     {
         await new Func<Task>(() => _service.DeleteAsync(null)).Should().ThrowAsync<NullIdException>();
-        
+
         await _repository.DidNotReceive().DeleteAsync(Arg.Any<int>());
     }
 

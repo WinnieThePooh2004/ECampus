@@ -21,12 +21,12 @@ namespace UniversityTimetable.Api.MiddlewareFilters
 				return;
 			}
 			context.ExceptionHandled = true;
+			_logger.LogError(context.Exception, "Unhandled exception occured");
 			if (context.Exception is HttpResponseException httpResponseException)
 			{
 				context.Result = FilterHttpResponseException(httpResponseException);
 				return;
 			}
-			_logger.LogError(context.Exception, "Unhandled exception occured");
 			context.Result = new ObjectResult(new BadResponseObject(context.Exception.Message))
 			{
 				StatusCode = 500

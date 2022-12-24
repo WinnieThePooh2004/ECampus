@@ -13,12 +13,20 @@ public class BaseRepository<TModel> : IBaseRepository<TModel>
     private readonly ApplicationDbContext _context;
     private readonly ILogger<BaseRepository<TModel>> _logger;
     private readonly ISingleItemSelector<TModel> _singleItemSelector;
+    private readonly IDataUpdate<TModel> _update;
+    private readonly IDataCreate<TModel> _create;
+    private readonly IDataDelete<TModel> _delete;
 
-    public BaseRepository(ApplicationDbContext context, ILogger<BaseRepository<TModel>> logger, ISingleItemSelector<TModel> singleItemSelector)
+    public BaseRepository(ApplicationDbContext context, ILogger<BaseRepository<TModel>> logger, 
+        ISingleItemSelector<TModel> singleItemSelector, IDataDelete<TModel> delete,
+        IDataUpdate<TModel> update, IDataCreate<TModel> create)
     {
         _context = context;
         _logger = logger;
         _singleItemSelector = singleItemSelector;
+        _delete = delete;
+        _update = update;
+        _create = create;
     }
 
     public async Task<TModel> CreateAsync(TModel entity)
@@ -28,15 +36,14 @@ public class BaseRepository<TModel> : IBaseRepository<TModel>
             _logger.LogAndThrowException(new InfrastructureExceptions(HttpStatusCode.BadRequest,
                 "Cannot create add object to db if id != 0"));
         }
-        _context.Add(entity);
+        await _create.CreateAsync(entity, _context);
         await _context.SaveChangesAsync();
         return entity;
     }
 
     public async Task DeleteAsync(int id)
     {
-        var model = new TModel { Id = id };
-        _context.Remove(model);
+        await _delete.DeleteAsync(id, _context);
         try
         {
             await _context.SaveChangesAsync();
@@ -60,15 +67,15 @@ public class BaseRepository<TModel> : IBaseRepository<TModel>
 
     public async Task<TModel> UpdateAsync(TModel entity)
     {
-        _context.Update(entity);
+        await _update.UpdateAsync(entity, _context);
         try
         {
             await _context.SaveChangesAsync();
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "Db update to successful");
-            _logger.LogAndThrowException(new ObjectNotFoundByIdException(typeof(TModel), entity.Id));
+            _logger.LogError(e, "Db update was not successful");
+            _logger.LogAndThrowException(new InfrastructureExceptions(HttpStatusCode.BadRequest, e.Message));
         }
         return entity;
     }

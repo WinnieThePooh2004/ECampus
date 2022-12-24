@@ -10,8 +10,8 @@ namespace UniversityTimetable.Domain.Mapping
     {
         public DepartmentProfile()
         {
-            CreateMap<Department, DepartmentDTO>().ReverseMap();
-            this.CreateListWithPaginationDataMap<Department, DepartmentDTO>();
+            CreateMap<Department, DepartmentDto>().ReverseMap();
+            this.CreateListWithPaginationDataMap<Department, DepartmentDto>();
         }
     }
 }
