@@ -20,7 +20,7 @@ builder.Services.Configure<Requests>(builder.Configuration.GetSection("Requests"
 
 builder.Services.AddRequests<FacultyDto, FacultyParameters>();
 builder.Services.AddRequests<GroupDto, GroupParameters>();
-builder.Services.AddRequests<DepartmentDTO, DepartmentParameters>();
+builder.Services.AddRequests<DepartmentDto, DepartmentParameters>();
 builder.Services.AddRequests<TeacherDto, TeacherParameters>();
 builder.Services.AddRequests<SubjectDto, SubjectParameters>();
 builder.Services.AddRequests<AuditoryDto, AuditoryParameters>();
@@ -30,7 +30,7 @@ builder.Services.AddScoped<IValidator<AuditoryDto>, AuditoryDtoValidator>();
 builder.Services.AddScoped<IValidator<TeacherDto>, TeacherDtoValidator>();
 builder.Services.AddScoped<IValidator<GroupDto>, GroupDtoValidator>();
 builder.Services.AddScoped<IValidator<SubjectDto>, SubjectDtoValidator>();
-builder.Services.AddScoped<IValidator<DepartmentDTO>, DepartmentDtoValidator>();
+builder.Services.AddScoped<IValidator<DepartmentDto>, DepartmentDtoValidator>();
 builder.Services.AddScoped<IValidator<UserDto>, UserDtoValidator>();
 
 builder.Services.AddScoped<IValidator<ClassDto>, ClassDtoValidator>();
