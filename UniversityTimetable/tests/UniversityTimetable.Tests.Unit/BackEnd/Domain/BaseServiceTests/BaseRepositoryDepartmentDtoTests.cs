@@ -3,11 +3,11 @@ using UniversityTimetable.Shared.Models;
 
 namespace UniversityTimetable.Tests.Unit.BackEnd.Domain.BaseServiceTests;
 
-public class BaseRepositoryDepartmentDtoTests : BaseServiceTests<DepartmentDTO, Department>
+public class BaseRepositoryDepartmentDtoTests : BaseServiceTests<DepartmentDto, Department>
 {
-    [Fact] protected override Task Create_ReturnsFromService_ServiceCalled() => base.Create_ReturnsFromService_ServiceCalled();
+    [Fact] protected override Task Create_ReturnsFromService_ServiceCalled_WhenNoValidationExceptions() => base.Create_ReturnsFromService_ServiceCalled_WhenNoValidationExceptions();
 
-    [Fact] protected override Task Update_ReturnsFromService() => base.Update_ReturnsFromService();
+    [Fact] protected override Task Update_ReturnsFromService_WhenNoValidationExceptions() => base.Update_ReturnsFromService_WhenNoValidationExceptions();
 
     [Fact] protected override Task Delete_ShouldThrowException_WhenIdIsNull() => base.Delete_ShouldThrowException_WhenIdIsNull();
 
@@ -16,4 +16,8 @@ public class BaseRepositoryDepartmentDtoTests : BaseServiceTests<DepartmentDTO, 
     [Fact] protected override Task GetById_ShouldThrowException_WhenIdIsNull() => base.GetById_ShouldThrowException_WhenIdIsNull();
 
     [Fact] protected override Task GetById_ShouldReturnFromRepository_WhenIdIsNotNull() => base.GetById_ShouldReturnFromRepository_WhenIdIsNotNull();
+    
+    [Fact] protected override Task Create_ThrowsValidationExceptionWhenValidationErrorOccured() => base.Create_ThrowsValidationExceptionWhenValidationErrorOccured();
+
+    [Fact] protected override Task Update_ThrowsValidationExceptionWhenValidationErrorOccured() => base.Update_ThrowsValidationExceptionWhenValidationErrorOccured();
 }
