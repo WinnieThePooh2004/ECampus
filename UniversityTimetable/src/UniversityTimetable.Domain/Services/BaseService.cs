@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Net;
+using AutoMapper;
 using Microsoft.Extensions.Logging;
 using UniversityTimetable.Shared.Exceptions.DomainExceptions;
 using UniversityTimetable.Shared.Extensions;
@@ -15,16 +16,26 @@ namespace UniversityTimetable.Domain.Services
         private readonly IBaseRepository<TRepositoryModel> _repository;
         private readonly ILogger<BaseService<TDto, TRepositoryModel>> _logger;
         private readonly IMapper _mapper;
-
-        public BaseService(IBaseRepository<TRepositoryModel> repository, ILogger<BaseService<TDto, TRepositoryModel>> logger, IMapper mapper)
+        private readonly ICreateValidator<TDto> _createValidator;
+        private readonly IUpdateValidator<TDto> _updateValidator;
+        
+        public BaseService(IBaseRepository<TRepositoryModel> repository, ILogger<BaseService<TDto, TRepositoryModel>> logger,
+            IMapper mapper, ICreateValidator<TDto> createValidator, IUpdateValidator<TDto> updateValidator)
         {
             _repository = repository;
             _logger = logger;
             _mapper = mapper;
+            _createValidator = createValidator;
+            _updateValidator = updateValidator;
         }
 
         public async Task<TDto> CreateAsync(TDto entity)
         {
+            var errors = await _createValidator.ValidateAsync(entity);
+            if (errors.Any())
+            {
+                _logger.LogAndThrowException(new ValidationException(typeof(TDto), errors));
+            }
             var auditory = _mapper.Map<TRepositoryModel>(entity);
             return _mapper.Map<TDto>(await _repository.CreateAsync(auditory));
         }
@@ -49,6 +60,11 @@ namespace UniversityTimetable.Domain.Services
 
         public async Task<TDto> UpdateAsync(TDto entity)
         {
+            var errors = await _updateValidator.ValidateAsync(entity);
+            if (errors.Any())
+            {
+                _logger.LogAndThrowException(new ValidationException(typeof(TDto), errors));
+            }
             var auditory = _mapper.Map<TRepositoryModel>(entity);
             return _mapper.Map<TDto>(await _repository.UpdateAsync(auditory));
         }
