@@ -6,11 +6,11 @@ using UniversityTimetable.Tests.Shared.DataFactories;
 
 namespace UniversityTimetable.Tests.Unit.BackEnd.Infrastructure.ParametersRepositoryTests;
 
-public class ParametersServiceSubjectTests : ParametersRepositoryTests<Subject, SubjectParameters>,
+public sealed class ParametersRepositorySubjectTests : ParametersRepositoryTests<Subject, SubjectParameters>,
     IClassFixture<SubjectFactory>,
     IClassFixture<SubjectSelector>
 {
-    public ParametersServiceSubjectTests(SubjectFactory factory, SubjectSelector selector) 
+    public ParametersRepositorySubjectTests(SubjectFactory factory, SubjectSelector selector) 
         : base(factory, selector)
     {
     }

@@ -3,7 +3,7 @@ using UniversityTimetable.Tests.Shared.DataFactories;
 
 namespace UniversityTimetable.Tests.Unit.BackEnd.Infrastructure.BaseRepositoryTests;
 
-public class BaseRepositoryAuditoryTests : BaseRepositoryTests<Auditory>, IClassFixture<AuditoryFactory>
+public sealed class BaseRepositoryAuditoryTests : BaseRepositoryTests<Auditory>, IClassFixture<AuditoryFactory>
 {
     public BaseRepositoryAuditoryTests(AuditoryFactory dataFactory) : base(dataFactory)
     {

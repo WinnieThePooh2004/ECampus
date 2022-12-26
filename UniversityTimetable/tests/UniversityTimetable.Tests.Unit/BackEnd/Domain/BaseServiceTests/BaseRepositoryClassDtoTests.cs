@@ -3,7 +3,7 @@ using UniversityTimetable.Shared.Models;
 
 namespace UniversityTimetable.Tests.Unit.BackEnd.Domain.BaseServiceTests;
 
-public class BaseRepositoryClassDtoTests : BaseServiceTests<ClassDto, Class>
+public sealed class BaseRepositoryClassDtoTests : BaseServiceTests<ClassDto, Class>
 {
     [Fact] protected override Task Create_ReturnsFromService_ServiceCalled_WhenNoValidationExceptions() => base.Create_ReturnsFromService_ServiceCalled_WhenNoValidationExceptions();
 

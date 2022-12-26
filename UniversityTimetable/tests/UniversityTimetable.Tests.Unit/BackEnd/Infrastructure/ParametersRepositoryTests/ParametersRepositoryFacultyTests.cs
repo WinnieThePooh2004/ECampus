@@ -1,15 +1,16 @@
-﻿using UniversityTimetable.Infrastructure.DataSelectors.MultipleItemSelectors;
+﻿using UniversityTimetable.Infrastructure.DataSelectors;
+using UniversityTimetable.Infrastructure.DataSelectors.MultipleItemSelectors;
 using UniversityTimetable.Shared.Models;
 using UniversityTimetable.Shared.QueryParameters;
 using UniversityTimetable.Tests.Shared.DataFactories;
 
 namespace UniversityTimetable.Tests.Unit.BackEnd.Infrastructure.ParametersRepositoryTests;
 
-public class ParametersServiceAuditoryTests : ParametersRepositoryTests<Auditory, AuditoryParameters>,
-    IClassFixture<AuditoryFactory>,
-    IClassFixture<AuditorySelector>
+public sealed class ParametersRepositoryFacultyTests : ParametersRepositoryTests<Faculty, FacultyParameters>,
+    IClassFixture<FacultyFactory>,
+    IClassFixture<FacultySelector>
 {
-    public ParametersServiceAuditoryTests(AuditoryFactory factory, AuditorySelector selector) 
+    public ParametersRepositoryFacultyTests(FacultyFactory factory, FacultySelector selector) 
         : base(factory, selector)
     {
     }

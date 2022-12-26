@@ -3,7 +3,7 @@ using UniversityTimetable.Tests.Shared.DataFactories;
 
 namespace UniversityTimetable.Tests.Unit.BackEnd.Infrastructure.BaseRepositoryTests;
 
-public class BaseRepositoryClassTests : BaseRepositoryTests<Class>, IClassFixture<ClassFactory>
+public sealed class BaseRepositoryClassTests : BaseRepositoryTests<Class>, IClassFixture<ClassFactory>
 {
     [Fact] protected override Task Create_AddedToDb_CreateCalled() => base.Create_AddedToDb_CreateCalled();
 

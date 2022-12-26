@@ -5,7 +5,7 @@ using UniversityTimetable.Tests.Shared.DataFactories;
 
 namespace UniversityTimetable.Tests.Unit.BackEnd.Domain.ParametersServiceTests;
 
-public class ParametersServiceTeacherDtoTests : ParametersServiceTests<TeacherDto, TeacherParameters, Teacher>,
+public sealed class ParametersServiceTeacherDtoTests : ParametersServiceTests<TeacherDto, TeacherParameters, Teacher>,
     IClassFixture<TeacherFactory>
 {
     [Fact] protected override Task Delete_ShouldCallBaseService() => base.Delete_ShouldCallBaseService();

@@ -6,11 +6,11 @@ using UniversityTimetable.Tests.Shared.DataFactories;
 
 namespace UniversityTimetable.Tests.Unit.BackEnd.Infrastructure.ParametersRepositoryTests;
 
-public class ParametersServiceGroupTests : ParametersRepositoryTests<Group, GroupParameters>,
+public sealed class ParametersRepositoryGroupTests : ParametersRepositoryTests<Group, GroupParameters>,
     IClassFixture<GroupFactory>,
     IClassFixture<GroupSelector>
 {
-    public ParametersServiceGroupTests(GroupFactory factory, GroupSelector selector) 
+    public ParametersRepositoryGroupTests(GroupFactory factory, GroupSelector selector) 
         : base(factory, selector)
     {
     }
