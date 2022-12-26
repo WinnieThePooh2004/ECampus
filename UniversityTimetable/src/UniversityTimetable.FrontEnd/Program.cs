@@ -16,7 +16,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 
-builder.Services.Configure<Requests>(builder.Configuration.GetSection("Requests"));
+builder.Services.Configure<RequestOptions>(builder.Configuration.GetSection("Requests"));
 
 builder.Services.AddRequests<FacultyDto, FacultyParameters>();
 builder.Services.AddRequests<GroupDto, GroupParameters>();
@@ -46,12 +46,15 @@ builder.Services.AddScoped<IAuthRequests, AuthRequests>();
 
 builder.Services.AddScoped<IUserValidatorFactory, UserValidatorFactory>();
 
+builder.Services.AddSingleton<IRequestOptions>(new RequestOptions(builder.Configuration));
+
 builder.Services.AddMudServices();
 builder.Services.Configure<CookiePolicyOptions>(options =>
 {
     options.CheckConsentNeeded = context => true;
     options.MinimumSameSitePolicy = SameSiteMode.None;
 });
+
 builder.Services.AddAuthentication(opt =>
 {
     opt.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -61,7 +64,7 @@ builder.Services.AddAuthentication(opt =>
 
 builder.Services.AddHttpClient("UTApi", client =>
 {
-    client.BaseAddress = new Uri("https://localhost:7219/");
+    client.BaseAddress = new Uri(builder.Configuration["Api"] ?? throw new Exception("Cannot find section 'Api'"));
 });
 
 builder.Services.AddSingleton<JsonSerializerOptions>(new JsonSerializerOptions{ PropertyNameCaseInsensitive = true});
