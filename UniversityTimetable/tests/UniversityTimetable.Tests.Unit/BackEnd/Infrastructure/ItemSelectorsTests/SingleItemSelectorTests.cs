@@ -1,6 +1,5 @@
 ﻿using UniversityTimetable.Infrastructure.DataSelectors.SingleItemSelectors;
 using UniversityTimetable.Shared.Interfaces.Data;
-using UniversityTimetable.Shared.Models;
 using UniversityTimetable.Tests.Shared.DataFactories;
 using UniversityTimetable.Tests.Shared.Mocks;
 using UniversityTimetable.Tests.Shared.Extensions;
@@ -17,7 +16,7 @@ public abstract class SingleItemSelectorTests<TModel>
 
     protected SingleItemSelectorTests(IAbstractFactory<TModel> dataFactory)
     {
-        _testDataSource = dataFactory.CrateMany(_fixture, 10);
+        _testDataSource = dataFactory.CreateMany(_fixture, 10);
         _testSet = new DbSetMock<TModel>(_testDataSource);
         _singleItemSelector = new SingleItemSelector<TModel>();
     }
@@ -32,15 +31,4 @@ public abstract class SingleItemSelectorTests<TModel>
     {
         var item = await _singleItemSelector.SelectModel(-1, _testSet.Object);
     }
-}
-
-public sealed class SingleItemSelectorAuditoryTests : SingleItemSelectorTests<Auditory>, IClassFixture<AuditoryFactory>
-{
-    public SingleItemSelectorAuditoryTests(AuditoryFactory dataFactory) : base(dataFactory)
-    {
-    }
-
-    [Fact] protected override Task GetById_ReturnsFromSet_IfModelExists() => base.GetById_ReturnsFromSet_IfModelExists();
-
-    [Fact] protected override Task GetById_ReturnsNull_IfItemDoesNotExist() => base.GetById_ReturnsNull_IfItemDoesNotExist();
 }

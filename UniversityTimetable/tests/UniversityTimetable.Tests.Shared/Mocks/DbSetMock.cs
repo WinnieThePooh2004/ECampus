@@ -1,32 +1,25 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MockQueryable.EntityFrameworkCore;
 using Moq;
+using NSubstitute;
 
 namespace UniversityTimetable.Tests.Shared.Mocks;
 
-public sealed class DbSetMock<T> : Mock<DbSet<T>>
+public sealed class DbSetMock<T>
     where T : class
 {
+    public DbSet<T> Object { get; } = Substitute.For<DbSet<T>, IQueryable<T>>();
     public DbSetMock(ICollection<T> source)
     {
         var queryable = source.AsQueryable();
 
-        As<IQueryable>()
-            .Setup(q => q.Expression)
-            .Returns(queryable.Expression);
+        ((IQueryable)Object).ElementType.Returns(queryable.ElementType);
+        ((IQueryable)Object).Expression.Returns(queryable.Expression);
+        ((IQueryable)Object).Provider.Returns(new TestAsyncEnumerableEfCore<T>(queryable));
 
-        As<IQueryable>()
-            .Setup(q => q.ElementType)
-            .Returns(queryable.ElementType);
-        
-        As<IQueryable<T>>()
-            .Setup(m => m.Provider)
-            .Returns(new TestAsyncEnumerableEfCore<T>(queryable));
-        
-        As<IAsyncEnumerable<T>>()
-            .Setup(m => m.GetAsyncEnumerator(It.IsAny<CancellationToken>()))
+        Object.GetAsyncEnumerator(Arg.Any<CancellationToken>())
             .Returns(new TestAsyncEnumerator<T>(source.GetEnumerator()));
-        Setup(m => m.Remove(It.IsAny<T>())).Callback<T>(entity => source.Remove(entity));
-        Setup(m => m.Add(It.IsAny<T>())).Callback<T>(source.Add);
+        Object.Add(Arg.Do<T>(source.Add));
+        Object.Remove(Arg.Do<T>(model => source.Remove(model)));
     }
 }
