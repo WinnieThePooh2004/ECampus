@@ -24,14 +24,14 @@ public class UsersController : ControllerBase
     }
 
     [HttpPost]
-    [Microsoft.AspNetCore.Authorization.AllowAnonymous]
+    [AllowAnonymous]
     public async Task<IActionResult> Post(UserDto user)
     {
         return Ok(await _service.CreateAsync(user));
     }
 
     [HttpPut]
-    [Domain.Auth.Authorized(UserRole.Admin)]
+    [Authorized(UserRole.Admin)]
     public async Task<IActionResult> Put(UserDto user)
     {
         return Ok(await _service.UpdateAsync(user));
@@ -49,6 +49,12 @@ public class UsersController : ControllerBase
     public async Task<IActionResult> ValidateCreate(UserDto user)
     {
         return Ok(await _service.ValidateCreateAsync(user, HttpContext));
+    }
+
+    [HttpPut("/changePassword")]
+    public async Task<IActionResult> ChangePassword(PasswordChangeDto passwordChange)
+    {
+        return Ok(await _service.ChangePassword(passwordChange));
     }
 
     [HttpPut("Validate/Update")]

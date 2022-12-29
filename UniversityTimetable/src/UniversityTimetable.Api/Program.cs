@@ -134,6 +134,7 @@ builder.Services.AddScoped<IRelationshipsDataAccess<User, Teacher, UserTeacher>,
 builder.Services.AddScoped<IBaseService<UserDto>, BaseService<UserDto, User>>();
 builder.Services.AddScoped<IBaseDataAccessFacade<User>, BaseDataAccessFacade<User>>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IPasswordChange, PasswordChange>();
 
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 

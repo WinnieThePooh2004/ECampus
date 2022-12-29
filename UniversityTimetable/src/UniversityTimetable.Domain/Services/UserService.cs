@@ -1,4 +1,5 @@
 ﻿using System.Security.Claims;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Shared.Exceptions.DomainExceptions;
@@ -21,13 +22,15 @@ public class UserService : IUserService
     private readonly IAuthenticationService _authenticationService;
     private readonly IValidationFacade<UserDto> _validationFacade;
     private readonly IUpdateValidator<PasswordChangeDto> _passwordChangeValidator;
+    private readonly IPasswordChange _passwordChange;
+    private readonly IMapper _mapper;
 
     public UserService(IBaseService<UserDto> baseService,
         IRelationshipsDataAccess<User, Auditory, UserAuditory> userAuditoryRelations,
         IRelationshipsDataAccess<User, Group, UserGroup> userGroupRelations,
         IRelationshipsDataAccess<User, Teacher, UserTeacher> userTeacherRelations,
         IAuthenticationService authenticationService, IUpdateValidator<PasswordChangeDto> passwordChangeValidator,
-        IValidationFacade<UserDto> validationFacade)
+        IValidationFacade<UserDto> validationFacade, IPasswordChange passwordChange, IMapper mapper)
     {
         _baseService = baseService;
         _userAuditoryRelations = userAuditoryRelations;
@@ -36,6 +39,8 @@ public class UserService : IUserService
         _authenticationService = authenticationService;
         _passwordChangeValidator = passwordChangeValidator;
         _validationFacade = validationFacade;
+        _passwordChange = passwordChange;
+        _mapper = mapper;
     }
 
     public Task<UserDto> CreateAsync(UserDto entity)
@@ -68,7 +73,7 @@ public class UserService : IUserService
             throw new ValidationException(typeof(UserDto), errors);
         }
 
-        return new();
+        return _mapper.Map<UserDto>(await _passwordChange.ChangePassword(passwordChange));
     }
 
     public async Task<List<KeyValuePair<string, string>>> ValidatePasswordChange(PasswordChangeDto passwordChange)
