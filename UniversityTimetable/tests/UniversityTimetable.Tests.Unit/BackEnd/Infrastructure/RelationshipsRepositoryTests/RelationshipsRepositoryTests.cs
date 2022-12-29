@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using UniversityTimetable.Infrastructure;
 using UniversityTimetable.Infrastructure.DataAccessFacades;
-using UniversityTimetable.Shared.Exceptions.InfrastructureExceptions;
+using UniversityTimetable.Infrastructure.Relationships;
 using UniversityTimetable.Shared.Interfaces.Data.Models;
 using UniversityTimetable.Tests.Shared.Mocks;
 
@@ -19,41 +19,40 @@ public abstract class RelationshipsRepositoryTests<TLeftTable, TRightTable, TRel
     protected RelationshipsRepositoryTests()
     {
         _context = Substitute.For<ApplicationDbContext>();
-        _dataAccess = new RelationshipsDataAccess<TLeftTable, TRightTable, TRelations>(_context,
+        _dataAccess = new RelationshipsDataAccess<TLeftTable, TRightTable, TRelations>(
             Substitute.For<ILogger<RelationshipsDataAccess<TLeftTable, TRightTable, TRelations>>>());
     }
+    // protected virtual async Task AddRelation_ShouldAddToDb_IfDbNotThrowExceptions()
+    // {
+    //     await _dataAccess.CreateRelation(1, 2);
+    //
+    //     _context.Received(1).Add(Arg.Any<TRelations>());
+    // }
 
-    protected virtual async Task AddRelation_ShouldAddToDb_IfDbNotThrowExceptions()
-    {
-        await _dataAccess.CreateRelation(1, 2);
+    // protected virtual async Task AddRelation_ShouldThrowException_IfErrorOccuredWhileSaveChanges()
+    // {
+    //     _context.SaveChangesAsync().Returns(0).AndDoes(_ => throw new Exception("Some message"));
+    //
+    //     await new Func<Task>(() => _dataAccess.CreateRelation(0, 0)).Should()
+    //         .ThrowAsync<InfrastructureExceptions>()
+    //         .WithMessage("Some message\nError code: 404");
+    // }
 
-        _context.Received(1).Add(Arg.Any<TRelations>());
-    }
+    // protected virtual async Task DeleteRelation_RemovedFromToDb_IfDbNotThrowExceptions()
+    // {
+    //     await _dataAccess.DeleteRelation(1, 2);
+    //
+    //     _context.Received(1).Remove(Arg.Any<TRelations>());
+    // }
 
-    protected virtual async Task AddRelation_ShouldThrowException_IfErrorOccuredWhileSaveChanges()
-    {
-        _context.SaveChangesAsync().Returns(0).AndDoes(_ => throw new Exception("Some message"));
-
-        await new Func<Task>(() => _dataAccess.CreateRelation(0, 0)).Should()
-            .ThrowAsync<InfrastructureExceptions>()
-            .WithMessage("Some message\nError code: 404");
-    }
-
-    protected virtual async Task DeleteRelation_RemovedFromToDb_IfDbNotThrowExceptions()
-    {
-        await _dataAccess.DeleteRelation(1, 2);
-
-        _context.Received(1).Remove(Arg.Any<TRelations>());
-    }
-
-    protected virtual async Task DeleteRelation_ShouldThrowException_IfErrorOccuredWhileSaveChanges()
-    {
-        _context.SaveChangesAsync().Returns(1).AndDoes(_ => throw new Exception("Some message"));
-
-        await new Func<Task>(() => _dataAccess.DeleteRelation(0, 0)).Should()
-            .ThrowAsync<InfrastructureExceptions>()
-            .WithMessage("Some message\nError code: 404");
-    }
+    // protected virtual async Task DeleteRelation_ShouldThrowException_IfErrorOccuredWhileSaveChanges()
+    // {
+    //     _context.SaveChangesAsync().Returns(1).AndDoes(_ => throw new Exception("Some message"));
+    //
+    //     await new Func<Task>(() => _dataAccess.DeleteRelation(0, 0)).Should()
+    //         .ThrowAsync<InfrastructureExceptions>()
+    //         .WithMessage("Some message\nError code: 404");
+    // }
 
     protected virtual void CreateRelationModels_ShouldAddToModel()
     {
@@ -102,7 +101,7 @@ public abstract class RelationshipsRepositoryTests<TLeftTable, TRightTable, TRel
             }
         };
 
-        await _dataAccess.UpdateRelations(updatedEntity);
+        await _dataAccess.UpdateRelations(updatedEntity, _context);
 
         deleted.Should().BeEquivalentTo(new List<TRelations>
         {

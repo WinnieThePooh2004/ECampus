@@ -6,7 +6,8 @@ public interface IQueryParameters
 {
     int PageNumber { get; set; }
     int PageSize { get; set; }
-    string SearchTerm { get; set; }
+    
+    string? SearchTerm { get; set; }
 }
 
 // ReSharper disable once UnusedTypeParameter

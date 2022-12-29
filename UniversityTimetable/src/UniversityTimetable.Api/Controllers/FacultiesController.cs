@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using UniversityTimetable.Domain.Auth;
 using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Shared.Enums;
@@ -23,7 +24,8 @@ namespace UniversityTimetable.Api.Controllers
             return Ok(await _service.GetByParametersAsync(parameters));
         }
 
-        [HttpGet("{id:int?}")]
+        [HttpGet("{Id:int?}")]
+        [AllowAnonymous]
         public async Task<IActionResult> Get(int? id)
         {
             return Ok(await _service.GetByIdAsync(id));
@@ -31,14 +33,14 @@ namespace UniversityTimetable.Api.Controllers
 
         [HttpPost]
         [Authorized(UserRole.Admin)]
-        public async Task<IActionResult> Post([Bind("Name")] FacultyDto facultacy)
+        public async Task<IActionResult> Post([Bind("Name")] FacultyDto faculty)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
-            await _service.CreateAsync(facultacy);
-            return Ok(facultacy);
+            await _service.CreateAsync(faculty);
+            return Ok(faculty);
         }
 
         [HttpPut]

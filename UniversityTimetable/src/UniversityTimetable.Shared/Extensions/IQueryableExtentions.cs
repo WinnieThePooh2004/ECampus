@@ -5,10 +5,12 @@ namespace UniversityTimetable.Shared.Extensions
     public static class QueryableExtensions
     {
         public static IQueryable<T> Search<T>(this IQueryable<T> source, Expression<Func<T, string>> propertySelector,
-            string searchTerm)
+            string? searchTerm)
         {
             if (string.IsNullOrWhiteSpace(searchTerm))
+            {
                 return source;
+            }
 
             var isNotNullExpression = Expression.NotEqual(propertySelector.Body,
                 Expression.Constant(null));

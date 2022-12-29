@@ -19,6 +19,7 @@ using UniversityTimetable.Infrastructure.DataAccessFacades;
 using UniversityTimetable.Infrastructure;
 using UniversityTimetable.Infrastructure.Auth;
 using UniversityTimetable.Infrastructure.DataUpdate;
+using UniversityTimetable.Infrastructure.Relationships;
 using UniversityTimetable.Infrastructure.ValidationDataAccess;
 using UniversityTimetable.Shared.Interfaces.Data.DataServices;
 using UniversityTimetable.Shared.Interfaces.Data.Validation;
@@ -28,6 +29,7 @@ using UniversityTimetable.Shared.Interfaces.Domain;
 using UniversityTimetable.Shared.Models;
 using UniversityTimetable.Shared.QueryParameters;
 using UniversityTimetable.Shared.Interfaces.Auth;
+using UniversityTimetable.Shared.Models.RelationModels;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,10 +39,13 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
                          ?? throw new InvalidOperationException(
                              "Connection string 'ApplicationDbContext' not found.")));
 
-builder.Services.AddControllers(options => { options.Filters.Add<MiddlewareExceptionFilter>(); })
-    .AddNewtonsoftJson(options => { options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore; });
+builder.Services.AddScoped<DbContext, ApplicationDbContext>();
 
-builder.Services.AddValidatorsFromAssembly(Assembly.Load("UniversityTimetable.Domain"));
+builder.Services.AddControllers(options =>
+    {
+        options.Filters.Add<MiddlewareExceptionFilter>();
+    })
+    .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 
 builder.Services.AddScoped<IValidator<AuditoryDto>, AuditoryDtoValidator>();
 builder.Services.AddScoped<IValidator<ClassDto>, ClassDtoValidator>();
@@ -50,6 +55,7 @@ builder.Services.AddScoped<IValidator<GroupDto>, GroupDtoValidator>();
 builder.Services.AddScoped<IValidator<SubjectDto>, SubjectDtoValidator>();
 builder.Services.AddScoped<IValidator<TeacherDto>, TeacherDtoValidator>();
 builder.Services.AddScoped<IValidator<PasswordChangeDto>, PasswordChangeDtoValidator>();
+builder.Services.AddScoped<IValidator<UserDto>, UserDtoValidator>();
 
 builder.Services.AddScoped(typeof(IValidationFacade<>), typeof(ValidationFacade<>));
 
@@ -76,6 +82,7 @@ builder.Services.AddScoped<ICreateValidator<ClassDto>, ClassDtoUniversalValidato
 builder.Services.AddAutoMapper(Assembly.Load("UniversityTimetable.Domain"));
 
 builder.Services.AddScoped(typeof(IRelationshipsDataAccess<,,>), typeof(RelationshipsDataAccess<,,>));
+builder.Services.AddScoped(typeof(IRelationsDataAccess<,,>), typeof(RelationsDataAccess<,,>));
 
 builder.Services.AddMultipleDataSelector<Auditory, AuditoryParameters, AuditorySelector>();
 builder.Services.AddMultipleDataSelector<Department, DepartmentParameters, DepartmentSelector>();
@@ -91,16 +98,21 @@ builder.Services.AddDefaultDataServices<Group>();
 builder.Services.AddDefaultDataServices<Class>();
 
 builder.Services.AddDefaultDataServices<Subject>();
-builder.Services.Decorate<IDataUpdate<Subject>, SubjectUpdate>();
-builder.Services.Decorate<IDataCreate<Subject>, SubjectCreate>();
+builder.Services.Decorate<IDataUpdate<Subject>, DataUpdateWithRelationships<Subject, Teacher, SubjectTeacher>>();
+builder.Services.Decorate<IDataCreate<Subject>, DataCreateWithRelationships<Subject, Teacher, SubjectTeacher>>();
 
 builder.Services.AddDefaultDataServices<Teacher>();
-builder.Services.Decorate<IDataUpdate<Teacher>, TeacherUpdate>();
-builder.Services.Decorate<IDataCreate<Teacher>, TeacherCreate>();
+builder.Services.Decorate<IDataUpdate<Teacher>, DataUpdateWithRelationships<Teacher, Subject, SubjectTeacher>>();
+builder.Services.Decorate<IDataCreate<Teacher>, DataCreateWithRelationships<Teacher, Subject, SubjectTeacher>>();
 
 builder.Services.AddDefaultDataServices<User>();
-builder.Services.Decorate<IDataUpdate<User>, UserUpdate>();
-builder.Services.Decorate<IDataCreate<User>, UserCreate>();
+builder.Services.Decorate<IDataUpdate<User>, DataUpdateWithRelationships<User, Auditory, UserAuditory>>();
+builder.Services.Decorate<IDataUpdate<User>, DataUpdateWithRelationships<User, Group, UserGroup>>();
+builder.Services.Decorate<IDataUpdate<User>, DataUpdateWithRelationships<User, Teacher, UserTeacher>>();
+
+builder.Services.Decorate<IDataCreate<User>, DataCreateWithRelationships<User, Auditory, UserAuditory>>();
+builder.Services.Decorate<IDataCreate<User>, DataCreateWithRelationships<User, Group, UserGroup>>();
+builder.Services.Decorate<IDataCreate<User>, DataCreateWithRelationships<User, Teacher, UserTeacher>>();
 
 builder.Services.AddScoped<ISingleItemSelector<User>, SingleUserSelector>();
 builder.Services.AddScoped<ISingleItemSelector<Subject>, SingleSubjectSelector>();

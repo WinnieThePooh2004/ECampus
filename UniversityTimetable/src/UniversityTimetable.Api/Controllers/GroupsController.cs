@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using UniversityTimetable.Domain.Auth;
 using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Shared.Enums;
@@ -20,6 +21,7 @@ namespace UniversityTimetable.Api.Controllers
 
         // GET: Groups
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Get([FromQuery] GroupParameters parameters)
         {
             return Ok(await _service.GetByParametersAsync(parameters));
@@ -27,6 +29,7 @@ namespace UniversityTimetable.Api.Controllers
 
         // GET: Groups/Details/5
         [HttpGet("{id:int?}")]
+        [AllowAnonymous]
         public async Task<IActionResult> Get(int? id)
         {
             return Ok(await _service.GetByIdAsync(id));

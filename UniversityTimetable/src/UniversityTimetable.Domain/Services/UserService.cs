@@ -5,6 +5,7 @@ using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Shared.Exceptions.DomainExceptions;
 using UniversityTimetable.Shared.Extensions;
 using UniversityTimetable.Shared.Interfaces.Auth;
+using UniversityTimetable.Shared.Interfaces.Data.DataServices;
 using UniversityTimetable.Shared.Interfaces.Data.Validation;
 using UniversityTimetable.Shared.Interfaces.DataAccess;
 using UniversityTimetable.Shared.Interfaces.Domain;
@@ -16,9 +17,9 @@ namespace UniversityTimetable.Domain.Services;
 public class UserService : IUserService
 {
     private readonly IBaseService<UserDto> _baseService;
-    private readonly IRelationshipsDataAccess<User, Auditory, UserAuditory> _userAuditoryRelations;
-    private readonly IRelationshipsDataAccess<User, Group, UserGroup> _userGroupRelations;
-    private readonly IRelationshipsDataAccess<User, Teacher, UserTeacher> _userTeacherRelations;
+    private readonly IRelationsDataAccess<User, Auditory, UserAuditory> _userAuditoryRelations;
+    private readonly IRelationsDataAccess<User, Group, UserGroup> _userGroupRelations;
+    private readonly IRelationsDataAccess<User, Teacher, UserTeacher> _userTeacherRelations;
     private readonly IAuthenticationService _authenticationService;
     private readonly IValidationFacade<UserDto> _validationFacade;
     private readonly IUpdateValidator<PasswordChangeDto> _passwordChangeValidator;
@@ -26,9 +27,9 @@ public class UserService : IUserService
     private readonly IMapper _mapper;
 
     public UserService(IBaseService<UserDto> baseService,
-        IRelationshipsDataAccess<User, Auditory, UserAuditory> userAuditoryRelations,
-        IRelationshipsDataAccess<User, Group, UserGroup> userGroupRelations,
-        IRelationshipsDataAccess<User, Teacher, UserTeacher> userTeacherRelations,
+        IRelationsDataAccess<User, Auditory, UserAuditory> userAuditoryRelations,
+        IRelationsDataAccess<User, Group, UserGroup> userGroupRelations,
+        IRelationsDataAccess<User, Teacher, UserTeacher> userTeacherRelations,
         IAuthenticationService authenticationService, IUpdateValidator<PasswordChangeDto> passwordChangeValidator,
         IValidationFacade<UserDto> validationFacade, IPasswordChange passwordChange, IMapper mapper)
     {
