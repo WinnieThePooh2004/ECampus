@@ -15,11 +15,16 @@ public class Timetable
     public GroupDto? Group { get; set; }
     public TeacherDto? Teacher { get; set; }
     public ClassDto?[][] DailyClasses { get; set; }
-
-    public Timetable(List<ClassDto> classes)
+    
+    public Timetable(IEnumerable<ClassDto> classes)
     {
         DailyClasses = CreateEmptyDataTable();
-        classes.ForEach(Add);
+        classes.ToList().ForEach(Add);
+    }
+
+    public Timetable()
+    {
+        DailyClasses = CreateEmptyDataTable();
     }
     
     public ClassDto? GetClass(int dayOfWeek, int number, WeekDependency weekDependency = WeekDependency.None)
