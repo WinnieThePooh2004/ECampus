@@ -3,9 +3,7 @@ using UniversityTimetable.Api.Controllers;
 using UniversityTimetable.Domain.Validation.FluentValidators;
 using UniversityTimetable.Shared.DataContainers;
 using UniversityTimetable.Shared.DataTransferObjects;
-using UniversityTimetable.Shared.Interfaces.Services;
-using UniversityTimetable.Shared.QueryParameters;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using UniversityTimetable.Shared.Interfaces.Domain;
 
 namespace UniversityTimetable.Tests.Unit.BackEnd.Api
 {
@@ -144,10 +142,10 @@ namespace UniversityTimetable.Tests.Unit.BackEnd.Api
         {
             var rand = new Random();
             return new Timetable(Enumerable.Range(0, 10)
-                .Select(i => _fixture.Build<ClassDto>()
+                .Select(_ => _fixture.Build<ClassDto>()
                 .With(c => c.Number, rand.Next(0, 5))
                 .With(c => c.DayOfWeek, rand.Next(0, 6))
-                .Create()));
+                .Create()).ToList());
         }
     }
 }

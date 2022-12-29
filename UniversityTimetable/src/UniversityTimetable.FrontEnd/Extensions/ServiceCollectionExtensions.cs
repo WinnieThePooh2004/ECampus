@@ -1,11 +1,11 @@
 ﻿using UniversityTimetable.FrontEnd.Requests;
 using UniversityTimetable.FrontEnd.Requests.Interfaces;
 
-namespace UniversityTimetable.FrontEnd.Extentions
+namespace UniversityTimetable.FrontEnd.Extensions
 {
-    public static class IServiceCollectionExtentions
+    public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddRequests<TData, TParameters, TImplementation>(this IServiceCollection services)
+        private static IServiceCollection AddRequests<TData, TParameters, TImplementation>(this IServiceCollection services)
             where TData : class
             where TParameters : IQueryParameters
             where TImplementation : class, IParametersRequests<TData, TParameters>

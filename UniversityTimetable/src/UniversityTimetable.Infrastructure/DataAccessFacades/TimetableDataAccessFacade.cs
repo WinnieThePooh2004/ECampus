@@ -5,8 +5,6 @@ using UniversityTimetable.Shared.Models;
 using UniversityTimetable.Shared.Exceptions.InfrastructureExceptions;
 using UniversityTimetable.Shared.DataContainers;
 using UniversityTimetable.Shared.Extensions;
-using UniversityTimetable.Shared.Enums;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace UniversityTimetable.Infrastructure.DataAccessFacades;
 
@@ -47,7 +45,7 @@ public class TimetableDataAccessFacade : ITimetableDataAccessFacade
         var group = await _context.Groups.FirstOrDefaultAsync(g => g.Id == groupId);
         if (group is null)
         {
-            _logger.LogAndThrowException(new ObjectNotFoundByIdException(typeof(Shared.Models.Group), groupId));
+            _logger.LogAndThrowException(new ObjectNotFoundByIdException(typeof(Group), groupId));
         }
         var timetable = new TimetableData()
         {

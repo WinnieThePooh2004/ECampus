@@ -3,7 +3,7 @@ using UniversityTimetable.Api.Controllers;
 using UniversityTimetable.Domain.Validation.FluentValidators;
 using UniversityTimetable.Shared.DataContainers;
 using UniversityTimetable.Shared.DataTransferObjects;
-using UniversityTimetable.Shared.Interfaces.Services;
+using UniversityTimetable.Shared.Interfaces.Domain;
 using UniversityTimetable.Shared.QueryParameters;
 
 namespace UniversityTimetable.Tests.Unit.BackEnd.Api
@@ -73,7 +73,8 @@ namespace UniversityTimetable.Tests.Unit.BackEnd.Api
         public async Task GetByParameters_ReturnsFromService_ServiceCalled()
         {
             var data = _fixture.Build<ListWithPaginationData<TeacherDto>>()
-                .With(l => l.Data, Enumerable.Range(0, 5).Select(i => _fixture.Create<TeacherDto>()).ToList())
+                .With(l => l.Data, Enumerable.Range(0, 5)
+                    .Select(_ => _fixture.Create<TeacherDto>()).ToList())
                 .Create();
 
             _service.GetByParametersAsync(Arg.Any<TeacherParameters>()).Returns(data);

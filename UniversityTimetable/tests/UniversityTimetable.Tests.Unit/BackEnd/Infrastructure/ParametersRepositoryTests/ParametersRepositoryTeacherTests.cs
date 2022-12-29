@@ -1,5 +1,4 @@
-﻿using UniversityTimetable.Infrastructure.DataSelectors;
-using UniversityTimetable.Infrastructure.DataSelectors.MultipleItemSelectors;
+﻿using UniversityTimetable.Infrastructure.DataSelectors.MultipleItemSelectors;
 using UniversityTimetable.Shared.Models;
 using UniversityTimetable.Shared.QueryParameters;
 using UniversityTimetable.Tests.Shared.DataFactories;
@@ -23,5 +22,5 @@ public sealed class ParametersRepositoryTeacherTests : ParametersRepositoryTests
 
     [Fact] protected override Task GetById_ReturnsFromBaseRepository_BaseRepositoryCalled() => base.GetById_ReturnsFromBaseRepository_BaseRepositoryCalled();
 
-    [Fact] protected Task GetByParameters_DepartmentId0_ReturnsAllFromDb() => GetByParameters_ReturnsFromDb();
+    [Fact] protected override Task GetByParameters_ReturnsFromDb() => base.GetByParameters_ReturnsFromDb();
 }

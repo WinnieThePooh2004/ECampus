@@ -12,7 +12,7 @@ namespace UniversityTimetable.Shared.Extensions
 
         public static void LogMessageAndThrowException(this ILogger logger, HttpResponseException exception, string message)
         {
-            logger.LogError(exception, "{message}", message);
+            logger.LogError(exception, "{Message}", message);
             throw exception;
         }
     }

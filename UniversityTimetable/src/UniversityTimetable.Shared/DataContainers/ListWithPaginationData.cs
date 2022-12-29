@@ -2,8 +2,8 @@
 
 public class ListWithPaginationData<T>
 {
-    public required PaginationData Metadata { get; set; }
-    public required List<T> Data { get; set; }
+    public PaginationData Metadata { get; set; } = new();
+    public List<T> Data { get; set; } = new();
     public ListWithPaginationData(List<T> data, int totalCount, int pageNumber, int pageSize)
     {
         Data = data;

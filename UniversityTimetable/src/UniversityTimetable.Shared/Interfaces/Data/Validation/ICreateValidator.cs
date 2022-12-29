@@ -1,6 +1,4 @@
-﻿using UniversityTimetable.Shared.Interfaces.Data.Models;
-
-namespace UniversityTimetable.Shared.Interfaces.Data.Validation;
+﻿namespace UniversityTimetable.Shared.Interfaces.Data.Validation;
 
 public interface ICreateValidator<in TDto>
     where TDto : class

@@ -3,7 +3,6 @@ using Microsoft.Extensions.Logging;
 using UniversityTimetable.Domain.Mapping;
 using UniversityTimetable.Domain.Services;
 using UniversityTimetable.Shared.Exceptions.DomainExceptions;
-using UniversityTimetable.Shared.Interfaces.Data;
 using UniversityTimetable.Shared.Interfaces.Data.Models;
 using UniversityTimetable.Shared.Interfaces.Data.Validation;
 using UniversityTimetable.Shared.Interfaces.DataAccess;

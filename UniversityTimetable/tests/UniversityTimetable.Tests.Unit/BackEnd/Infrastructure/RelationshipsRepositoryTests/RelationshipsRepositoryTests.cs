@@ -2,7 +2,6 @@
 using UniversityTimetable.Infrastructure;
 using UniversityTimetable.Infrastructure.DataAccessFacades;
 using UniversityTimetable.Shared.Exceptions.InfrastructureExceptions;
-using UniversityTimetable.Shared.Interfaces.Data;
 using UniversityTimetable.Shared.Interfaces.Data.Models;
 using UniversityTimetable.Tests.Shared.Mocks;
 
@@ -33,7 +32,7 @@ public abstract class RelationshipsRepositoryTests<TLeftTable, TRightTable, TRel
 
     protected virtual async Task AddRelation_ShouldThrowException_IfErrorOccuredWhileSaveChanges()
     {
-        _context.SaveChangesAsync().Returns(async _ => throw new Exception("Some message"));
+        _context.SaveChangesAsync().Returns(0).AndDoes(_ => throw new Exception("Some message"));
 
         await new Func<Task>(() => _dataAccess.CreateRelation(0, 0)).Should()
             .ThrowAsync<InfrastructureExceptions>()
@@ -49,7 +48,7 @@ public abstract class RelationshipsRepositoryTests<TLeftTable, TRightTable, TRel
 
     protected virtual async Task DeleteRelation_ShouldThrowException_IfErrorOccuredWhileSaveChanges()
     {
-        _context.SaveChangesAsync().Returns(async _ => throw new Exception("Some message"));
+        _context.SaveChangesAsync().Returns(1).AndDoes(_ => throw new Exception("Some message"));
 
         await new Func<Task>(() => _dataAccess.DeleteRelation(0, 0)).Should()
             .ThrowAsync<InfrastructureExceptions>()
@@ -58,7 +57,11 @@ public abstract class RelationshipsRepositoryTests<TLeftTable, TRightTable, TRel
 
     protected virtual void CreateRelationModels_ShouldAddToModel()
     {
-        var model = new TLeftTable { Id = 3 };
+        var model = new TLeftTable
+        {
+            Id = 3,
+            RelatedModels = new List<TRightTable>()
+        };
         model.RelatedModels.AddRange(new List<TRightTable>
         {
             new() { Id = 1 },
@@ -78,8 +81,8 @@ public abstract class RelationshipsRepositoryTests<TLeftTable, TRightTable, TRel
     {
         var dataSource = new List<TRelations>
         {
-            new(){ LeftTableId = 10, RightTableId = 3 },
-            new(){ LeftTableId = 10, RightTableId = 5 },
+            new() { LeftTableId = 10, RightTableId = 3 },
+            new() { LeftTableId = 10, RightTableId = 5 },
         };
         List<TRelations>? deleted = null;
         List<TRelations>? added = null;
@@ -94,13 +97,13 @@ public abstract class RelationshipsRepositoryTests<TLeftTable, TRightTable, TRel
             Id = 10,
             RelatedModels = new List<TRightTable>
             {
-                new(){ Id = 3 },
-                new(){ Id = 4 }
+                new() { Id = 3 },
+                new() { Id = 4 }
             }
         };
 
         await _dataAccess.UpdateRelations(updatedEntity);
-        
+
         deleted.Should().BeEquivalentTo(new List<TRelations>
         {
             new() { LeftTableId = 10, RightTableId = 5 }
@@ -110,6 +113,5 @@ public abstract class RelationshipsRepositoryTests<TLeftTable, TRightTable, TRel
         {
             new() { LeftTableId = 10, RightTableId = 4 }
         });
-        
     }
 }

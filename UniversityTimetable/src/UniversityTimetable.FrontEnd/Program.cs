@@ -3,7 +3,7 @@ using FluentValidation;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using MudBlazor.Services;
 using UniversityTimetable.Domain.Validation.FluentValidators;
-using UniversityTimetable.FrontEnd.Extentions;
+using UniversityTimetable.FrontEnd.Extensions;
 using UniversityTimetable.FrontEnd.Requests;
 using UniversityTimetable.FrontEnd.Requests.Interfaces;
 using UniversityTimetable.FrontEnd.Requests.Options;
@@ -51,7 +51,7 @@ builder.Services.AddSingleton<IRequestOptions>(new RequestOptions(builder.Config
 builder.Services.AddMudServices();
 builder.Services.Configure<CookiePolicyOptions>(options =>
 {
-    options.CheckConsentNeeded = context => true;
+    options.CheckConsentNeeded = _ => true;
     options.MinimumSameSitePolicy = SameSiteMode.None;
 });
 

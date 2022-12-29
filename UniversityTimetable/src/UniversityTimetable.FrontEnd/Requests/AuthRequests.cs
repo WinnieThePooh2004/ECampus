@@ -22,6 +22,6 @@ public class AuthRequests : IAuthRequests
 
     public async Task LogoutAsync()
     {
-        var response = await _client.CreateClient("UTApi").DeleteAsync("api/Auth/logout");
+        await _client.CreateClient("UTApi").DeleteAsync("api/Auth/logout");
     }
 }

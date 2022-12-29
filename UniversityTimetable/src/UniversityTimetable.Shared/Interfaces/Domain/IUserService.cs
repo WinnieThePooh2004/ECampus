@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using UniversityTimetable.Shared.DataTransferObjects;
 
-namespace UniversityTimetable.Shared.Interfaces.Services;
+namespace UniversityTimetable.Shared.Interfaces.Domain;
 
 public interface IUserService : IBaseService<UserDto>
 {

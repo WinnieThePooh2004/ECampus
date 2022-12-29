@@ -1,12 +1,11 @@
-﻿using Microsoft.Extensions.Logging;
-using UniversityTimetable.Infrastructure;
+﻿using UniversityTimetable.Infrastructure;
 using UniversityTimetable.Infrastructure.DataAccessFacades;
-using UniversityTimetable.Shared.Interfaces.Data;
 using UniversityTimetable.Shared.Interfaces.Data.DataServices;
 using UniversityTimetable.Shared.Interfaces.Data.Models;
 using UniversityTimetable.Shared.Interfaces.DataAccess;
 using UniversityTimetable.Shared.QueryParameters;
 using UniversityTimetable.Tests.Shared.DataFactories;
+using UniversityTimetable.Tests.Shared.Extensions;
 using UniversityTimetable.Tests.Shared.Mocks;
 
 namespace UniversityTimetable.Tests.Unit.BackEnd.Infrastructure.ParametersRepositoryTests;
@@ -25,8 +24,7 @@ public class ParametersRepositoryTests<TModel, TParameters>
     {
         _factory = factory;
         _fixture.Behaviors.Add(new OmitOnRecursionBehavior());
-        _dataAccessFacade = new ParametersDataAccessFacade<TModel, TParameters>(_context,
-            Substitute.For<ILogger<ParametersDataAccessFacade<TModel, TParameters>>>(), _baseDataAccessFacade, selector);
+        _dataAccessFacade = new ParametersDataAccessFacade<TModel, TParameters>(_context, _baseDataAccessFacade, selector);
     }
 
     protected virtual async Task Create_ReturnsFromBaseRepository_BaseRepositoryCalled()
@@ -71,7 +69,7 @@ public class ParametersRepositoryTests<TModel, TParameters>
 
     protected virtual async Task GetByParameters_ReturnsFromDb()
     {
-        var data = Enumerable.Range(0, 10).Select(i => _factory.CreateModel(_fixture)).ToList();
+        var data = _factory.CreateMany(_fixture, 10);
         var parameters = new TParameters { PageNumber = 0, PageSize = 5 };
         var set = new DbSetMock<TModel>(data);
         _context.Set<TModel>().Returns(set.Object);

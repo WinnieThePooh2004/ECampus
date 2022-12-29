@@ -3,7 +3,6 @@ using Microsoft.Extensions.Logging;
 using UniversityTimetable.Infrastructure;
 using UniversityTimetable.Infrastructure.DataAccessFacades;
 using UniversityTimetable.Shared.Exceptions.InfrastructureExceptions;
-using UniversityTimetable.Shared.Interfaces.Data;
 using UniversityTimetable.Shared.Interfaces.Data.DataServices;
 using UniversityTimetable.Shared.Interfaces.Data.Models;
 using UniversityTimetable.Tests.Shared.DataFactories;
@@ -52,7 +51,7 @@ public abstract class BaseDataAccessFacadeTests<TModel>
 
     protected virtual async Task Update_ShouldThrowException_IfSaveChangeThrowsException()
     {
-        _context.SaveChangesAsync().Returns(1).AndDoes(call => throw new Exception());
+        _context.SaveChangesAsync().Returns(1).AndDoes(_ => throw new Exception());
 
         await new Func<Task>(() => _dataAccessFacade.UpdateAsync(new TModel())).Should()
             .ThrowAsync<InfrastructureExceptions>();

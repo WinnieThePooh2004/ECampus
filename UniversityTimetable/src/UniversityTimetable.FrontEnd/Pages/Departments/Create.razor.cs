@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Components;
-using UniversityTimetable.FrontEnd.Requests.Interfaces;
 
 namespace UniversityTimetable.FrontEnd.Pages.Departments
 {

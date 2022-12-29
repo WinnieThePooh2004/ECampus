@@ -1,6 +1,4 @@
-﻿using FluentValidation.Results;
-
-namespace UniversityTimetable.FrontEnd.Requests.Interfaces;
+﻿namespace UniversityTimetable.FrontEnd.Requests.Interfaces;
 
 public interface IClassRequests
 {

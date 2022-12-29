@@ -1,6 +1,5 @@
 ﻿using System.Linq.Expressions;
 using UniversityTimetable.Shared.Enums;
-using UniversityTimetable.Shared.Interfaces.Data;
 using UniversityTimetable.Shared.Interfaces.Data.Models;
 using UniversityTimetable.Shared.Models.RelationModels;
 
@@ -21,9 +20,9 @@ public class User : IModel, IIsDeleted,
     public List<Group>? SavedGroups { get; set; }
     public List<Teacher>? SavedTeachers { get; set; }
     public List<Auditory>? SavedAuditories { get; set; }
-    public List<UserGroup>? SavedGroupsIds { get; private set; }
-    public List<UserAuditory>? SavedAuditoriesIds { get; private set; }
-    public List<UserTeacher>? SavedTeachersIds { get; private set; }
+    public List<UserGroup>? SavedGroupsIds { get; set; }
+    public List<UserAuditory>? SavedAuditoriesIds { get; set; }
+    public List<UserTeacher>? SavedTeachersIds { get; set; }
     List<Auditory>? IModelWithManyToManyRelations<Auditory, UserAuditory>.RelatedModels
     {
         get => SavedAuditories;

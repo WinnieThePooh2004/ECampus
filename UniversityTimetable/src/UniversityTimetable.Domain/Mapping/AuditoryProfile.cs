@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using UniversityTimetable.Domain.Mapping.Converters;
 using UniversityTimetable.Shared.DataTransferObjects;
-using UniversityTimetable.Shared.Extensions;
 using UniversityTimetable.Shared.Models;
 
 namespace UniversityTimetable.Domain.Mapping

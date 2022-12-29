@@ -1,8 +1,7 @@
-﻿using FluentValidation.Results;
-using UniversityTimetable.Shared.DataContainers;
+﻿using UniversityTimetable.Shared.DataContainers;
 using UniversityTimetable.Shared.DataTransferObjects;
 
-namespace UniversityTimetable.Shared.Interfaces.Services;
+namespace UniversityTimetable.Shared.Interfaces.Domain;
 
 public interface IClassService : IBaseService<ClassDto>
 {

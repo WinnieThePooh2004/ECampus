@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
-using Microsoft.Extensions.Logging;
 using UniversityTimetable.Shared.DataContainers;
-using UniversityTimetable.Shared.Interfaces.Data;
 using UniversityTimetable.Shared.Interfaces.Data.Models;
 using UniversityTimetable.Shared.Interfaces.DataAccess;
-using UniversityTimetable.Shared.Interfaces.Services;
+using UniversityTimetable.Shared.Interfaces.Domain;
 using UniversityTimetable.Shared.QueryParameters;
 
 namespace UniversityTimetable.Domain.Services
@@ -14,15 +12,13 @@ namespace UniversityTimetable.Domain.Services
         where TRepositoryModel : class, IModel, new()
         where TParameters : class, IQueryParameters<TRepositoryModel>
     {
-        private readonly ILogger<ParametersService<TDto, TParameters, TRepositoryModel>> _logger;
         private readonly IParametersDataAccessFacade<TRepositoryModel, TParameters> _parametersDataAccessFacade;
         private readonly IMapper _mapper;
         private readonly IBaseService<TDto> _baseService;
 
-        public ParametersService(ILogger<ParametersService<TDto, TParameters, TRepositoryModel>> logger, IParametersDataAccessFacade<TRepositoryModel, TParameters> parametersDataAccessFacade,
+        public ParametersService(IParametersDataAccessFacade<TRepositoryModel, TParameters> parametersDataAccessFacade,
             IMapper mapper, IBaseService<TDto> baseService)
         {
-            _logger = logger;
             _parametersDataAccessFacade = parametersDataAccessFacade;
             _mapper = mapper;
             _baseService = baseService;

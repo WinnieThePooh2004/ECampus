@@ -1,6 +1,5 @@
 ﻿using UniversityTimetable.Infrastructure;
 using UniversityTimetable.Infrastructure.DataCreate;
-using UniversityTimetable.Shared.Interfaces.Data;
 using UniversityTimetable.Shared.Interfaces.Data.DataServices;
 using UniversityTimetable.Shared.Interfaces.DataAccess;
 using UniversityTimetable.Shared.Models;

@@ -1,6 +1,4 @@
-﻿using UniversityTimetable.Shared.Models.RelationModels;
-
-namespace UniversityTimetable.FrontEnd.Requests.Interfaces;
+﻿namespace UniversityTimetable.FrontEnd.Requests.Interfaces;
 
 public interface IUserRequests : IBaseRequests<UserDto>
 {

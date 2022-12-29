@@ -4,7 +4,7 @@ using UniversityTimetable.Shared.DataContainers;
 using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Shared.Interfaces.Data.Validation;
 using UniversityTimetable.Shared.Interfaces.DataAccess;
-using UniversityTimetable.Shared.Interfaces.Services;
+using UniversityTimetable.Shared.Interfaces.Domain;
 
 namespace UniversityTimetable.Domain.Services;
 
@@ -39,7 +39,7 @@ public class ClassService : IClassService
     {
         _logger.LogInformation("Getting auditory for group with id={Id}", auditoryId);
         var timetable = await _repository.GetTimetableForAuditoryAsync(auditoryId);
-        return new Timetable(_mapper.Map<IEnumerable<ClassDto>>(timetable.Classes))
+        return new Timetable(_mapper.Map<List<ClassDto>>(timetable.Classes))
         {
             Auditory = _mapper.Map<AuditoryDto>(timetable.Auditory),
         };
@@ -49,7 +49,7 @@ public class ClassService : IClassService
     {
         _logger.LogInformation("Getting timetable for group with id={Id}", groupId);
         var timetable = await _repository.GetTimetableForGroupAsync(groupId);
-        return new Timetable(_mapper.Map<IEnumerable<ClassDto>>(timetable.Classes))
+        return new Timetable(_mapper.Map<List<ClassDto>>(timetable.Classes))
         {
             Group = _mapper.Map<GroupDto>(timetable.Group),
         };
@@ -59,9 +59,9 @@ public class ClassService : IClassService
     {
         _logger.LogInformation("Getting teacher for group with id={Id}", teacherId);
         var timetable = await _repository.GetTimetableForTeacherAsync(teacherId);
-        return new Timetable(_mapper.Map<IEnumerable<ClassDto>>(timetable.Classes))
+        return new Timetable(_mapper.Map<List<ClassDto>>(timetable.Classes))
         {
-            Teacher = _mapper.Map<TeacherDto>(timetable.Teacher),
+            Teacher = _mapper.Map<TeacherDto>(timetable.Teacher)
         };
     }
 

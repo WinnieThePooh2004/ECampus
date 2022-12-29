@@ -1,6 +1,5 @@
 ﻿using System.Linq.Expressions;
 using UniversityTimetable.Shared.Enums;
-using UniversityTimetable.Shared.Interfaces.Data;
 using UniversityTimetable.Shared.Interfaces.Data.Models;
 using UniversityTimetable.Shared.Models.RelationModels;
 
@@ -17,7 +16,7 @@ namespace UniversityTimetable.Shared.Models
         public int DepartmentId { get; set; }
         public Department? Department { get; set; }
 
-        public List<SubjectTeacher>? SubjectIds { get; private set; }
+        public List<SubjectTeacher>? SubjectIds { get; set; }
         public List<Subject>? Subjects { get; set; }
         public List<Class>? Classes { get; set; }
         public List<User>? Users { get; set; }

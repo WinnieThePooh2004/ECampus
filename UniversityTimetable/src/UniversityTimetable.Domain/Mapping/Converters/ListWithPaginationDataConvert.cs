@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using UniversityTimetable.Shared.DataContainers;
 
-namespace UniversityTimetable.Domain.Mapping
+namespace UniversityTimetable.Domain.Mapping.Converters
 {
     public class ListWithPaginationDataConvert<T, TTo> : ITypeConverter<ListWithPaginationData<T>, ListWithPaginationData<TTo>> 
         where T : class

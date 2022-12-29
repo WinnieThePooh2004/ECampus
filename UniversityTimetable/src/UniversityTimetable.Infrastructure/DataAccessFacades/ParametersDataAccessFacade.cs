@@ -1,9 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using UniversityTimetable.Shared.Extensions;
-using UniversityTimetable.Shared.Interfaces.Data;
 using UniversityTimetable.Shared.QueryParameters;
-using UniversityTimetable.Shared.Exceptions.InfrastructureExceptions;
 using UniversityTimetable.Shared.Interfaces.DataAccess;
 using UniversityTimetable.Shared.DataContainers;
 using UniversityTimetable.Shared.Interfaces.Data.DataServices;
@@ -16,14 +12,12 @@ public class ParametersDataAccessFacade<TModel, TParameters> : IParametersDataAc
     where TParameters : IQueryParameters<TModel>
 {
     private readonly ApplicationDbContext _context;
-    private readonly ILogger<ParametersDataAccessFacade<TModel, TParameters>> _logger;
     private readonly IBaseDataAccessFacade<TModel> _baseDataAccessFacade;
     private readonly IMultipleItemSelector<TModel, TParameters> _multipleItemSelector;
-    public ParametersDataAccessFacade(ApplicationDbContext context, ILogger<ParametersDataAccessFacade<TModel, TParameters>> logger,
+    public ParametersDataAccessFacade(ApplicationDbContext context,
         IBaseDataAccessFacade<TModel> baseDataAccessFacade, IMultipleItemSelector<TModel, TParameters> multipleItemSelector)
     {
         _context = context;
-        _logger = logger;
         _baseDataAccessFacade = baseDataAccessFacade;
         _multipleItemSelector = multipleItemSelector;
     }

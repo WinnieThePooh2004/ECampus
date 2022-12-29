@@ -16,18 +16,18 @@ namespace UniversityTimetable.Infrastructure
         {
         }
 
-        public DbSet<Auditory> Auditories { get; set; }
-        public DbSet<Class> Classes { get; set; }
-        public DbSet<Department> Departments { get; set; }
-        public DbSet<Faculty> Faculties { get; set; }
-        public DbSet<Group> Groups { get; set; }
-        public DbSet<Teacher> Teachers { get; set; }
-        public DbSet<Subject> Subjects { get; set; }
-        public DbSet<SubjectTeacher> SubjectTeachers { get; set; }
-        public DbSet<User> Users { get; set; }
-        public DbSet<UserAuditory> UserAuditories { get; set; }
-        public DbSet<UserGroup> UserGroups { get; set; }
-        public DbSet<UserTeacher> UserTeachers { get; set; }
+        public DbSet<Auditory> Auditories { get; set; } = default!;
+        public DbSet<Class> Classes { get; set; } = default!;
+        public DbSet<Department> Departments { get; set; } = default!;
+        public DbSet<Faculty> Faculties { get; set; } = default!;
+        public DbSet<Group> Groups { get; set; } = default!;
+        public DbSet<Teacher> Teachers { get; set; } = default!;
+        public DbSet<Subject> Subjects { get; set; } = default!;
+        public DbSet<SubjectTeacher> SubjectTeachers { get; set; } = default!;
+        public DbSet<User> Users { get; set; } = default!;
+        public DbSet<UserAuditory> UserAuditories { get; set; } = default!;
+        public DbSet<UserGroup> UserGroups { get; set; } = default!;
+        public DbSet<UserTeacher> UserTeachers { get; set; } = default!;
 
         public override int SaveChanges()
         {

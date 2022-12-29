@@ -1,5 +1,4 @@
 ﻿using UniversityTimetable.Infrastructure.DataSelectors.SingleItemSelectors;
-using UniversityTimetable.Shared.Interfaces.Data;
 using UniversityTimetable.Shared.Interfaces.Data.Models;
 using UniversityTimetable.Tests.Shared.DataFactories;
 using UniversityTimetable.Tests.Shared.Mocks;
@@ -30,6 +29,6 @@ public abstract class SingleItemSelectorTests<TModel>
 
     protected virtual async Task GetById_ReturnsNull_IfItemDoesNotExist()
     {
-        var item = await _singleItemSelector.SelectModel(-1, _testSet.Object);
+        await _singleItemSelector.SelectModel(-1, _testSet.Object);
     }
 }

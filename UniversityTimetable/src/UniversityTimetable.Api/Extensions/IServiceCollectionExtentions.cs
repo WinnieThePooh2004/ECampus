@@ -6,18 +6,17 @@ using UniversityTimetable.Infrastructure.DataDelete;
 using UniversityTimetable.Infrastructure.DataSelectors.SingleItemSelectors;
 using UniversityTimetable.Infrastructure.DataUpdate;
 using UniversityTimetable.Infrastructure.DataAccessFacades;
-using UniversityTimetable.Shared.Interfaces.Data;
 using UniversityTimetable.Shared.Interfaces.Data.DataServices;
 using UniversityTimetable.Shared.Interfaces.Data.Models;
 using UniversityTimetable.Shared.Interfaces.Data.Validation;
 using UniversityTimetable.Shared.Interfaces.DataAccess;
-using UniversityTimetable.Shared.Interfaces.Services;
+using UniversityTimetable.Shared.Interfaces.Domain;
 using UniversityTimetable.Shared.QueryParameters;
 
 namespace UniversityTimetable.Api.Extensions;
 
 // ReSharper disable once InconsistentNaming
-public static class IServiceCollectionExtensions
+internal static class IServiceCollectionExtensions
 {        
     public static IServiceCollection AddMultipleDataSelector<TModel, TParameters, TImplementation>(this IServiceCollection services)
         where TModel : class, IModel

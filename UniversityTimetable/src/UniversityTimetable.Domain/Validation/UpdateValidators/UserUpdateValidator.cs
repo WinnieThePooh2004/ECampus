@@ -24,10 +24,6 @@ public class UserUpdateValidator : IUpdateValidator<UserDto>
         var model = _mapper.Map<User>(dataTransferObject);
         errors.AddRange(await _dataAccess.ValidateUpdate(model));
         var userFromDb = await _dataAccess.LoadRequiredDataForUpdate(model);
-        if (userFromDb is null)
-        {
-            return new List<KeyValuePair<string, string>> { KeyValuePair.Create("Id", "This user does not exist") };
-        }
 
         if (model.Email != userFromDb.Email)
         {

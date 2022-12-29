@@ -16,20 +16,12 @@ public class Timetable
     public TeacherDto? Teacher { get; set; }
     public ClassDto?[][] DailyClasses { get; set; }
 
-    public Timetable(IEnumerable<ClassDto> classes)
+    public Timetable(List<ClassDto> classes)
     {
         DailyClasses = CreateEmptyDataTable();
-        foreach (var @class in classes)
-        {
-            Add(@class);
-        }
+        classes.ForEach(Add);
     }
-
-    public Timetable()
-    {
-        DailyClasses = CreateEmptyDataTable();
-    }
-
+    
     public ClassDto? GetClass(int dayOfWeek, int number, WeekDependency weekDependency = WeekDependency.None)
     {
         return weekDependency == WeekDependency.AppearsOnEvenWeeks
@@ -37,7 +29,7 @@ public class Timetable
             : DailyClasses[dayOfWeek][number * 2];
     }
 
-    public void Add(ClassDto @class)
+    private void Add(ClassDto @class)
     {
         if (@class.WeekDependency == WeekDependency.AppearsOnEvenWeeks)
         {

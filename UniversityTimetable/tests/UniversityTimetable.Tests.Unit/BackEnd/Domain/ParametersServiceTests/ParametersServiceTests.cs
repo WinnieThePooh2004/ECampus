@@ -1,12 +1,10 @@
 ﻿using AutoMapper;
-using Microsoft.Extensions.Logging;
 using UniversityTimetable.Domain.Mapping;
 using UniversityTimetable.Domain.Services;
 using UniversityTimetable.Shared.DataContainers;
-using UniversityTimetable.Shared.Interfaces.Data;
 using UniversityTimetable.Shared.Interfaces.Data.Models;
 using UniversityTimetable.Shared.Interfaces.DataAccess;
-using UniversityTimetable.Shared.Interfaces.Services;
+using UniversityTimetable.Shared.Interfaces.Domain;
 using UniversityTimetable.Shared.QueryParameters;
 using UniversityTimetable.Tests.Shared.DataFactories;
 
@@ -41,8 +39,7 @@ public abstract class ParametersServiceTests<TDto, TParams, TModel>
 
         _baseService = Substitute.For<IBaseService<TDto>>();
         _dataAccessFacade = Substitute.For<IParametersDataAccessFacade<TModel, TParams>>();
-        var logger = Substitute.For<ILogger<ParametersService<TDto, TParams, TModel>>>();
-        _service = new ParametersService<TDto, TParams, TModel>(logger, _dataAccessFacade, _mapper, _baseService);
+        _service = new ParametersService<TDto, TParams, TModel>(_dataAccessFacade, _mapper, _baseService);
         _fixture = new Fixture();
         _fixture.Behaviors.Add(new OmitOnRecursionBehavior());
     }
@@ -84,7 +81,7 @@ public abstract class ParametersServiceTests<TDto, TParams, TModel>
     protected virtual async Task GetByParameters_ReturnsFromRepository()
     {
         var parameters = _fixture.Create<TParams>();
-        var data = Enumerable.Range(0, 10).Select(i => CreateModel()).ToList();
+        var data = Enumerable.Range(0, 10).Select(_ => CreateModel()).ToList();
         var expected = new ListWithPaginationData<TModel> { Metadata = _fixture.Create<PaginationData>(), Data = data };
         _dataAccessFacade.GetByParameters(parameters).Returns(expected);
         

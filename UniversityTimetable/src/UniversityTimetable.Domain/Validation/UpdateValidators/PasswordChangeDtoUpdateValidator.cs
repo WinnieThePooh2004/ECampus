@@ -4,12 +4,12 @@ using UniversityTimetable.Shared.Models;
 
 namespace UniversityTimetable.Domain.Validation.UpdateValidators;
 
-public class PasswordChangeDtoValidator : IUpdateValidator<PasswordChangeDto>
+public class PasswordChangeDtoUpdateValidator : IUpdateValidator<PasswordChangeDto>
 {
     private readonly IUpdateValidator<PasswordChangeDto> _baseValidator;
     private readonly IValidationDataAccess<User> _dataAccess;
 
-    public PasswordChangeDtoValidator(IUpdateValidator<PasswordChangeDto> baseValidator,
+    public PasswordChangeDtoUpdateValidator(IUpdateValidator<PasswordChangeDto> baseValidator,
         IValidationDataAccess<User> dataAccess)
     {
         _baseValidator = baseValidator;

@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MockQueryable.EntityFrameworkCore;
-using Moq;
 using NSubstitute;
 
 namespace UniversityTimetable.Tests.Shared.Mocks;

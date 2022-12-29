@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using UniversityTimetable.Shared.Interfaces.Data;
 using UniversityTimetable.Shared.Interfaces.Data.Models;
 
 namespace UniversityTimetable.Shared.Comparing
@@ -7,7 +6,7 @@ namespace UniversityTimetable.Shared.Comparing
     public class DataTransferObjectComparer<T> : IEqualityComparer<T>
         where T : class, IDataTransferObject
     {
-        public bool Equals(T x, T y)
+        public bool Equals(T? x, T? y)
         {
             if(x is null || y is null)
             {

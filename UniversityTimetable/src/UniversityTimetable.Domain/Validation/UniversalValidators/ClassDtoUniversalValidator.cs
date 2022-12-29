@@ -4,6 +4,8 @@ using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Shared.Enums;
 using UniversityTimetable.Shared.Interfaces.Data.Validation;
 using UniversityTimetable.Shared.Models;
+#pragma warning disable CS8602
+#pragma warning disable CS8604
 
 namespace UniversityTimetable.Domain.Validation.UniversalValidators;
 

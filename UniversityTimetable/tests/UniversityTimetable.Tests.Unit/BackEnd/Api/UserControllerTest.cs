@@ -1,9 +1,10 @@
 ﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using UniversityTimetable.Api.Controllers;
 using UniversityTimetable.Domain.Validation.FluentValidators;
 using UniversityTimetable.Shared.DataTransferObjects;
-using UniversityTimetable.Shared.Interfaces.Services;
+using UniversityTimetable.Shared.Interfaces.Domain;
 
 namespace UniversityTimetable.Tests.Unit.BackEnd.Api;
 
@@ -17,6 +18,7 @@ public class UserControllerTest
         _service = Substitute.For<IUserService>();
         _controller = new UsersController(_service);
         _fixture.Behaviors.Add(new OmitOnRecursionBehavior());
+        _controller.ControllerContext.HttpContext = Substitute.For<HttpContext>();
     }
     
     [Fact]
