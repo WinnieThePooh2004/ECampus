@@ -10,7 +10,11 @@ public class AuthorizedAttribute : AuthorizeAttribute
     {
         AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme;
         Roles = string.Join(",", roles);
-        
+    }
+
+    public AuthorizedAttribute()
+    {
+        AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme;
     }
 }
 
