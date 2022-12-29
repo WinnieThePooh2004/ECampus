@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using UniversityTimetable.Shared.Models;
 
-namespace Migrations.ModelConfigurations
+namespace UniversityTimetable.Infrastructure.ModelConfigurations
 {
     public class FacultacyConfiguration : IEntityTypeConfiguration<Faculty>
     {

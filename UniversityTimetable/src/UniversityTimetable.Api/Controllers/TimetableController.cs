@@ -2,7 +2,7 @@
 using UniversityTimetable.Domain.Auth;
 using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Shared.Enums;
-using UniversityTimetable.Shared.Interfaces.Services;
+using UniversityTimetable.Shared.Interfaces.Domain;
 
 namespace UniversityTimetable.Api.Controllers
 {

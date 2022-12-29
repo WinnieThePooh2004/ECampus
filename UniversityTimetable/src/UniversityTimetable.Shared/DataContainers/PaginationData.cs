@@ -1,11 +1,10 @@
-﻿namespace UniversityTimetable.Shared.DataContainers
-{
-    public class PaginationData
-    {
-        public int TotalCount { get; set; }
-        public int PageNumber { get; set; }
-        public int PageSize { get; set; }
+﻿namespace UniversityTimetable.Shared.DataContainers;
 
-        public int MaxPageNumber => (TotalCount + PageSize - 1) / PageSize;
-    }
+public class PaginationData
+{
+    public int TotalCount { get; set; }
+    public int PageNumber { get; set; }
+    public int PageSize { get; set; }
+
+    public int MaxPageNumber => (TotalCount + PageSize - 1) / PageSize;
 }

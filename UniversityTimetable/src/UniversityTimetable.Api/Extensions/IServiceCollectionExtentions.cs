@@ -1,20 +1,22 @@
-﻿using UniversityTimetable.Domain.CreateValidators;
-using UniversityTimetable.Domain.Services;
-using UniversityTimetable.Domain.UpdateValidators;
+﻿using UniversityTimetable.Domain.Services;
+using UniversityTimetable.Domain.Validation.CreateValidators;
+using UniversityTimetable.Domain.Validation.UpdateValidators;
 using UniversityTimetable.Infrastructure.DataCreate;
 using UniversityTimetable.Infrastructure.DataDelete;
 using UniversityTimetable.Infrastructure.DataSelectors.SingleItemSelectors;
 using UniversityTimetable.Infrastructure.DataUpdate;
-using UniversityTimetable.Infrastructure.Repositories;
-using UniversityTimetable.Shared.Interfaces.Data;
-using UniversityTimetable.Shared.Interfaces.Repositories;
-using UniversityTimetable.Shared.Interfaces.Services;
+using UniversityTimetable.Infrastructure.DataAccessFacades;
+using UniversityTimetable.Shared.Interfaces.Data.DataServices;
+using UniversityTimetable.Shared.Interfaces.Data.Models;
+using UniversityTimetable.Shared.Interfaces.Data.Validation;
+using UniversityTimetable.Shared.Interfaces.DataAccess;
+using UniversityTimetable.Shared.Interfaces.Domain;
 using UniversityTimetable.Shared.QueryParameters;
 
 namespace UniversityTimetable.Api.Extensions;
 
 // ReSharper disable once InconsistentNaming
-public static class IServiceCollectionExtensions
+internal static class IServiceCollectionExtensions
 {        
     public static IServiceCollection AddMultipleDataSelector<TModel, TParameters, TImplementation>(this IServiceCollection services)
         where TModel : class, IModel
@@ -26,10 +28,10 @@ public static class IServiceCollectionExtensions
         where TParameters : class, IQueryParameters<TModel>, new()
         where TModel : class, IModel, new()
         where TDto : class, IDataTransferObject, new() =>
-        services.AddScoped<IBaseRepository<TModel>, BaseRepository<TModel>>()
+        services.AddScoped<IBaseDataAccessFacade<TModel>, BaseDataAccessFacade<TModel>>()
             .AddScoped<IParametersService<TDto, TParameters>, ParametersService<TDto, TParameters, TModel>>()
             .AddScoped<IBaseService<TDto>, BaseService<TDto, TModel>>()
-            .AddScoped<IParametersRepository<TModel, TParameters>, ParametersRepository<TModel, TParameters>>();
+            .AddScoped<IParametersDataAccessFacade<TModel, TParameters>, ParametersDataAccessFacade<TModel, TParameters>>();
 
     public static IServiceCollection AddDefaultDataServices<TModel>(this IServiceCollection services)
         where TModel : class, IModel, new()

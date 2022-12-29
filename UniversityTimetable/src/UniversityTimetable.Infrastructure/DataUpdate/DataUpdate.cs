@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using UniversityTimetable.Shared.Interfaces.Data;
+using UniversityTimetable.Shared.Interfaces.Data.DataServices;
+using UniversityTimetable.Shared.Interfaces.Data.Models;
 
 namespace UniversityTimetable.Infrastructure.DataUpdate;
 

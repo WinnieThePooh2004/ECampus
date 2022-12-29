@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components;
 using UniversityTimetable.Shared.Comparing;
 using UniversityTimetable.Shared.Interfaces.Data;
+using UniversityTimetable.Shared.Interfaces.Data.Models;
 
 namespace UniversityTimetable.FrontEnd.Components.DataSelectors;
 

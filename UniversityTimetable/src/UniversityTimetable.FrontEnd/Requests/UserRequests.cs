@@ -44,18 +44,18 @@ public class UserRequests : IUserRequests
         return _baseRequests.GetByIdAsync(int.Parse(id));
     }
 
-    public async Task<Dictionary<string, string>> ValidateCreateAsync(UserDto user)
+    public async Task<List<KeyValuePair<string, string>>> ValidateCreateAsync(UserDto user)
     {
         var response = await _client.CreateClient("UTApi").PutAsJsonAsync("api/Users/Validate/Create", user);
         response.EnsureSuccessStatusCode();
-        return JsonSerializer.Deserialize<Dictionary<string, string>>(await response.Content.ReadAsStringAsync(), _options);
+        return JsonSerializer.Deserialize<List<KeyValuePair<string, string>>>(await response.Content.ReadAsStringAsync(), _options);
     }
 
-    public async Task<Dictionary<string, string>> ValidateUpdateAsync(UserDto user)
+    public async Task<List<KeyValuePair<string, string>>> ValidateUpdateAsync(UserDto user)
     {
         var response = await _client.CreateClient("UTApi").PutAsJsonAsync("api/Users/Validate/Update", user);
         response.EnsureSuccessStatusCode();
-        return JsonSerializer.Deserialize<Dictionary<string, string>>(await response.Content.ReadAsStringAsync(), _options);
+        return JsonSerializer.Deserialize<List<KeyValuePair<string, string>>>(await response.Content.ReadAsStringAsync(), _options);
     }
 
     public async Task SaveAuditory(int auditoryId)

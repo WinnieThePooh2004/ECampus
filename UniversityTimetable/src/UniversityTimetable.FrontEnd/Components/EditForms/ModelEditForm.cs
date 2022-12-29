@@ -12,7 +12,7 @@ namespace UniversityTimetable.FrontEnd.Components.EditForms
 
         protected async Task Submit()
         {
-            if(!await ValidateAsync(Model))
+            if(!await ValidateAsync())
             {
                 return;
             }
@@ -20,7 +20,7 @@ namespace UniversityTimetable.FrontEnd.Components.EditForms
             await OnSubmit.InvokeAsync(Model);
         }
 
-        private async Task<bool> ValidateAsync(TModel model)
+        private async Task<bool> ValidateAsync()
         {
             return !(await Validator.ValidateAsync(Model)).Errors.Any();
         }

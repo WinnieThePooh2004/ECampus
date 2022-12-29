@@ -3,7 +3,7 @@ using UniversityTimetable.Shared.Models;
 
 namespace UniversityTimetable.Tests.Unit.BackEnd.Domain.BaseServiceTests;
 
-public class BaseRepositoryGroupDtoTests : BaseServiceTests<GroupDto, Group>
+public sealed class BaseRepositoryGroupDtoTests : BaseServiceTests<GroupDto, Group>
 {
     [Fact] protected override Task Create_ReturnsFromService_ServiceCalled_WhenNoValidationExceptions() => base.Create_ReturnsFromService_ServiceCalled_WhenNoValidationExceptions();
 
@@ -17,8 +17,8 @@ public class BaseRepositoryGroupDtoTests : BaseServiceTests<GroupDto, Group>
 
     [Fact] protected override Task GetById_ShouldReturnFromRepository_WhenIdIsNotNull() => base.GetById_ShouldReturnFromRepository_WhenIdIsNotNull();
     
-    [Fact] protected override Task Create_ThrowsValidationExceptionWhenValidationErrorOccured() => base.Create_ThrowsValidationExceptionWhenValidationErrorOccured();
+    [Fact] protected override Task Create_ThrowsValidationException_WhenValidationErrorOccured() => base.Create_ThrowsValidationException_WhenValidationErrorOccured();
 
-    [Fact] protected override Task Update_ThrowsValidationExceptionWhenValidationErrorOccured() => base.Update_ThrowsValidationExceptionWhenValidationErrorOccured();
+    [Fact] protected override Task Update_ThrowsValidationException_WhenValidationErrorOccured() => base.Update_ThrowsValidationException_WhenValidationErrorOccured();
 
 }

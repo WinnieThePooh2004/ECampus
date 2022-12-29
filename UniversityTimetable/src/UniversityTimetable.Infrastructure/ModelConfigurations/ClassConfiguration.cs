@@ -28,11 +28,11 @@ namespace UniversityTimetable.Infrastructure.ModelConfigurations
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
 
-            //builder.HasOne(c => c.Subject)
-            //    .WithMany(t => t.Classes)
-            //    .HasForeignKey(c => c.SubjectId)
-            //    .IsRequired()
-            //    .OnDelete(DeleteBehavior.Cascade);
+            builder.HasOne(c => c.Subject)
+                .WithMany(t => t.Classes)
+                .HasForeignKey(c => c.SubjectId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

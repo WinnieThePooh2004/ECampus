@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using UniversityTimetable.Shared.Interfaces.Data;
-using UniversityTimetable.Shared.Interfaces.Repositories;
+using UniversityTimetable.Shared.Interfaces.Data.DataServices;
+using UniversityTimetable.Shared.Interfaces.DataAccess;
 using UniversityTimetable.Shared.Models;
 using UniversityTimetable.Shared.Models.RelationModels;
 
@@ -8,10 +8,10 @@ namespace UniversityTimetable.Infrastructure.DataUpdate;
 
 public class TeacherUpdate : IDataUpdate<Teacher>
 {
-    private readonly IRelationshipsRepository<Teacher, Subject, SubjectTeacher> _relationships;
+    private readonly IRelationshipsDataAccess<Teacher, Subject, SubjectTeacher> _relationships;
     private readonly IDataUpdate<Teacher> _baseUpdate;
 
-    public TeacherUpdate(IDataUpdate<Teacher> baseUpdate, IRelationshipsRepository<Teacher, Subject, SubjectTeacher> relationships)
+    public TeacherUpdate(IDataUpdate<Teacher> baseUpdate, IRelationshipsDataAccess<Teacher, Subject, SubjectTeacher> relationships)
     {
         _baseUpdate = baseUpdate;
         _relationships = relationships;

@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
-using Microsoft.Extensions.Logging;
 using UniversityTimetable.Shared.DataContainers;
-using UniversityTimetable.Shared.Interfaces.Data;
-using UniversityTimetable.Shared.Interfaces.Repositories;
-using UniversityTimetable.Shared.Interfaces.Services;
+using UniversityTimetable.Shared.Interfaces.Data.Models;
+using UniversityTimetable.Shared.Interfaces.DataAccess;
+using UniversityTimetable.Shared.Interfaces.Domain;
 using UniversityTimetable.Shared.QueryParameters;
 
 namespace UniversityTimetable.Domain.Services
@@ -13,16 +12,14 @@ namespace UniversityTimetable.Domain.Services
         where TRepositoryModel : class, IModel, new()
         where TParameters : class, IQueryParameters<TRepositoryModel>
     {
-        private readonly ILogger<ParametersService<TDto, TParameters, TRepositoryModel>> _logger;
-        private readonly IParametersRepository<TRepositoryModel, TParameters> _parametersRepository;
+        private readonly IParametersDataAccessFacade<TRepositoryModel, TParameters> _parametersDataAccessFacade;
         private readonly IMapper _mapper;
         private readonly IBaseService<TDto> _baseService;
 
-        public ParametersService(ILogger<ParametersService<TDto, TParameters, TRepositoryModel>> logger, IParametersRepository<TRepositoryModel, TParameters> parametersRepository,
+        public ParametersService(IParametersDataAccessFacade<TRepositoryModel, TParameters> parametersDataAccessFacade,
             IMapper mapper, IBaseService<TDto> baseService)
         {
-            _logger = logger;
-            _parametersRepository = parametersRepository;
+            _parametersDataAccessFacade = parametersDataAccessFacade;
             _mapper = mapper;
             _baseService = baseService;
         }
@@ -38,7 +35,7 @@ namespace UniversityTimetable.Domain.Services
 
         public async Task<ListWithPaginationData<TDto>> GetByParametersAsync(TParameters parameters)
         {
-            return _mapper.Map<ListWithPaginationData<TDto>>(await _parametersRepository.GetByParameters(parameters));
+            return _mapper.Map<ListWithPaginationData<TDto>>(await _parametersDataAccessFacade.GetByParameters(parameters));
         }
 
         public async Task<TDto> UpdateAsync(TDto entity)

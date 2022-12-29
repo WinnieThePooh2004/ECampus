@@ -1,19 +1,18 @@
 ﻿using UniversityTimetable.Shared.Enums;
-using UniversityTimetable.Shared.Interfaces.Data;
-using UniversityTimetable.Shared.Models;
+using UniversityTimetable.Shared.Interfaces.Data.Models;
 
 namespace UniversityTimetable.Shared.DataTransferObjects;
 
 public class UserDto : IDataTransferObject
 {
     public int Id { get; set; }
-    public string Username { get; set; }
-    public string Password { get; set; }
-    public string PasswordConfirm { get; set; }
-    public string Email { get; set; }
+    public string Username { get; set; } = string.Empty;
+    public string Password { get; set; } = string.Empty;
+    public string PasswordConfirm { get; set; } = string.Empty;
+    public string Email { get; set; } = string.Empty;
     public UserRole Role { get; set; }
 
-    public List<AuditoryDto> SavedAuditories { get; set; } = default!;
-    public List<GroupDto> SavedGroups { get; set; } = default!;
-    public List<TeacherDto> SavedTeachers { get; set; } = default!;
+    public List<AuditoryDto>? SavedAuditories { get; set; }
+    public List<GroupDto>? SavedGroups { get; set; }
+    public List<TeacherDto>? SavedTeachers { get; set; }
 }

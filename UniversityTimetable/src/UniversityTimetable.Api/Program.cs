@@ -1,48 +1,44 @@
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
-using UniversityTimetable.Domain.Services;
-using UniversityTimetable.Infrastructure.Repositories;
-using UniversityTimetable.Infrastructure;
-using UniversityTimetable.Shared.DataTransferObjects;
-using UniversityTimetable.Shared.Interfaces.Repositories;
-using UniversityTimetable.Shared.Interfaces.Services;
-using UniversityTimetable.Shared.Models;
-using UniversityTimetable.Shared.QueryParameters;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using UniversityTimetable.Api.MiddlewareFilters;
-using UniversityTimetable.Domain.Auth;
-using UniversityTimetable.Infrastructure.Auth;
-using UniversityTimetable.Shared.Interfaces.Auth;
-using UniversityTimetable.Shared.Models.RelationModels;
 using Newtonsoft.Json;
+using UniversityTimetable.Api.MiddlewareFilters;
 using UniversityTimetable.Api.Extensions;
-using UniversityTimetable.Domain.CreateUpdateValidators;
-using UniversityTimetable.Domain.CreateValidators;
-using UniversityTimetable.Domain.UpdateValidators;
+using UniversityTimetable.Domain.Auth;
+using UniversityTimetable.Domain.Services;
 using UniversityTimetable.Domain.Validation;
+using UniversityTimetable.Domain.Validation.FluentValidators;
+using UniversityTimetable.Domain.Validation.CreateValidators;
+using UniversityTimetable.Domain.Validation.UniversalValidators;
+using UniversityTimetable.Domain.Validation.UpdateValidators;
 using UniversityTimetable.Infrastructure.DataCreate;
 using UniversityTimetable.Infrastructure.DataSelectors.MultipleItemSelectors;
 using UniversityTimetable.Infrastructure.DataSelectors.SingleItemSelectors;
+using UniversityTimetable.Infrastructure.DataAccessFacades;
+using UniversityTimetable.Infrastructure;
+using UniversityTimetable.Infrastructure.Auth;
 using UniversityTimetable.Infrastructure.DataUpdate;
-using UniversityTimetable.Infrastructure.ValidationRepositories;
-using UniversityTimetable.Shared.Interfaces.Data;
+using UniversityTimetable.Infrastructure.ValidationDataAccess;
+using UniversityTimetable.Shared.Interfaces.Data.DataServices;
+using UniversityTimetable.Shared.Interfaces.Data.Validation;
+using UniversityTimetable.Shared.DataTransferObjects;
+using UniversityTimetable.Shared.Interfaces.DataAccess;
+using UniversityTimetable.Shared.Interfaces.Domain;
+using UniversityTimetable.Shared.Models;
+using UniversityTimetable.Shared.QueryParameters;
+using UniversityTimetable.Shared.Interfaces.Auth;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ApplicationDbContext")
-                         ?? throw new InvalidOperationException("Connection string 'ApplicationDbContext' not found.")));
+                         ?? throw new InvalidOperationException(
+                             "Connection string 'ApplicationDbContext' not found.")));
 
-builder.Services.AddControllers(options =>
-{
-    options.Filters.Add<MiddlewareExceptionFilter>();
-})
-    .AddNewtonsoftJson(options =>
-    {
-        options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-    });
+builder.Services.AddControllers(options => { options.Filters.Add<MiddlewareExceptionFilter>(); })
+    .AddNewtonsoftJson(options => { options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore; });
 
 builder.Services.AddValidatorsFromAssembly(Assembly.Load("UniversityTimetable.Domain"));
 
@@ -53,6 +49,9 @@ builder.Services.AddScoped<IValidator<FacultyDto>, FacultyDtoValidator>();
 builder.Services.AddScoped<IValidator<GroupDto>, GroupDtoValidator>();
 builder.Services.AddScoped<IValidator<SubjectDto>, SubjectDtoValidator>();
 builder.Services.AddScoped<IValidator<TeacherDto>, TeacherDtoValidator>();
+builder.Services.AddScoped<IValidator<PasswordChangeDto>, PasswordChangeDtoValidator>();
+
+builder.Services.AddScoped(typeof(IValidationFacade<>), typeof(ValidationFacade<>));
 
 builder.Services.AddDefaultDomainServices<AuditoryDto>();
 builder.Services.AddDefaultDomainServices<DepartmentDto>();
@@ -62,15 +61,21 @@ builder.Services.AddDefaultDomainServices<SubjectDto>();
 builder.Services.AddDefaultDomainServices<TeacherDto>();
 builder.Services.AddDefaultDomainServices<UserDto>();
 
-builder.Services.AddScoped<IValidationRepository<User>, UserValidationRepository>();
+builder.Services.AddScoped<IDataValidator<User>, UserDataValidator>();
 builder.Services.Decorate<IUpdateValidator<UserDto>, UserUpdateValidator>();
 builder.Services.Decorate<ICreateValidator<UserDto>, UserCreateValidator>();
 
-builder.Services.AddScoped<IValidationRepository<Class>, ClassValidationRepository>();
-builder.Services.AddScoped<IUpdateValidator<ClassDto>, ClassDtoCreateUpdateValidator>();
-builder.Services.AddScoped<ICreateValidator<ClassDto>, ClassDtoCreateUpdateValidator>();
+builder.Services.AddScoped<IUpdateValidator<PasswordChangeDto>, UpdateValidator<PasswordChangeDto>>();
+builder.Services.AddScoped<IValidationDataAccess<User>, UserDataValidator>();
+builder.Services.Decorate<IUpdateValidator<PasswordChangeDto>, PasswordChangeDtoUpdateValidator>();
+
+builder.Services.AddScoped<IValidationDataAccess<Class>, ClassValidationDataAccess>();
+builder.Services.AddScoped<IUpdateValidator<ClassDto>, ClassDtoUniversalValidator>();
+builder.Services.AddScoped<ICreateValidator<ClassDto>, ClassDtoUniversalValidator>();
 
 builder.Services.AddAutoMapper(Assembly.Load("UniversityTimetable.Domain"));
+
+builder.Services.AddScoped(typeof(IRelationshipsDataAccess<,,>), typeof(RelationshipsDataAccess<,,>));
 
 builder.Services.AddMultipleDataSelector<Auditory, AuditoryParameters, AuditorySelector>();
 builder.Services.AddMultipleDataSelector<Department, DepartmentParameters, DepartmentSelector>();
@@ -108,26 +113,20 @@ builder.Services.AddDefaultFacadeServices<Group, GroupDto, GroupParameters>();
 builder.Services.AddDefaultFacadeServices<Subject, SubjectDto, SubjectParameters>();
 builder.Services.AddDefaultFacadeServices<Teacher, TeacherDto, TeacherParameters>();
 
-builder.Services.AddScoped<IRelationshipsRepository<Subject, Teacher, SubjectTeacher>, RelationshipsRepository<Subject, Teacher, SubjectTeacher>>();
-
-builder.Services.AddScoped<IRelationshipsRepository<Teacher, Subject, SubjectTeacher>, RelationshipsRepository<Teacher, Subject, SubjectTeacher>>();
-
 builder.Services.AddScoped<IBaseService<ClassDto>, BaseService<ClassDto, Class>>();
-builder.Services.AddScoped<IBaseRepository<Class>, BaseRepository<Class>>();
+builder.Services.AddScoped<IBaseDataAccessFacade<Class>, BaseDataAccessFacade<Class>>();
 builder.Services.AddScoped<IClassService, ClassService>();
-builder.Services.AddScoped<IClassRepository, ClassRepository>();
+builder.Services.AddScoped<ITimetableDataAccessFacade, TimetableDataAccessFacade>();
 
-builder.Services.AddScoped<IRelationshipsRepository<User, Auditory, UserAuditory>, RelationshipsRepository<User, Auditory, UserAuditory>>();
-builder.Services.AddScoped<IRelationshipsRepository<User, Group, UserGroup>, RelationshipsRepository<User, Group, UserGroup>>();
-builder.Services.AddScoped<IRelationshipsRepository<User, Teacher, UserTeacher>, RelationshipsRepository<User, Teacher, UserTeacher>>();
 builder.Services.AddScoped<IBaseService<UserDto>, BaseService<UserDto, User>>();
-builder.Services.AddScoped<IBaseRepository<User>, BaseRepository<User>>();
+builder.Services.AddScoped<IBaseDataAccessFacade<User>, BaseDataAccessFacade<User>>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IPasswordChange, PasswordChange>();
 
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 
 builder.Services.AddScoped<IAuthorizationService, AuthorizationService>();
-builder.Services.AddScoped<IAuthorizationRepository, AuthorizationRepository>();
+builder.Services.AddScoped<IAuthorizationRepository, AuthorizationDataAccess>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -168,7 +167,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCookiePolicy(new CookiePolicyOptions{ MinimumSameSitePolicy = SameSiteMode.Strict });
+app.UseCookiePolicy(new CookiePolicyOptions { MinimumSameSitePolicy = SameSiteMode.Strict });
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

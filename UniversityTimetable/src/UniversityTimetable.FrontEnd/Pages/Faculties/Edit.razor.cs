@@ -1,10 +1,6 @@
-﻿using Microsoft.AspNetCore.Components;
-using UniversityTimetable.FrontEnd.Requests.Interfaces;
+﻿namespace UniversityTimetable.FrontEnd.Pages.Faculties;
 
-namespace UniversityTimetable.FrontEnd.Pages.Faculties
+public partial class Edit
 {
-    public partial class Edit
-    {
-        protected override string PageAfterSave => "/faculties";
-    }
+    protected override string PageAfterSave => "/faculties";
 }

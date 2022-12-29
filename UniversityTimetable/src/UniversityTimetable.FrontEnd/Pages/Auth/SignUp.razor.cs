@@ -1,6 +1,4 @@
-﻿using FluentValidation;
-using Microsoft.AspNetCore.Components;
-using UniversityTimetable.FrontEnd.Validation.Interfaces;
+﻿using Microsoft.AspNetCore.Components;
 
 namespace UniversityTimetable.FrontEnd.Pages.Auth;
 

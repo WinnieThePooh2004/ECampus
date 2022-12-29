@@ -3,8 +3,9 @@ using Microsoft.Extensions.Logging;
 using UniversityTimetable.Domain.Mapping;
 using UniversityTimetable.Domain.Services;
 using UniversityTimetable.Shared.Exceptions.DomainExceptions;
-using UniversityTimetable.Shared.Interfaces.Data;
-using UniversityTimetable.Shared.Interfaces.Repositories;
+using UniversityTimetable.Shared.Interfaces.Data.Models;
+using UniversityTimetable.Shared.Interfaces.Data.Validation;
+using UniversityTimetable.Shared.Interfaces.DataAccess;
 
 namespace UniversityTimetable.Tests.Unit.BackEnd.Domain.BaseServiceTests;
 
@@ -13,15 +14,13 @@ public abstract class BaseServiceTests<TDto, TModel>
     where TModel : class, IModel, new()
 {
     private readonly BaseService<TDto, TModel> _service;
-    private readonly IBaseRepository<TModel> _repository;
+    private readonly IBaseDataAccessFacade<TModel> _dataAccessFacade;
     private readonly Fixture _fixture;
     private readonly IMapper _mapper;
-    private readonly ICreateValidator<TDto> _createValidator = Substitute.For<ICreateValidator<TDto>>();
-    private readonly IUpdateValidator<TDto> _updateValidator = Substitute.For<IUpdateValidator<TDto>>();
-
+    private readonly IValidationFacade<TDto> _validation;
     protected BaseServiceTests()
     {
-        _repository = Substitute.For<IBaseRepository<TModel>>();
+        _dataAccessFacade = Substitute.For<IBaseDataAccessFacade<TModel>>();
         _mapper = new MapperConfiguration(cfg => cfg.AddProfiles(new List<Profile>
         {
             new ClassProfile(),
@@ -33,8 +32,10 @@ public abstract class BaseServiceTests<TDto, TModel>
             new TeacherProfile(),
             new UserProfile()
         })).CreateMapper();
-        _service = new BaseService<TDto, TModel>(_repository, Substitute.For<ILogger<BaseService<TDto, TModel>>>(),
-            _mapper, _createValidator, _updateValidator);
+        _validation = Substitute.For<IValidationFacade<TDto>>();
+        _service = new BaseService<TDto, TModel>(_dataAccessFacade,
+            Substitute.For<ILogger<BaseService<TDto, TModel>>>(),
+            _mapper, _validation);
         _fixture = new Fixture();
         _fixture.Behaviors.Add(new OmitOnRecursionBehavior());
     }
@@ -42,71 +43,72 @@ public abstract class BaseServiceTests<TDto, TModel>
     protected virtual async Task Create_ReturnsFromService_ServiceCalled_WhenNoValidationExceptions()
     {
         var item = _fixture.Create<TDto>();
-        _createValidator.ValidateAsync(item).Returns(new Dictionary<string, string>());
-        _repository.CreateAsync(Arg.Any<TModel>()).Returns(_mapper.Map<TModel>(item));
+        _validation.ValidateCreate(item).Returns(new List<KeyValuePair<string, string>>());
+        _dataAccessFacade.CreateAsync(Arg.Any<TModel>()).Returns(_mapper.Map<TModel>(item));
 
         var result = await _service.CreateAsync(item);
 
         result.Should().BeEquivalentTo(_mapper.Map<TDto>(_mapper.Map<TModel>(item)),
             opt => opt.ComparingByMembers<TDto>());
-        await _repository.Received().CreateAsync(Arg.Any<TModel>());
+        await _dataAccessFacade.Received().CreateAsync(Arg.Any<TModel>());
     }
 
     protected virtual async Task Update_ReturnsFromService_WhenNoValidationExceptions()
     {
         var item = _fixture.Create<TDto>();
-        _updateValidator.ValidateAsync(item).Returns(new Dictionary<string, string>());
-        _repository.UpdateAsync(Arg.Any<TModel>()).Returns(_mapper.Map<TModel>(item));
+        _validation.ValidateUpdate(item).Returns(new List<KeyValuePair<string, string>>());
+        _dataAccessFacade.UpdateAsync(Arg.Any<TModel>()).Returns(_mapper.Map<TModel>(item));
 
         var result = await _service.UpdateAsync(item);
 
         result.Should().BeEquivalentTo(_mapper.Map<TDto>(_mapper.Map<TModel>(item)),
             opt => opt.ComparingByMembers<TDto>());
-        await _repository.Received().UpdateAsync(Arg.Any<TModel>());
+        await _dataAccessFacade.Received().UpdateAsync(Arg.Any<TModel>());
     }
 
-    protected virtual async Task Update_ThrowsValidationExceptionWhenValidationErrorOccured()
+    protected virtual async Task Update_ThrowsValidationException_WhenValidationErrorOccured()
     {
-        _updateValidator.ValidateAsync(Arg.Any<TDto>()).Returns(new Dictionary<string, string> { [""] = "" });
+        _validation.ValidateUpdate(Arg.Any<TDto>()).Returns(new List<KeyValuePair<string, string>>
+            { KeyValuePair.Create<string, string>("", "") });
+        await new Func<Task>(() => _service.UpdateAsync(new TDto())).Should().ThrowAsync<ValidationException>();
+    }
+
+    protected virtual async Task Create_ThrowsValidationException_WhenValidationErrorOccured()
+    {
+        _validation.ValidateUpdate(Arg.Any<TDto>()).Returns(new List<KeyValuePair<string, string>>
+            { KeyValuePair.Create<string, string>("", "") });
         await new Func<Task>(() => _service.UpdateAsync(new TDto())).Should().ThrowAsync<ValidationException>();
     }
     
-    protected virtual async Task Create_ThrowsValidationExceptionWhenValidationErrorOccured()
-    {
-        _updateValidator.ValidateAsync(Arg.Any<TDto>()).Returns(new Dictionary<string, string> { [""] = "" });
-        await new Func<Task>(() => _service.UpdateAsync(new TDto())).Should().ThrowAsync<ValidationException>();
-    }
-
-
     protected virtual async Task Delete_ShouldThrowException_WhenIdIsNull()
     {
         await new Func<Task>(() => _service.DeleteAsync(null)).Should().ThrowAsync<NullIdException>();
 
-        await _repository.DidNotReceive().DeleteAsync(Arg.Any<int>());
+        await _dataAccessFacade.DidNotReceive().DeleteAsync(Arg.Any<int>());
     }
 
     protected virtual async Task Delete_ShouldCallService_WhenIdIsNotNull()
     {
         await _service.DeleteAsync(10);
 
-        await _repository.Received(1).DeleteAsync(10);
+        await _dataAccessFacade.Received(1).DeleteAsync(10);
     }
 
     protected virtual async Task GetById_ShouldThrowException_WhenIdIsNull()
     {
         await new Func<Task>(() => _service.GetByIdAsync(null)).Should().ThrowAsync<NullIdException>();
 
-        await _repository.DidNotReceive().GetByIdAsync(Arg.Any<int>());
+        await _dataAccessFacade.DidNotReceive().GetByIdAsync(Arg.Any<int>());
     }
 
     protected virtual async Task GetById_ShouldReturnFromRepository_WhenIdIsNotNull()
     {
         var item = _fixture.Create<TDto>();
-        _repository.GetByIdAsync(10).Returns(_mapper.Map<TModel>(item));
+        _dataAccessFacade.GetByIdAsync(10).Returns(_mapper.Map<TModel>(item));
 
         var result = await _service.GetByIdAsync(10);
         result.Should().BeEquivalentTo(_mapper.Map<TDto>(_mapper.Map<TModel>(item)),
             opt => opt.ComparingByMembers<TDto>());
-        await _repository.Received(1).GetByIdAsync(10);
+        await _dataAccessFacade.Received(1).GetByIdAsync(10);
     }
 }

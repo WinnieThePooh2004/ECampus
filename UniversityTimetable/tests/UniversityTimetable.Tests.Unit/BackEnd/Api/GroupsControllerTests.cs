@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using UniversityTimetable.Api.Controllers;
-using UniversityTimetable.Domain.Validation;
+using UniversityTimetable.Domain.Validation.FluentValidators;
 using UniversityTimetable.Shared.DataContainers;
 using UniversityTimetable.Shared.DataTransferObjects;
-using UniversityTimetable.Shared.Interfaces.Services;
+using UniversityTimetable.Shared.Interfaces.Domain;
 using UniversityTimetable.Shared.QueryParameters;
 
 namespace UniversityTimetable.Tests.Unit.BackEnd.Api
@@ -73,7 +73,7 @@ namespace UniversityTimetable.Tests.Unit.BackEnd.Api
         public async Task GetByParameters_ReturnsFromService()
         {
             var data = _fixture.Build<ListWithPaginationData<GroupDto>>()
-                .With(l => l.Data, Enumerable.Range(0, 5).Select(i => _fixture.Create<GroupDto>()).ToList())
+                .With(l => l.Data, Enumerable.Range(0, 5).Select(_ => _fixture.Create<GroupDto>()).ToList())
                 .Create();
 
             _service.GetByParametersAsync(Arg.Any<GroupParameters>()).Returns(data);

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using UniversityTimetable.Domain.Auth;
 using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Shared.Enums;
-using UniversityTimetable.Shared.Interfaces.Services;
+using UniversityTimetable.Shared.Interfaces.Domain;
 
 namespace UniversityTimetable.Api.Controllers;
 
@@ -24,14 +24,14 @@ public class UsersController : ControllerBase
     }
 
     [HttpPost]
-    [Microsoft.AspNetCore.Authorization.AllowAnonymous]
+    [AllowAnonymous]
     public async Task<IActionResult> Post(UserDto user)
     {
         return Ok(await _service.CreateAsync(user));
     }
 
     [HttpPut]
-    [Domain.Auth.Authorized(UserRole.Admin)]
+    [Authorized(UserRole.Admin)]
     public async Task<IActionResult> Put(UserDto user)
     {
         return Ok(await _service.UpdateAsync(user));
@@ -51,6 +51,12 @@ public class UsersController : ControllerBase
         return Ok(await _service.ValidateCreateAsync(user, HttpContext));
     }
 
+    [HttpPut("/changePassword")]
+    public async Task<IActionResult> ChangePassword(PasswordChangeDto passwordChange)
+    {
+        return Ok(await _service.ChangePassword(passwordChange));
+    }
+
     [HttpPut("Validate/Update")]
     [Authorized]
     public async Task<IActionResult> ValidateUpdate(UserDto user)
@@ -62,7 +68,7 @@ public class UsersController : ControllerBase
     [Authorized]
     public async Task<IActionResult> SaveAuditory(int auditoryId)
     {
-        await _service.SaveAuditory(HttpContext?.User, auditoryId);
+        await _service.SaveAuditory(HttpContext.User, auditoryId);
         return NoContent();
     }
         
@@ -70,7 +76,7 @@ public class UsersController : ControllerBase
     [Authorized]
     public async Task<IActionResult> RemoveAuditory(int auditoryId)
     {
-        await _service.RemoveSavedAuditory(HttpContext?.User, auditoryId);
+        await _service.RemoveSavedAuditory(HttpContext.User, auditoryId);
         return NoContent();
     }
 
@@ -78,7 +84,7 @@ public class UsersController : ControllerBase
     [Authorized]
     public async Task<IActionResult> SaveGroup(int groupId)
     {
-        await _service.SaveGroup(HttpContext?.User, groupId);
+        await _service.SaveGroup(HttpContext.User, groupId);
         return NoContent();
     }
     
@@ -86,7 +92,7 @@ public class UsersController : ControllerBase
     [Authorized]
     public async Task<IActionResult> RemoveGroup(int groupId)
     {
-        await _service.RemoveSavedGroup(HttpContext?.User, groupId);
+        await _service.RemoveSavedGroup(HttpContext.User, groupId);
         return NoContent();
     }
 
@@ -94,7 +100,7 @@ public class UsersController : ControllerBase
     [Authorized]
     public async Task<IActionResult> SaveTeacher(int teacherId)
     {
-        await _service.SaveTeacher(HttpContext?.User, teacherId);
+        await _service.SaveTeacher(HttpContext.User, teacherId);
         return NoContent();
     }
         
@@ -102,7 +108,7 @@ public class UsersController : ControllerBase
     [Authorized]
     public async Task<IActionResult> RemoveTeacher(int teacherId)
     {
-        await _service.RemoveSavedTeacher(HttpContext?.User, teacherId);
+        await _service.RemoveSavedTeacher(HttpContext.User, teacherId);
         return NoContent();
     }
 }

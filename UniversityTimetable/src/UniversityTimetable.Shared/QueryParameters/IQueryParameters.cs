@@ -1,16 +1,16 @@
-﻿using UniversityTimetable.Shared.Interfaces.Data;
+﻿using UniversityTimetable.Shared.Interfaces.Data.Models;
 
-namespace UniversityTimetable.Shared.QueryParameters
+namespace UniversityTimetable.Shared.QueryParameters;
+
+public interface IQueryParameters
 {
-    public interface IQueryParameters
-    {
-        int PageNumber { get; set; }
-        int PageSize { get; set; }
-        string SearchTerm { get; set; }
-    }
+    int PageNumber { get; set; }
+    int PageSize { get; set; }
+    string SearchTerm { get; set; }
+}
 
-    public interface IQueryParameters<T> : IQueryParameters
-        where T : class, IModel
-    {
-    }
+// ReSharper disable once UnusedTypeParameter
+public interface IQueryParameters<T> : IQueryParameters
+    where T : class, IModel
+{
 }
