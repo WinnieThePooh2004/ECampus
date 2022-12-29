@@ -17,8 +17,8 @@ public sealed class BaseRepositoryClassDtoTests : BaseServiceTests<ClassDto, Cla
 
     [Fact] protected override Task GetById_ShouldReturnFromRepository_WhenIdIsNotNull() => base.GetById_ShouldReturnFromRepository_WhenIdIsNotNull();
     
-    [Fact] protected override Task Create_ThrowsValidationExceptionWhenValidationErrorOccured() => base.Create_ThrowsValidationExceptionWhenValidationErrorOccured();
+    [Fact] protected override Task Create_ThrowsValidationException_WhenValidationErrorOccured() => base.Create_ThrowsValidationException_WhenValidationErrorOccured();
 
-    [Fact] protected override Task Update_ThrowsValidationExceptionWhenValidationErrorOccured() => base.Update_ThrowsValidationExceptionWhenValidationErrorOccured();
+    [Fact] protected override Task Update_ThrowsValidationException_WhenValidationErrorOccured() => base.Update_ThrowsValidationException_WhenValidationErrorOccured();
 
 }

@@ -1,5 +1,6 @@
 ﻿using UniversityTimetable.Infrastructure.DataSelectors.SingleItemSelectors;
 using UniversityTimetable.Shared.Interfaces.Data;
+using UniversityTimetable.Shared.Interfaces.Data.Models;
 using UniversityTimetable.Tests.Shared.DataFactories;
 using UniversityTimetable.Tests.Shared.Mocks;
 using UniversityTimetable.Tests.Shared.Extensions;

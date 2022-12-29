@@ -1,6 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 using UniversityTimetable.Shared.Enums;
 using UniversityTimetable.Shared.Interfaces.Data;
+using UniversityTimetable.Shared.Interfaces.Data.Models;
 
 namespace UniversityTimetable.Shared.DataTransferObjects
 {

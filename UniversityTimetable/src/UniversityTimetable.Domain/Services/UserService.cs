@@ -1,15 +1,11 @@
-﻿using System.Net;
-using System.Security.Claims;
-using AutoMapper;
+﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
 using UniversityTimetable.Shared.DataTransferObjects;
-using UniversityTimetable.Shared.Enums;
 using UniversityTimetable.Shared.Exceptions.DomainExceptions;
 using UniversityTimetable.Shared.Extensions;
 using UniversityTimetable.Shared.Interfaces.Auth;
-using UniversityTimetable.Shared.Interfaces.Data;
-using UniversityTimetable.Shared.Interfaces.Repositories;
+using UniversityTimetable.Shared.Interfaces.Data.Validation;
+using UniversityTimetable.Shared.Interfaces.DataAccess;
 using UniversityTimetable.Shared.Interfaces.Services;
 using UniversityTimetable.Shared.Models;
 using UniversityTimetable.Shared.Models.RelationModels;
@@ -19,27 +15,27 @@ namespace UniversityTimetable.Domain.Services;
 public class UserService : IUserService
 {
     private readonly IBaseService<UserDto> _baseService;
-    private readonly IRelationshipsRepository<User, Auditory, UserAuditory> _userAuditoryRelations;
-    private readonly IRelationshipsRepository<User, Group, UserGroup> _userGroupRelations;
-    private readonly IRelationshipsRepository<User, Teacher, UserTeacher> _userTeacherRelations;
+    private readonly IRelationshipsDataAccess<User, Auditory, UserAuditory> _userAuditoryRelations;
+    private readonly IRelationshipsDataAccess<User, Group, UserGroup> _userGroupRelations;
+    private readonly IRelationshipsDataAccess<User, Teacher, UserTeacher> _userTeacherRelations;
     private readonly IAuthenticationService _authenticationService;
-    private readonly IUpdateValidator<UserDto> _updateValidator;
-    private readonly ICreateValidator<UserDto> _createValidator;
+    private readonly IValidationFacade<UserDto> _validationFacade;
+    private readonly IUpdateValidator<PasswordChangeDto> _passwordChangeValidator;
 
     public UserService(IBaseService<UserDto> baseService,
-        IRelationshipsRepository<User, Auditory, UserAuditory> userAuditoryRelations,
-        IRelationshipsRepository<User, Group, UserGroup> userGroupRelations,
-        IRelationshipsRepository<User, Teacher, UserTeacher> userTeacherRelations,
-        IAuthenticationService authenticationService, ICreateValidator<UserDto> createValidator,
-        IUpdateValidator<UserDto> updateValidator)
+        IRelationshipsDataAccess<User, Auditory, UserAuditory> userAuditoryRelations,
+        IRelationshipsDataAccess<User, Group, UserGroup> userGroupRelations,
+        IRelationshipsDataAccess<User, Teacher, UserTeacher> userTeacherRelations,
+        IAuthenticationService authenticationService, IUpdateValidator<PasswordChangeDto> passwordChangeValidator,
+        IValidationFacade<UserDto> validationFacade)
     {
         _baseService = baseService;
         _userAuditoryRelations = userAuditoryRelations;
         _userGroupRelations = userGroupRelations;
         _userTeacherRelations = userTeacherRelations;
         _authenticationService = authenticationService;
-        _createValidator = createValidator;
-        _updateValidator = updateValidator;
+        _passwordChangeValidator = passwordChangeValidator;
+        _validationFacade = validationFacade;
     }
 
     public Task<UserDto> CreateAsync(UserDto entity)
@@ -54,18 +50,30 @@ public class UserService : IUserService
     public Task<UserDto> UpdateAsync(UserDto entity)
         => _baseService.UpdateAsync(entity);
 
-    public async Task<Dictionary<string, string>> ValidateCreateAsync(UserDto user, HttpContext context)
+    public async Task<List<KeyValuePair<string, string>>> ValidateCreateAsync(UserDto user, HttpContext context)
     {
-        if (user.Role == UserRole.Admin && !context.User.IsInRole(nameof(UserRole.Admin)))
-        {
-            return new Dictionary<string, string>{ [nameof(user.Role)] = "Cannot register new admin unless register account is not admin" };
-        }
-        return await _createValidator.ValidateAsync(user);
+        return await _validationFacade.ValidateCreate(user);
     }
 
-    public async Task<Dictionary<string, string>> ValidateUpdateAsync(UserDto user)
+    public async Task<List<KeyValuePair<string, string>>> ValidateUpdateAsync(UserDto user)
     {
-        return await _updateValidator.ValidateAsync(user);
+        return await _validationFacade.ValidateCreate(user);
+    }
+
+    public async Task<UserDto> ChangePassword(PasswordChangeDto passwordChange)
+    {
+        var errors = await _passwordChangeValidator.ValidateAsync(passwordChange);
+        if (errors.Any())
+        {
+            throw new ValidationException(typeof(UserDto), errors);
+        }
+
+        return new();
+    }
+
+    public async Task<List<KeyValuePair<string, string>>> ValidatePasswordChange(PasswordChangeDto passwordChange)
+    {
+        return await _passwordChangeValidator.ValidateAsync(passwordChange);
     }
 
     public Task SaveAuditory(ClaimsPrincipal user, int auditoryId)

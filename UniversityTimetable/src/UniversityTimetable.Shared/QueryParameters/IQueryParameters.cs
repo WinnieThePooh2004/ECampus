@@ -1,4 +1,5 @@
 ﻿using UniversityTimetable.Shared.Interfaces.Data;
+using UniversityTimetable.Shared.Interfaces.Data.Models;
 
 namespace UniversityTimetable.Shared.QueryParameters
 {

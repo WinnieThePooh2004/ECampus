@@ -1,7 +1,7 @@
 ﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using UniversityTimetable.Api.Controllers;
-using UniversityTimetable.Domain.Validation;
+using UniversityTimetable.Domain.Validation.FluentValidators;
 using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Shared.Interfaces.Services;
 

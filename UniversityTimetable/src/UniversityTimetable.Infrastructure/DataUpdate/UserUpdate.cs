@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using UniversityTimetable.Shared.Interfaces.Data;
-using UniversityTimetable.Shared.Interfaces.Repositories;
+using UniversityTimetable.Shared.Interfaces.Data.DataServices;
+using UniversityTimetable.Shared.Interfaces.DataAccess;
 using UniversityTimetable.Shared.Models;
 using UniversityTimetable.Shared.Models.RelationModels;
 
@@ -8,14 +9,14 @@ namespace UniversityTimetable.Infrastructure.DataUpdate;
 
 public class UserUpdate : IDataUpdate<User>
 {
-    private readonly IRelationshipsRepository<User, Auditory, UserAuditory> _userAuditoryRelations;
-    private readonly IRelationshipsRepository<User, Group, UserGroup> _userGroupRelations;
-    private readonly IRelationshipsRepository<User, Teacher, UserTeacher> _userTeacherRelations;
+    private readonly IRelationshipsDataAccess<User, Auditory, UserAuditory> _userAuditoryRelations;
+    private readonly IRelationshipsDataAccess<User, Group, UserGroup> _userGroupRelations;
+    private readonly IRelationshipsDataAccess<User, Teacher, UserTeacher> _userTeacherRelations;
     private readonly IDataUpdate<User> _baseUpdate;
 
-    public UserUpdate(IDataUpdate<User> baseUpdate, IRelationshipsRepository<User, Teacher, UserTeacher>
-        userTeacherRelations, IRelationshipsRepository<User, Group, UserGroup> userGroupRelations,
-        IRelationshipsRepository<User, Auditory, UserAuditory> userAuditoryRelations)
+    public UserUpdate(IDataUpdate<User> baseUpdate, IRelationshipsDataAccess<User, Teacher, UserTeacher>
+        userTeacherRelations, IRelationshipsDataAccess<User, Group, UserGroup> userGroupRelations,
+        IRelationshipsDataAccess<User, Auditory, UserAuditory> userAuditoryRelations)
     {
         _baseUpdate = baseUpdate;
         _userTeacherRelations = userTeacherRelations;

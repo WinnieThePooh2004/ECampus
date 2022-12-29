@@ -1,6 +1,7 @@
 ﻿using UniversityTimetable.Infrastructure;
 using UniversityTimetable.Infrastructure.DataCreate;
 using UniversityTimetable.Shared.Interfaces.Data;
+using UniversityTimetable.Shared.Interfaces.Data.Models;
 
 namespace UniversityTimetable.Tests.Unit.BackEnd.Infrastructure.DataCreateTests;
 

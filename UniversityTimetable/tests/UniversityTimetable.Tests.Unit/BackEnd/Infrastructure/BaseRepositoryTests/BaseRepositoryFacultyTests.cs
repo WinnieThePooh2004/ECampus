@@ -6,9 +6,7 @@ namespace UniversityTimetable.Tests.Unit.BackEnd.Infrastructure.BaseRepositoryTe
 public sealed class BaseRepositoryFacultyTests : BaseRepositoryTests<Faculty>, IClassFixture<FacultyFactory>
 {
     [Fact] protected override Task Create_AddedToDb_CreateCalled() => base.Create_AddedToDb_CreateCalled();
-
-    [Fact] protected override Task Create_ShouldThrowException_WhenModelIdNot0_CreateWasNotCalled() => base.Create_ShouldThrowException_WhenModelIdNot0_CreateWasNotCalled();
-
+    
     [Fact] protected override Task Update_UpdatedInDb_IfExistsInDb() => base.Update_UpdatedInDb_IfExistsInDb();
 
     [Fact] protected override Task Update_ShouldThrowException_IfSaveChangeThrowsException() => base.Update_ShouldThrowException_IfSaveChangeThrowsException();

@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using UniversityTimetable.Shared.Interfaces.Data;
+using UniversityTimetable.Shared.Interfaces.Data.Models;
 
 namespace UniversityTimetable.Shared.Comparing
 {

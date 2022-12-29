@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.Logging;
 using UniversityTimetable.Infrastructure;
-using UniversityTimetable.Infrastructure.Repositories;
+using UniversityTimetable.Infrastructure.DataAccessFacades;
 using UniversityTimetable.Shared.Exceptions.InfrastructureExceptions;
 using UniversityTimetable.Shared.Interfaces.Data;
-using UniversityTimetable.Shared.Interfaces.ModelsRelationships;
+using UniversityTimetable.Shared.Interfaces.Data.Models;
 using UniversityTimetable.Tests.Shared.Mocks;
 
 namespace UniversityTimetable.Tests.Unit.BackEnd.Infrastructure.RelationshipsRepositoryTests;
@@ -14,19 +14,19 @@ public abstract class RelationshipsRepositoryTests<TLeftTable, TRightTable, TRel
     where TRelations : class, IRelationModel<TLeftTable, TRightTable>, new()
 
 {
-    private readonly RelationshipsRepository<TLeftTable, TRightTable, TRelations> _repository;
+    private readonly RelationshipsDataAccess<TLeftTable, TRightTable, TRelations> _dataAccess;
     private readonly ApplicationDbContext _context;
 
     protected RelationshipsRepositoryTests()
     {
         _context = Substitute.For<ApplicationDbContext>();
-        _repository = new RelationshipsRepository<TLeftTable, TRightTable, TRelations>(_context,
-            Substitute.For<ILogger<RelationshipsRepository<TLeftTable, TRightTable, TRelations>>>());
+        _dataAccess = new RelationshipsDataAccess<TLeftTable, TRightTable, TRelations>(_context,
+            Substitute.For<ILogger<RelationshipsDataAccess<TLeftTable, TRightTable, TRelations>>>());
     }
 
     protected virtual async Task AddRelation_ShouldAddToDb_IfDbNotThrowExceptions()
     {
-        await _repository.CreateRelation(1, 2);
+        await _dataAccess.CreateRelation(1, 2);
 
         _context.Received(1).Add(Arg.Any<TRelations>());
     }
@@ -35,14 +35,14 @@ public abstract class RelationshipsRepositoryTests<TLeftTable, TRightTable, TRel
     {
         _context.SaveChangesAsync().Returns(async _ => throw new Exception("Some message"));
 
-        await new Func<Task>(() => _repository.CreateRelation(0, 0)).Should()
+        await new Func<Task>(() => _dataAccess.CreateRelation(0, 0)).Should()
             .ThrowAsync<InfrastructureExceptions>()
             .WithMessage("Some message\nError code: 404");
     }
 
     protected virtual async Task DeleteRelation_RemovedFromToDb_IfDbNotThrowExceptions()
     {
-        await _repository.DeleteRelation(1, 2);
+        await _dataAccess.DeleteRelation(1, 2);
 
         _context.Received(1).Remove(Arg.Any<TRelations>());
     }
@@ -51,7 +51,7 @@ public abstract class RelationshipsRepositoryTests<TLeftTable, TRightTable, TRel
     {
         _context.SaveChangesAsync().Returns(async _ => throw new Exception("Some message"));
 
-        await new Func<Task>(() => _repository.DeleteRelation(0, 0)).Should()
+        await new Func<Task>(() => _dataAccess.DeleteRelation(0, 0)).Should()
             .ThrowAsync<InfrastructureExceptions>()
             .WithMessage("Some message\nError code: 404");
     }
@@ -65,7 +65,7 @@ public abstract class RelationshipsRepositoryTests<TLeftTable, TRightTable, TRel
             new() { Id = 2 }
         });
 
-        _repository.CreateRelationModels(model);
+        _dataAccess.CreateRelationModels(model);
 
         model.RelationModels.Should().BeEquivalentTo(new List<TRelations>
         {
@@ -99,7 +99,7 @@ public abstract class RelationshipsRepositoryTests<TLeftTable, TRightTable, TRel
             }
         };
 
-        await _repository.UpdateRelations(updatedEntity);
+        await _dataAccess.UpdateRelations(updatedEntity);
         
         deleted.Should().BeEquivalentTo(new List<TRelations>
         {

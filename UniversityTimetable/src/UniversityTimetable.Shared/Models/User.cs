@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 using UniversityTimetable.Shared.Enums;
 using UniversityTimetable.Shared.Interfaces.Data;
-using UniversityTimetable.Shared.Interfaces.ModelsRelationships;
+using UniversityTimetable.Shared.Interfaces.Data.Models;
 using UniversityTimetable.Shared.Models.RelationModels;
 
 namespace UniversityTimetable.Shared.Models;

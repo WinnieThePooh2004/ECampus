@@ -1,5 +1,6 @@
 ﻿using UniversityTimetable.Shared.DataContainers;
 using UniversityTimetable.Shared.Interfaces.Data;
+using UniversityTimetable.Shared.Interfaces.Data.Models;
 using UniversityTimetable.Shared.QueryParameters;
 
 namespace UniversityTimetable.Shared.Interfaces.Services

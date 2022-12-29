@@ -1,10 +1,10 @@
-﻿using System.Net;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
 using UniversityTimetable.Shared.Exceptions.DomainExceptions;
 using UniversityTimetable.Shared.Extensions;
-using UniversityTimetable.Shared.Interfaces.Data;
-using UniversityTimetable.Shared.Interfaces.Repositories;
+using UniversityTimetable.Shared.Interfaces.Data.Models;
+using UniversityTimetable.Shared.Interfaces.Data.Validation;
+using UniversityTimetable.Shared.Interfaces.DataAccess;
 using UniversityTimetable.Shared.Interfaces.Services;
 
 namespace UniversityTimetable.Domain.Services
@@ -13,31 +13,29 @@ namespace UniversityTimetable.Domain.Services
         where TRepositoryModel : class, IModel
         where TDto : class, IDataTransferObject
     {
-        private readonly IBaseRepository<TRepositoryModel> _repository;
+        private readonly IBaseDataAccessFacade<TRepositoryModel> _dataAccessFacade;
         private readonly ILogger<BaseService<TDto, TRepositoryModel>> _logger;
         private readonly IMapper _mapper;
-        private readonly ICreateValidator<TDto> _createValidator;
-        private readonly IUpdateValidator<TDto> _updateValidator;
-        
-        public BaseService(IBaseRepository<TRepositoryModel> repository, ILogger<BaseService<TDto, TRepositoryModel>> logger,
-            IMapper mapper, ICreateValidator<TDto> createValidator, IUpdateValidator<TDto> updateValidator)
+        private readonly IValidationFacade<TDto> _validationFacade;
+
+        public BaseService(IBaseDataAccessFacade<TRepositoryModel> dataAccessFacade, ILogger<BaseService<TDto, TRepositoryModel>> logger,
+            IMapper mapper, IValidationFacade<TDto> validationFacade)
         {
-            _repository = repository;
+            _dataAccessFacade = dataAccessFacade;
             _logger = logger;
             _mapper = mapper;
-            _createValidator = createValidator;
-            _updateValidator = updateValidator;
+            _validationFacade = validationFacade;
         }
 
         public async Task<TDto> CreateAsync(TDto entity)
         {
-            var errors = await _createValidator.ValidateAsync(entity);
+            var errors = await _validationFacade.ValidateCreate(entity);
             if (errors.Any())
             {
                 _logger.LogAndThrowException(new ValidationException(typeof(TDto), errors));
             }
             var auditory = _mapper.Map<TRepositoryModel>(entity);
-            return _mapper.Map<TDto>(await _repository.CreateAsync(auditory));
+            return _mapper.Map<TDto>(await _dataAccessFacade.CreateAsync(auditory));
         }
 
         public async Task DeleteAsync(int? id)
@@ -46,7 +44,7 @@ namespace UniversityTimetable.Domain.Services
             {
                 throw new NullIdException();
             }
-            await _repository.DeleteAsync((int)id);
+            await _dataAccessFacade.DeleteAsync((int)id);
         }
 
         public async Task<TDto> GetByIdAsync(int? id)
@@ -55,18 +53,18 @@ namespace UniversityTimetable.Domain.Services
             {
                 throw new NullIdException();
             }
-            return _mapper.Map<TDto>(await _repository.GetByIdAsync((int)id));
+            return _mapper.Map<TDto>(await _dataAccessFacade.GetByIdAsync((int)id));
         }
 
         public async Task<TDto> UpdateAsync(TDto entity)
         {
-            var errors = await _updateValidator.ValidateAsync(entity);
+            var errors = await _validationFacade.ValidateUpdate(entity);
             if (errors.Any())
             {
                 _logger.LogAndThrowException(new ValidationException(typeof(TDto), errors));
             }
             var auditory = _mapper.Map<TRepositoryModel>(entity);
-            return _mapper.Map<TDto>(await _repository.UpdateAsync(auditory));
+            return _mapper.Map<TDto>(await _dataAccessFacade.UpdateAsync(auditory));
         }
     }
 }

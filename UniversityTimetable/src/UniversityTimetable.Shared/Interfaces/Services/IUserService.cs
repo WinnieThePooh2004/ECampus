@@ -1,14 +1,15 @@
 ﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using UniversityTimetable.Shared.DataTransferObjects;
-using UniversityTimetable.Shared.Models.RelationModels;
 
 namespace UniversityTimetable.Shared.Interfaces.Services;
 
 public interface IUserService : IBaseService<UserDto>
 {
-    Task<Dictionary<string, string>> ValidateCreateAsync(UserDto user, HttpContext context);
-    Task<Dictionary<string, string>> ValidateUpdateAsync(UserDto user);
+    Task<List<KeyValuePair<string, string>>> ValidateCreateAsync(UserDto user, HttpContext context);
+    Task<List<KeyValuePair<string, string>>> ValidateUpdateAsync(UserDto user);
+    Task<UserDto> ChangePassword(PasswordChangeDto passwordChange);
+    Task<List<KeyValuePair<string, string>>> ValidatePasswordChange(PasswordChangeDto passwordChange);
     Task SaveAuditory(ClaimsPrincipal user, int auditoryId);
     Task RemoveSavedAuditory(ClaimsPrincipal user, int auditoryId);
     Task SaveGroup(ClaimsPrincipal user, int groupId);

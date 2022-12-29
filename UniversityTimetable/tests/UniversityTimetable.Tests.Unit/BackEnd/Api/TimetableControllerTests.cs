@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using UniversityTimetable.Api.Controllers;
-using UniversityTimetable.Domain.Validation;
+using UniversityTimetable.Domain.Validation.FluentValidators;
 using UniversityTimetable.Shared.DataContainers;
 using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Shared.Interfaces.Services;
@@ -129,7 +129,7 @@ namespace UniversityTimetable.Tests.Unit.BackEnd.Api
         [Fact]
         public async Task Validate_ReturnsFromService_ServiceCalled()
         {
-            var errors = new Dictionary<string, string>(_fixture.CreateMany<KeyValuePair<string, string>>(5));
+            var errors = new List<KeyValuePair<string, string>>(_fixture.CreateMany<KeyValuePair<string, string>>(5));
             var @class = new ClassDto();
             _service.ValidateAsync(@class).Returns(errors);
 

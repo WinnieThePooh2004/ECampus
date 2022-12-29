@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using UniversityTimetable.Shared.Interfaces.ModelsRelationships;
+using UniversityTimetable.Shared.Interfaces.Data.Models;
 
 namespace UniversityTimetable.Shared.Models.RelationModels;
 

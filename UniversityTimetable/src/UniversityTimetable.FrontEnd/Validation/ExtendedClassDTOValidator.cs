@@ -4,11 +4,12 @@ using UniversityTimetable.FrontEnd.Requests.Interfaces;
 
 namespace UniversityTimetable.FrontEnd.Validation
 {
-    public class ExtendedClassDTOValidator : IValidator<ClassDto>
+    public class ExtendedClassDtoValidator : IValidator<ClassDto>
     {
-        private IValidator<ClassDto> _baseValidator;
-        private IClassRequests _requests;
-        public ExtendedClassDTOValidator(IValidator<ClassDto> baseValidator, IClassRequests requests)
+        private readonly IValidator<ClassDto> _baseValidator;
+        private readonly IClassRequests _requests;
+
+        public ExtendedClassDtoValidator(IValidator<ClassDto> baseValidator, IClassRequests requests)
         {
             _baseValidator = baseValidator;
             _requests = requests;
@@ -29,21 +30,26 @@ namespace UniversityTimetable.FrontEnd.Validation
         public async Task<ValidationResult> ValidateAsync(ClassDto instance, CancellationToken cancellation = default)
         {
             var baseResult = await _baseValidator.ValidateAsync(instance, cancellation);
-            if(baseResult.Errors.Any())
+            if (baseResult.Errors.Any())
             {
                 return baseResult;
             }
-            baseResult.Errors.AddRange((await _requests.ValidateAsync(instance)).Select(error => new ValidationFailure(error.Key, error.Value)));
+
+            baseResult.Errors.AddRange(
+                (await _requests.ValidateAsync(instance)).Select(error =>
+                    new ValidationFailure(error.Key, error.Value)));
             return baseResult;
         }
 
-        public async Task<ValidationResult> ValidateAsync(IValidationContext context, CancellationToken cancellation = default)
+        public async Task<ValidationResult> ValidateAsync(IValidationContext context,
+            CancellationToken cancellation = default)
         {
             var baseResult = await _baseValidator.ValidateAsync(context, cancellation);
             if (baseResult.Errors.Any())
             {
                 return baseResult;
             }
+
             baseResult.Errors.AddRange((await _requests.ValidateAsync((ClassDto)context.InstanceToValidate))
                 .Select(error => new ValidationFailure(error.Key, error.Value)));
             return baseResult;

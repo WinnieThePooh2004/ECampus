@@ -2,7 +2,7 @@ using System.Text.Json;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using MudBlazor.Services;
-using UniversityTimetable.Domain.Validation;
+using UniversityTimetable.Domain.Validation.FluentValidators;
 using UniversityTimetable.FrontEnd.Extentions;
 using UniversityTimetable.FrontEnd.Requests;
 using UniversityTimetable.FrontEnd.Requests.Interfaces;
@@ -34,7 +34,7 @@ builder.Services.AddScoped<IValidator<DepartmentDto>, DepartmentDtoValidator>();
 builder.Services.AddScoped<IValidator<UserDto>, UserDtoValidator>();
 
 builder.Services.AddScoped<IValidator<ClassDto>, ClassDtoValidator>();
-builder.Services.Decorate<IValidator<ClassDto>, ExtendedClassDTOValidator>();
+builder.Services.Decorate<IValidator<ClassDto>, ExtendedClassDtoValidator>();
 
 builder.Services.AddScoped<IClassRequests, ClassRequests>();
 builder.Services.AddScoped<IBaseRequests<ClassDto>, BaseRequests<ClassDto>>();
@@ -67,7 +67,7 @@ builder.Services.AddHttpClient("UTApi", client =>
     client.BaseAddress = new Uri(builder.Configuration["Api"] ?? throw new Exception("Cannot find section 'Api'"));
 });
 
-builder.Services.AddSingleton<JsonSerializerOptions>(new JsonSerializerOptions{ PropertyNameCaseInsensitive = true});
+builder.Services.AddSingleton(new JsonSerializerOptions{ PropertyNameCaseInsensitive = true});
 
 builder.Services.AddHttpContextAccessor();
 
