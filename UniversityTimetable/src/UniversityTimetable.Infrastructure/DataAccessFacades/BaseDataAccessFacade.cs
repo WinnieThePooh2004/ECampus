@@ -54,11 +54,8 @@ public class BaseDataAccessFacade<TModel> : IBaseDataAccessFacade<TModel>
 
     public async Task<TModel> GetByIdAsync(int id)
     {
-        var model = await _singleItemSelector.SelectModel(id, _context.Set<TModel>());
-        if (model is null)
-        {
-            _logger.LogAndThrowException(new ObjectNotFoundByIdException(typeof(TModel), id));
-        }
+        var model = await _singleItemSelector.SelectModel(id, _context.Set<TModel>())
+            ?? throw new ObjectNotFoundByIdException(typeof(TModel), id);
         return model;
     }
 
@@ -72,7 +69,7 @@ public class BaseDataAccessFacade<TModel> : IBaseDataAccessFacade<TModel>
         catch (Exception e)
         {
             _logger.LogError(e, "Db update was not successful");
-            _logger.LogAndThrowException(new InfrastructureExceptions(HttpStatusCode.BadRequest, e.Message));
+            throw new InfrastructureExceptions(HttpStatusCode.BadRequest, e.Message);
         }
         return entity;
     }

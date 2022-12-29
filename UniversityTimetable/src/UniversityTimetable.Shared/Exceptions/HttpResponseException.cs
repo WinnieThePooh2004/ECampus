@@ -5,9 +5,9 @@ namespace UniversityTimetable.Shared.Exceptions
     public class HttpResponseException : Exception
     {
         public int StatusCode{ get; }
-        public object Object { get; }
+        public object? Object { get; }
 
-        protected HttpResponseException(HttpStatusCode statusCode, string message = "", object @object = null)
+        protected HttpResponseException(HttpStatusCode statusCode, string message = "", object? @object = null)
             :base(message)
         {
             StatusCode = (int)statusCode;

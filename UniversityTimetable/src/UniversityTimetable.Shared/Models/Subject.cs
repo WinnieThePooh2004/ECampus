@@ -8,7 +8,7 @@ namespace UniversityTimetable.Shared.Models;
 public class Subject : IIsDeleted, IModel, IModelWithManyToManyRelations<Teacher, SubjectTeacher>
 {
     public int Id { get; set; }
-    public string Name { get; set; }
+    public string Name { get; set; } = string.Empty;
     public bool IsDeleted { get; set; }
     public List<Class> Classes { get; set; } = new();
     public List<SubjectTeacher> TeacherIds { get; set; } = new();

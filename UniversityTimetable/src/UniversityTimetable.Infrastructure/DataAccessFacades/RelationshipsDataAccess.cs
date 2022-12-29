@@ -25,7 +25,11 @@ public class RelationshipsDataAccess<TLeftTable, TRightTable, TRelations> : IRel
 
     public void CreateRelationModels(TLeftTable model)
     {
-        model.RelationModels.AddRange(model.RelatedModels
+        if (model.RelatedModels is null)
+        {
+            return;
+        }
+        model.RelationModels?.AddRange(model.RelatedModels
             .Select(r => new TRelations { RightTableId = r.Id, LeftTableId = model.Id}));
         model.RelatedModels = null;
     }
@@ -75,6 +79,10 @@ public class RelationshipsDataAccess<TLeftTable, TRightTable, TRelations> : IRel
     
     private void UpdateLoadedRelations(TLeftTable model)
     {
+        if (model.RelatedModels is null || model.RelationModels is null)
+        {
+            return;
+        }
         _context.RemoveRange(model.RelationModels.Where(st => model.RelatedModels.All(s => s.Id != st.RightTableId)));
         _context.AddRange(model.RelatedModels.Where(s => model.RelationModels.All(st => s.Id != st.RightTableId))
             .Select(s => new TRelations { LeftTableId = model.Id, RightTableId = s.Id }));

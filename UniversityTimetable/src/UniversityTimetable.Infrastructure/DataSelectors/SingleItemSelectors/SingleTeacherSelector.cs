@@ -7,7 +7,7 @@ namespace UniversityTimetable.Infrastructure.DataSelectors.SingleItemSelectors;
 
 public class SingleTeacherSelector : ISingleItemSelector<Teacher>
 {
-    public async Task<Teacher> SelectModel(int id, DbSet<Teacher> dataSource)
+    public async Task<Teacher?> SelectModel(int id, DbSet<Teacher> dataSource)
         => await dataSource.Include(t => t.Subjects)
             .FirstOrDefaultAsync(t => t.Id == id);
 }

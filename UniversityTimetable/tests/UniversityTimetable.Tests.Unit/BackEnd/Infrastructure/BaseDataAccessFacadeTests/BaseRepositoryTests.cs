@@ -8,9 +8,9 @@ using UniversityTimetable.Shared.Interfaces.Data.DataServices;
 using UniversityTimetable.Shared.Interfaces.Data.Models;
 using UniversityTimetable.Tests.Shared.DataFactories;
 
-namespace UniversityTimetable.Tests.Unit.BackEnd.Infrastructure.BaseRepositoryTests;
+namespace UniversityTimetable.Tests.Unit.BackEnd.Infrastructure.BaseDataAccessFacadeTests;
 
-public abstract class BaseRepositoryTests<TModel>
+public abstract class BaseDataAccessFacadeTests<TModel>
     where TModel : class, IModel, new()
 {
     private readonly ApplicationDbContext _context;
@@ -21,7 +21,7 @@ public abstract class BaseRepositoryTests<TModel>
     private readonly IDataUpdate<TModel> _update = Substitute.For<IDataUpdate<TModel>>();
     private readonly IDataCreate<TModel> _create = Substitute.For<IDataCreate<TModel>>();
     private readonly IDataDelete<TModel> _delete = Substitute.For<IDataDelete<TModel>>();
-    protected BaseRepositoryTests(IAbstractFactory<TModel> dataFactory)
+    protected BaseDataAccessFacadeTests(IAbstractFactory<TModel> dataFactory)
     {
         _dataFactory = dataFactory;
         _fixture = new Fixture();

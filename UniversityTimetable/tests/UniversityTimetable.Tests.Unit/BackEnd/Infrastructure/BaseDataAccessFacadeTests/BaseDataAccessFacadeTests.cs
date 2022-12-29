@@ -1,9 +1,9 @@
 ﻿using UniversityTimetable.Shared.Models;
 using UniversityTimetable.Tests.Shared.DataFactories;
 
-namespace UniversityTimetable.Tests.Unit.BackEnd.Infrastructure.BaseRepositoryTests;
+namespace UniversityTimetable.Tests.Unit.BackEnd.Infrastructure.BaseDataAccessFacadeTests;
 
-public sealed class BaseRepositoryFacultyTests : BaseRepositoryTests<Faculty>, IClassFixture<FacultyFactory>
+public sealed class BaseDataAccessFacadeTests : BaseDataAccessFacadeTests<Department>, IClassFixture<DepartmentFactory>
 {
     [Fact] protected override Task Create_AddedToDb_CreateCalled() => base.Create_AddedToDb_CreateCalled();
     
@@ -15,8 +15,7 @@ public sealed class BaseRepositoryFacultyTests : BaseRepositoryTests<Faculty>, I
 
     [Fact] protected override Task GetByIdAsync_ShouldThrowException_WhenSelectorReturnsNull() => base.GetByIdAsync_ShouldThrowException_WhenSelectorReturnsNull();
 
-    public BaseRepositoryFacultyTests(FacultyFactory dataFactory) : base(dataFactory)
+    public BaseDataAccessFacadeTests(DepartmentFactory dataFactory) : base(dataFactory)
     {
-        
     }
 }

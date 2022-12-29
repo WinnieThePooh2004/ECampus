@@ -1,15 +1,12 @@
 ﻿using UniversityTimetable.Shared.Interfaces.Data;
 using UniversityTimetable.Shared.Interfaces.Data.Models;
 
-namespace UniversityTimetable.Shared.DataTransferObjects
-{
-    public class DepartmentDto : IDataTransferObject
-    {
-        public int Id { get; set; }
-        public string Name { get; set; } = default!;
+namespace UniversityTimetable.Shared.DataTransferObjects;
 
-        public int FacultyId { get; set; }
-        public List<TeacherDto> Teachers { get; set; }
-        public List<GroupDto> Groups { get; set; }
-    }
+public class DepartmentDto : IDataTransferObject
+{
+    public int Id { get; set; }
+    public string Name { get; set; } = default!;
+
+    public int FacultyId { get; set; }
 }
