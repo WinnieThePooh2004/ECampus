@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using MudBlazor.Services;
 using UniversityTimetable.Domain.Validation.FluentValidators;
 using UniversityTimetable.FrontEnd.Extensions;
+using UniversityTimetable.FrontEnd.HttpHandlers;
 using UniversityTimetable.FrontEnd.Requests;
 using UniversityTimetable.FrontEnd.Requests.Interfaces;
 using UniversityTimetable.FrontEnd.Requests.Options;
@@ -62,12 +63,15 @@ builder.Services.AddAuthentication(opt =>
     opt.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
 }).AddCookie();
 
+builder.Services.AddScoped<CookieTokenHandler>();
+
 builder.Services.AddHttpClient("UTApi", client =>
 {
-    client.BaseAddress = new Uri(builder.Configuration["Api"] ?? throw new Exception("Cannot find section 'Api'"));
-});
+    client.BaseAddress =
+        new Uri(builder.Configuration["Api"] ?? throw new Exception("Cannot find section 'Api'"));
+}).AddHttpMessageHandler<CookieTokenHandler>();
 
-builder.Services.AddSingleton(new JsonSerializerOptions{ PropertyNameCaseInsensitive = true});
+builder.Services.AddSingleton(new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
 builder.Services.AddHttpContextAccessor();
 
