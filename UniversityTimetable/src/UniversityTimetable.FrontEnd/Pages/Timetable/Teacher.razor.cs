@@ -23,6 +23,6 @@ public partial class Teacher
     protected override async Task RefreshData()
     {
         await base.RefreshData();
-        _isSaved = User.SavedTeachers.Any(t => t.Id == TeacherId);
+        _isSaved = User?.SavedTeachers?.Any(t => t.Id == TeacherId) ?? false;
     }
 }

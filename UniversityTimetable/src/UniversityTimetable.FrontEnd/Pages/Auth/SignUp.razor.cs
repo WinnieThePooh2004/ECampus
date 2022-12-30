@@ -5,7 +5,7 @@ namespace UniversityTimetable.FrontEnd.Pages.Auth;
 public partial class SignUp
 {
     protected override string PageAfterSave => "~/";
-    [Inject] private NavigationManager NavigationManager { get; set; }
+    [Inject] private NavigationManager NavigationManager { get; set; } = default!;
 
     protected override async Task Save(UserDto model)
     {

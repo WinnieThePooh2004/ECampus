@@ -10,12 +10,12 @@ public sealed partial class MultipleItemsSelect<TData, TParameters>
     where TData : class, IDataTransferObject, new()
     where TParameters : class, IQueryParameters, new()
 {
-    [Parameter] public string Title { get; set; }
-    [Parameter] public List<string> PropertyNames { get; set; }
+    [Parameter] public string Title { get; set; } = string.Empty;
+    [Parameter] public List<string> PropertyNames { get; set; } = new();
     [Parameter] public Action OnChanged { get; set; } = () => { };
-    [Parameter] public List<Func<TData, object>> PropertiesToShow { get; set; }
-    [Parameter] public List<TData> SelectTo { get; set; }
-    private Dictionary<TData, bool> Select { get; set; } = null;
+    [Parameter] public List<Func<TData, object>> PropertiesToShow { get; set; } = new();
+    [Parameter] public List<TData> SelectTo { get; set; } = new();
+    private Dictionary<TData, bool> Select { get; set; } = new();
 
     private DataTransferObjectComparer<TData> _comparer = new();
 

@@ -38,7 +38,7 @@ public class CreateUserValidator : IValidator<UserDto>
     {
         var baseErrors = await _baseValidator.ValidateAsync(instance, cancellation);
         if (instance.Role == UserRole.Admin
-            && !(_contextAccessor?.HttpContext?.User.IsInRole(nameof(UserRole.Admin)) ?? false))
+            && !(_contextAccessor.HttpContext?.User.IsInRole(nameof(UserRole.Admin)) ?? false))
         {
             baseErrors.Errors.Add(new ValidationFailure(nameof(instance.Role),
                 "Cannot create new admin unless yor are admin"));

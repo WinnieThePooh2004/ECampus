@@ -3,8 +3,8 @@
 <h1>Timetable</h1>
 <TimetableModel CreateLink="@($"timetable/Create/{(int)TimetableMode.Group}/{GroupId}")"
                 EditLink="@($"timetable/edit/{(int)TimetableMode.Group}")"
-                DescriptionList="@(new List<Func<ClassDto, string>>{ c => $"{c.Subject.Name} {c.ClassType}", c => $"Teacher: {c.Teacher.FullName}",
-                                     c => $"Building: {c.Auditory.Building}, aud: {c.Auditory.Name}" })"
+                DescriptionList="@(new List<Func<ClassDto, string>>{ c => $"{c.Subject?.Name} {c.ClassType}", c => $"Teacher: {c.Teacher?.FullName}",
+                                     c => $"Building: {c.Auditory?.Building}, aud: {c.Auditory?.Name}" })"
                 RefreshData="@(requests => requests.GroupTimetable(GroupId))"
 />
 

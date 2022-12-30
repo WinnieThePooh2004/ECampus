@@ -7,7 +7,7 @@ namespace UniversityTimetable.FrontEnd.Components.PageBases
         where TData : class
         where TParameters : class, IQueryParameters, new()
     {
-        [Inject] private IBaseRequests<TData> DeleteRequests { get; set; }
+        [Inject] private IBaseRequests<TData> DeleteRequests { get; set; } = default!;
         protected virtual async Task Delete(int id)
         {
             await DeleteRequests.DeleteAsync(id);

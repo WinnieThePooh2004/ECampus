@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Diagnostics;
+using System.Text.Json;
 using IdentityServer4.Extensions;
 using UniversityTimetable.FrontEnd.Requests.Interfaces;
 using UniversityTimetable.Shared.Auth;
@@ -48,14 +49,16 @@ public class UserRequests : IUserRequests
     {
         var response = await _client.CreateClient("UTApi").PutAsJsonAsync("api/Users/Validate/Create", user);
         response.EnsureSuccessStatusCode();
-        return JsonSerializer.Deserialize<List<KeyValuePair<string, string>>>(await response.Content.ReadAsStringAsync(), _options);
+        return JsonSerializer.Deserialize<List<KeyValuePair<string, string>>>(await response.Content.ReadAsStringAsync(), _options)
+               ?? throw new UnreachableException($"cannot deserialize object of type {typeof(UserDto)}");
     }
 
     public async Task<List<KeyValuePair<string, string>>> ValidateUpdateAsync(UserDto user)
     {
         var response = await _client.CreateClient("UTApi").PutAsJsonAsync("api/Users/Validate/Update", user);
         response.EnsureSuccessStatusCode();
-        return JsonSerializer.Deserialize<List<KeyValuePair<string, string>>>(await response.Content.ReadAsStringAsync(), _options);
+        return JsonSerializer.Deserialize<List<KeyValuePair<string, string>>>(await response.Content.ReadAsStringAsync(), _options)
+               ?? throw new UnreachableException($"cannot deserialize object of type {typeof(UserDto)}");
     }
 
     public async Task SaveAuditory(int auditoryId)

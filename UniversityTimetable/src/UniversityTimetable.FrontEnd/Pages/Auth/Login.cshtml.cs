@@ -10,7 +10,7 @@ namespace UniversityTimetable.FrontEnd.Pages.Auth;
 [AllowAnonymous]
 public class LoginModel : PageModel
 {
-    public string ReturnUrl { get; set; }
+    public string ReturnUrl { get; set; } = string.Empty;
     private readonly IAuthRequests _authRequests;
 
     public LoginModel(IAuthRequests requests)

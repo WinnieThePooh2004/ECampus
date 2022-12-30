@@ -5,10 +5,10 @@ namespace UniversityTimetable.FrontEnd.Components.EditForms
 {
     public class ModelEditForm<TModel> : ComponentBase where TModel : class
     {
-        [Parameter] public TModel Model { get; set; }
+        [Parameter] public TModel Model { get; set; } = default!;
         [Parameter] public EventCallback<TModel> OnSubmit { get; set; }
 
-        [Inject] protected IValidator<TModel> Validator { get; set; }
+        [Inject] protected IValidator<TModel>? Validator { get; set; }
 
         protected async Task Submit()
         {
@@ -22,7 +22,7 @@ namespace UniversityTimetable.FrontEnd.Components.EditForms
 
         private async Task<bool> ValidateAsync()
         {
-            return !(await Validator.ValidateAsync(Model)).Errors.Any();
+            return !(await Validator?.ValidateAsync(Model)!).Errors.Any();
         }
     }
 }

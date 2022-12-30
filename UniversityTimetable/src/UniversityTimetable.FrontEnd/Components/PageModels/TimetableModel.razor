@@ -36,7 +36,7 @@
                             <p>
                                 @foreach (var description in DescriptionList)
                                 {
-                                    @description(_timetable?.GetClass(day, number))
+                                    @description(_timetable?.GetClass(day, number)!)
                                     <br />
                                 }
                                 <a role="button" href="@($"{EditLink}/{(_timetable?.GetClass(day, number)?.Id)}")">Edit</a> |
@@ -66,7 +66,7 @@
                                 <p>
                                     @foreach (var description in DescriptionList)
                                     {
-                                        @description(_timetable?.GetClass(day, number, WeekDependency.AppearsOnEvenWeeks))
+                                        @description(_timetable?.GetClass(day, number, WeekDependency.AppearsOnEvenWeeks)!)
                                         <br />
                                     }
                                     <a role="button" href="@($"{EditLink}/{(_timetable?.GetClass(day, number, WeekDependency.AppearsOnEvenWeeks)?.Id)}")">Edit</a> |
@@ -84,7 +84,7 @@
                                 <p>
                                     @foreach (var description in DescriptionList)
                                     {
-                                        @description(_timetable?.GetClass(day, number, WeekDependency.AppearsOnEvenWeeks))
+                                        @description(_timetable?.GetClass(day, number, WeekDependency.AppearsOnEvenWeeks)!)
                                         <br />
                                     }
                                     <a role="button" href="@($"{EditLink}/{(_timetable?.GetClass(day, number, WeekDependency.AppearsOnEvenWeeks)?.Id)}")">Edit</a> |

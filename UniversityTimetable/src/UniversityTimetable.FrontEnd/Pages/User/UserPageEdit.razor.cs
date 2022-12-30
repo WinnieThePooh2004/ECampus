@@ -7,11 +7,11 @@ namespace UniversityTimetable.FrontEnd.Pages.User;
 
 public partial class UserPageEdit
 {
-    private IValidator<UserDto> _validator;
-    [Inject] private IUserRequests UserRequests { get; set; }
-    [Inject] private NavigationManager NavigationManager { get; set; }
-    [Inject] private IUserValidatorFactory UserValidatorFactory { get; set; }
-    private UserDto _model;
+    private IValidator<UserDto> _validator = default!;
+    [Inject] private IUserRequests UserRequests { get; set; } = default!;
+    [Inject] private NavigationManager NavigationManager { get; set; } = default!;
+    [Inject] private IUserValidatorFactory UserValidatorFactory { get; set; } = default!;
+    private UserDto? _model;
 
     protected override async Task OnInitializedAsync()
     {
@@ -22,7 +22,7 @@ public partial class UserPageEdit
 
     private async Task Save()
     {
-        await UserRequests.UpdateAsync(_model);
+        await UserRequests.UpdateAsync(_model ?? throw new NullReferenceException());
         NavigationManager.NavigateTo("/profile");
     }
 }

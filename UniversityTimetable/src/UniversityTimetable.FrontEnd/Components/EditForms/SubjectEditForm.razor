@@ -17,7 +17,7 @@
                         Last name
                     </th>
                 </tr>
-                @foreach (var teacher in Model.Teachers)
+                @foreach (var teacher in Model.Teachers ??= new List<TeacherDto>())
                 {
                     <tr>
                         <td>

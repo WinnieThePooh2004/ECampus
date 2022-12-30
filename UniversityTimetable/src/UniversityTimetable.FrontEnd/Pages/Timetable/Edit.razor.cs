@@ -7,12 +7,12 @@ namespace UniversityTimetable.FrontEnd.Pages.Timetable
         [Parameter] public int Mode { get; set; }
         protected override string PageAfterSave => $"/Timetable/{(TimetableMode)Mode}/{GetBackLinkObjectId()}";
 
-        private int GetBackLinkObjectId()
+        private int? GetBackLinkObjectId()
             => (TimetableMode)Mode switch
             {
-                TimetableMode.Teacher => Model.TeacherId,
-                TimetableMode.Group => Model.GroupId,
-                TimetableMode.Auditory => Model.AuditoryId,
+                TimetableMode.Teacher => Model?.TeacherId,
+                TimetableMode.Group => Model?.GroupId,
+                TimetableMode.Auditory => Model?.AuditoryId,
                 _ => throw new ArgumentOutOfRangeException(nameof(Mode)),
             };
     }

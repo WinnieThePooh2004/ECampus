@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Diagnostics;
+using System.Text.Json;
 using UniversityTimetable.FrontEnd.Requests.Interfaces;
 using UniversityTimetable.FrontEnd.Requests.Options;
 
@@ -9,6 +10,7 @@ public class BaseRequests<TData> : IBaseRequests<TData>
     private readonly string _controllerName;
     private readonly HttpClient _client;
     private readonly JsonSerializerOptions _jsonOptions;
+
     public BaseRequests(IHttpClientFactory clientFactory, JsonSerializerOptions jsonOptions, IRequestOptions options)
     {
         _jsonOptions = jsonOptions;
@@ -16,11 +18,13 @@ public class BaseRequests<TData> : IBaseRequests<TData>
         _client = clientFactory.CreateClient("UTApi");
         _controllerName = options.GetControllerName(typeof(TData));
     }
+
     public async Task<TData> CreateAsync(TData entity)
     {
         var response = await _client.PostAsJsonAsync($"/api/{_controllerName}", entity);
         response.EnsureSuccessStatusCode();
-        return JsonSerializer.Deserialize<TData>(await response.Content.ReadAsStringAsync(), _jsonOptions);
+        return JsonSerializer.Deserialize<TData>(await response.Content.ReadAsStringAsync(), _jsonOptions)
+               ?? throw new UnreachableException($"cannot deserialize object of type {typeof(UserDto)}");
     }
 
     public async Task DeleteAsync(int id)
@@ -33,13 +37,15 @@ public class BaseRequests<TData> : IBaseRequests<TData>
     {
         var response = await _client.GetAsync($"/api/{_controllerName}/{id}");
         response.EnsureSuccessStatusCode();
-        return JsonSerializer.Deserialize<TData>(await response.Content.ReadAsStringAsync(), _jsonOptions);
+        return JsonSerializer.Deserialize<TData>(await response.Content.ReadAsStringAsync(), _jsonOptions)
+               ?? throw new UnreachableException($"cannot deserialize object of type {typeof(UserDto)}");
     }
 
     public async Task<TData> UpdateAsync(TData entity)
     {
         var response = await _client.PutAsJsonAsync($"/api/{_controllerName}", entity);
         response.EnsureSuccessStatusCode();
-        return JsonSerializer.Deserialize<TData>(await response.Content.ReadAsStringAsync(), _jsonOptions);
+        return JsonSerializer.Deserialize<TData>(await response.Content.ReadAsStringAsync(), _jsonOptions)
+               ?? throw new UnreachableException($"cannot deserialize object of type {typeof(UserDto)}");
     }
 }

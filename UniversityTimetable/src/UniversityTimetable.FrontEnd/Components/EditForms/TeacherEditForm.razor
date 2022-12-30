@@ -28,7 +28,7 @@
                         Name
                     </th>
                 </tr>
-                @foreach (var subject in Model.Subjects)
+                @foreach (var subject in Model.Subjects ??= new())
                 {
                     <tr>
                         <td>

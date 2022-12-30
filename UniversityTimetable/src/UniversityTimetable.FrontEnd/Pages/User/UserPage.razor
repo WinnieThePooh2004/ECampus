@@ -20,7 +20,7 @@
                 <th width="33%">Name</th>
                 <th width="34%"></th>
             </tr>
-            @foreach (var auditory in _user.SavedAuditories)
+            @foreach (var auditory in _user.SavedAuditories ??= new List<AuditoryDto>())
             {
                 <tr>
                     <td>
@@ -41,7 +41,7 @@
                 <th width="50%">Name</th>
                 <th width="50%"></th>
             </tr>
-            @foreach (var group in _user.SavedGroups)
+            @foreach (var group in _user.SavedGroups ??= new List<GroupDto>())
             {
                 <tr>
                     <td>
@@ -60,7 +60,7 @@
                 <th width="33%">Last name</th>
                 <th width="33%"></th>
             </tr>
-            @foreach (var teacher in _user.SavedTeachers)
+            @foreach (var teacher in _user.SavedTeachers ??= new List<TeacherDto>())
             {
                 <tr>
                     <td>

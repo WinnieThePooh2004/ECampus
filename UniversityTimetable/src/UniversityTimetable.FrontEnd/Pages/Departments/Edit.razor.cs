@@ -2,6 +2,6 @@
 {
     public partial class Edit
     {
-        protected override string PageAfterSave => $"/departments/{Model.FacultyId}";
+        protected override string PageAfterSave => $"/departments/{Model?.FacultyId}";
     }
 }

@@ -36,11 +36,11 @@
 @code {
 
     [Inject]
-    private IHttpContextAccessor Context { get; set; }
+    private IHttpContextAccessor Context { get; set; } = default!;
 
     private bool _collapseNavMenu = true;
 
-    private string NavMenuCssClass => _collapseNavMenu ? "collapse" : null;
+    private string? NavMenuCssClass => _collapseNavMenu ? "collapse" : null;
 
     private void ToggleNavMenu()
     {

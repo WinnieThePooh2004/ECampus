@@ -6,9 +6,9 @@ namespace UniversityTimetable.FrontEnd.Components.PageBases;
 
 public abstract class TimetablePageBase : ComponentBase
 {
-    [Inject] protected IUserRequests UserRequests { get; set; }
-    [Inject] protected IHttpContextAccessor HttpContextAccessor { get; set; }
-    protected UserDto User { get; private set; }
+    [Inject] protected IUserRequests UserRequests { get; set; } = default!;
+    [Inject] protected IHttpContextAccessor HttpContextAccessor { get; set; } = default!;
+    protected UserDto? User { get; private set; }
 
     protected override async Task OnInitializedAsync()
     {
