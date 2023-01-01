@@ -11,14 +11,12 @@ public class DataUpdateWithRelationships<TModel, TRelatedModel, TRelations> : ID
     where TRelations : class, IRelationModel<TModel, TRelatedModel>, new()
 {
     private readonly IRelationshipsDataAccess<TModel, TRelatedModel, TRelations> _relationships;
-    private readonly ApplicationDbContext _context;
     private readonly IDataUpdate<TModel> _baseUpdate;
 
     public DataUpdateWithRelationships(IRelationshipsDataAccess<TModel, TRelatedModel, TRelations> relationships,
-        ApplicationDbContext context, IDataUpdate<TModel> baseUpdate)
+        IDataUpdate<TModel> baseUpdate)
     {
         _relationships = relationships;
-        _context = context;
         _baseUpdate = baseUpdate;
     }
 

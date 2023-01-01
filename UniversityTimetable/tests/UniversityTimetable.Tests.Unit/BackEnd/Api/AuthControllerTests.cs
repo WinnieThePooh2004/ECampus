@@ -24,13 +24,13 @@ public class AuthControllerTests
     {
         var user = _fixture.Create<UserDto>();
         var login = _fixture.Create<LoginDto>();
-        _service.Login(login, _controller.HttpContext).Returns(user);
+        _service.Login(login).Returns(user);
 
         var actionResult = await _controller.Login(login);
 
         actionResult.Should().BeOfType<OkObjectResult>();
         actionResult.As<OkObjectResult>().Value.Should().Be(user);
-        await _service.Received().Login(login, _controller.HttpContext);
+        await _service.Received().Login(login);
     }
 
     [Fact]
@@ -39,6 +39,6 @@ public class AuthControllerTests
         var actionResult = await _controller.Logout();
 
         actionResult.Should().BeOfType<NoContentResult>();
-        await _service.Received().Logout(_controller.HttpContext);
+        await _service.Received().Logout();
     }
 }

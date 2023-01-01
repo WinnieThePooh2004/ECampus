@@ -32,7 +32,7 @@ namespace UniversityTimetable.Domain.Services
             var errors = await _validationFacade.ValidateCreate(entity);
             if (errors.Any())
             {
-                _logger.LogAndThrowException(new ValidationException(typeof(TDto), errors));
+                throw new ValidationException(typeof(TDto), errors);
             }
             var auditory = _mapper.Map<TRepositoryModel>(entity);
             return _mapper.Map<TDto>(await _dataAccessFacade.CreateAsync(auditory));
@@ -61,7 +61,7 @@ namespace UniversityTimetable.Domain.Services
             var errors = await _validationFacade.ValidateUpdate(entity);
             if (errors.Any())
             {
-                _logger.LogAndThrowException(new ValidationException(typeof(TDto), errors));
+                throw new ValidationException(typeof(TDto), errors);
             }
             var auditory = _mapper.Map<TRepositoryModel>(entity);
             return _mapper.Map<TDto>(await _dataAccessFacade.UpdateAsync(auditory));

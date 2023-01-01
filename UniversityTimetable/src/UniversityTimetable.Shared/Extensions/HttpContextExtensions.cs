@@ -18,10 +18,10 @@ public static class HttpContextExtensions
     {
         var claims = new List<Claim>
         {
-            new Claim(ClaimTypes.Email, user.Email),
-            new Claim(ClaimTypes.Name, user.Username),
-            new Claim(ClaimTypes.Role, user.Role.ToString()),
-            new Claim(CustomClaimTypes.Id, user.Id.ToString(), ClaimValueTypes.Integer32)
+            new(ClaimTypes.Email, user.Email),
+            new(ClaimTypes.Name, user.Username),
+            new(ClaimTypes.Role, user.Role.ToString()),
+            new(CustomClaimTypes.Id, user.Id.ToString(), ClaimValueTypes.Integer32)
         };
 
         var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

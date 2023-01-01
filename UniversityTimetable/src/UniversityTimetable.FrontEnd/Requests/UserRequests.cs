@@ -3,6 +3,7 @@ using System.Text.Json;
 using IdentityServer4.Extensions;
 using UniversityTimetable.FrontEnd.Requests.Interfaces;
 using UniversityTimetable.Shared.Auth;
+using UniversityTimetable.Shared.Extensions;
 
 namespace UniversityTimetable.FrontEnd.Requests;
 
@@ -63,43 +64,48 @@ public class UserRequests : IUserRequests
 
     public async Task SaveAuditory(int auditoryId)
     {
-        var request = new HttpRequestMessage(HttpMethod.Post, $"/api/Users/auditory/{auditoryId}");
+        var request = new HttpRequestMessage(HttpMethod.Post, $"/api/Users/auditory?userId={UserId()}&auditoryId={auditoryId}");
         var response = await _client.CreateClient("UTApi").SendAsync(request);
         response.EnsureSuccessStatusCode();
     }
 
     public async Task RemoveSavedAuditory(int auditoryId)
     {
-        var request = new HttpRequestMessage(HttpMethod.Delete, $"/api/Users/auditory/{auditoryId}");
+        var request = new HttpRequestMessage(HttpMethod.Delete, $"/api/Users/auditory?userId={UserId()}&auditoryId={auditoryId}");
         var response = await _client.CreateClient("UTApi").SendAsync(request);
         response.EnsureSuccessStatusCode();
     }
 
     public async Task SaveGroup(int groupId)
     {
-        var request = new HttpRequestMessage(HttpMethod.Post, $"/api/Users/group/{groupId}");
+        var request = new HttpRequestMessage(HttpMethod.Post, $"/api/Users/group?userId={UserId()}&groupId={groupId}");
         var response = await _client.CreateClient("UTApi").SendAsync(request);
         response.EnsureSuccessStatusCode();
     }
 
     public async Task RemoveSavedGroup(int groupId)
     {
-        var request = new HttpRequestMessage(HttpMethod.Delete, $"api/Users/group/{groupId}");
+        var request = new HttpRequestMessage(HttpMethod.Delete, $"api/Users/group?userId={UserId()}&groupId={groupId}");
         var response = await _client.CreateClient("UTApi").SendAsync(request);
         response.EnsureSuccessStatusCode();
     }
 
     public async Task SaveTeacher(int teacherId)
     {
-        var request = new HttpRequestMessage(HttpMethod.Post, $"/api/Users/teacher/{teacherId}");
+        var request = new HttpRequestMessage(HttpMethod.Post, $"/api/Users/teacher?userId={UserId()}&teacherId={teacherId}");
         var response = await _client.CreateClient("UTApi").SendAsync(request);
         response.EnsureSuccessStatusCode();
     }
 
     public async Task RemoveSavedTeacher(int teacherId)
     {
-        var request = new HttpRequestMessage(HttpMethod.Delete, $"/api/Users/teacher/{teacherId}");
+        var request = new HttpRequestMessage(HttpMethod.Delete, $"/api/Users/teacher?userId={UserId()}&teacherId={teacherId}");
         var response = await _client.CreateClient("UTApi").SendAsync(request);
         response.EnsureSuccessStatusCode();
+    }
+
+    private int UserId()
+    {
+        return _httpContextAccessor.HttpContext?.User.GetId() ?? throw new UnauthorizedAccessException();
     }
 }

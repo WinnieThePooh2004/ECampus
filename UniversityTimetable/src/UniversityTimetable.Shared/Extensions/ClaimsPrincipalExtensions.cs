@@ -5,8 +5,18 @@ namespace UniversityTimetable.Shared.Extensions;
 
 public static class ClaimsPrincipalExtensions
 {
-    public static int GetId(this ClaimsPrincipal user)
+    public static int? GetId(this ClaimsPrincipal user)
     {
-        return int.Parse(user.Claims.FirstOrDefault(claim => claim.Type == CustomClaimTypes.Id)?.Value ?? "0");
+        var idClaim = user.Claims.FirstOrDefault(claim => claim.Type == CustomClaimTypes.Id);
+        if (idClaim is null)
+        {
+            return null;
+        }
+        if (!int.TryParse(idClaim.Value, out var id))
+        {
+            return null;
+        }
+
+        return id;
     }
 }

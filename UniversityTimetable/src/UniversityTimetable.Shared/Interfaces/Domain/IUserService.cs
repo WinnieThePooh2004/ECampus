@@ -6,14 +6,13 @@ namespace UniversityTimetable.Shared.Interfaces.Domain;
 
 public interface IUserService : IBaseService<UserDto>
 {
-    Task<List<KeyValuePair<string, string>>> ValidateCreateAsync(UserDto user, HttpContext context);
+    Task<List<KeyValuePair<string, string>>> ValidateCreateAsync(UserDto user);
     Task<List<KeyValuePair<string, string>>> ValidateUpdateAsync(UserDto user);
-    Task<UserDto> ChangePassword(PasswordChangeDto passwordChange);
-    Task<List<KeyValuePair<string, string>>> ValidatePasswordChange(PasswordChangeDto passwordChange);
-    Task SaveAuditory(ClaimsPrincipal user, int auditoryId);
-    Task RemoveSavedAuditory(ClaimsPrincipal user, int auditoryId);
-    Task SaveGroup(ClaimsPrincipal user, int groupId);
-    Task RemoveSavedGroup(ClaimsPrincipal user, int groupId);
-    Task SaveTeacher(ClaimsPrincipal user, int teacherId);
-    Task RemoveSavedTeacher(ClaimsPrincipal user, int teacherId);
+    Task<PasswordChangeDto> ChangePassword(PasswordChangeDto passwordChange);
+    Task SaveAuditory(int userId, int auditoryId);
+    Task RemoveSavedAuditory(int userId, int auditoryId);
+    Task SaveGroup(int userId, int groupId);
+    Task RemoveSavedGroup(int userId, int groupId);
+    Task SaveTeacher(int userId, int teacherId);
+    Task RemoveSavedTeacher(int userId, int teacherId);
 }

@@ -49,7 +49,7 @@ public class UsersController : ControllerBase
     [AllowAnonymous]
     public async Task<IActionResult> ValidateCreate(UserDto user)
     {
-        return Ok(await _service.ValidateCreateAsync(user, HttpContext));
+        return Ok(await _service.ValidateCreateAsync(user));
     }
 
     [HttpPut("/changePassword")]
@@ -65,51 +65,51 @@ public class UsersController : ControllerBase
         return Ok(await _service.ValidateUpdateAsync(user));
     }
 
-    [HttpPost("auditory/{auditoryId:int}")]
+    [HttpPost("auditory")]
     [Authorized]
-    public async Task<IActionResult> SaveAuditory(int auditoryId)
+    public async Task<IActionResult> SaveAuditory([FromQuery] int userId, [FromQuery] int auditoryId)
     {
-        await _service.SaveAuditory(HttpContext.User, auditoryId);
+        await _service.SaveAuditory(userId, auditoryId);
         return NoContent();
     }
         
-    [HttpDelete("auditory/{auditoryId:int}")]
+    [HttpDelete("auditory")]
     [Authorized]
-    public async Task<IActionResult> RemoveAuditory(int auditoryId)
+    public async Task<IActionResult> RemoveAuditory([FromQuery] int userId, [FromQuery] int auditoryId)
     {
-        await _service.RemoveSavedAuditory(HttpContext.User, auditoryId);
+        await _service.RemoveSavedAuditory(userId, auditoryId);
         return NoContent();
     }
 
-    [HttpPost("group/{groupId:int}")]
+    [HttpPost("group")]
     [Authorized]
-    public async Task<IActionResult> SaveGroup(int groupId)
+    public async Task<IActionResult> SaveGroup([FromQuery] int userId, [FromQuery] int groupId)
     {
-        await _service.SaveGroup(HttpContext.User, groupId);
+        await _service.SaveGroup(userId, groupId);
         return NoContent();
     }
     
-    [HttpDelete("group/{groupId:int}")]
+    [HttpDelete("group")]
     [Authorized]
-    public async Task<IActionResult> RemoveGroup(int groupId)
+    public async Task<IActionResult> RemoveGroup([FromQuery] int userId, [FromQuery] int groupId)
     {
-        await _service.RemoveSavedGroup(HttpContext.User, groupId);
+        await _service.RemoveSavedGroup(userId, groupId);
         return NoContent();
     }
 
-    [HttpPost("teacher/{teacherId:int}")]
+    [HttpPost("teacher")]
     [Authorized]
-    public async Task<IActionResult> SaveTeacher(int teacherId)
+    public async Task<IActionResult> SaveTeacher([FromQuery] int userId, [FromQuery] int teacherId)
     {
-        await _service.SaveTeacher(HttpContext.User, teacherId);
+        await _service.SaveTeacher(userId, teacherId);
         return NoContent();
     }
         
-    [HttpDelete("teacher/{teacherId:int}")]
+    [HttpDelete("teacher")]
     [Authorized]
-    public async Task<IActionResult> RemoveTeacher(int teacherId)
+    public async Task<IActionResult> RemoveTeacher([FromQuery] int userId, [FromQuery] int teacherId)
     {
-        await _service.RemoveSavedTeacher(HttpContext.User, teacherId);
+        await _service.RemoveSavedTeacher(userId, teacherId);
         return NoContent();
     }
 }

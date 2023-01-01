@@ -16,30 +16,40 @@ public class AuthorizationService : IAuthorizationService
     private readonly IAuthorizationRepository _repository;
     private readonly ILogger<AuthorizationService> _logger;
     private readonly IMapper _mapper;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
     public AuthorizationService(IAuthorizationRepository repository, ILogger<AuthorizationService> logger,
-        IMapper mapper)
+        IMapper mapper, IHttpContextAccessor httpContextAccessor)
     {
         _repository = repository;
         _logger = logger;
         _mapper = mapper;
+        _httpContextAccessor = httpContextAccessor;
     }
 
-    public async Task<UserDto> Login(LoginDto login, HttpContext context)
+    public async Task<UserDto> Login(LoginDto login)
     {
-        _logger.LogInformation("Start login with email {Email}, password {Password}", login.Email, login.Password);
+        if (_httpContextAccessor.HttpContext is null)
+        {
+            throw new HttpContextNotFoundExceptions();
+        }
+
         var user = _mapper.Map<UserDto>(await _repository.GetByEmailAsync(login.Email));
         if (user.Password != login.Password)
         {
             _logger.LogAndThrowException(new DomainException(HttpStatusCode.BadRequest, "Wrong password or email"));
         }
-
-        await context.SignInAsync(user);
+        
+        await _httpContextAccessor.HttpContext.SignInAsync(user);
         return user;
     }
 
-    public async Task Logout(HttpContext context)
+    public async Task Logout()
     {
-        await context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        if (_httpContextAccessor.HttpContext is null)
+        {
+            throw new HttpContextNotFoundExceptions();
+        }
+        await _httpContextAccessor.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
     }
 }

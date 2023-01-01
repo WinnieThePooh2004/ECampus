@@ -4,14 +4,13 @@ using UniversityTimetable.Domain.Mapping.Converters;
 using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Shared.Models;
 
-namespace UniversityTimetable.Domain.Mapping
+namespace UniversityTimetable.Domain.Mapping;
+
+public class DepartmentProfile : Profile
 {
-    public class DepartmentProfile : Profile
+    public DepartmentProfile()
     {
-        public DepartmentProfile()
-        {
-            CreateMap<Department, DepartmentDto>().ReverseMap();
-            this.CreateListWithPaginationDataMap<Department, DepartmentDto>();
-        }
+        CreateMap<Department, DepartmentDto>().ReverseMap();
+        this.CreateListWithPaginationDataMap<Department, DepartmentDto>();
     }
 }

@@ -1,9 +1,5 @@
-﻿using System.Security.Claims;
-using AutoMapper;
-using Microsoft.AspNetCore.Http;
-using UniversityTimetable.Shared.DataTransferObjects;
+﻿using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Shared.Exceptions.DomainExceptions;
-using UniversityTimetable.Shared.Extensions;
 using UniversityTimetable.Shared.Interfaces.Auth;
 using UniversityTimetable.Shared.Interfaces.Data.DataServices;
 using UniversityTimetable.Shared.Interfaces.Data.Validation;
@@ -24,14 +20,13 @@ public class UserService : IUserService
     private readonly IValidationFacade<UserDto> _validationFacade;
     private readonly IUpdateValidator<PasswordChangeDto> _passwordChangeValidator;
     private readonly IPasswordChange _passwordChange;
-    private readonly IMapper _mapper;
 
     public UserService(IBaseService<UserDto> baseService,
         IRelationsDataAccess<User, Auditory, UserAuditory> userAuditoryRelations,
         IRelationsDataAccess<User, Group, UserGroup> userGroupRelations,
         IRelationsDataAccess<User, Teacher, UserTeacher> userTeacherRelations,
         IAuthenticationService authenticationService, IUpdateValidator<PasswordChangeDto> passwordChangeValidator,
-        IValidationFacade<UserDto> validationFacade, IPasswordChange passwordChange, IMapper mapper)
+        IValidationFacade<UserDto> validationFacade, IPasswordChange passwordChange)
     {
         _baseService = baseService;
         _userAuditoryRelations = userAuditoryRelations;
@@ -41,7 +36,6 @@ public class UserService : IUserService
         _passwordChangeValidator = passwordChangeValidator;
         _validationFacade = validationFacade;
         _passwordChange = passwordChange;
-        _mapper = mapper;
     }
 
     public Task<UserDto> CreateAsync(UserDto entity)
@@ -56,65 +50,62 @@ public class UserService : IUserService
     public Task<UserDto> UpdateAsync(UserDto entity)
         => _baseService.UpdateAsync(entity);
 
-    public async Task<List<KeyValuePair<string, string>>> ValidateCreateAsync(UserDto user, HttpContext context)
+    public async Task<List<KeyValuePair<string, string>>> ValidateCreateAsync(UserDto user)
     {
         return await _validationFacade.ValidateCreate(user);
     }
 
     public async Task<List<KeyValuePair<string, string>>> ValidateUpdateAsync(UserDto user)
     {
-        return await _validationFacade.ValidateCreate(user);
+        return await _validationFacade.ValidateUpdate(user);
     }
 
-    public async Task<UserDto> ChangePassword(PasswordChangeDto passwordChange)
+    public async Task<PasswordChangeDto> ChangePassword(PasswordChangeDto passwordChange)
     {
         var errors = await _passwordChangeValidator.ValidateAsync(passwordChange);
         if (errors.Any())
         {
-            throw new ValidationException(typeof(UserDto), errors);
+            throw new ValidationException(typeof(PasswordChangeDto), errors);
         }
 
-        return _mapper.Map<UserDto>(await _passwordChange.ChangePassword(passwordChange));
+        await _passwordChange.ChangePassword(passwordChange);
+        return passwordChange;
+    }
+    
+    public Task SaveAuditory(int userId, int auditoryId)
+    {
+        _authenticationService.VerifyUser(userId);
+        return _userAuditoryRelations.CreateRelation(userId, auditoryId);
     }
 
-    public async Task<List<KeyValuePair<string, string>>> ValidatePasswordChange(PasswordChangeDto passwordChange)
+    public Task RemoveSavedAuditory(int userId, int auditoryId)
     {
-        return await _passwordChangeValidator.ValidateAsync(passwordChange);
+        _authenticationService.VerifyUser(userId);
+        return _userAuditoryRelations.DeleteRelation(userId, auditoryId);
     }
 
-    public Task SaveAuditory(ClaimsPrincipal user, int auditoryId)
+    public Task SaveGroup(int userId, int groupId)
     {
-        _authenticationService.VerifyUser(user);
-        return _userAuditoryRelations.CreateRelation(user.GetId(), auditoryId);
+        _authenticationService.VerifyUser(userId);
+        return _userGroupRelations.CreateRelation(userId, groupId);
     }
 
-    public Task RemoveSavedAuditory(ClaimsPrincipal user, int auditoryId)
+    public Task RemoveSavedGroup(int userId, int groupId)
     {
-        _authenticationService.VerifyUser(user);
-        return _userAuditoryRelations.DeleteRelation(user.GetId(), auditoryId);
+        _authenticationService.VerifyUser(userId);
+        return _userGroupRelations.DeleteRelation(userId, groupId);
     }
 
-    public Task SaveGroup(ClaimsPrincipal user, int groupId)
+    public Task SaveTeacher(int userId, int teacherId)
     {
-        _authenticationService.VerifyUser(user);
-        return _userGroupRelations.CreateRelation(user.GetId(), groupId);
+        _authenticationService.VerifyUser(userId);
+        return _userTeacherRelations.CreateRelation(userId, teacherId);
     }
 
-    public Task RemoveSavedGroup(ClaimsPrincipal user, int groupId)
+    public Task RemoveSavedTeacher(int userId, int teacherId)
     {
-        _authenticationService.VerifyUser(user);
-        return _userGroupRelations.DeleteRelation(user.GetId(), groupId);
+        _authenticationService.VerifyUser(userId);
+        return _userTeacherRelations.DeleteRelation(userId, teacherId);
     }
-
-    public Task SaveTeacher(ClaimsPrincipal user, int teacherId)
-    {
-        _authenticationService.VerifyUser(user);
-        return _userTeacherRelations.CreateRelation(user.GetId(), teacherId);
-    }
-
-    public Task RemoveSavedTeacher(ClaimsPrincipal user, int teacherId)
-    {
-        _authenticationService.VerifyUser(user);
-        return _userTeacherRelations.DeleteRelation(user.GetId(), teacherId);
-    }
+    
 }

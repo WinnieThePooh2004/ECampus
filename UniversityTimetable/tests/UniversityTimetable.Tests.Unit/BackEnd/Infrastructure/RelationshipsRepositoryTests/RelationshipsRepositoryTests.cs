@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
 using UniversityTimetable.Infrastructure;
-using UniversityTimetable.Infrastructure.DataAccessFacades;
 using UniversityTimetable.Infrastructure.Relationships;
 using UniversityTimetable.Shared.Interfaces.Data.Models;
 using UniversityTimetable.Tests.Shared.Mocks;
@@ -19,8 +18,7 @@ public abstract class RelationshipsRepositoryTests<TLeftTable, TRightTable, TRel
     protected RelationshipsRepositoryTests()
     {
         _context = Substitute.For<ApplicationDbContext>();
-        _dataAccess = new RelationshipsDataAccess<TLeftTable, TRightTable, TRelations>(
-            Substitute.For<ILogger<RelationshipsDataAccess<TLeftTable, TRightTable, TRelations>>>());
+        _dataAccess = new RelationshipsDataAccess<TLeftTable, TRightTable, TRelations>();
     }
     // protected virtual async Task AddRelation_ShouldAddToDb_IfDbNotThrowExceptions()
     // {

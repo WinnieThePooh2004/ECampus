@@ -1,7 +1,4 @@
-﻿using System.Net;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using UniversityTimetable.Shared.Exceptions.InfrastructureExceptions;
+﻿using Microsoft.EntityFrameworkCore;
 using UniversityTimetable.Shared.Interfaces.Data.Models;
 using UniversityTimetable.Shared.Interfaces.DataAccess;
 
@@ -13,13 +10,6 @@ public class RelationshipsDataAccess<TLeftTable, TRightTable, TRelations> : IRel
     where TRightTable : class, IModel, new()
     where TRelations : class, IRelationModel<TLeftTable, TRightTable>, new()
 {
-    private readonly ILogger<RelationshipsDataAccess<TLeftTable, TRightTable, TRelations>> _logger;
-
-    public RelationshipsDataAccess(ILogger<RelationshipsDataAccess<TLeftTable, TRightTable, TRelations>> logger)
-    {
-        _logger = logger;
-    }
-
     public void CreateRelationModels(TLeftTable model)
     {
         if (model.RelatedModels is null)

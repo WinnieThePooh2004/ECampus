@@ -94,54 +94,54 @@ public class UserControllerTest
     [Fact]
     public async Task SaveAuditory_ReturnsNoContent_ServiceCalled()
     {
-        var actionResult = await _controller.SaveAuditory(10);
+        var actionResult = await _controller.SaveAuditory(10, 10);
         
         actionResult.Should().BeOfType<NoContentResult>();
-        await _service.Received().SaveAuditory(Arg.Any<ClaimsPrincipal>(), 10);
+        await _service.Received().SaveAuditory(10, 10);
     }
     
     [Fact]
     public async Task RemoveSavedAuditory_ReturnsNoContent_ServiceCalled()
     {
-        var actionResult = await _controller.RemoveAuditory(10);
+        var actionResult = await _controller.RemoveAuditory(10, 10);
         
         actionResult.Should().BeOfType<NoContentResult>();
-        await _service.Received().RemoveSavedAuditory(Arg.Any<ClaimsPrincipal>(), 10);
+        await _service.Received().RemoveSavedAuditory(10, 10);
     }
     
     [Fact]
     public async Task SaveGroup_ReturnsNoContent_ServiceCalled()
     {
-        var actionResult = await _controller.SaveGroup(10);
+        var actionResult = await _controller.SaveGroup(10, 10);
         
         actionResult.Should().BeOfType<NoContentResult>();
-        await _service.Received().SaveGroup(Arg.Any<ClaimsPrincipal>(), 10);
+        await _service.Received().SaveGroup(10, 10);
     }
     
     [Fact]
     public async Task RemoveSavedGroup_ReturnsNoContent_ServiceCalled()
     {
-        var actionResult = await _controller.RemoveGroup(10);
+        var actionResult = await _controller.RemoveGroup(10, 10);
         
         actionResult.Should().BeOfType<NoContentResult>();
-        await _service.Received().RemoveSavedGroup(Arg.Any<ClaimsPrincipal>(), 10);
+        await _service.Received().RemoveSavedGroup(10, 10);
     }
     
     [Fact]
     public async Task SaveTeacher_ReturnsNoContent_ServiceCalled()
     {
-        var actionResult = await _controller.SaveTeacher(10);
+        var actionResult = await _controller.SaveTeacher(10, 10);
         
         actionResult.Should().BeOfType<NoContentResult>();
-        await _service.Received().SaveTeacher(Arg.Any<ClaimsPrincipal>(), 10);
+        await _service.Received().SaveTeacher(10, 10);
     }
     
     [Fact]
     public async Task RemovedSavedTeacher_ReturnsNoContent_ServiceCalled()
     {
-        var actionResult = await _controller.RemoveTeacher(10);
+        var actionResult = await _controller.RemoveTeacher(10, 10);
         
         actionResult.Should().BeOfType<NoContentResult>();
-        await _service.Received().RemoveSavedTeacher(Arg.Any<ClaimsPrincipal>(), 10);
+        await _service.Received().RemoveSavedTeacher(10, 10);
     }
 }
