@@ -26,28 +26,28 @@ public class UserDataValidator : IDataValidator<User>
                ?? throw new ObjectNotFoundByIdException(typeof(User), model.Id);
     }
 
-    public async Task<Dictionary<string, string>> ValidateUpdate(User model)
+    public async Task<List<KeyValuePair<string, string>>> ValidateUpdate(User model)
     {
-        var errors = new Dictionary<string, string>();
+        var errors = new List<KeyValuePair<string, string>>();
         if (await _context.Users.AsNoTracking().AnyAsync(u => u.Id != model.Id && u.Username == model.Username))
         {
-            errors.Add(nameof(model.Username), "This username is already used");
+            errors.Add(KeyValuePair.Create(nameof(model.Username), "This username is already used"));
         }
 
         return errors;
     }
 
-    public async Task<Dictionary<string, string>> ValidateCreate(User user)
+    public async Task<List<KeyValuePair<string, string>>> ValidateCreate(User user)
     {
-        var errors = new Dictionary<string, string>();
+        var errors = new List<KeyValuePair<string, string>>();
         if (await _context.Users.AnyAsync(u => u.Email == user.Email && u.Id != user.Id))
         {
-            errors.Add(nameof(user.Email), "This email is already user");
+            errors.Add(KeyValuePair.Create(nameof(user.Email), "This email is already user"));
         }
 
         if (await _context.Users.AnyAsync(u => u.Username == user.Username))
         {
-            errors.Add(nameof(user.Email), "This username is already user");
+            errors.Add(KeyValuePair.Create(nameof(user.Email), "This username is already user"));
         }
 
         return errors;

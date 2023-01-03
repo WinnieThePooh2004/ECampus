@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using UniversityTimetable.Api.Controllers;
-using UniversityTimetable.Domain.Validation.FluentValidators;
 using UniversityTimetable.Shared.DataContainers;
 using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Shared.Interfaces.Domain;
@@ -86,21 +85,6 @@ namespace UniversityTimetable.Tests.Unit.BackEnd.Api
             actionResult.Should().BeOfType<OkObjectResult>();
             actionResult.As<OkObjectResult>().Value.Should().Be(data);
             await _service.Received().GetByParametersAsync(Arg.Any<AuditoryParameters>());
-        }
-
-        [Fact]
-        public void PassedInvalidItem_ShouldHaveValidationError_ServiceCalled()
-        {
-            var invalidItem = new AuditoryDto { Name = "", Building = "" };
-            var validator = new AuditoryDtoValidator();
-
-            var errors = validator.Validate(invalidItem).Errors.Select(e => e.ErrorMessage).ToList();
-            var expectedErrors = new List<string>
-            {
-                "Please, enter name",
-                "Please, enter building`s name"
-            };
-            errors.Should().BeEquivalentTo(expectedErrors);
         }
     }
 }

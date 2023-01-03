@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
-using UniversityTimetable.Domain.Mapping;
 using UniversityTimetable.Domain.Services;
 using UniversityTimetable.Shared.DataContainers;
 using UniversityTimetable.Shared.DataTransferObjects;
@@ -20,19 +19,11 @@ public class ClassServiceTests
     private readonly IBaseService<ClassDto> _baseService = Substitute.For<IBaseService<ClassDto>>();
     private readonly IValidationFacade<ClassDto> _validationFacade = Substitute.For<IValidationFacade<ClassDto>>();
     private readonly Fixture _fixture = new();
-    private readonly IMapper _mapper;
+    private readonly IMapper _mapper = MapperFactory.Mapper;
 
     public ClassServiceTests()
     {
         var logger = Substitute.For<ILogger<ClassService>>();
-        _mapper = new MapperConfiguration(cfg => cfg.AddProfiles(new List<Profile>
-        {
-            new AuditoryProfile(),
-            new ClassProfile(),
-            new GroupProfile(),
-            new SubjectProfile(),
-            new TeacherProfile()
-        })).CreateMapper();
         _sut = new ClassService(logger, _dataAccess, _mapper, _baseService, _validationFacade);
     }
 

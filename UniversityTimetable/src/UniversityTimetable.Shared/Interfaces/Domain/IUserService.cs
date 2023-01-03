@@ -1,6 +1,4 @@
-﻿using System.Security.Claims;
-using Microsoft.AspNetCore.Http;
-using UniversityTimetable.Shared.DataTransferObjects;
+﻿using UniversityTimetable.Shared.DataTransferObjects;
 
 namespace UniversityTimetable.Shared.Interfaces.Domain;
 

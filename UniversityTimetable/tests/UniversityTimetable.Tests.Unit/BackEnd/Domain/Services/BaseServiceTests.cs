@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
-using UniversityTimetable.Domain.Mapping;
 using UniversityTimetable.Domain.Services;
 using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Shared.Exceptions.DomainExceptions;
 using UniversityTimetable.Shared.Interfaces.Data.Validation;
 using UniversityTimetable.Shared.Interfaces.DataAccess;
 using UniversityTimetable.Shared.Models;
+using UniversityTimetable.Tests.Shared.DataFactories;
 
 namespace UniversityTimetable.Tests.Unit.BackEnd.Domain.Services;
 
@@ -15,16 +15,12 @@ public sealed class BaseServiceTests
     private readonly BaseService<AuditoryDto, Auditory> _service;
     private readonly IBaseDataAccessFacade<Auditory> _dataAccessFacade;
     private readonly Fixture _fixture;
-    private readonly IMapper _mapper;
+    private readonly IMapper _mapper = MapperFactory.Mapper;
     private readonly IValidationFacade<AuditoryDto> _validation;
 
     public BaseServiceTests()
     {
         _dataAccessFacade = Substitute.For<IBaseDataAccessFacade<Auditory>>();
-        _mapper = new MapperConfiguration(cfg => cfg.AddProfiles(new List<Profile>
-        {
-            new AuditoryProfile(),
-        })).CreateMapper();
         _validation = Substitute.For<IValidationFacade<AuditoryDto>>();
         _service = new BaseService<AuditoryDto, Auditory>(_dataAccessFacade,
             Substitute.For<ILogger<BaseService<AuditoryDto, Auditory>>>(),
@@ -83,9 +79,9 @@ public sealed class BaseServiceTests
     private async Task Create_ThrowsValidationException_WhenValidationErrorOccured()
     {
         var errors = new List<KeyValuePair<string, string>> { KeyValuePair.Create<string, string>("", "") };
-        _validation.ValidateUpdate(Arg.Any<AuditoryDto>()).Returns(errors);
+        _validation.ValidateCreate(Arg.Any<AuditoryDto>()).Returns(errors);
 
-        await new Func<Task>(() => _service.UpdateAsync(new AuditoryDto())).Should().ThrowAsync<ValidationException>()
+        await new Func<Task>(() => _service.CreateAsync(new AuditoryDto())).Should().ThrowAsync<ValidationException>()
             .WithMessage(new ValidationException(typeof(AuditoryDto), errors).Message);
 
         await _dataAccessFacade.DidNotReceive().UpdateAsync(Arg.Any<Auditory>());

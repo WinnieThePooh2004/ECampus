@@ -1,14 +1,16 @@
-﻿using AutoMapper;
+﻿using System.Security.Claims;
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
 using UniversityTimetable.Domain.Auth;
-using UniversityTimetable.Domain.Mapping;
+using UniversityTimetable.Shared.Auth;
 using UniversityTimetable.Shared.DataTransferObjects;
+using UniversityTimetable.Shared.Enums;
 using UniversityTimetable.Shared.Exceptions.DomainExceptions;
 using UniversityTimetable.Shared.Interfaces.Auth;
 using UniversityTimetable.Shared.Models;
+using UniversityTimetable.Tests.Shared.DataFactories;
 using IAuthenticationService = Microsoft.AspNetCore.Authentication.IAuthenticationService;
 
 namespace UniversityTimetable.Tests.Unit.BackEnd.Domain.Auth;
@@ -19,14 +21,13 @@ public class AuthorizationServiceTests
     private readonly IAuthorizationRepository _repository;
     private readonly IHttpContextAccessor _httpContextAccessor = Substitute.For<IHttpContextAccessor>();
     private readonly HttpContext _httpContext = Substitute.For<HttpContext>();
+    private readonly IMapper _mapper = MapperFactory.Mapper;
 
     public AuthorizationServiceTests()
     {
         _repository = Substitute.For<IAuthorizationRepository>();
         _httpContextAccessor.HttpContext.Returns(_httpContext);
-        var mapper = new MapperConfiguration(cfg => cfg.AddProfile<UserProfile>())
-            .CreateMapper();
-        _sut = new AuthorizationService(_repository, Substitute.For<ILogger<AuthorizationService>>(), mapper,
+        _sut = new AuthorizationService(_repository, _mapper,
             _httpContextAccessor);
     }
 
@@ -47,45 +48,42 @@ public class AuthorizationServiceTests
             .WithMessage("Wrong password or email\nError code: 400");
     }
 
-    // [Fact]
-    // public async Task Login_ShouldLogin_WhenNoExceptionsThrown()
-    // {
-    //     var login = new LoginDto { Password = "password2", Email = "secretEmail@abc.com" };
-    //     var user = new UserDto
-    //     {
-    //         Password = login.Password,
-    //         Email = login.Email,
-    //         Id = 10,
-    //         Role = UserRole.Admin
-    //     };
-    //     _repository.GetByEmailAsync("secretEmail@abc.com").Returns(_mapper.Map<User>(user));
-    //     var expectedClaims = new List<Claim>
-    //     {
-    //         new(ClaimTypes.Email, user.Email),
-    //         new(ClaimTypes.Name, user.Username),
-    //         new(ClaimTypes.Role, user.Role.ToString()),
-    //         new(CustomClaimTypes.Id, user.Id.ToString(), ClaimValueTypes.Integer32)
-    //     };
-    //     var requestServices = Substitute.For<IServiceProvider>();
-    //     var microsoftAuthenticationService = Substitute.For<IAuthenticationService>();
-    //     _httpContext.RequestServices.Returns(requestServices);
-    //     requestServices.GetService(typeof(IAuthenticationService)).Returns(microsoftAuthenticationService);
-    //     var claims = new List<Claim>();
-    //     microsoftAuthenticationService.SignInAsync(_httpContext, CookieAuthenticationDefaults.AuthenticationScheme,
-    //             Arg.Do<ClaimsPrincipal>(u => claims = u.Claims.ToList()), Arg.Any<AuthenticationProperties>())
-    //         .Returns(Task.CompletedTask);
-    //
-    //     await _sut.Login(login);
-    //     await microsoftAuthenticationService.Received(1).SignInAsync(_httpContext,
-    //         CookieAuthenticationDefaults.AuthenticationScheme, Arg.Any<ClaimsPrincipal>(),
-    //         Arg.Any<AuthenticationProperties>());
-    //
-    //     expectedClaims
-    //         .All(claim =>
-    //             claims.Should().ContainEquivalentOf(claim, 
-    //                 opt => opt.ComparingByMembers<Claim>()) is not null).Should()
-    //         .Be(true);
-    // }
+    [Fact]
+    public async Task Login_ShouldLogin_WhenNoExceptionsThrown()
+    {
+        var login = new LoginDto { Password = "password2", Email = "secretEmail@abc.com" };
+        var user = new UserDto
+        {
+            Password = login.Password,
+            PasswordConfirm = login.Password,
+            Email = login.Email,
+            Id = 10,
+            Role = UserRole.Admin,
+            SavedAuditories = new List<AuditoryDto>(),
+            SavedGroups = new List<GroupDto>(),
+            SavedTeachers = new List<TeacherDto>()
+        };
+        _repository.GetByEmailAsync("secretEmail@abc.com").Returns(_mapper.Map<User>(user));
+        var requestServices = Substitute.For<IServiceProvider>();
+        var microsoftAuthenticationService = Substitute.For<IAuthenticationService>();
+        _httpContext.RequestServices.Returns(requestServices);
+        requestServices.GetService(typeof(IAuthenticationService)).Returns(microsoftAuthenticationService);
+        var claims = new List<Claim>();
+        microsoftAuthenticationService.SignInAsync(_httpContext, CookieAuthenticationDefaults.AuthenticationScheme,
+                Arg.Do<ClaimsPrincipal>(u => claims = u.Claims.ToList()), Arg.Any<AuthenticationProperties>())
+            .Returns(Task.CompletedTask);
+    
+        var result = await _sut.Login(login);
+        
+        await microsoftAuthenticationService.Received(1).SignInAsync(_httpContext,
+            CookieAuthenticationDefaults.AuthenticationScheme, Arg.Any<ClaimsPrincipal>(),
+            Arg.Any<AuthenticationProperties>());
+        claims.Should().Contain(claim => claim.Type == ClaimTypes.Email && claim.Value == user.Email);
+        claims.Should().Contain(claim => claim.Type == ClaimTypes.Role && claim.Value == user.Role.ToString());
+        claims.Should().Contain(claim => claim.Type == ClaimTypes.Name && claim.Value == user.Username);
+        claims.Should().Contain(claim => claim.Type == CustomClaimTypes.Id && claim.Value == user.Id.ToString());
+        result.Should().BeEquivalentTo(user, opt => opt.ComparingByMembers<UserDto>());
+    }
 
     [Fact]
     public async Task Logout_ShouldThrowException_WhenHttpContextIsNull()

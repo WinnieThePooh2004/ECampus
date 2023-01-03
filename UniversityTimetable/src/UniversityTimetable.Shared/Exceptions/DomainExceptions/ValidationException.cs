@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Net;
+﻿using System.Net;
 
 namespace UniversityTimetable.Shared.Exceptions.DomainExceptions;
 

@@ -1,7 +1,6 @@
 ﻿using System.Net;
 using IdentityServer4.Extensions;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
 using UniversityTimetable.Shared.Enums;
 using UniversityTimetable.Shared.Exceptions.DomainExceptions;
 using UniversityTimetable.Shared.Extensions;
@@ -11,12 +10,10 @@ namespace UniversityTimetable.Domain.Auth;
 
 public class AuthenticationService : IAuthenticationService
 {
-    private readonly ILogger<AuthenticationService> _logger;
     private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public AuthenticationService(ILogger<AuthenticationService> logger, IHttpContextAccessor httpContextAccessor)
+    public AuthenticationService(IHttpContextAccessor httpContextAccessor)
     {
-        _logger = logger;
         _httpContextAccessor = httpContextAccessor;
     }
 

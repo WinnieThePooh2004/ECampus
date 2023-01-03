@@ -1,6 +1,5 @@
 ﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
 using UniversityTimetable.Domain.Auth;
 using UniversityTimetable.Shared.Auth;
 using UniversityTimetable.Shared.Enums;
@@ -16,7 +15,7 @@ public class AuthenticationServiceTests
 
     public AuthenticationServiceTests()
     {
-        _sut = new AuthenticationService(Substitute.For<ILogger<AuthenticationService>>(), _httpContextAccessor);
+        _sut = new AuthenticationService(_httpContextAccessor);
         _httpContextAccessor.HttpContext = _httpContext;
     }
 

@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
 using UniversityTimetable.Shared.Exceptions.DomainExceptions;
-using UniversityTimetable.Shared.Extensions;
 using UniversityTimetable.Shared.Interfaces.Data.Models;
 using UniversityTimetable.Shared.Interfaces.Data.Validation;
 using UniversityTimetable.Shared.Interfaces.DataAccess;
@@ -40,6 +39,7 @@ namespace UniversityTimetable.Domain.Services
 
         public async Task DeleteAsync(int? id)
         {
+            _logger.LogInformation("Deleting object of type {Type} with id={Id}", typeof(TDto), id);
             if (id is null)
             {
                 throw new NullIdException();
@@ -49,6 +49,7 @@ namespace UniversityTimetable.Domain.Services
 
         public async Task<TDto> GetByIdAsync(int? id)
         {
+            _logger.LogInformation("Getting object of type {Type} with id={Id}", typeof(TDto), id);
             if (id is null)
             {
                 throw new NullIdException();

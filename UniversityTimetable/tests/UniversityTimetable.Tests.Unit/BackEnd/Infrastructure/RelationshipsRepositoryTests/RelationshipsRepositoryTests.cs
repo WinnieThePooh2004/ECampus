@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using UniversityTimetable.Infrastructure;
+﻿using UniversityTimetable.Infrastructure;
 using UniversityTimetable.Infrastructure.Relationships;
 using UniversityTimetable.Shared.Interfaces.Data.Models;
 using UniversityTimetable.Tests.Shared.Mocks;
