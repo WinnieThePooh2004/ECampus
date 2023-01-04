@@ -14,13 +14,11 @@ namespace UniversityTimetable.Tests.Unit.BackEnd.Domain.Services;
 public class UserServiceTests
 {
     private readonly UserService _sut;
-    private readonly IRelationsDataAccess<User, Auditory, UserAuditory> _userAuditoryRelations;
-    private readonly IRelationsDataAccess<User, Group, UserGroup> _userGroupRelations;
-    private readonly IRelationsDataAccess<User, Teacher, UserTeacher> _userTeacherRelations;
     private readonly IUpdateValidator<PasswordChangeDto> _passwordChangeValidator;
     private readonly IValidationFacade<UserDto> _userValidator;
     private readonly IBaseService<UserDto> _baseService;
     private readonly IPasswordChange _passwordChange;
+    private readonly IRelationsDataAccess _relationsDataAccess;
     private readonly Fixture _fixture = new();
 
     public UserServiceTests()
@@ -28,14 +26,12 @@ public class UserServiceTests
         _userValidator = Substitute.For<IValidationFacade<UserDto>>();
         var authenticationService = Substitute.For<IAuthenticationService>();
         _passwordChangeValidator = Substitute.For<IUpdateValidator<PasswordChangeDto>>();
-        _userAuditoryRelations = Substitute.For<IRelationsDataAccess<User, Auditory, UserAuditory>>();
-        _userGroupRelations = Substitute.For<IRelationsDataAccess<User, Group, UserGroup>>();
-        _userTeacherRelations = Substitute.For<IRelationsDataAccess<User, Teacher, UserTeacher>>();
         _baseService = Substitute.For<IBaseService<UserDto>>();
         _passwordChange = Substitute.For<IPasswordChange>();
+        _relationsDataAccess = Substitute.For<IRelationsDataAccess>();
 
-        _sut = new UserService(_baseService, _userAuditoryRelations, _userGroupRelations, _userTeacherRelations,
-            authenticationService, _passwordChangeValidator, _userValidator, _passwordChange);
+        _sut = new UserService(_baseService,
+            authenticationService, _passwordChangeValidator, _userValidator, _passwordChange, _relationsDataAccess);
     }
 
     [Fact]
@@ -87,7 +83,7 @@ public class UserServiceTests
     {
         await _sut.SaveGroup(10, 10);
 
-        await _userGroupRelations.Received(1).CreateRelation(10, 10);
+        await _relationsDataAccess.Received(1).CreateRelation<UserGroup, User, Group>(10, 10);
     }
 
     [Fact]
@@ -95,7 +91,7 @@ public class UserServiceTests
     {
         await _sut.SaveAuditory(10, 10);
 
-        await _userAuditoryRelations.Received(1).CreateRelation(10, 10);
+        await _relationsDataAccess.Received(1).CreateRelation<UserAuditory, User, Auditory>(10, 10);
     }
 
     [Fact]
@@ -103,7 +99,7 @@ public class UserServiceTests
     {
         await _sut.SaveTeacher(10, 10);
 
-        await _userTeacherRelations.Received(1).CreateRelation(10, 10);
+        await _relationsDataAccess.Received(1).CreateRelation<UserTeacher, User, Teacher>(10, 10);
     }
 
     [Fact]
@@ -111,7 +107,7 @@ public class UserServiceTests
     {
         await _sut.RemoveSavedGroup(10, 10);
 
-        await _userGroupRelations.Received(1).DeleteRelation(10, 10);
+        await _relationsDataAccess.Received(1).DeleteRelation<UserGroup, User, Group>(10, 10);
     }
 
     [Fact]
@@ -119,7 +115,7 @@ public class UserServiceTests
     {
         await _sut.RemoveSavedAuditory(10, 10);
 
-        await _userAuditoryRelations.Received(1).DeleteRelation(10, 10);
+        await _relationsDataAccess.Received(1).DeleteRelation<UserAuditory, User, Auditory>(10, 10);
     }
 
     [Fact]
@@ -127,7 +123,7 @@ public class UserServiceTests
     {
         await _sut.RemoveSavedTeacher(10, 10);
 
-        await _userTeacherRelations.Received(1).DeleteRelation(10, 10);
+        await _relationsDataAccess.Received(1).DeleteRelation<UserTeacher, User, Teacher>(10, 10);
     }
 
     [Fact]

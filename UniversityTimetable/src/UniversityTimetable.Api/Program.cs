@@ -82,7 +82,7 @@ builder.Services.AddScoped<ICreateValidator<ClassDto>, ClassDtoUniversalValidato
 builder.Services.AddAutoMapper(Assembly.Load("UniversityTimetable.Domain"));
 
 builder.Services.AddScoped(typeof(IRelationshipsDataAccess<,,>), typeof(RelationshipsDataAccess<,,>));
-builder.Services.AddScoped(typeof(IRelationsDataAccess<,,>), typeof(RelationsDataAccess<,,>));
+builder.Services.AddScoped<IRelationsDataAccess, RelationsDataAccess>();
 
 builder.Services.AddMultipleDataSelector<Auditory, AuditoryParameters, AuditorySelector>();
 builder.Services.AddMultipleDataSelector<Department, DepartmentParameters, DepartmentSelector>();

@@ -13,29 +13,22 @@ namespace UniversityTimetable.Domain.Services;
 public class UserService : IUserService
 {
     private readonly IBaseService<UserDto> _baseService;
-    private readonly IRelationsDataAccess<User, Auditory, UserAuditory> _userAuditoryRelations;
-    private readonly IRelationsDataAccess<User, Group, UserGroup> _userGroupRelations;
-    private readonly IRelationsDataAccess<User, Teacher, UserTeacher> _userTeacherRelations;
     private readonly IAuthenticationService _authenticationService;
     private readonly IValidationFacade<UserDto> _validationFacade;
     private readonly IUpdateValidator<PasswordChangeDto> _passwordChangeValidator;
     private readonly IPasswordChange _passwordChange;
+    private readonly IRelationsDataAccess _relationsDataAccess;
 
     public UserService(IBaseService<UserDto> baseService,
-        IRelationsDataAccess<User, Auditory, UserAuditory> userAuditoryRelations,
-        IRelationsDataAccess<User, Group, UserGroup> userGroupRelations,
-        IRelationsDataAccess<User, Teacher, UserTeacher> userTeacherRelations,
         IAuthenticationService authenticationService, IUpdateValidator<PasswordChangeDto> passwordChangeValidator,
-        IValidationFacade<UserDto> validationFacade, IPasswordChange passwordChange)
+        IValidationFacade<UserDto> validationFacade, IPasswordChange passwordChange, IRelationsDataAccess relationsDataAccess)
     {
         _baseService = baseService;
-        _userAuditoryRelations = userAuditoryRelations;
-        _userGroupRelations = userGroupRelations;
-        _userTeacherRelations = userTeacherRelations;
         _authenticationService = authenticationService;
         _passwordChangeValidator = passwordChangeValidator;
         _validationFacade = validationFacade;
         _passwordChange = passwordChange;
+        _relationsDataAccess = relationsDataAccess;
     }
 
     public Task<UserDto> CreateAsync(UserDto entity)
@@ -75,37 +68,37 @@ public class UserService : IUserService
     public Task SaveAuditory(int userId, int auditoryId)
     {
         _authenticationService.VerifyUser(userId);
-        return _userAuditoryRelations.CreateRelation(userId, auditoryId);
+        return _relationsDataAccess.CreateRelation<UserAuditory, User, Auditory>(userId, auditoryId);
     }
 
     public Task RemoveSavedAuditory(int userId, int auditoryId)
     {
         _authenticationService.VerifyUser(userId);
-        return _userAuditoryRelations.DeleteRelation(userId, auditoryId);
+        return _relationsDataAccess.DeleteRelation<UserAuditory, User, Auditory>(userId, auditoryId);
     }
 
     public Task SaveGroup(int userId, int groupId)
     {
         _authenticationService.VerifyUser(userId);
-        return _userGroupRelations.CreateRelation(userId, groupId);
+        return _relationsDataAccess.CreateRelation<UserGroup, User, Group>(userId, groupId);
     }
 
     public Task RemoveSavedGroup(int userId, int groupId)
     {
         _authenticationService.VerifyUser(userId);
-        return _userGroupRelations.DeleteRelation(userId, groupId);
+        return _relationsDataAccess.DeleteRelation<UserGroup, User, Group>(userId, groupId);
     }
 
     public Task SaveTeacher(int userId, int teacherId)
     {
         _authenticationService.VerifyUser(userId);
-        return _userTeacherRelations.CreateRelation(userId, teacherId);
+        return _relationsDataAccess.CreateRelation<UserTeacher, User, Teacher>(userId, teacherId);
     }
 
     public Task RemoveSavedTeacher(int userId, int teacherId)
     {
         _authenticationService.VerifyUser(userId);
-        return _userTeacherRelations.DeleteRelation(userId, teacherId);
+        return _relationsDataAccess.DeleteRelation<UserTeacher, User, Teacher>(userId, teacherId);
     }
     
 }

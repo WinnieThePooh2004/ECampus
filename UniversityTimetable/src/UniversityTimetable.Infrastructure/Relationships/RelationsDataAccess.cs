@@ -7,21 +7,21 @@ using UniversityTimetable.Shared.Interfaces.Data.Models;
 
 namespace UniversityTimetable.Infrastructure.Relationships;
 
-public class RelationsDataAccess<TLeftTable, TRightTable, TRelations> : IRelationsDataAccess<TLeftTable, TRightTable, TRelations> 
-    where TRelations : IRelationModel<TLeftTable, TRightTable>, new()
-    where TRightTable : class, IModel
-    where TLeftTable : class, IModel
+public class RelationsDataAccess : IRelationsDataAccess
 {
     private readonly DbContext _context;
-    private readonly ILogger<RelationsDataAccess<TLeftTable, TRightTable, TRelations>> _logger;
+    private readonly ILogger<RelationsDataAccess> _logger;
 
-    public RelationsDataAccess(DbContext context, ILogger<RelationsDataAccess<TLeftTable, TRightTable, TRelations>> logger)
+    public RelationsDataAccess(DbContext context, ILogger<RelationsDataAccess> logger)
     {
         _context = context;
         _logger = logger;
     }
 
-    public async Task<TRelations> CreateRelation(int leftTableId, int rightTableId)
+    public async Task CreateRelation<TRelations, TLeftTable, TRightTable>(int leftTableId, int rightTableId) 
+        where TRelations : IRelationModel<TLeftTable, TRightTable>, new()
+        where TLeftTable : class, IModel 
+        where TRightTable : class, IModel
     {
         var relation = new TRelations { RightTableId = rightTableId, LeftTableId = leftTableId };
         _context.Add(relation);
@@ -36,11 +36,12 @@ public class RelationsDataAccess<TLeftTable, TRightTable, TRelations> : IRelatio
                 rightTableId, typeof(TLeftTable), leftTableId);
             throw new InfrastructureExceptions(HttpStatusCode.NotFound, e.Message);
         }
-
-        return relation;
     }
 
-    public async Task<TRelations> DeleteRelation(int leftTableId, int rightTableId)
+    public async Task DeleteRelation<TRelations, TLeftTable, TRightTable>(int leftTableId, int rightTableId)
+        where TRelations : IRelationModel<TLeftTable, TRightTable>, new()
+        where TLeftTable : class, IModel 
+        where TRightTable : class, IModel
     {
         var relation = new TRelations { RightTableId = rightTableId, LeftTableId = leftTableId };
         _context.Remove(relation);
@@ -55,6 +56,5 @@ public class RelationsDataAccess<TLeftTable, TRightTable, TRelations> : IRelatio
                 rightTableId, typeof(TLeftTable), leftTableId);
             throw new InfrastructureExceptions(HttpStatusCode.NotFound, e.Message);
         }
-
-        return relation;
-    }}
+    }
+}
