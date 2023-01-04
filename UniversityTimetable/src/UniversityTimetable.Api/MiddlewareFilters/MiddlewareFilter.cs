@@ -3,53 +3,52 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc;
 
 
-namespace UniversityTimetable.Api.MiddlewareFilters
+namespace UniversityTimetable.Api.MiddlewareFilters;
+
+public class MiddlewareExceptionFilter : IActionFilter, IOrderedFilter
 {
-	public class MiddlewareExceptionFilter : IActionFilter, IOrderedFilter
+	private readonly ILogger<MiddlewareExceptionFilter> _logger;
+	public MiddlewareExceptionFilter(ILogger<MiddlewareExceptionFilter> logger)
 	{
-		private readonly ILogger<MiddlewareExceptionFilter> _logger;
-		public MiddlewareExceptionFilter(ILogger<MiddlewareExceptionFilter> logger)
-		{
-			_logger = logger;
-		}
-		public int Order => int.MaxValue - 10;
+		_logger = logger;
+	}
+	public int Order => int.MaxValue - 10;
 
-		public void OnActionExecuted(ActionExecutedContext context)
+	public void OnActionExecuted(ActionExecutedContext context)
+	{
+		if(context.Exception is null)
 		{
-			if(context.Exception is null)
-			{
-				return;
-			}
-			context.ExceptionHandled = true;
-			_logger.LogError(context.Exception, "Unhandled exception occured");
-			if (context.Exception is HttpResponseException httpResponseException)
-			{
-				context.Result = FilterHttpResponseException(httpResponseException);
-				return;
-			}
-			context.Result = new ObjectResult(new BadResponseObject(context.Exception.Message))
-			{
-				StatusCode = 500
-			};
+			return;
 		}
-
-		public void OnActionExecuting(ActionExecutingContext context)
+		context.ExceptionHandled = true;
+		_logger.LogError(context.Exception, "Unhandled exception occured");
+		if (context.Exception is HttpResponseException httpResponseException)
 		{
+			context.Result = FilterHttpResponseException(httpResponseException);
+			return;
+		}
+		context.Result = new ObjectResult(new BadResponseObject(context.Exception.Message))
+		{
+			StatusCode = 500
+		};
+	}
+
+	public void OnActionExecuting(ActionExecutingContext context)
+	{
 			
-		}
+	}
 
-		private static IActionResult FilterHttpResponseException(HttpResponseException exception)
+	private static IActionResult FilterHttpResponseException(HttpResponseException exception)
+	{
+		var responseObject = new BadResponseObject
 		{
-			var responseObject = new BadResponseObject
-			{
-				Message = exception.Message,
-				ResponseObject = exception.Object
-			};
+			Message = exception.Message,
+			ResponseObject = exception.Object
+		};
 
-			return new ObjectResult(responseObject)
-			{
-				StatusCode = exception.StatusCode
-			};
-		}
+		return new ObjectResult(responseObject)
+		{
+			StatusCode = exception.StatusCode
+		};
 	}
 }

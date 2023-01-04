@@ -3,26 +3,26 @@ using UniversityTimetable.Shared.Interfaces.Data.DataServices;
 using UniversityTimetable.Shared.Interfaces.Data.Models;
 using UniversityTimetable.Shared.Interfaces.DataAccess;
 
-namespace UniversityTimetable.Infrastructure.DataCreate;
+namespace UniversityTimetable.Infrastructure.DataCreateServices;
 
-public class DataCreateWithRelationships<TModel, TRelatedModel, TRelations> : IDataCreate<TModel>
+public class DataCreateServiceWithRelationships<TModel, TRelatedModel, TRelations> : IDataCreateService<TModel>
     where TModel : class, IModel, IModelWithManyToManyRelations<TRelatedModel, TRelations>, new()
     where TRelatedModel : class, IModel, new()
     where TRelations : class, IRelationModel<TModel, TRelatedModel>, new()
 {
     private readonly IRelationshipsDataAccess<TModel, TRelatedModel, TRelations> _relationships;
-    private readonly IDataCreate<TModel> _baseCreate;
+    private readonly IDataCreateService<TModel> _baseCreateService;
 
-    public DataCreateWithRelationships(IRelationshipsDataAccess<TModel, TRelatedModel, TRelations> relationships,
-        IDataCreate<TModel> baseCreate)
+    public DataCreateServiceWithRelationships(IRelationshipsDataAccess<TModel, TRelatedModel, TRelations> relationships,
+        IDataCreateService<TModel> baseCreateService)
     {
         _relationships = relationships;
-        _baseCreate = baseCreate;
+        _baseCreateService = baseCreateService;
     }
 
     public async Task<TModel> CreateAsync(TModel model, DbContext context)
     {
         _relationships.CreateRelationModels(model);
-        return await _baseCreate.CreateAsync(model, context);
+        return await _baseCreateService.CreateAsync(model, context);
     }
 }

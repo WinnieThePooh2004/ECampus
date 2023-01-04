@@ -32,7 +32,7 @@ public class ClassDtoUniversalValidator : ICreateValidator<ClassDto>, IUpdateVal
                 new KeyValuePair<string, string>(error.PropertyName, error.ErrorMessage)));
         }
 
-        var model = await _dataAccess.LoadRequiredDataForCreate(_mapper.Map<Class>(dataTransferObject));
+        var model = await _dataAccess.LoadRequiredDataForCreateAsync(_mapper.Map<Class>(dataTransferObject));
         var errors = ValidateReferencedValues(model);
         if (errors.Any())
         {

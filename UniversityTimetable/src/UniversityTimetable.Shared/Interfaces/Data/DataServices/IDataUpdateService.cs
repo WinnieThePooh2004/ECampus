@@ -3,8 +3,8 @@ using UniversityTimetable.Shared.Interfaces.Data.Models;
 
 namespace UniversityTimetable.Shared.Interfaces.Data.DataServices;
 
-public interface IDataCreate<TModel>
+public interface IDataUpdateService<TModel>
     where TModel : class, IModel, new()
 {
-    Task<TModel> CreateAsync(TModel model, DbContext context);
+    Task<TModel> UpdateAsync(TModel model, DbContext context);
 }

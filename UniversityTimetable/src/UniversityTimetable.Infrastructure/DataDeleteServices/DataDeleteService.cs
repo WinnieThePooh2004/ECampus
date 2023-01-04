@@ -2,9 +2,9 @@
 using UniversityTimetable.Shared.Interfaces.Data.DataServices;
 using UniversityTimetable.Shared.Interfaces.Data.Models;
 
-namespace UniversityTimetable.Infrastructure.DataDelete;
+namespace UniversityTimetable.Infrastructure.DataDeleteServices;
 
-public class DataDelete<TModel> : IDataDelete<TModel>
+public class DataDeleteService<TModel> : IDataDeleteService<TModel>
     where TModel : class, IModel, new()
 {
     public Task DeleteAsync(int id, DbContext context)

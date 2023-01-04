@@ -1,12 +1,9 @@
 ﻿using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Shared.Exceptions.DomainExceptions;
 using UniversityTimetable.Shared.Interfaces.Auth;
-using UniversityTimetable.Shared.Interfaces.Data.DataServices;
 using UniversityTimetable.Shared.Interfaces.Data.Validation;
 using UniversityTimetable.Shared.Interfaces.DataAccess;
 using UniversityTimetable.Shared.Interfaces.Domain;
-using UniversityTimetable.Shared.Models;
-using UniversityTimetable.Shared.Models.RelationModels;
 
 namespace UniversityTimetable.Domain.Services;
 
@@ -15,20 +12,18 @@ public class UserService : IUserService
     private readonly IBaseService<UserDto> _baseService;
     private readonly IAuthenticationService _authenticationService;
     private readonly IValidationFacade<UserDto> _validationFacade;
+    private readonly IUserDataAccessFacade _userDataAccessFacade;
     private readonly IUpdateValidator<PasswordChangeDto> _passwordChangeValidator;
-    private readonly IPasswordChange _passwordChange;
-    private readonly IRelationsDataAccess _relationsDataAccess;
 
     public UserService(IBaseService<UserDto> baseService,
         IAuthenticationService authenticationService, IUpdateValidator<PasswordChangeDto> passwordChangeValidator,
-        IValidationFacade<UserDto> validationFacade, IPasswordChange passwordChange, IRelationsDataAccess relationsDataAccess)
+        IValidationFacade<UserDto> validationFacade, IUserDataAccessFacade userDataAccessFacade)
     {
         _baseService = baseService;
         _authenticationService = authenticationService;
         _passwordChangeValidator = passwordChangeValidator;
         _validationFacade = validationFacade;
-        _passwordChange = passwordChange;
-        _relationsDataAccess = relationsDataAccess;
+        _userDataAccessFacade = userDataAccessFacade;
     }
 
     public Task<UserDto> CreateAsync(UserDto entity)
@@ -61,44 +56,43 @@ public class UserService : IUserService
             throw new ValidationException(typeof(PasswordChangeDto), errors);
         }
 
-        await _passwordChange.ChangePassword(passwordChange);
+        await _userDataAccessFacade.ChangePassword(passwordChange);
         return passwordChange;
     }
     
     public Task SaveAuditory(int userId, int auditoryId)
     {
         _authenticationService.VerifyUser(userId);
-        return _relationsDataAccess.CreateRelation<UserAuditory, User, Auditory>(userId, auditoryId);
+        return _userDataAccessFacade.SaveAuditory(userId, auditoryId);
     }
 
     public Task RemoveSavedAuditory(int userId, int auditoryId)
     {
         _authenticationService.VerifyUser(userId);
-        return _relationsDataAccess.DeleteRelation<UserAuditory, User, Auditory>(userId, auditoryId);
+        return _userDataAccessFacade.RemoveSavedAuditory(userId, auditoryId);
     }
 
     public Task SaveGroup(int userId, int groupId)
     {
         _authenticationService.VerifyUser(userId);
-        return _relationsDataAccess.CreateRelation<UserGroup, User, Group>(userId, groupId);
+        return _userDataAccessFacade.SaveGroup(userId, groupId);
     }
 
     public Task RemoveSavedGroup(int userId, int groupId)
     {
         _authenticationService.VerifyUser(userId);
-        return _relationsDataAccess.DeleteRelation<UserGroup, User, Group>(userId, groupId);
+        return _userDataAccessFacade.RemoveSavedGroup(userId, groupId);
     }
 
     public Task SaveTeacher(int userId, int teacherId)
     {
         _authenticationService.VerifyUser(userId);
-        return _relationsDataAccess.CreateRelation<UserTeacher, User, Teacher>(userId, teacherId);
+        return _userDataAccessFacade.SaveTeacher(userId, teacherId);
     }
 
     public Task RemoveSavedTeacher(int userId, int teacherId)
     {
         _authenticationService.VerifyUser(userId);
-        return _relationsDataAccess.DeleteRelation<UserTeacher, User, Teacher>(userId, teacherId);
+        return _userDataAccessFacade.RemoveSavedTeacher(userId, teacherId);
     }
-    
 }

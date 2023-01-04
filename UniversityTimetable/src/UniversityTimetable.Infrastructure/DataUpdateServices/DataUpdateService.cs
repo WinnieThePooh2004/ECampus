@@ -2,9 +2,9 @@
 using UniversityTimetable.Shared.Interfaces.Data.DataServices;
 using UniversityTimetable.Shared.Interfaces.Data.Models;
 
-namespace UniversityTimetable.Infrastructure.DataUpdate;
+namespace UniversityTimetable.Infrastructure.DataUpdateServices;
 
-public class DataUpdate<TModel> : IDataUpdate<TModel>
+public class DataUpdateService<TModel> : IDataUpdateService<TModel>
     where TModel : class, IModel, new()
 {
     public Task<TModel> UpdateAsync(TModel model, DbContext context)

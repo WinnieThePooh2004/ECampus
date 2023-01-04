@@ -9,25 +9,23 @@ namespace UniversityTimetable.Infrastructure.Relationships;
 
 public class RelationsDataAccess : IRelationsDataAccess
 {
-    private readonly DbContext _context;
     private readonly ILogger<RelationsDataAccess> _logger;
 
-    public RelationsDataAccess(DbContext context, ILogger<RelationsDataAccess> logger)
+    public RelationsDataAccess(ILogger<RelationsDataAccess> logger)
     {
-        _context = context;
         _logger = logger;
     }
 
-    public async Task CreateRelation<TRelations, TLeftTable, TRightTable>(int leftTableId, int rightTableId) 
+    public async Task CreateRelation<TRelations, TLeftTable, TRightTable>(int leftTableId, int rightTableId, DbContext context) 
         where TRelations : IRelationModel<TLeftTable, TRightTable>, new()
         where TLeftTable : class, IModel 
         where TRightTable : class, IModel
     {
         var relation = new TRelations { RightTableId = rightTableId, LeftTableId = leftTableId };
-        _context.Add(relation);
+        context.Add(relation);
         try
         {
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
         }
         catch (Exception e)
         {
@@ -38,16 +36,16 @@ public class RelationsDataAccess : IRelationsDataAccess
         }
     }
 
-    public async Task DeleteRelation<TRelations, TLeftTable, TRightTable>(int leftTableId, int rightTableId)
+    public async Task DeleteRelation<TRelations, TLeftTable, TRightTable>(int leftTableId, int rightTableId, DbContext context)
         where TRelations : IRelationModel<TLeftTable, TRightTable>, new()
         where TLeftTable : class, IModel 
         where TRightTable : class, IModel
     {
         var relation = new TRelations { RightTableId = rightTableId, LeftTableId = leftTableId };
-        _context.Remove(relation);
+        context.Remove(relation);
         try
         {
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
         }
         catch (Exception e)
         {

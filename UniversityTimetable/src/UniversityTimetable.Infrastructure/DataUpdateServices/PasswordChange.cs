@@ -4,24 +4,17 @@ using UniversityTimetable.Shared.Exceptions.InfrastructureExceptions;
 using UniversityTimetable.Shared.Interfaces.DataAccess;
 using UniversityTimetable.Shared.Models;
 
-namespace UniversityTimetable.Infrastructure.DataUpdate;
+namespace UniversityTimetable.Infrastructure.DataUpdateServices;
 
 public class PasswordChange : IPasswordChange
 {
-    private readonly ApplicationDbContext _context;
-
-    public PasswordChange(ApplicationDbContext context)
+    public async Task<User> ChangePassword(PasswordChangeDto passwordChange, DbContext context)
     {
-        _context = context;
-    }
-
-    public async Task<User> ChangePassword(PasswordChangeDto passwordChange)
-    {
-        var user = await _context.Users.FirstOrDefaultAsync(user => user.Id == passwordChange.UserId)
+        var user = await context.Set<User>().FirstOrDefaultAsync(user => user.Id == passwordChange.UserId)
                    ?? throw new ObjectNotFoundByIdException(typeof(User), passwordChange.UserId);
         
         user.Password = passwordChange.NewPassword;
-        await _context.SaveChangesAsync();
+        await context.SaveChangesAsync();
         return user;
     }
 }

@@ -14,13 +14,13 @@ public class UserDataValidator : IDataValidator<User>
         _context = context;
     }
 
-    public async Task<User> LoadRequiredDataForCreate(User model)
+    public async Task<User> LoadRequiredDataForCreateAsync(User model)
     {
         return await _context.Users.AsNoTracking().FirstOrDefaultAsync(user => user.Id == model.Id)
                ?? throw new ObjectNotFoundByIdException(typeof(User), model.Id);
     }
 
-    public async Task<User> LoadRequiredDataForUpdate(User model)
+    public async Task<User> LoadRequiredDataForUpdateAsync(User model)
     {
         return await _context.Users.AsNoTracking().FirstOrDefaultAsync(user => user.Id == model.Id)
                ?? throw new ObjectNotFoundByIdException(typeof(User), model.Id);
@@ -47,7 +47,7 @@ public class UserDataValidator : IDataValidator<User>
 
         if (await _context.Users.AnyAsync(u => u.Username == user.Username))
         {
-            errors.Add(KeyValuePair.Create(nameof(user.Email), "This username is already user"));
+            errors.Add(KeyValuePair.Create(nameof(user.Username), "This username is already user"));
         }
 
         return errors;

@@ -6,8 +6,8 @@ using UniversityTimetable.Shared.QueryParameters;
 
 namespace UniversityTimetable.Infrastructure.DataSelectors.MultipleItemSelectors;
 
-public class FacultySelector : IMultipleItemSelector<Faculty, FacultyParameters>
+public class MultipleSubjectSelector : IMultipleItemSelector<Subject, SubjectParameters>
 {
-    public IQueryable<Faculty> SelectData(DbSet<Faculty> data, FacultyParameters parameters)
-        => data.Search(f => f.Name, parameters.SearchTerm);
+    public IQueryable<Subject> SelectData(DbSet<Subject> data, SubjectParameters parameters)
+        => data.Search(s => s.Name, parameters.SearchTerm);
 }
