@@ -21,4 +21,18 @@ public sealed class DbSetMock<T>
         Object.Add(Arg.Do<T>(source.Add));
         Object.Remove(Arg.Do<T>(model => source.Remove(model)));
     }
+
+    public DbSetMock()
+        : this(new List<T>())
+    {
+        
+    }
+
+    public DbSetMock(params T[] source)
+        : this(source.ToList())
+    {
+        
+    }
+
+    public static implicit operator DbSet<T>(DbSetMock<T> dbSetMock) => dbSetMock.Object;
 }
