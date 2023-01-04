@@ -38,10 +38,6 @@ namespace UniversityTimetable.Api.Controllers
         [Authorized(UserRole.Admin)]
         public async Task<IActionResult> Post(SubjectDto subject)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest();
-            }
             await _service.CreateAsync(subject);
             return Ok(subject);
         }

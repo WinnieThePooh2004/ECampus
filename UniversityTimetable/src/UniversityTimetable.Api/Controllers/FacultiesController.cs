@@ -35,10 +35,6 @@ namespace UniversityTimetable.Api.Controllers
         [Authorized(UserRole.Admin)]
         public async Task<IActionResult> Post([Bind("Name")] FacultyDto faculty)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest();
-            }
             await _service.CreateAsync(faculty);
             return Ok(faculty);
         }
@@ -47,10 +43,6 @@ namespace UniversityTimetable.Api.Controllers
         [Authorized(UserRole.Admin)]
         public async Task<IActionResult> Put(FacultyDto faculty)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(faculty);
-            }
             await _service.UpdateAsync(faculty);
             return Ok(faculty);
         }

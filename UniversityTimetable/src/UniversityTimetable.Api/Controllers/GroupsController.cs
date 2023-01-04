@@ -39,10 +39,6 @@ namespace UniversityTimetable.Api.Controllers
         [Authorized(UserRole.Admin)]
         public async Task<IActionResult> Post(GroupDto group)
         {
-            if (!ModelState.IsValid || group.DepartmentId == 0)
-            {
-                return BadRequest(group);
-            }
             await _service.CreateAsync(group);
             return Ok(group);
         }
@@ -51,10 +47,6 @@ namespace UniversityTimetable.Api.Controllers
         [Authorized(UserRole.Admin)]
         public async Task<IActionResult> Put(GroupDto group)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(group);
-            }
             await _service.UpdateAsync(group);
             return Ok(group);
         }

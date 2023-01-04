@@ -41,10 +41,6 @@ namespace UniversityTimetable.Api.Controllers
         [Authorized(UserRole.Admin)]
         public async Task<IActionResult> Post(DepartmentDto department)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest();
-            }
             await _service.CreateAsync(department);
             return Ok(department);
         }

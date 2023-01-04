@@ -37,10 +37,6 @@ namespace UniversityTimetable.Api.Controllers
         [Authorized(UserRole.Admin)]
         public async Task<IActionResult> Post(AuditoryDto auditory)
         {
-            if (!ModelState.IsValid)
-            {
-                return Ok(auditory);
-            }
             await _service.CreateAsync(auditory);
             return Ok(auditory);
         }
@@ -49,10 +45,6 @@ namespace UniversityTimetable.Api.Controllers
         [Authorized(UserRole.Admin)]
         public async Task<IActionResult> Put(AuditoryDto auditory)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(auditory);
-            }
             await _service.UpdateAsync(auditory);
             return Ok(auditory);
         }
