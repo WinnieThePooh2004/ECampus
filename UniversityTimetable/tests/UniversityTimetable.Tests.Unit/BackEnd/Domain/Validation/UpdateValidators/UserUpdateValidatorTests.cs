@@ -30,7 +30,7 @@ public class UserUpdateValidatorTests
         var dataErrors = _fixture.CreateMany<KeyValuePair<string, string>>(10).ToList();
         var user = new UserDto{ Email = "abc@example.com", Password = "Password" };
         var userFromDb = new User { Email = "", Password = "" };
-        _dataValidator.LoadRequiredDataForUpdate(Arg.Any<User>()).Returns(userFromDb);
+        _dataValidator.LoadRequiredDataForUpdateAsync(Arg.Any<User>()).Returns(userFromDb);
         _dataValidator.ValidateUpdate(Arg.Any<User>()).Returns(dataErrors);
         _baseValidator.ValidateAsync(user).Returns(baseErrors);
 

@@ -24,7 +24,7 @@ public class PasswordChangeDtoUpdateValidatorTests
         var passwordChange = new PasswordChangeDto
             { UserId = 10, NewPassword = "new", OldPassword = "old", NewPasswordConfirm = "new" };
         _baseValidator.ValidateAsync(passwordChange).Returns(new List<KeyValuePair<string, string>>());
-        _dataAccess.LoadRequiredDataForUpdate(Arg.Any<User>()).Returns(new User{ Password = ""});
+        _dataAccess.LoadRequiredDataForUpdateAsync(Arg.Any<User>()).Returns(new User{ Password = ""});
 
         var errors = await _sut.ValidateAsync(passwordChange);
 

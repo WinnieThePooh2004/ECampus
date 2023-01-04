@@ -30,7 +30,7 @@ public class ClassUniversalValidatorTests
         var @class = new ClassDto();
         var classFromDb = CreateTestModel();
         _baseValidator.ValidateAsync(Arg.Any<ClassDto>()).Returns(new ValidationResult());
-        _dataValidator.LoadRequiredDataForCreate(Arg.Any<Class>()).Returns(classFromDb);
+        _dataValidator.LoadRequiredDataForCreateAsync(Arg.Any<Class>()).Returns(classFromDb);
         var expectedErrors = CreateExpectedErrors(classFromDb);
 
         var actual = await _sut.ValidateAsync(@class);
@@ -43,7 +43,7 @@ public class ClassUniversalValidatorTests
     {
         var classFromDb = new Class();
         _baseValidator.ValidateAsync(Arg.Any<ClassDto>()).Returns(new ValidationResult());
-        _dataValidator.LoadRequiredDataForCreate(Arg.Any<Class>()).Returns(classFromDb);
+        _dataValidator.LoadRequiredDataForCreateAsync(Arg.Any<Class>()).Returns(classFromDb);
         var expected = new List<KeyValuePair<string, string>>
         {
             KeyValuePair.Create("GroupId", "Group does not exist"),
@@ -95,7 +95,7 @@ public class ClassUniversalValidatorTests
         _baseValidator.ValidateAsync(Arg.Any<ClassDto>())
             .Returns(new ValidationResult(errors
                 .Select(e => new ValidationFailure(e.Key, e.Value))));
-        _dataValidator.LoadRequiredDataForCreate(Arg.Any<Class>()).Returns(classFromDb);
+        _dataValidator.LoadRequiredDataForCreateAsync(Arg.Any<Class>()).Returns(classFromDb);
 
         var actualErrors = await _sut.ValidateAsync(new ClassDto());
 

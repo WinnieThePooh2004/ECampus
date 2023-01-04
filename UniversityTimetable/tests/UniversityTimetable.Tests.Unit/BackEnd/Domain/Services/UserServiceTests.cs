@@ -2,12 +2,9 @@
 using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Shared.Exceptions.DomainExceptions;
 using UniversityTimetable.Shared.Interfaces.Auth;
-using UniversityTimetable.Shared.Interfaces.Data.DataServices;
 using UniversityTimetable.Shared.Interfaces.Data.Validation;
 using UniversityTimetable.Shared.Interfaces.DataAccess;
 using UniversityTimetable.Shared.Interfaces.Domain;
-using UniversityTimetable.Shared.Models;
-using UniversityTimetable.Shared.Models.RelationModels;
 
 namespace UniversityTimetable.Tests.Unit.BackEnd.Domain.Services;
 
@@ -17,8 +14,7 @@ public class UserServiceTests
     private readonly IUpdateValidator<PasswordChangeDto> _passwordChangeValidator;
     private readonly IValidationFacade<UserDto> _userValidator;
     private readonly IBaseService<UserDto> _baseService;
-    private readonly IPasswordChange _passwordChange;
-    private readonly IRelationsDataAccess _relationsDataAccess;
+    private readonly IUserDataAccessFacade _userDataAccessFacade;
     private readonly Fixture _fixture = new();
 
     public UserServiceTests()
@@ -27,11 +23,10 @@ public class UserServiceTests
         var authenticationService = Substitute.For<IAuthenticationService>();
         _passwordChangeValidator = Substitute.For<IUpdateValidator<PasswordChangeDto>>();
         _baseService = Substitute.For<IBaseService<UserDto>>();
-        _passwordChange = Substitute.For<IPasswordChange>();
-        _relationsDataAccess = Substitute.For<IRelationsDataAccess>();
+        _userDataAccessFacade = Substitute.For<IUserDataAccessFacade>();
 
         _sut = new UserService(_baseService,
-            authenticationService, _passwordChangeValidator, _userValidator, _passwordChange, _relationsDataAccess);
+            authenticationService, _passwordChangeValidator, _userValidator, _userDataAccessFacade);
     }
 
     [Fact]
@@ -83,7 +78,7 @@ public class UserServiceTests
     {
         await _sut.SaveGroup(10, 10);
 
-        await _relationsDataAccess.Received(1).CreateRelation<UserGroup, User, Group>(10, 10);
+        await _userDataAccessFacade.Received(1).SaveGroup(10, 10);
     }
 
     [Fact]
@@ -91,7 +86,7 @@ public class UserServiceTests
     {
         await _sut.SaveAuditory(10, 10);
 
-        await _relationsDataAccess.Received(1).CreateRelation<UserAuditory, User, Auditory>(10, 10);
+        await _userDataAccessFacade.Received(1).SaveAuditory(10, 10);
     }
 
     [Fact]
@@ -99,7 +94,7 @@ public class UserServiceTests
     {
         await _sut.SaveTeacher(10, 10);
 
-        await _relationsDataAccess.Received(1).CreateRelation<UserTeacher, User, Teacher>(10, 10);
+        await _userDataAccessFacade.Received(1).SaveTeacher(10, 10);
     }
 
     [Fact]
@@ -107,7 +102,7 @@ public class UserServiceTests
     {
         await _sut.RemoveSavedGroup(10, 10);
 
-        await _relationsDataAccess.Received(1).DeleteRelation<UserGroup, User, Group>(10, 10);
+        await _userDataAccessFacade.Received(1).RemoveSavedGroup(10, 10);
     }
 
     [Fact]
@@ -115,7 +110,7 @@ public class UserServiceTests
     {
         await _sut.RemoveSavedAuditory(10, 10);
 
-        await _relationsDataAccess.Received(1).DeleteRelation<UserAuditory, User, Auditory>(10, 10);
+        await _userDataAccessFacade.Received(1).RemoveSavedAuditory(10, 10);
     }
 
     [Fact]
@@ -123,7 +118,7 @@ public class UserServiceTests
     {
         await _sut.RemoveSavedTeacher(10, 10);
 
-        await _relationsDataAccess.Received(1).DeleteRelation<UserTeacher, User, Teacher>(10, 10);
+        await _userDataAccessFacade.Received(1).RemoveSavedTeacher(10, 10);
     }
 
     [Fact]
@@ -136,7 +131,7 @@ public class UserServiceTests
         await new Func<Task>(() => _sut.ChangePassword(passwordChange)).Should().ThrowAsync<ValidationException>()
             .WithMessage(new ValidationException(typeof(PasswordChangeDto), errors).Message);
 
-        await _passwordChange.DidNotReceive().ChangePassword(Arg.Any<PasswordChangeDto>());
+        await _userDataAccessFacade.DidNotReceive().ChangePassword(Arg.Any<PasswordChangeDto>());
     }
 
     [Fact]
@@ -149,7 +144,7 @@ public class UserServiceTests
         var result = await _sut.ChangePassword(passwordChange);
 
         result.Should().Be(passwordChange);
-        await _passwordChange.Received(1).ChangePassword(passwordChange);
+        await _userDataAccessFacade.Received(1).ChangePassword(passwordChange);
     }
 
     [Fact]
