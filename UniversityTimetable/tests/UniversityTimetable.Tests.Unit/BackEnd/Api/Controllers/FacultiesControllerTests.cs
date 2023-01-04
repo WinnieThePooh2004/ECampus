@@ -5,16 +5,16 @@ using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Shared.Interfaces.Domain;
 using UniversityTimetable.Shared.QueryParameters;
 
-namespace UniversityTimetable.Tests.Unit.BackEnd.Api;
+namespace UniversityTimetable.Tests.Unit.BackEnd.Api.Controllers;
 
-public class SubjectsControllerTests
+public class FacultiesControllerTests
 {
-    private readonly IParametersService<SubjectDto, SubjectParameters> _service = Substitute.For<IParametersService<SubjectDto, SubjectParameters>>();
-    private readonly SubjectsController _controller;
+    private readonly IParametersService<FacultyDto, FacultyParameters> _service = Substitute.For<IParametersService<FacultyDto, FacultyParameters>>();
+    private readonly FacultiesController _controller;
     private readonly Fixture _fixture;
-    public SubjectsControllerTests()
+    public FacultiesControllerTests()
     {
-        _controller = new SubjectsController(_service);
+        _controller = new FacultiesController(_service);
         _fixture = new Fixture();
         _fixture.Behaviors.Add(new OmitOnRecursionBehavior());
     }
@@ -22,7 +22,7 @@ public class SubjectsControllerTests
     [Fact]
     public async Task GetById_ReturnsFromService_ServiceCalled()
     {
-        var data = _fixture.Build<SubjectDto>().With(t => t.Id, 10).Create();
+        var data = _fixture.Build<FacultyDto>().With(t => t.Id, 10).Create();
 
         _service.GetByIdAsync(10).Returns(data);
         var actionResult = await _controller.Get(10);
@@ -45,7 +45,7 @@ public class SubjectsControllerTests
     [Fact]
     public async Task Create_ReturnsFromService_ServiceCalled()
     {
-        var data = _fixture.Create<SubjectDto>();
+        var data = _fixture.Create<FacultyDto>();
         _service.CreateAsync(data).Returns(data);
 
         var actionResult = await _controller.Post(data);
@@ -58,7 +58,7 @@ public class SubjectsControllerTests
     [Fact]
     public async Task Update_ReturnsFromService_ServiceCalled()
     {
-        var data = _fixture.Create<SubjectDto>();
+        var data = _fixture.Create<FacultyDto>();
         _service.UpdateAsync(data).Returns(data);
 
         var actionResult = await _controller.Put(data);
@@ -71,16 +71,16 @@ public class SubjectsControllerTests
     [Fact]
     public async Task GetByParameters_ReturnsFromService_ServiceCalled()
     {
-        var data = _fixture.Build<ListWithPaginationData<SubjectDto>>()
+        var data = _fixture.Build<ListWithPaginationData<FacultyDto>>()
             .With(l => l.Data, Enumerable.Range(0, 5)
-                .Select(_ => _fixture.Create<SubjectDto>()).ToList())
+                .Select(_ => _fixture.Create<FacultyDto>()).ToList())
             .Create();
 
-        _service.GetByParametersAsync(Arg.Any<SubjectParameters>()).Returns(data);
-        var actionResult = await _controller.Get(new SubjectParameters());
+        _service.GetByParametersAsync(Arg.Any<FacultyParameters>()).Returns(data);
+        var actionResult = await _controller.Get(new FacultyParameters());
 
         actionResult.Should().BeOfType<OkObjectResult>();
         actionResult.As<OkObjectResult>().Value.Should().Be(data);
-        await _service.Received().GetByParametersAsync(Arg.Any<SubjectParameters>());
+        await _service.Received().GetByParametersAsync(Arg.Any<FacultyParameters>());
     }
 }

@@ -3,7 +3,7 @@ using UniversityTimetable.Api.Controllers;
 using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Shared.Interfaces.Auth;
 
-namespace UniversityTimetable.Tests.Unit.BackEnd.Api;
+namespace UniversityTimetable.Tests.Unit.BackEnd.Api.Controllers;
 
 public class AuthControllerTests
 {

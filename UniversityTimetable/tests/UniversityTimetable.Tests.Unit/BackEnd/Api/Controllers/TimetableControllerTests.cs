@@ -4,7 +4,7 @@ using UniversityTimetable.Shared.DataContainers;
 using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Shared.Interfaces.Domain;
 
-namespace UniversityTimetable.Tests.Unit.BackEnd.Api
+namespace UniversityTimetable.Tests.Unit.BackEnd.Api.Controllers
 {
     public class TimetableControllerTests
     {

@@ -5,7 +5,7 @@ using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Shared.Interfaces.Domain;
 using UniversityTimetable.Shared.QueryParameters;
 
-namespace UniversityTimetable.Tests.Unit.BackEnd.Api;
+namespace UniversityTimetable.Tests.Unit.BackEnd.Api.Controllers;
 
 public class GroupsControllerTests
 {

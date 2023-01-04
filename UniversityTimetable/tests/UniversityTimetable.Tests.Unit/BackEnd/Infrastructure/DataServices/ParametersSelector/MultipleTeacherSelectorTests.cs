@@ -27,7 +27,7 @@ public class MultipleTeacherSelectorTests
     [Fact]
     public void SelectData_ShouldReturnSuitableData()
     {
-        var parameters = new TeacherParameters { DepartmentId = 10, SearchTerm = "a" };
+        var parameters = new TeacherParameters { DepartmentId = 10, SearchTerm = "a", FirstName = ""};
 
         var selectedData = _sut.SelectData(_dataSet, parameters).ToList();
 
@@ -38,7 +38,7 @@ public class MultipleTeacherSelectorTests
     [Fact]
     public void SelectData_ShouldNotFilterByFacultyId_WhenFacultyIdIs0()
     {
-        var parameters = new TeacherParameters { DepartmentId = 0, SearchTerm = "a" };
+        var parameters = new TeacherParameters { DepartmentId = 0, SearchTerm = "a", FirstName = "" };
 
         var selectedData = _sut.SelectData(_dataSet, parameters).ToList();
 

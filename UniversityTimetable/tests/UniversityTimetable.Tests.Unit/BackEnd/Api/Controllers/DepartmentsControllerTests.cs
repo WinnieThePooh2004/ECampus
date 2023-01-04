@@ -5,19 +5,17 @@ using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Shared.Interfaces.Domain;
 using UniversityTimetable.Shared.QueryParameters;
 
-namespace UniversityTimetable.Tests.Unit.BackEnd.Api
+namespace UniversityTimetable.Tests.Unit.BackEnd.Api.Controllers
 {
-    public class AuditoriesControllerTests
+    public class DepartmentsControllerTests
     {
-        private readonly IParametersService<AuditoryDto, AuditoryParameters> _service =
-            Substitute.For<IParametersService<AuditoryDto, AuditoryParameters>>();
-
-        private readonly AuditoriesController _controller;
+        private readonly IParametersService<DepartmentDto, DepartmentParameters> _service =
+            Substitute.For<IParametersService<DepartmentDto, DepartmentParameters>>();
+        private readonly DepartmentsController _controller;
         private readonly Fixture _fixture;
-
-        public AuditoriesControllerTests()
+        public DepartmentsControllerTests()
         {
-            _controller = new AuditoriesController(_service);
+            _controller = new DepartmentsController(_service);
             _fixture = new Fixture();
             _fixture.Behaviors.Add(new OmitOnRecursionBehavior());
         }
@@ -25,7 +23,7 @@ namespace UniversityTimetable.Tests.Unit.BackEnd.Api
         [Fact]
         public async Task GetById_ReturnsFromService_ServiceCalled()
         {
-            var data = _fixture.Build<AuditoryDto>().With(t => t.Id, 10).Create();
+            var data = _fixture.Build<DepartmentDto>().With(t => t.Id, 10).Create();
 
             _service.GetByIdAsync(10).Returns(data);
             var actionResult = await _controller.Get(10);
@@ -48,7 +46,7 @@ namespace UniversityTimetable.Tests.Unit.BackEnd.Api
         [Fact]
         public async Task Create_ReturnsFromService_ServiceCalled()
         {
-            var data = _fixture.Create<AuditoryDto>();
+            var data = _fixture.Create<DepartmentDto>();
             _service.CreateAsync(data).Returns(data);
 
             var actionResult = await _controller.Post(data);
@@ -61,7 +59,7 @@ namespace UniversityTimetable.Tests.Unit.BackEnd.Api
         [Fact]
         public async Task Update_ReturnsFromService_ServiceCalled()
         {
-            var data = _fixture.Create<AuditoryDto>();
+            var data = _fixture.Create<DepartmentDto>();
             _service.UpdateAsync(data).Returns(data);
 
             var actionResult = await _controller.Put(data);
@@ -74,17 +72,17 @@ namespace UniversityTimetable.Tests.Unit.BackEnd.Api
         [Fact]
         public async Task GetByParameters_ReturnsFromService_ServiceCalled()
         {
-            var data = _fixture.Build<ListWithPaginationData<AuditoryDto>>()
+            var data = _fixture.Build<ListWithPaginationData<DepartmentDto>>()
                 .With(l => l.Data, Enumerable.Range(0, 5)
-                    .Select(_ => _fixture.Create<AuditoryDto>()).ToList())
+                    .Select(_ => _fixture.Create<DepartmentDto>()).ToList())
                 .Create();
 
-            _service.GetByParametersAsync(Arg.Any<AuditoryParameters>()).Returns(data);
-            var actionResult = await _controller.Get(new AuditoryParameters());
+            _service.GetByParametersAsync(Arg.Any<DepartmentParameters>()).Returns(data);
+            var actionResult = await _controller.Get(new DepartmentParameters());
 
             actionResult.Should().BeOfType<OkObjectResult>();
             actionResult.As<OkObjectResult>().Value.Should().Be(data);
-            await _service.Received().GetByParametersAsync(Arg.Any<AuditoryParameters>());
+            await _service.Received().GetByParametersAsync(Arg.Any<DepartmentParameters>());
         }
     }
 }

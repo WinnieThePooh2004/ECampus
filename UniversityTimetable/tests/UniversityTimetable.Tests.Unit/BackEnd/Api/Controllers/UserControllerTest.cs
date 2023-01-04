@@ -4,7 +4,7 @@ using UniversityTimetable.Api.Controllers;
 using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Shared.Interfaces.Domain;
 
-namespace UniversityTimetable.Tests.Unit.BackEnd.Api;
+namespace UniversityTimetable.Tests.Unit.BackEnd.Api.Controllers;
 
 public class UserControllerTest
 {
@@ -41,6 +41,34 @@ public class UserControllerTest
         actionResult.As<OkObjectResult>().Value.Should().Be(10);
         await _service.Received().DeleteAsync(10);
     }
+    
+    [Fact]
+    public async Task ValidateCreate_ReturnsFromService_ServiceCalled()
+    {
+        var data = _fixture.Create<UserDto>();
+        var errors = _fixture.CreateMany<KeyValuePair<string, string>>(10).ToList();
+        _service.ValidateCreateAsync(data).Returns(errors);
+
+        var actionResult = await _controller.ValidateCreate(data);
+
+        actionResult.Should().BeOfType<OkObjectResult>();
+        actionResult.As<OkObjectResult>().Value.Should().Be(errors);
+        await _service.Received().ValidateCreateAsync(data);
+    }
+    
+    [Fact]
+    public async Task ValidateUpdate_ReturnsFromService_ServiceCalled()
+    {
+        var data = _fixture.Create<UserDto>();
+        var errors = _fixture.CreateMany<KeyValuePair<string, string>>(10).ToList();
+        _service.ValidateUpdateAsync(data).Returns(errors);
+
+        var actionResult = await _controller.ValidateUpdate(data);
+
+        actionResult.Should().BeOfType<OkObjectResult>();
+        actionResult.As<OkObjectResult>().Value.Should().Be(errors);
+        await _service.Received().ValidateUpdateAsync(data);
+    }
 
     [Fact]
     public async Task Create_ReturnsFromService_ServiceCalled()
@@ -66,6 +94,19 @@ public class UserControllerTest
         actionResult.Should().BeOfType<OkObjectResult>();
         actionResult.As<OkObjectResult>().Value.Should().Be(data);
         await _service.Received().UpdateAsync(data);
+    }
+    
+    [Fact]
+    public async Task ChangePassword_ReturnsFromService_ServiceCalled()
+    {
+        var passwordChange = _fixture.Create<PasswordChangeDto>();
+        _service.ChangePassword(passwordChange).Returns(passwordChange);
+
+        var actionResult = await _controller.ChangePassword(passwordChange);
+
+        actionResult.Should().BeOfType<OkObjectResult>();
+        actionResult.As<OkObjectResult>().Value.Should().Be(passwordChange);
+        await _service.Received().ChangePassword(passwordChange);
     }
 
     [Fact]
