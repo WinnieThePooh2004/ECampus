@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using FluentValidation;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;

@@ -1,8 +1,6 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using AutoMapper;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
 using UniversityTimetable.Shared.Auth;
@@ -43,17 +41,15 @@ public class AuthorizationService : IAuthorizationService
         var result = new LoginResult
         {
             Email = user.Email,
-            Password = user.Password,
             Role = user.Role,
             Username = user.Username,
-            UserId = user.Id
+            UserId = user.Id,
         };
         
-        var claims = HttpContextExtensions.CreateClaims(result);
         var jwt = new JwtSecurityToken(
             issuer: JwtAuthOptions.Issuer,
             audience: JwtAuthOptions.Audience,
-            claims: claims,
+            claims: HttpContextExtensions.CreateClaims(result),
             expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(2)),
             signingCredentials: new SigningCredentials(JwtAuthOptions.GetSymmetricSecurityKey(),
                 SecurityAlgorithms.HmacSha256));
