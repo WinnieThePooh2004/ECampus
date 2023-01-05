@@ -2,7 +2,7 @@
 
 namespace UniversityTimetable.Shared.Interfaces.Auth;
 
-public interface IAuthorizationRepository
+public interface IAuthorizationDataAccess
 {
     Task<User> GetByEmailAsync(string email);
 }

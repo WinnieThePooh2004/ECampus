@@ -139,7 +139,7 @@ builder.Services.AddScoped<IPasswordChange, PasswordChange>();
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 
 builder.Services.AddScoped<IAuthorizationService, AuthorizationService>();
-builder.Services.AddScoped<IAuthorizationRepository, AuthorizationDataAccess>();
+builder.Services.AddScoped<IAuthorizationDataAccess, AuthorizationDataAccess>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -173,6 +173,7 @@ builder.Services.AddAuthentication(opt =>
         return Task.CompletedTask;
     };
 });
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -6,7 +6,7 @@ using UniversityTimetable.Shared.Models;
 
 namespace UniversityTimetable.Infrastructure.Auth;
 
-public class AuthorizationDataAccess : IAuthorizationRepository
+public class AuthorizationDataAccess : IAuthorizationDataAccess
 {
     private readonly ApplicationDbContext _context;
 

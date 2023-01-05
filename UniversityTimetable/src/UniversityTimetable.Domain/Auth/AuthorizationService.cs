@@ -12,11 +12,11 @@ namespace UniversityTimetable.Domain.Auth;
 
 public class AuthorizationService : IAuthorizationService
 {
-    private readonly IAuthorizationRepository _repository;
+    private readonly IAuthorizationDataAccess _repository;
     private readonly IMapper _mapper;
     private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public AuthorizationService(IAuthorizationRepository repository,
+    public AuthorizationService(IAuthorizationDataAccess repository,
         IMapper mapper, IHttpContextAccessor httpContextAccessor)
     {
         _repository = repository;
