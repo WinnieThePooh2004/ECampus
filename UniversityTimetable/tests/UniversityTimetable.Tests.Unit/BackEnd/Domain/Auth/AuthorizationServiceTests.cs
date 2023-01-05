@@ -1,17 +1,16 @@
-﻿using System.Security.Claims;
+﻿using System.IdentityModel.Tokens.Jwt;
 using AutoMapper;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
+using Microsoft.IdentityModel.Tokens;
 using UniversityTimetable.Domain.Auth;
 using UniversityTimetable.Shared.Auth;
 using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Shared.Enums;
 using UniversityTimetable.Shared.Exceptions.DomainExceptions;
+using UniversityTimetable.Shared.Extensions;
 using UniversityTimetable.Shared.Interfaces.Auth;
 using UniversityTimetable.Shared.Models;
 using UniversityTimetable.Tests.Shared.DataFactories;
-using IAuthenticationService = Microsoft.AspNetCore.Authentication.IAuthenticationService;
 
 namespace UniversityTimetable.Tests.Unit.BackEnd.Domain.Auth;
 
@@ -49,60 +48,40 @@ public class AuthorizationServiceTests
     }
 
     [Fact]
-    public async Task Login_ShouldLogin_WhenNoExceptionsThrown()
+    public async Task Login_ShouldReturnToken_WhenNoExceptionsThrown()
     {
         var login = new LoginDto { Password = "password2", Email = "secretEmail@abc.com" };
-        var user = new UserDto
+        var user = new User
         {
             Password = login.Password,
-            PasswordConfirm = login.Password,
             Email = login.Email,
             Id = 10,
-            Role = UserRole.Admin,
-            SavedAuditories = new List<AuditoryDto>(),
-            SavedGroups = new List<GroupDto>(),
-            SavedTeachers = new List<TeacherDto>()
+            Role = UserRole.Admin
         };
-        _dataAccess.GetByEmailAsync("secretEmail@abc.com").Returns(_mapper.Map<User>(user));
-        var requestServices = Substitute.For<IServiceProvider>();
-        var microsoftAuthenticationService = Substitute.For<IAuthenticationService>();
-        _httpContext.RequestServices.Returns(requestServices);
-        requestServices.GetService(typeof(IAuthenticationService)).Returns(microsoftAuthenticationService);
-        var claims = new List<Claim>();
-        microsoftAuthenticationService.SignInAsync(_httpContext, CookieAuthenticationDefaults.AuthenticationScheme,
-                Arg.Do<ClaimsPrincipal>(u => claims = u.Claims.ToList()), Arg.Any<AuthenticationProperties>())
-            .Returns(Task.CompletedTask);
-    
-        var result = await _sut.Login(login);
-        
-        await microsoftAuthenticationService.Received(1).SignInAsync(_httpContext,
-            CookieAuthenticationDefaults.AuthenticationScheme, Arg.Any<ClaimsPrincipal>(),
-            Arg.Any<AuthenticationProperties>());
-        claims.Should().Contain(claim => claim.Type == ClaimTypes.Email && claim.Value == user.Email);
-        claims.Should().Contain(claim => claim.Type == ClaimTypes.Role && claim.Value == user.Role.ToString());
-        claims.Should().Contain(claim => claim.Type == ClaimTypes.Name && claim.Value == user.Username);
-        claims.Should().Contain(claim => claim.Type == CustomClaimTypes.Id && claim.Value == user.Id.ToString());
-        result.Should().BeEquivalentTo(user, opt => opt.ComparingByMembers<UserDto>());
+        _dataAccess.GetByEmailAsync("secretEmail@abc.com").Returns(user);
+        var loginResult = new LoginResult
+        {
+            Email = user.Email,
+            Role = user.Role,
+            UserId = user.Id,
+            Username = user.Username
+        };
+        loginResult.Token = CreateExpectedToken(loginResult);
+
+        var actual = await _sut.Login(login);
+
+        actual.Should().BeEquivalentTo(actual);
     }
 
-    [Fact]
-    public async Task Logout_ShouldThrowException_WhenHttpContextIsNull()
+    private static string CreateExpectedToken(LoginResult loginResult)
     {
-        _httpContextAccessor.HttpContext = null;
-        await new Func<Task>(() => _sut.Logout()).Should().ThrowAsync<HttpContextNotFoundExceptions>();
-    }
-
-    [Fact]
-    public async Task Logout_ShouldLogoutInService()
-    {
-        var requestServices = Substitute.For<IServiceProvider>();
-        var microsoftAuthenticationService = Substitute.For<IAuthenticationService>();
-        _httpContext.RequestServices.Returns(requestServices);
-        requestServices.GetService(typeof(IAuthenticationService)).Returns(microsoftAuthenticationService);
-
-        await _sut.Logout();
-        
-        await microsoftAuthenticationService.Received(1).SignOutAsync(_httpContext,
-            CookieAuthenticationDefaults.AuthenticationScheme, Arg.Any<AuthenticationProperties>());
+        var jwt = new JwtSecurityToken(
+            issuer: JwtAuthOptions.Issuer,
+            audience: JwtAuthOptions.Audience,
+            claims: HttpContextExtensions.CreateClaims(loginResult),
+            expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(2)),
+            signingCredentials: new SigningCredentials(JwtAuthOptions.GetSymmetricSecurityKey(),
+                SecurityAlgorithms.HmacSha256));
+        return new JwtSecurityTokenHandler().WriteToken(jwt);
     }
 }

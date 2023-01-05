@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using UniversityTimetable.Domain.Auth;
 using UniversityTimetable.Shared.Enums;
 
@@ -11,7 +11,7 @@ public class AuthorizedAttributeTests
     {
         var attribute = new AuthorizedAttribute(UserRole.Admin, UserRole.Guest);
         
-        attribute.AuthenticationSchemes.Should().Be(CookieAuthenticationDefaults.AuthenticationScheme);
+        attribute.AuthenticationSchemes.Should().Be(JwtBearerDefaults.AuthenticationScheme);
         attribute.Roles.Should().Be("Admin,Guest");
     }
 
@@ -20,7 +20,7 @@ public class AuthorizedAttributeTests
     {
         var attribute = new AuthorizedAttribute();
 
-        attribute.AuthenticationSchemes.Should().Be(CookieAuthenticationDefaults.AuthenticationScheme);
+        attribute.AuthenticationSchemes.Should().Be(JwtBearerDefaults.AuthenticationScheme);
         attribute.Roles.Should().BeNullOrEmpty();
     }
 }
