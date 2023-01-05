@@ -18,16 +18,16 @@ namespace UniversityTimetable.Tests.Unit.BackEnd.Domain.Auth;
 public class AuthorizationServiceTests
 {
     private readonly AuthorizationService _sut;
-    private readonly IAuthorizationRepository _repository;
+    private readonly IAuthorizationDataAccess _dataAccess;
     private readonly IHttpContextAccessor _httpContextAccessor = Substitute.For<IHttpContextAccessor>();
     private readonly HttpContext _httpContext = Substitute.For<HttpContext>();
     private readonly IMapper _mapper = MapperFactory.Mapper;
 
     public AuthorizationServiceTests()
     {
-        _repository = Substitute.For<IAuthorizationRepository>();
+        _dataAccess = Substitute.For<IAuthorizationDataAccess>();
         _httpContextAccessor.HttpContext.Returns(_httpContext);
-        _sut = new AuthorizationService(_repository, _mapper,
+        _sut = new AuthorizationService(_dataAccess, _mapper,
             _httpContextAccessor);
     }
 
@@ -42,7 +42,7 @@ public class AuthorizationServiceTests
     public async Task Login_ShouldThrowException_IfPasswordsDontMatch()
     {
         var login = new LoginDto { Password = "password1", Email = "secretEmail@abc.com" };
-        _repository.GetByEmailAsync("secretEmail@abc.com").Returns(new User { Password = "password2" });
+        _dataAccess.GetByEmailAsync("secretEmail@abc.com").Returns(new User { Password = "password2" });
 
         await new Func<Task>(() => _sut.Login(login)).Should().ThrowAsync<DomainException>()
             .WithMessage("Wrong password or email\nError code: 400");
@@ -63,7 +63,7 @@ public class AuthorizationServiceTests
             SavedGroups = new List<GroupDto>(),
             SavedTeachers = new List<TeacherDto>()
         };
-        _repository.GetByEmailAsync("secretEmail@abc.com").Returns(_mapper.Map<User>(user));
+        _dataAccess.GetByEmailAsync("secretEmail@abc.com").Returns(_mapper.Map<User>(user));
         var requestServices = Substitute.For<IServiceProvider>();
         var microsoftAuthenticationService = Substitute.For<IAuthenticationService>();
         _httpContext.RequestServices.Returns(requestServices);

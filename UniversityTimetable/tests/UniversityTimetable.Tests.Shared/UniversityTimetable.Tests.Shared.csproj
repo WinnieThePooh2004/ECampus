@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\UniversityTimetable.Api\UniversityTimetable.Api.csproj" />
+    <ProjectReference Include="..\..\src\UniversityTimetable.FrontEnd\UniversityTimetable.FrontEnd.csproj" />
   </ItemGroup>
 
 </Project>
