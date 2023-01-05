@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using UniversityTimetable.Shared.Enums;
 
@@ -8,13 +8,13 @@ public class AuthorizedAttribute : AuthorizeAttribute
 {
     public AuthorizedAttribute(params UserRole[] roles)
     {
-        AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme;
+        AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme;
         Roles = string.Join(",", roles);
     }
 
     public AuthorizedAttribute()
     {
-        AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme;
+        AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme;
     }
 }
 

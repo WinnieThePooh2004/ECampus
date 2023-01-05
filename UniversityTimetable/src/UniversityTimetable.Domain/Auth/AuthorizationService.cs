@@ -1,8 +1,11 @@
-﻿using System.Net;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Net;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
+using Microsoft.IdentityModel.Tokens;
+using UniversityTimetable.Shared.Auth;
 using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Shared.Exceptions.DomainExceptions;
 using UniversityTimetable.Shared.Extensions;
@@ -24,7 +27,7 @@ public class AuthorizationService : IAuthorizationService
         _httpContextAccessor = httpContextAccessor;
     }
 
-    public async Task<UserDto> Login(LoginDto login)
+    public async Task<LoginResult> Login(LoginDto login)
     {
         if (_httpContextAccessor.HttpContext is null)
         {
@@ -36,17 +39,31 @@ public class AuthorizationService : IAuthorizationService
         {
             throw new DomainException(HttpStatusCode.BadRequest, "Wrong password or email");
         }
+
+        var result = new LoginResult
+        {
+            Email = user.Email,
+            Password = user.Password,
+            Role = user.Role,
+            Username = user.Username,
+            UserId = user.Id
+        };
         
-        await _httpContextAccessor.HttpContext.SignInAsync(user);
-        return user;
+        var claims = HttpContextExtensions.CreateClaims(result);
+        var jwt = new JwtSecurityToken(
+            issuer: JwtAuthOptions.Issuer,
+            audience: JwtAuthOptions.Audience,
+            claims: claims,
+            expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(2)),
+            signingCredentials: new SigningCredentials(JwtAuthOptions.GetSymmetricSecurityKey(),
+                SecurityAlgorithms.HmacSha256));
+        
+        result.Token = new JwtSecurityTokenHandler().WriteToken(jwt);
+        return result;
     }
 
-    public async Task Logout()
+    public Task Logout()
     {
-        if (_httpContextAccessor.HttpContext is null)
-        {
-            throw new HttpContextNotFoundExceptions();
-        }
-        await _httpContextAccessor.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        return Task.CompletedTask;
     }
 }

@@ -5,21 +5,15 @@ using Microsoft.Extensions.DependencyInjection;
 using UniversityTimetable.Infrastructure;
 using UniversityTimetable.Tests.Shared.TestDatabase;
 
-namespace UniversityTimetable.Tests.Integration;
+namespace UniversityTimetable.Tests.Integration.AppFactories;
 
 public class ApplicationFactory : WebApplicationFactory<Program>
 {
-    private readonly ApplicationDbContext _context;
+    public ApplicationDbContext Context { get; }
 
     public ApplicationFactory()
     {
-        _context = TestDatabaseFactory.CreateContext();
-    }
-
-    public void InitDatabase()
-    {
-        _context.Database.EnsureCreated();
-        _context.SeedData();
+        Context = TestDatabaseFactory.CreateContext();
     }
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
@@ -32,7 +26,7 @@ public class ApplicationFactory : WebApplicationFactory<Program>
             {
                 services.Remove(descriptor);
             }
-            services.AddSingleton(_context);
+            services.AddSingleton(Context);
         });
     }
 }

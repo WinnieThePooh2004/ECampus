@@ -63,13 +63,13 @@ builder.Services.AddAuthentication(opt =>
     opt.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
 }).AddCookie();
 
-builder.Services.AddScoped<CookieTokenHandler>();
+builder.Services.AddScoped<TokenHandler>();
 
 builder.Services.AddHttpClient("UTApi", client =>
 {
     client.BaseAddress =
         new Uri(builder.Configuration["Api"] ?? throw new Exception("Cannot find section 'Api'"));
-}).AddHttpMessageHandler<CookieTokenHandler>();
+}).AddHttpMessageHandler<TokenHandler>();
 
 builder.Services.AddSingleton(new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 

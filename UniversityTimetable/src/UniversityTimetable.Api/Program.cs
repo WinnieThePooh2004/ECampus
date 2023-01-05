@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using UniversityTimetable.Api.MiddlewareFilters;
 using UniversityTimetable.Api.Extensions;
@@ -21,6 +23,7 @@ using UniversityTimetable.Infrastructure.DataCreateServices;
 using UniversityTimetable.Infrastructure.DataUpdateServices;
 using UniversityTimetable.Infrastructure.Relationships;
 using UniversityTimetable.Infrastructure.ValidationDataAccess;
+using UniversityTimetable.Shared.Auth;
 using UniversityTimetable.Shared.Interfaces.Data.DataServices;
 using UniversityTimetable.Shared.Interfaces.Data.Validation;
 using UniversityTimetable.Shared.DataTransferObjects;
@@ -153,26 +156,39 @@ builder.Services.Configure<CookiePolicyOptions>(options =>
 
 builder.Services.AddHttpContextAccessor();
 
-builder.Services.AddAuthentication(opt =>
-{
-    opt.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-    opt.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-    opt.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-}).AddCookie(options =>
-{
-    options.Events.OnRedirectToLogin = context =>
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
     {
-        context.Response.Headers["Locations"] = context.RedirectUri;
-        context.Response.StatusCode = 401;
-        return Task.CompletedTask;
-    };
-    options.Events.OnRedirectToAccessDenied = context =>
-    {
-        context.Response.Headers["Locations"] = context.RedirectUri;
-        context.Response.StatusCode = 403;
-        return Task.CompletedTask;
-    };
-});
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidIssuer = JwtAuthOptions.Issuer,
+            ValidateAudience = true,
+            ValidAudience = JwtAuthOptions.Audience,
+            ValidateLifetime = true,
+            IssuerSigningKey = JwtAuthOptions.GetSymmetricSecurityKey(),
+            ValidateIssuerSigningKey = true,
+        };
+    });
+// {
+//     opt.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+//     opt.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+//     opt.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+// }).AddCookie(options =>
+// {
+//     options.Events.OnRedirectToLogin = context =>
+//     {
+//         context.Response.Headers["Locations"] = context.RedirectUri;
+//         context.Response.StatusCode = 401;
+//         return Task.CompletedTask;
+//     };
+//     options.Events.OnRedirectToAccessDenied = context =>
+//     {
+//         context.Response.Headers["Locations"] = context.RedirectUri;
+//         context.Response.StatusCode = 403;
+//         return Task.CompletedTask;
+//     };
+// });
 
 var app = builder.Build();
 

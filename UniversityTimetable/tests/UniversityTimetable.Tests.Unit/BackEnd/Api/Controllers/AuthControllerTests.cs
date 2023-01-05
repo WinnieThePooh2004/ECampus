@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using UniversityTimetable.Api.Controllers;
+using UniversityTimetable.Shared.Auth;
 using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Shared.Interfaces.Auth;
 
@@ -22,14 +23,14 @@ public class AuthControllerTests
     [Fact]
     public async Task Login_ReturnsFromService_ServiceCalled()
     {
-        var user = _fixture.Create<UserDto>();
+        var loginResult = _fixture.Create<LoginResult>();
         var login = _fixture.Create<LoginDto>();
-        _service.Login(login).Returns(user);
+        _service.Login(login).Returns(loginResult);
 
         var actionResult = await _controller.Login(login);
 
         actionResult.Should().BeOfType<OkObjectResult>();
-        actionResult.As<OkObjectResult>().Value.Should().Be(user);
+        actionResult.As<OkObjectResult>().Value.Should().Be(loginResult);
         await _service.Received().Login(login);
     }
 
