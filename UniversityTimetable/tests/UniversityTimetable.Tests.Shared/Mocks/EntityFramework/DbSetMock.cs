@@ -2,7 +2,7 @@
 using MockQueryable.EntityFrameworkCore;
 using NSubstitute;
 
-namespace UniversityTimetable.Tests.Shared.Mocks;
+namespace UniversityTimetable.Tests.Shared.Mocks.EntityFramework;
 
 public sealed class DbSetMock<T>
     where T : class
