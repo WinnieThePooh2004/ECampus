@@ -20,7 +20,7 @@ public class ApplicationFactory : WebApplicationFactory<Program>
     {
         builder.ConfigureServices(services =>
         {
-            var descriptor = services.SingleOrDefault(service =>
+            var descriptor = services.SingleOrDefault(_ =>
                 services.GetType() == typeof(DbContextOptions<ApplicationDbContext>));
             if (descriptor is not null)
             {

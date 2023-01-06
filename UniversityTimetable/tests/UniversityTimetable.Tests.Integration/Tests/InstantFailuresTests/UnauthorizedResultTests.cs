@@ -4,7 +4,7 @@ using FluentAssertions;
 using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Tests.Integration.AppFactories;
 
-namespace UniversityTimetable.Tests.Integration.Tests;
+namespace UniversityTimetable.Tests.Integration.Tests.InstantFailuresTests;
 
 public class UnauthorizedResultTests : IClassFixture<ApplicationFactory>
 {
@@ -173,6 +173,48 @@ public class UnauthorizedResultTests : IClassFixture<ApplicationFactory>
     public async Task DeleteFromUsers_ShouldReturn401_WhenUnauthorized()
     {
         var response = await _client.DeleteAsync($"api/Users/{100}");
+        response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+    }
+    
+    [Fact]
+    public async Task SaveAuditoryUsers_ShouldReturn401_WhenUnauthorized()
+    {
+        var response = await _client.DeleteAsync($"api/Users/auditory");
+        response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+    }
+    
+    [Fact]
+    public async Task SaveGroupUsers_ShouldReturn401_WhenUnauthorized()
+    {
+        var response = await _client.DeleteAsync($"api/Users/group");
+        response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+    }
+    
+    [Fact]
+    public async Task SaveTeacherUsers_ShouldReturn401_WhenUnauthorized()
+    {
+        var response = await _client.DeleteAsync($"api/Users/teacher");
+        response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+    }
+    
+    [Fact]
+    public async Task RemoveSavedAuditoryUsers_ShouldReturn401_WhenUnauthorized()
+    {
+        var response = await _client.DeleteAsync($"api/Users/auditory");
+        response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+    }
+    
+    [Fact]
+    public async Task RemoveSavedGroupUsers_ShouldReturn401_WhenUnauthorized()
+    {
+        var response = await _client.DeleteAsync($"api/Users/group");
+        response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+    }
+    
+    [Fact]
+    public async Task RemoveSavedTeacherUsers_ShouldReturn401_WhenUnauthorized()
+    {
+        var response = await _client.DeleteAsync($"api/Users/teacher");
         response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
     }
 }

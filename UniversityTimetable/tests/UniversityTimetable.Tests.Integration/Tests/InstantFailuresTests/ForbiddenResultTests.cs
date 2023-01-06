@@ -2,18 +2,18 @@
 using System.Net.Http.Json;
 using FluentAssertions;
 using UniversityTimetable.Shared.DataTransferObjects;
-using UniversityTimetable.Shared.Enums;
 using UniversityTimetable.Shared.Models;
 using UniversityTimetable.Tests.Integration.AppFactories;
-using UniversityTimetable.Tests.Shared.Mocks;
+using UniversityTimetable.Tests.Integration.AuthHelpers;
+using UniversityTimetable.Tests.Shared.Mocks.EntityFramework;
 
-namespace UniversityTimetable.Tests.Integration.Tests;
+namespace UniversityTimetable.Tests.Integration.Tests.InstantFailuresTests;
 
 public class ForbiddenResultTests : IClassFixture<ApplicationFactory>, IAsyncLifetime
 {
     private readonly HttpClient _client;
     private readonly ApplicationFactory _applicationFactory;
-    
+
     public ForbiddenResultTests(ApplicationFactory applicationFactory)
     {
         _applicationFactory = applicationFactory;
@@ -22,24 +22,16 @@ public class ForbiddenResultTests : IClassFixture<ApplicationFactory>, IAsyncLif
 
     public async Task InitializeAsync()
     {
-        var user = new User
-        {
-            Username = "username",
-            Id = 10,
-            Password = "password",
-            Email = "email@example.com",
-            Role = UserRole.Guest
-        };
+        var user = DefaultUsers.Guest;
         _applicationFactory.Context.Users = new DbSetMock<User>(user);
-
-        await _client.PostAsJsonAsync("api/Auth/login", user);
+        await _client.Login(user);
     }
 
     public Task DisposeAsync()
     {
         return Task.CompletedTask;
     }
-    
+
     [Fact]
     public async Task PutToAuditories_ShouldReturn403_WhenUnauthorized()
     {
@@ -81,7 +73,7 @@ public class ForbiddenResultTests : IClassFixture<ApplicationFactory>, IAsyncLif
         var response = await _client.DeleteAsync($"api/Timetable/{100}");
         response.StatusCode.Should().Be(HttpStatusCode.Forbidden);
     }
-    
+
     [Fact]
     public async Task PutToDepartments_ShouldReturn403_WhenUnauthorized()
     {
@@ -102,7 +94,7 @@ public class ForbiddenResultTests : IClassFixture<ApplicationFactory>, IAsyncLif
         var response = await _client.DeleteAsync($"api/Departments/{100}");
         response.StatusCode.Should().Be(HttpStatusCode.Forbidden);
     }
-    
+
     [Fact]
     public async Task PutToFaculties_ShouldReturn403_WhenUnauthorized()
     {
@@ -123,7 +115,7 @@ public class ForbiddenResultTests : IClassFixture<ApplicationFactory>, IAsyncLif
         var response = await _client.DeleteAsync($"api/Faculties/{100}");
         response.StatusCode.Should().Be(HttpStatusCode.Forbidden);
     }
-    
+
     [Fact]
     public async Task PutToGroups_ShouldReturn403_WhenUnauthorized()
     {
@@ -144,7 +136,7 @@ public class ForbiddenResultTests : IClassFixture<ApplicationFactory>, IAsyncLif
         var response = await _client.DeleteAsync($"api/Groups/{100}");
         response.StatusCode.Should().Be(HttpStatusCode.Forbidden);
     }
-    
+
     [Fact]
     public async Task PutToTeachers_ShouldReturn403_WhenUnauthorized()
     {
@@ -165,7 +157,7 @@ public class ForbiddenResultTests : IClassFixture<ApplicationFactory>, IAsyncLif
         var response = await _client.DeleteAsync($"api/Teachers/{100}");
         response.StatusCode.Should().Be(HttpStatusCode.Forbidden);
     }
-    
+
     [Fact]
     public async Task PutToSubjects_ShouldReturn403_WhenUnauthorized()
     {
@@ -186,5 +178,4 @@ public class ForbiddenResultTests : IClassFixture<ApplicationFactory>, IAsyncLif
         var response = await _client.DeleteAsync($"api/Subjects/{100}");
         response.StatusCode.Should().Be(HttpStatusCode.Forbidden);
     }
-    
 }
