@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-using System.Text.Json;
-using IdentityServer4.Extensions;
+﻿using IdentityServer4.Extensions;
 using UniversityTimetable.FrontEnd.Requests.Interfaces;
 using UniversityTimetable.Shared.Extensions;
 
@@ -11,14 +9,12 @@ public class UserRequests : IUserRequests
     private readonly IBaseRequests<UserDto> _baseRequests;
     private readonly IHttpClientFactory _client;
     private readonly IHttpContextAccessor _httpContextAccessor;
-    private readonly JsonSerializerOptions _options;
-    
-    public UserRequests(IBaseRequests<UserDto> baseRequests, IHttpClientFactory client, IHttpContextAccessor httpContextAccessor, JsonSerializerOptions options)
+
+    public UserRequests(IBaseRequests<UserDto> baseRequests, IHttpClientFactory client, IHttpContextAccessor httpContextAccessor)
     {
         _baseRequests = baseRequests;
         _client = client;
         _httpContextAccessor = httpContextAccessor;
-        _options = options;
     }
 
     public Task<UserDto> GetByIdAsync(int id)
@@ -44,20 +40,10 @@ public class UserRequests : IUserRequests
         return _baseRequests.GetByIdAsync(user?.GetId() ?? throw new UnauthorizedAccessException());
     }
 
-    public async Task<List<KeyValuePair<string, string>>> ValidateCreateAsync(UserDto user)
+    public async Task ChangePassword(PasswordChangeDto passwordChange)
     {
-        var response = await _client.CreateClient("UTApi").PutAsJsonAsync("api/Users/Validate/Create", user);
+        var response = await _client.CreateClient("UTApi").PutAsJsonAsync("api/Users/changePassword", passwordChange);
         response.EnsureSuccessStatusCode();
-        return JsonSerializer.Deserialize<List<KeyValuePair<string, string>>>(await response.Content.ReadAsStringAsync(), _options)
-               ?? throw new UnreachableException($"cannot deserialize object of type {typeof(UserDto)}");
-    }
-
-    public async Task<List<KeyValuePair<string, string>>> ValidateUpdateAsync(UserDto user)
-    {
-        var response = await _client.CreateClient("UTApi").PutAsJsonAsync("api/Users/Validate/Update", user);
-        response.EnsureSuccessStatusCode();
-        return JsonSerializer.Deserialize<List<KeyValuePair<string, string>>>(await response.Content.ReadAsStringAsync(), _options)
-               ?? throw new UnreachableException($"cannot deserialize object of type {typeof(UserDto)}");
     }
 
     public async Task SaveAuditory(int auditoryId)

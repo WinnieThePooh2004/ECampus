@@ -2,8 +2,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using UniversityTimetable.FrontEnd.Requests.Interfaces;
-using UniversityTimetable.Shared.Extensions;
+using UniversityTimetable.FrontEnd.Auth;
 
 namespace UniversityTimetable.FrontEnd.Pages.Auth;
 
@@ -11,12 +10,13 @@ namespace UniversityTimetable.FrontEnd.Pages.Auth;
 public class LoginModel : PageModel
 {
     public string ReturnUrl { get; set; } = string.Empty;
-    private readonly IAuthRequests _authRequests;
+    private readonly IAuthService _authService;
 
-    public LoginModel(IAuthRequests requests)
+    public LoginModel(IAuthService service)
     {
-        _authRequests = requests;
+        _authService = service;
     }
+    
     public async Task<IActionResult> OnGetAsync(string email, string password)
     {
         var returnUrl = Url.Content("~/");
@@ -25,10 +25,7 @@ public class LoginModel : PageModel
             IsPersistent = true,
             RedirectUri = Request.Host.Value
         };
-        var login = new LoginDto { Email = email, Password = password };
-        var user = await _authRequests.LoginAsync(login);
-        await HttpContext.SignInAsync(user, authProperties);
-
+        await _authService.Login(email, password, authProperties);
         return LocalRedirect(returnUrl);
     }
 }

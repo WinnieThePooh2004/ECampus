@@ -37,12 +37,4 @@ public class ClassRequests : IClassRequests
         return JsonSerializer.Deserialize<Timetable>(await response.Content.ReadAsStringAsync(), _options)
                ?? throw new UnreachableException($"cannot deserialize object of type {typeof(UserDto)}");
     }
-
-    public async Task<List<KeyValuePair<string, string>>> ValidateAsync(ClassDto model)
-    {
-        var response = await _client.PutAsJsonAsync("/api/Timetable/Validate", model);
-        response.EnsureSuccessStatusCode();
-        return JsonSerializer.Deserialize<List<KeyValuePair<string, string>>>(await response.Content.ReadAsStringAsync(), _options)
-               ?? throw new UnreachableException($"cannot deserialize object of type {typeof(UserDto)}");
-    }
 }

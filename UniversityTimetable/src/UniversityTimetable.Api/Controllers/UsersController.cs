@@ -52,10 +52,16 @@ public class UsersController : ControllerBase
         return Ok(await _service.ValidateCreateAsync(user));
     }
 
-    [HttpPut("/changePassword")]
+    [HttpPut("changePassword")]
     public async Task<IActionResult> ChangePassword(PasswordChangeDto passwordChange)
     {
         return Ok(await _service.ChangePassword(passwordChange));
+    }
+    
+    [HttpPut("changePassword/validate")]
+    public async Task<IActionResult> ValidatePasswordChange(PasswordChangeDto passwordChange)
+    {
+        return Ok(await _service.ValidatePasswordChange(passwordChange));
     }
 
     [HttpPut("Validate/Update")]

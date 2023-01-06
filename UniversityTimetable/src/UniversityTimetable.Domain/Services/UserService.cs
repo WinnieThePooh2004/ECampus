@@ -59,7 +59,12 @@ public class UserService : IUserService
         await _userDataAccessFacade.ChangePassword(passwordChange);
         return passwordChange;
     }
-    
+
+    public async Task<List<KeyValuePair<string, string>>> ValidatePasswordChange(PasswordChangeDto passwordChange)
+    {
+        return await _passwordChangeValidator.ValidateAsync(passwordChange);
+    }
+
     public Task SaveAuditory(int userId, int auditoryId)
     {
         _authenticationService.VerifyUser(userId);
