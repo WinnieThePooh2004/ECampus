@@ -7,7 +7,7 @@ namespace UniversityTimetable.FrontEnd.Components.EditForms;
 
 public partial class UserEditForm
 {
-    [Parameter] public Func<UserDto, Task> OnSubmit { get; set; } = _ => Task.CompletedTask;
+    [Parameter] public EventCallback<UserDto> OnSubmit { get; set; }
     [Inject] private IUserValidatorFactory ValidatorFactory { get; set; } = default!;
     [Inject] private IBaseRequests<UserDto> Requests { get; set; } = default!;
 
@@ -31,7 +31,7 @@ public partial class UserEditForm
         }
 
         await Requests.CreateAsync(_model);
-        await OnSubmit(_model);
+        await OnSubmit.InvokeAsync(_model);
     }
 
     private async Task<bool> IsValid()
