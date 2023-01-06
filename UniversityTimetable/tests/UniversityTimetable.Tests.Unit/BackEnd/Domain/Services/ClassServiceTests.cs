@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using UniversityTimetable.Domain.Services;
 using UniversityTimetable.Shared.DataContainers;
 using UniversityTimetable.Shared.DataTransferObjects;
+using UniversityTimetable.Shared.Exceptions.DomainExceptions;
 using UniversityTimetable.Shared.Interfaces.Data.Validation;
 using UniversityTimetable.Shared.Interfaces.DataAccess;
 using UniversityTimetable.Shared.Interfaces.Domain;
@@ -145,6 +146,30 @@ public class ClassServiceTests
         var result = await _sut.GetTimetableForTeacherAsync(10);
 
         result.Should().BeEquivalentTo(expected, opt => opt.ComparingByMembers<Timetable>());
+    }
+
+    [Fact]
+    public async Task GetTimetableForAuditory_ShouldThrowException_WhenIdIsNull()
+    {
+        await new Func<Task>(() => _sut.GetTimetableForAuditoryAsync(null)).Should()
+            .ThrowAsync<NullIdException>()
+            .WithMessage(new NullIdException().Message);
+    }
+    
+    [Fact]
+    public async Task GetTimetableForGroup_ShouldThrowException_WhenIdIsNull()
+    {
+        await new Func<Task>(() => _sut.GetTimetableForGroupAsync(null)).Should()
+            .ThrowAsync<NullIdException>()
+            .WithMessage(new NullIdException().Message);
+    }
+    
+    [Fact]
+    public async Task GetTimetableForTeacher_ShouldThrowException_WhenIdIsNull()
+    {
+        await new Func<Task>(() => _sut.GetTimetableForTeacherAsync(null)).Should()
+            .ThrowAsync<NullIdException>()
+            .WithMessage(new NullIdException().Message);
     }
 
     private ClassDto CreateClass()
