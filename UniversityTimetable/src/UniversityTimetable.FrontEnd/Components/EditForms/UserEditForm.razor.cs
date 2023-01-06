@@ -7,17 +7,35 @@ namespace UniversityTimetable.FrontEnd.Components.EditForms;
 
 public partial class UserEditForm
 {
-    [Inject] private IUserValidatorFactory ValidatorFactory { get; set; }
-    [Inject] private IBaseRequests<UserDto> Requests { get; set; }
-    private IValidator<UserDto> _validator;
+    [Parameter] public EventCallback<UserDto> OnSubmit { get; set; }
+    [Inject] private IUserValidatorFactory ValidatorFactory { get; set; } = default!;
+    [Inject] private IBaseRequests<UserDto> Requests { get; set; } = default!;
+
+    [Inject] private NavigationManager NavigationManager { get; set; } = default!;
+
+    [Inject] private IHttpContextAccessor HttpContextAccessor { get; set; } = default!;
+
+    private IValidator<UserDto>? _validator;
     private UserDto _model = new();
+
     protected override void OnInitialized()
     {
-        _validator = ValidatorFactory.CreateValidator();
+        _validator = ValidatorFactory.CreateValidator() ?? throw new NullReferenceException("ValidatorFactory is null");
     }
 
     private async Task Submit()
     {
-        await Requests.UpdateAsync(_model);
+        if (!await IsValid())
+        {
+            return;
+        }
+
+        await Requests.CreateAsync(_model);
+        await OnSubmit.InvokeAsync(_model);
+    }
+
+    private async Task<bool> IsValid()
+    {
+        return (await _validator?.ValidateAsync(_model)!)?.IsValid ?? false;
     }
 }

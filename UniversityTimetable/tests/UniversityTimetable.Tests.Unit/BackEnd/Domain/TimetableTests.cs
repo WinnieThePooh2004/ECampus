@@ -7,6 +7,14 @@ namespace UniversityTimetable.Tests.Unit.BackEnd.Domain;
 public class TimetableTests
 {
     [Fact]
+    public void CreateTimetable_ShouldCreateEmptyTable_WhenToListPassed()
+    {
+        var timetable = new Timetable();
+        timetable.DailyClasses.Length.Should().Be(6);
+        timetable.DailyClasses[0].Length.Should().Be(10);
+    }
+    
+    [Fact]
     private void CreateTimetable_WidthShouldBe6_HeightShouldBe5()
     {
         var timetable = new Timetable(new List<ClassDto>());

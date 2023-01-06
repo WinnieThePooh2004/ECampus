@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Diagnostics;
+using System.Text.Json;
 using UniversityTimetable.FrontEnd.Requests.Interfaces;
 
 namespace UniversityTimetable.FrontEnd.Requests;
@@ -17,27 +18,23 @@ public class ClassRequests : IClassRequests
     {
         var response = await _client.GetAsync($"/api/Timetable/Auditory/{groupId}");
         response.EnsureSuccessStatusCode();
-        return JsonSerializer.Deserialize<Timetable>(await response.Content.ReadAsStringAsync(), _options);
+        return JsonSerializer.Deserialize<Timetable>(await response.Content.ReadAsStringAsync(), _options)
+               ?? throw new UnreachableException($"cannot deserialize object of type {typeof(UserDto)}");
     }
 
     public async Task<Timetable> GroupTimetable(int groupId)
     {
         var response = await _client.GetAsync($"/api/Timetable/Group/{groupId}");
         response.EnsureSuccessStatusCode();
-        return JsonSerializer.Deserialize<Timetable>(await response.Content.ReadAsStringAsync(), _options);
+        return JsonSerializer.Deserialize<Timetable>(await response.Content.ReadAsStringAsync(), _options)
+               ?? throw new UnreachableException($"cannot deserialize object of type {typeof(UserDto)}");
     }
 
     public async Task<Timetable> TeacherTimetable(int groupId)
     {
         var response = await _client.GetAsync($"/api/Timetable/Teacher/{groupId}");
         response.EnsureSuccessStatusCode();
-        return JsonSerializer.Deserialize<Timetable>(await response.Content.ReadAsStringAsync(), _options);
-    }
-
-    public async Task<List<KeyValuePair<string, string>>> ValidateAsync(ClassDto model)
-    {
-        var response = await _client.PutAsJsonAsync("/api/Timetable/Validate", model);
-        response.EnsureSuccessStatusCode();
-        return JsonSerializer.Deserialize<List<KeyValuePair<string, string>>>(await response.Content.ReadAsStringAsync(), _options);
+        return JsonSerializer.Deserialize<Timetable>(await response.Content.ReadAsStringAsync(), _options)
+               ?? throw new UnreachableException($"cannot deserialize object of type {typeof(UserDto)}");
     }
 }

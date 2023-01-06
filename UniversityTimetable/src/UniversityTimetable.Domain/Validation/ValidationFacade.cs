@@ -20,7 +20,7 @@ public class ValidationFacade<T> : IValidationFacade<T>
         var errors = await _createValidator.ValidateAsync(instance);
         if (instance.Id != 0)
         {
-            errors.Add(KeyValuePair.Create(nameof(instance.Id), "Cannot add object to database if it`s id is not 0"));
+            errors.Add(KeyValuePair.Create(nameof(instance.Id), "Cannot add object to database if its id is not 0"));
         }
 
         return errors;
@@ -31,7 +31,7 @@ public class ValidationFacade<T> : IValidationFacade<T>
         var errors = await _updateValidator.ValidateAsync(instance);
         if (instance.Id < 0)
         {
-            errors.Add(KeyValuePair.Create(nameof(instance.Id), "Cannot update object if it`s id is less or equal 0"));
+            errors.Add(KeyValuePair.Create(nameof(instance.Id), "Cannot update object if its id is less or equal 0"));
         }
 
         return errors;

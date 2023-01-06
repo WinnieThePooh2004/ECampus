@@ -1,5 +1,7 @@
-﻿using System.Text.Json;
+﻿using System.Diagnostics;
+using System.Text.Json;
 using UniversityTimetable.FrontEnd.Requests.Interfaces;
+using UniversityTimetable.Shared.Auth;
 
 namespace UniversityTimetable.FrontEnd.Requests;
 
@@ -13,11 +15,12 @@ public class AuthRequests : IAuthRequests
         _options = options;
     }
 
-    public async Task<UserDto> LoginAsync(LoginDto login)
+    public async Task<LoginResult> LoginAsync(LoginDto login)
     {
         var response = await _client.CreateClient("UTApi").PostAsJsonAsync("api/Auth/login", login);
         response.EnsureSuccessStatusCode();
-        return JsonSerializer.Deserialize<UserDto>(await response.Content.ReadAsStringAsync(), _options);
+        return JsonSerializer.Deserialize<LoginResult>(await response.Content.ReadAsStringAsync(), _options)
+            ?? throw new UnreachableException($"cannot deserialize object of type {typeof(UserDto)}");
     }
 
     public async Task LogoutAsync()

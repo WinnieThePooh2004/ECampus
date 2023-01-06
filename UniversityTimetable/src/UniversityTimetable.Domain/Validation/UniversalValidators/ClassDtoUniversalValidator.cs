@@ -32,7 +32,7 @@ public class ClassDtoUniversalValidator : ICreateValidator<ClassDto>, IUpdateVal
                 new KeyValuePair<string, string>(error.PropertyName, error.ErrorMessage)));
         }
 
-        var model = await _dataAccess.LoadRequiredDataForCreate(_mapper.Map<Class>(dataTransferObject));
+        var model = await _dataAccess.LoadRequiredDataForCreateAsync(_mapper.Map<Class>(dataTransferObject));
         var errors = ValidateReferencedValues(model);
         if (errors.Any())
         {
@@ -57,7 +57,7 @@ public class ClassDtoUniversalValidator : ICreateValidator<ClassDto>, IUpdateVal
                        @class.WeekDependency != WeekDependency.None ||
                        c.WeekDependency == @class.WeekDependency)))
         {
-            errors.Add(KeyValuePair.Create(nameof(@class.AuditoryId),
+            errors.Add(KeyValuePair.Create(nameof(@class.TeacherId),
                 $"Teacher {@class.Teacher.FirstName} {@class.Teacher.LastName} " +
                 $"already has class number {@class.Number}" +
                 $" on {(DayOfWeek)@class.DayOfWeek}s " +
@@ -72,7 +72,7 @@ public class ClassDtoUniversalValidator : ICreateValidator<ClassDto>, IUpdateVal
         var errors = new List<KeyValuePair<string, string>>();
         if (@class.Teacher.SubjectIds.All(s => s.SubjectId != @class.SubjectId))
         {
-            errors.Add(KeyValuePair.Create<string, string>(nameof(@class.TeacherId),
+            errors.Add(KeyValuePair.Create<string, string>(nameof(@class.SubjectId),
                 $"Teacher {@class.Teacher.FirstName} {@class.Teacher.LastName} " +
                 $"does not teach subject {@class.Subject.Name}"));
         }
@@ -106,12 +106,12 @@ public class ClassDtoUniversalValidator : ICreateValidator<ClassDto>, IUpdateVal
         var errors = new List<KeyValuePair<string, string>>();
         if (@class.Group is null)
         {
-            errors.Add(KeyValuePair.Create<string, string>(nameof(@class.GroupId), "Subject does not exist"));
+            errors.Add(KeyValuePair.Create<string, string>(nameof(@class.GroupId), "Group does not exist"));
         }
 
         if (@class.Auditory is null)
         {
-            errors.Add(KeyValuePair.Create(nameof(@class.AuditoryId), "Subject does not exist"));
+            errors.Add(KeyValuePair.Create(nameof(@class.AuditoryId), "Auditory does not exist"));
         }
 
         if (@class.Subject is null)

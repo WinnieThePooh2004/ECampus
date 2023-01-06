@@ -3,8 +3,7 @@
 public interface IUserRequests : IBaseRequests<UserDto>
 {
     Task<UserDto> GetCurrentUserAsync();
-    Task<List<KeyValuePair<string, string>>> ValidateCreateAsync(UserDto user);
-    Task<List<KeyValuePair<string, string>>> ValidateUpdateAsync(UserDto user);
+    Task ChangePassword(PasswordChangeDto passwordChange);
     Task SaveAuditory(int auditoryId);
     Task RemoveSavedAuditory(int auditoryId);
     Task SaveGroup(int groupId);

@@ -22,7 +22,7 @@ public sealed partial class Auditory
     protected override async Task RefreshData()
     {
         await base.RefreshData();
-        _isSaved = User.SavedAuditories.Any(a => a.Id == AuditoryId);
+        _isSaved = User?.SavedAuditories?.Any(a => a.Id == AuditoryId) ?? false;
         StateHasChanged();
     }
 

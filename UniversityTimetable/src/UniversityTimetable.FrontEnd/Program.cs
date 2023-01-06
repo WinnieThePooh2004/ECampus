@@ -3,11 +3,14 @@ using FluentValidation;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using MudBlazor.Services;
 using UniversityTimetable.Domain.Validation.FluentValidators;
+using UniversityTimetable.FrontEnd.Auth;
 using UniversityTimetable.FrontEnd.Extensions;
 using UniversityTimetable.FrontEnd.HttpHandlers;
 using UniversityTimetable.FrontEnd.Requests;
 using UniversityTimetable.FrontEnd.Requests.Interfaces;
+using UniversityTimetable.FrontEnd.Requests.Interfaces.Validation;
 using UniversityTimetable.FrontEnd.Requests.Options;
+using UniversityTimetable.FrontEnd.Requests.ValidationRequests;
 using UniversityTimetable.FrontEnd.Validation;
 using UniversityTimetable.FrontEnd.Validation.Interfaces;
 
@@ -16,6 +19,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
+
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 builder.Services.Configure<RequestOptions>(builder.Configuration.GetSection("Requests"));
 
@@ -35,7 +40,8 @@ builder.Services.AddScoped<IValidator<DepartmentDto>, DepartmentDtoValidator>();
 builder.Services.AddScoped<IValidator<UserDto>, UserDtoValidator>();
 
 builder.Services.AddScoped<IValidator<ClassDto>, ClassDtoValidator>();
-builder.Services.Decorate<IValidator<ClassDto>, ExtendedClassDtoValidator>();
+builder.Services.AddScoped<IValidationRequests<ClassDto>, ClassValidationRequests>();
+builder.Services.Decorate<IValidator<ClassDto>, HttpCallingValidator<ClassDto>>();
 
 builder.Services.AddScoped<IClassRequests, ClassRequests>();
 builder.Services.AddScoped<IBaseRequests<ClassDto>, BaseRequests<ClassDto>>();
@@ -46,6 +52,12 @@ builder.Services.AddScoped<IUserRequests, UserRequests>();
 builder.Services.AddScoped<IAuthRequests, AuthRequests>();
 
 builder.Services.AddScoped<IUserValidatorFactory, UserValidatorFactory>();
+builder.Services.AddScoped<IUpdateValidationRequests<UserDto>, UserUpdateValidationRequests>();
+builder.Services.AddScoped<ICreateValidationRequests<UserDto>, UserCreateValidationRequests>();
+
+builder.Services.AddScoped<IValidator<PasswordChangeDto>, PasswordChangeDtoValidator>();
+builder.Services.AddScoped<IValidationRequests<PasswordChangeDto>, PasswordChangeValidationRequests>();
+builder.Services.Decorate<IValidator<PasswordChangeDto>, HttpCallingValidator<PasswordChangeDto>>();
 
 builder.Services.AddSingleton<IRequestOptions>(new RequestOptions(builder.Configuration));
 
@@ -63,13 +75,13 @@ builder.Services.AddAuthentication(opt =>
     opt.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
 }).AddCookie();
 
-builder.Services.AddScoped<CookieTokenHandler>();
+builder.Services.AddScoped<TokenHandler>();
 
 builder.Services.AddHttpClient("UTApi", client =>
 {
     client.BaseAddress =
         new Uri(builder.Configuration["Api"] ?? throw new Exception("Cannot find section 'Api'"));
-}).AddHttpMessageHandler<CookieTokenHandler>();
+}).AddHttpMessageHandler<TokenHandler>();
 
 builder.Services.AddSingleton(new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 

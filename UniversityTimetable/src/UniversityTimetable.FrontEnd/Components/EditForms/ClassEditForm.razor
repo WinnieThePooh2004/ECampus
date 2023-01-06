@@ -5,9 +5,9 @@
             <button type="submit" class="btn btn-success">Save</button>
             <FluentValidationValidator Validator="Validator"/>
             <div class="form-group">
-                <label>Class type</label>
+                <label class="form-label">Class type</label>
                 <br/>
-                <InputSelect @bind-Value="Model.ClassType">
+                <InputSelect class="form-select" @bind-Value="Model.ClassType">
                     @foreach (var type in Enum.GetValues<ClassType>())
                     {
                         <option value="@type">@type</option>
@@ -15,9 +15,9 @@
                     <ValidationMessage For="@(() => Model.ClassType)"/>
                 </InputSelect>
                 <br/>
-                <label>Week dependency</label>
+                <label class="form-label">Week dependency</label>
                 <br/>
-                <InputSelect @bind-Value="Model.WeekDependency">
+                <InputSelect class="form-select" @bind-Value="Model.WeekDependency">
                     @foreach (var weekDependency in Enum.GetValues<WeekDependency>())
                     {
                         <option value="@weekDependency">@weekDependency</option>

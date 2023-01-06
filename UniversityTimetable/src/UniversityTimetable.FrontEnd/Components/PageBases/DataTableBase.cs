@@ -7,13 +7,13 @@ namespace UniversityTimetable.FrontEnd.Components.PageBases
         where TData : class
         where TParameters : class, IQueryParameters, new()
     {
-        [Inject] protected IParametersRequests<TData, TParameters> DataRequests { get; set; }
-        protected ListWithPaginationData<TData> Data { get; private set; }
+        [Inject] protected IParametersRequests<TData, TParameters>? DataRequests { get; set; }
+        protected ListWithPaginationData<TData>? Data { get; private set; }
         protected TParameters Parameters { get; } = new();
 
-        protected virtual async Task RefreshData()
+        protected async Task RefreshData()
         {
-            Data = await DataRequests.GetByParametersAsync(Parameters);
+            Data = await DataRequests?.GetByParametersAsync(Parameters)!;
             StateHasChanged();
         }
 

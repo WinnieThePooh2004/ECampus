@@ -1,9 +1,10 @@
-﻿using UniversityTimetable.Shared.DataTransferObjects;
+﻿using Microsoft.EntityFrameworkCore;
+using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Shared.Models;
 
 namespace UniversityTimetable.Shared.Interfaces.DataAccess;
 
 public interface IPasswordChange
 {
-    Task<User> ChangePassword(PasswordChangeDto passwordChange);
+    Task<User> ChangePassword(PasswordChangeDto passwordChange, DbContext context);
 }

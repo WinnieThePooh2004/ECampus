@@ -8,5 +8,5 @@
 <TeacherEditForm Model="@Model" OnSubmit="Save" />
 
 @code{
-    protected override string PageAfterSave => $"teachers/{Model.DepartmentId}";
+    protected override string PageAfterSave => $"teachers/{Model?.DepartmentId}";
 }

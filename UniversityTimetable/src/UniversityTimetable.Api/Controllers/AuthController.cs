@@ -22,7 +22,7 @@ namespace UniversityTimetable.Api.Controllers
         [Route("login")]
         public async Task<IActionResult> Login(LoginDto login)
         {
-            return Ok(await _authorizationService.Login(login, HttpContext));
+            return Ok(await _authorizationService.Login(login));
         }
 
         [HttpDelete]
@@ -30,7 +30,7 @@ namespace UniversityTimetable.Api.Controllers
         [Authorized]
         public async Task<IActionResult> Logout()
         {
-            await _authorizationService.Logout(HttpContext);
+            await _authorizationService.Logout();
             return NoContent();
         }
     }

@@ -1,8 +1,6 @@
-﻿using System.Security.Claims;
-
-namespace UniversityTimetable.Shared.Interfaces.Auth;
+﻿namespace UniversityTimetable.Shared.Interfaces.Auth;
 
 public interface IAuthenticationService
 {
-    void VerifyUser(ClaimsPrincipal user);
+    void VerifyUser(int userId);
 }

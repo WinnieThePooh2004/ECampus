@@ -13,15 +13,15 @@ public class ClassValidationDataAccess : IValidationDataAccess<Class>
         _context = context;
     }
     
-    public Task<Class> LoadRequiredDataForCreate(Class model) => LoadModelRequiredData(model);
+    public Task<Class> LoadRequiredDataForCreateAsync(Class model) => LoadModelRequiredData(model);
 
-    public Task<Class> LoadRequiredDataForUpdate(Class model) => LoadModelRequiredData(model);
+    public Task<Class> LoadRequiredDataForUpdateAsync(Class model) => LoadModelRequiredData(model);
 
     private async Task<Class> LoadModelRequiredData(Class model) =>
         new()
         {
             Group = await _context.Groups.AsNoTracking().Include(g => g.Classes)
-                .FirstOrDefaultAsync(s => s.Id == model.GroupId),
+                .FirstOrDefaultAsync(g => g.Id == model.GroupId),
             Auditory = await _context.Auditories.AsNoTracking()
                 .Include(a => a.Classes).FirstOrDefaultAsync(s => s.Id == model.AuditoryId),
             Subject = await _context.Subjects.AsNoTracking().FirstOrDefaultAsync(s => s.Id == model.SubjectId),

@@ -23,7 +23,7 @@ public class UserUpdateValidator : IUpdateValidator<UserDto>
         var errors = await _baseValidator.ValidateAsync(dataTransferObject);
         var model = _mapper.Map<User>(dataTransferObject);
         errors.AddRange(await _dataAccess.ValidateUpdate(model));
-        var userFromDb = await _dataAccess.LoadRequiredDataForUpdate(model);
+        var userFromDb = await _dataAccess.LoadRequiredDataForUpdateAsync(model);
 
         if (model.Email != userFromDb.Email)
         {

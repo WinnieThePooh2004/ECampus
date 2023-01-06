@@ -10,5 +10,5 @@
 <GroupEditForm Model="Model" OnSubmit="Save" />
 
 @code{
-    protected override string PageAfterSave => $"/groups/{Model.DepartmentId}";
+    protected override string PageAfterSave => $"/groups/{Model?.DepartmentId}";
 }

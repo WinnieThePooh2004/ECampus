@@ -4,8 +4,8 @@
     <div class="row">
         <div class="col-md-4">
             <p>
-                <label for="@Model.Name">Name</label>
-                <InputText @bind-Value="Model.Name" />
+                <label class="form-label" for="@Model.Name">Name</label>
+                <InputText class="form-control" @bind-Value="Model.Name" />
                 <ValidationMessage For="@(() => Model.Name)" />
             </p>
             <table class="table">
@@ -17,7 +17,7 @@
                         Last name
                     </th>
                 </tr>
-                @foreach (var teacher in Model.Teachers)
+                @foreach (var teacher in Model.Teachers ??= new List<TeacherDto>())
                 {
                     <tr>
                         <td>

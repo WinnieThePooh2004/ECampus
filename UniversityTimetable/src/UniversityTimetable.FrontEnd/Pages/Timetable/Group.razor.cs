@@ -21,6 +21,6 @@ public partial class Group
     protected override async Task RefreshData()
     {
         await base.RefreshData();
-        _isSaved = User.SavedGroups.Any(g => g.Id == GroupId);
+        _isSaved = User?.SavedGroups?.Any(g => g.Id == GroupId) ?? false;
     }
 }

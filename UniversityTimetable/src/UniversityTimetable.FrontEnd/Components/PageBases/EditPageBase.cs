@@ -7,10 +7,10 @@ namespace UniversityTimetable.FrontEnd.Components.PageBases
         where TData : class
     {
         [Parameter] public int Id { get; set; }
-        [Inject] protected IBaseRequests<TData> Requests { get; set; }
-        [Inject] protected NavigationManager Navigation { get; set; }
+        [Inject] protected IBaseRequests<TData> Requests { get; set; } = default!;
+        [Inject] protected NavigationManager Navigation { get; set; } = default!;
         protected abstract string PageAfterSave { get; }
-        protected TData Model { get; private set; }
+        protected TData? Model { get; private set; }
         protected override async Task OnInitializedAsync()
         {
             Model = await GetModel();

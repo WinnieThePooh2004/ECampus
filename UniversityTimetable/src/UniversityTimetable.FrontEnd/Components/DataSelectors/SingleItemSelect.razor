@@ -13,7 +13,7 @@
     <thead>
     @if (!string.IsNullOrWhiteSpace(Title))
     {
-        <H3>@Title</H3>
+        <h3>@Title</h3>
     }
     <input type="text" @bind-value="@Parameters.SearchTerm" @onblur="RefreshData" style="background-color: rgb(235, 235, 235)"
            placeholder="Search"/>

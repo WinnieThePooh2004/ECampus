@@ -1,25 +1,27 @@
 ﻿using FluentValidation;
-using UniversityTimetable.FrontEnd.Requests.Interfaces;
+using UniversityTimetable.FrontEnd.Requests.Interfaces.Validation;
 using UniversityTimetable.FrontEnd.Validation.Interfaces;
 
 namespace UniversityTimetable.FrontEnd.Validation;
 
 public class UserValidatorFactory : IUserValidatorFactory
 {
-    private readonly IUserRequests _requests;
-    private readonly IValidator<UserDto> _baseCreateValidator;
-    private readonly IHttpContextAccessor _httpContextAccessor;
-    
-    public UserValidatorFactory(IUserRequests requests, IValidator<UserDto> baseCreateValidator, IHttpContextAccessor httpContextAccessor)
+    private readonly IUpdateValidationRequests<UserDto> _updateValidationRequests;
+    private readonly ICreateValidationRequests<UserDto> _createValidationRequests;
+    private readonly IValidator<UserDto> _baseValidator;
+
+    public UserValidatorFactory(IValidator<UserDto> baseValidator,
+        ICreateValidationRequests<UserDto> createValidationRequests,
+        IUpdateValidationRequests<UserDto> updateValidationRequests)
     {
-        _requests = requests;
-        _baseCreateValidator = baseCreateValidator;
-        _httpContextAccessor = httpContextAccessor;
+        _baseValidator = baseValidator;
+        _createValidationRequests = createValidationRequests;
+        _updateValidationRequests = updateValidationRequests;
     }
 
-    public IValidator<UserDto> CreateValidator() 
-        => new CreateUserValidator(_baseCreateValidator, _requests, _httpContextAccessor);
+    public IValidator<UserDto> CreateValidator()
+        => new HttpCallingValidator<UserDto>(_baseValidator, _createValidationRequests);
 
-    public IValidator<UserDto> UpdateValidator() 
-        => new UpdateUserValidator(_requests);
+    public IValidator<UserDto> UpdateValidator()
+        => new HttpCallingValidator<UserDto>(_baseValidator, _updateValidationRequests);
 }

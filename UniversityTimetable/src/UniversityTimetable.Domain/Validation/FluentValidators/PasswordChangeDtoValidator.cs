@@ -9,19 +9,13 @@ public class PasswordChangeDtoValidator : AbstractValidator<PasswordChangeDto>
     {
         RuleFor(p => p.NewPassword)
             .MinimumLength(8)
-            .WithMessage("Password must be at least 8 symbols");
-        
-        RuleFor(p => p.NewPassword)
-            .NotEmpty()
-            .WithMessage("Enter some password, please.")
-            .MinimumLength(8)
-            .WithMessage("Password length must be at least 8 characters.")
+            .WithMessage("New password must be at least 8 symbols")
             .Matches(@"[A-Z]+")
-            .WithMessage("Password must contain at least one uppercase letter.")
+            .WithMessage("New password must contain at least one uppercase letter.")
             .Matches(@"[a-z]+")
-            .WithMessage("Password must contain at least one lowercase letter.")
+            .WithMessage("New password must contain at least one lowercase letter.")
             .Matches(@"[0-9]+")
-            .WithMessage("Password must contain at least one number.");
+            .WithMessage("New password must contain at least one number.");
         
         RuleFor(p => p.NewPasswordConfirm)
             .Equal(p => p.NewPassword)

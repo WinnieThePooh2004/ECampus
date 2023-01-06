@@ -19,7 +19,7 @@ public class PasswordChangeDtoUpdateValidator : IUpdateValidator<PasswordChangeD
     public async Task<List<KeyValuePair<string, string>>> ValidateAsync(PasswordChangeDto dataTransferObject)
     {
         var errors = await _baseValidator.ValidateAsync(dataTransferObject);
-        var user = await _dataAccess.LoadRequiredDataForUpdate(new User { Id = dataTransferObject.UserId });
+        var user = await _dataAccess.LoadRequiredDataForUpdateAsync(new User { Id = dataTransferObject.UserId });
         if (user.Password != dataTransferObject.OldPassword)
         {
             errors.Add(KeyValuePair.Create(nameof(dataTransferObject.OldPassword), "Invalid old password"));

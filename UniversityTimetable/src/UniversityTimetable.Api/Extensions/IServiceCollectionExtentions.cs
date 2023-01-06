@@ -1,11 +1,11 @@
 ﻿using UniversityTimetable.Domain.Services;
 using UniversityTimetable.Domain.Validation.CreateValidators;
 using UniversityTimetable.Domain.Validation.UpdateValidators;
-using UniversityTimetable.Infrastructure.DataCreate;
-using UniversityTimetable.Infrastructure.DataDelete;
 using UniversityTimetable.Infrastructure.DataSelectors.SingleItemSelectors;
-using UniversityTimetable.Infrastructure.DataUpdate;
 using UniversityTimetable.Infrastructure.DataAccessFacades;
+using UniversityTimetable.Infrastructure.DataCreateServices;
+using UniversityTimetable.Infrastructure.DataDeleteServices;
+using UniversityTimetable.Infrastructure.DataUpdateServices;
 using UniversityTimetable.Shared.Interfaces.Data.DataServices;
 using UniversityTimetable.Shared.Interfaces.Data.Models;
 using UniversityTimetable.Shared.Interfaces.Data.Validation;
@@ -22,7 +22,7 @@ internal static class IServiceCollectionExtensions
         where TModel : class, IModel
         where TParameters : IQueryParameters<TModel>
         where TImplementation : class, IMultipleItemSelector<TModel, TParameters>
-        => services.AddScoped<IMultipleItemSelector<TModel, TParameters>, TImplementation>();
+        => services.AddSingleton<IMultipleItemSelector<TModel, TParameters>, TImplementation>();
     
     public static IServiceCollection AddDefaultFacadeServices<TModel, TDto, TParameters>(this IServiceCollection services)
         where TParameters : class, IQueryParameters<TModel>, new()
@@ -35,10 +35,10 @@ internal static class IServiceCollectionExtensions
 
     public static IServiceCollection AddDefaultDataServices<TModel>(this IServiceCollection services)
         where TModel : class, IModel, new()
-        => services.AddScoped<IDataUpdate<TModel>, DataUpdate<TModel>>()
-            .AddScoped<IDataDelete<TModel>, DataDelete<TModel>>()
-            .AddScoped<IDataCreate<TModel>, DataCreate<TModel>>()
-            .AddScoped<ISingleItemSelector<TModel>, SingleItemSelector<TModel>>();
+        => services.AddSingleton<IDataUpdateService<TModel>, DataUpdateService<TModel>>()
+            .AddSingleton<IDataDeleteService<TModel>, DataDeleteService<TModel>>()
+            .AddSingleton<IDataCreateService<TModel>, DataCreateService<TModel>>()
+            .AddSingleton<ISingleItemSelector<TModel>, SingleItemSelector<TModel>>();
 
     public static IServiceCollection AddDefaultDomainServices<TDto>(this IServiceCollection services)
         where TDto : class, IDataTransferObject, new()

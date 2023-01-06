@@ -1,7 +1,6 @@
-﻿using System.Net;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using UniversityTimetable.Shared.Exceptions.InfrastructureExceptions;
-using UniversityTimetable.Shared.Extensions;
 using UniversityTimetable.Shared.Interfaces.Data.DataServices;
 using UniversityTimetable.Shared.Interfaces.Data.Models;
 using UniversityTimetable.Shared.Interfaces.DataAccess;
@@ -14,40 +13,40 @@ public class BaseDataAccessFacade<TModel> : IBaseDataAccessFacade<TModel>
     private readonly ApplicationDbContext _context;
     private readonly ILogger<BaseDataAccessFacade<TModel>> _logger;
     private readonly ISingleItemSelector<TModel> _singleItemSelector;
-    private readonly IDataUpdate<TModel> _update;
-    private readonly IDataCreate<TModel> _create;
-    private readonly IDataDelete<TModel> _delete;
+    private readonly IDataUpdateService<TModel> _updateService;
+    private readonly IDataCreateService<TModel> _createService;
+    private readonly IDataDeleteService<TModel> _deleteService;
 
     public BaseDataAccessFacade(ApplicationDbContext context, ILogger<BaseDataAccessFacade<TModel>> logger, 
-        ISingleItemSelector<TModel> singleItemSelector, IDataDelete<TModel> delete,
-        IDataUpdate<TModel> update, IDataCreate<TModel> create)
+        ISingleItemSelector<TModel> singleItemSelector, IDataDeleteService<TModel> deleteService,
+        IDataUpdateService<TModel> updateService, IDataCreateService<TModel> createService)
     {
         _context = context;
         _logger = logger;
         _singleItemSelector = singleItemSelector;
-        _delete = delete;
-        _update = update;
-        _create = create;
+        _deleteService = deleteService;
+        _updateService = updateService;
+        _createService = createService;
     }
 
     public async Task<TModel> CreateAsync(TModel entity)
     {
-        await _create.CreateAsync(entity, _context);
+        await _createService.CreateAsync(entity, _context);
         await _context.SaveChangesAsync();
         return entity;
     }
 
     public async Task DeleteAsync(int id)
     {
-        await _delete.DeleteAsync(id, _context);
+        await _deleteService.DeleteAsync(id, _context);
         try
         {
             await _context.SaveChangesAsync();
         }
-        catch (Exception e)
+        catch (DbUpdateConcurrencyException e)
         {
             _logger.LogError(e, "Db update to successful");
-            _logger.LogAndThrowException(new ObjectNotFoundByIdException(typeof(TModel), id));
+            throw new ObjectNotFoundByIdException(typeof(TModel), id);
         }
     }
 
@@ -60,15 +59,15 @@ public class BaseDataAccessFacade<TModel> : IBaseDataAccessFacade<TModel>
 
     public async Task<TModel> UpdateAsync(TModel entity)
     {
-        await _update.UpdateAsync(entity, _context);
+        await _updateService.UpdateAsync(entity, _context);
         try
         {
             await _context.SaveChangesAsync();
         }
-        catch (Exception e)
+        catch (DbUpdateConcurrencyException e)
         {
             _logger.LogError(e, "Db update was not successful");
-            throw new InfrastructureExceptions(HttpStatusCode.BadRequest, e.Message);
+            throw new ObjectNotFoundByIdException(typeof(TModel), entity.Id);
         }
         return entity;
     }

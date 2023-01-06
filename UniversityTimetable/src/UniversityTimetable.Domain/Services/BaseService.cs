@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
 using UniversityTimetable.Shared.Exceptions.DomainExceptions;
-using UniversityTimetable.Shared.Extensions;
 using UniversityTimetable.Shared.Interfaces.Data.Models;
 using UniversityTimetable.Shared.Interfaces.Data.Validation;
 using UniversityTimetable.Shared.Interfaces.DataAccess;
@@ -32,7 +31,7 @@ namespace UniversityTimetable.Domain.Services
             var errors = await _validationFacade.ValidateCreate(entity);
             if (errors.Any())
             {
-                _logger.LogAndThrowException(new ValidationException(typeof(TDto), errors));
+                throw new ValidationException(typeof(TDto), errors);
             }
             var auditory = _mapper.Map<TRepositoryModel>(entity);
             return _mapper.Map<TDto>(await _dataAccessFacade.CreateAsync(auditory));
@@ -40,6 +39,7 @@ namespace UniversityTimetable.Domain.Services
 
         public async Task DeleteAsync(int? id)
         {
+            _logger.LogInformation("Deleting object of type {Type} with id={Id}", typeof(TDto), id);
             if (id is null)
             {
                 throw new NullIdException();
@@ -49,6 +49,7 @@ namespace UniversityTimetable.Domain.Services
 
         public async Task<TDto> GetByIdAsync(int? id)
         {
+            _logger.LogInformation("Getting object of type {Type} with id={Id}", typeof(TDto), id);
             if (id is null)
             {
                 throw new NullIdException();
@@ -61,7 +62,7 @@ namespace UniversityTimetable.Domain.Services
             var errors = await _validationFacade.ValidateUpdate(entity);
             if (errors.Any())
             {
-                _logger.LogAndThrowException(new ValidationException(typeof(TDto), errors));
+                throw new ValidationException(typeof(TDto), errors);
             }
             var auditory = _mapper.Map<TRepositoryModel>(entity);
             return _mapper.Map<TDto>(await _dataAccessFacade.UpdateAsync(auditory));
