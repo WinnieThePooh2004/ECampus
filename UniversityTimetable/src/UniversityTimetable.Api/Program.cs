@@ -169,25 +169,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateIssuerSigningKey = true,
         };
     });
-// {
-//     opt.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-//     opt.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-//     opt.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-// }).AddCookie(options =>
-// {
-//     options.Events.OnRedirectToLogin = context =>
-//     {
-//         context.Response.Headers["Locations"] = context.RedirectUri;
-//         context.Response.StatusCode = 401;
-//         return Task.CompletedTask;
-//     };
-//     options.Events.OnRedirectToAccessDenied = context =>
-//     {
-//         context.Response.Headers["Locations"] = context.RedirectUri;
-//         context.Response.StatusCode = 403;
-//         return Task.CompletedTask;
-//     };
-// });
 
 var app = builder.Build();
 
