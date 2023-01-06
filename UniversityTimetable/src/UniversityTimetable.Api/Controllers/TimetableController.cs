@@ -20,7 +20,7 @@ namespace UniversityTimetable.Api.Controllers
 
         [HttpGet("Auditory/{auditoryId:int?}")]
         [AllowAnonymous]
-        public async Task<IActionResult> AuditoryTimetable(int auditoryId)
+        public async Task<IActionResult> AuditoryTimetable(int? auditoryId)
         {
             var table = await _service.GetTimetableForAuditoryAsync(auditoryId);
             return Ok(table);
@@ -28,7 +28,7 @@ namespace UniversityTimetable.Api.Controllers
 
         [HttpGet("Group/{groupId:int?}")]
         [AllowAnonymous]
-        public async Task<IActionResult> GroupTimetable(int groupId)
+        public async Task<IActionResult> GroupTimetable(int? groupId)
         {
             var table = await _service.GetTimetableForGroupAsync(groupId);
             return Ok(table);
@@ -36,7 +36,7 @@ namespace UniversityTimetable.Api.Controllers
 
         [HttpGet("Teacher/{teacherId:int?}")]
         [AllowAnonymous]
-        public async Task<IActionResult> TeacherTimetable(int teacherId)
+        public async Task<IActionResult> TeacherTimetable(int? teacherId)
         {
             var table = await _service.GetTimetableForTeacherAsync(teacherId);
             return Ok(table);
@@ -68,7 +68,7 @@ namespace UniversityTimetable.Api.Controllers
 
         [HttpDelete("{id:int?}")]
         [Authorized(UserRole.Admin)]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(int? id)
         {
             await _service.DeleteAsync(id);
             return Ok(id);

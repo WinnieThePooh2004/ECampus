@@ -51,10 +51,9 @@ namespace UniversityTimetable.Api.Controllers
             return Ok(group);
         }
 
-        // POST: Groups/Delete/5
         [HttpDelete("{id:int?}")]
         [Authorized(UserRole.Admin)]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(int? id)
         {
             await _service.DeleteAsync(id);
             return Ok(id);

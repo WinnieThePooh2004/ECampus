@@ -2,7 +2,6 @@
 using System.Text.Json;
 using IdentityServer4.Extensions;
 using UniversityTimetable.FrontEnd.Requests.Interfaces;
-using UniversityTimetable.Shared.Auth;
 using UniversityTimetable.Shared.Extensions;
 
 namespace UniversityTimetable.FrontEnd.Requests;
@@ -37,13 +36,12 @@ public class UserRequests : IUserRequests
     public Task<UserDto> GetCurrentUserAsync()
     {
         var user = _httpContextAccessor.HttpContext?.User;
-        if (user is null || !user.IsAuthenticated())
+        if (!user.IsAuthenticated())
         {
             throw new UnauthorizedAccessException();
         }
-
-        var id = user.Claims.FirstOrDefault(claim => claim.Type == CustomClaimTypes.Id)?.Value ?? throw new UnauthorizedAccessException();
-        return _baseRequests.GetByIdAsync(int.Parse(id));
+        
+        return _baseRequests.GetByIdAsync(user?.GetId() ?? throw new UnauthorizedAccessException());
     }
 
     public async Task<List<KeyValuePair<string, string>>> ValidateCreateAsync(UserDto user)

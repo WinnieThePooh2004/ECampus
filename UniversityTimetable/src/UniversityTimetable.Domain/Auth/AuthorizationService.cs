@@ -43,7 +43,7 @@ public class AuthorizationService : IAuthorizationService
             Email = user.Email,
             Role = user.Role,
             Username = user.Username,
-            UserId = user.Id,
+            UserId = user.Id
         };
         
         var jwt = new JwtSecurityToken(

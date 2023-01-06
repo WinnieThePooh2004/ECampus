@@ -104,7 +104,7 @@ public class UsersController : ControllerBase
         await _service.SaveTeacher(userId, teacherId);
         return NoContent();
     }
-        
+    
     [HttpDelete("teacher")]
     [Authorized]
     public async Task<IActionResult> RemoveTeacher([FromQuery] int userId, [FromQuery] int teacherId)
