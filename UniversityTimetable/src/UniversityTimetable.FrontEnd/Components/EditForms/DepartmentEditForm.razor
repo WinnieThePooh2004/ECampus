@@ -1,10 +1,11 @@
 ﻿@inherits ModelEditForm<DepartmentDto>
 <EditForm Model="Model" OnValidSubmit="Submit">
     <FluentValidationValidator Validator="Validator" />
-    <p>
-        <label>Name</label>
-        <InputText @bind-Value="Model.Name" />
+    <div class="col-md-3">
+        <label class="form-label">Name</label>
+        <InputText class="form-control" @bind-Value="Model.Name" />
         <ValidationMessage For="@(() => Model.Name)" />
-    </p>
+    </div>
+    <br />
     <button type="submit" class="btn btn-success">Save</button>
 </EditForm>
