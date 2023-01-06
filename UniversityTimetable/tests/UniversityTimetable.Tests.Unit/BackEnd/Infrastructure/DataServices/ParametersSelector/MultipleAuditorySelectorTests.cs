@@ -2,7 +2,7 @@
 using UniversityTimetable.Infrastructure.DataSelectors.MultipleItemSelectors;
 using UniversityTimetable.Shared.Models;
 using UniversityTimetable.Shared.QueryParameters;
-using UniversityTimetable.Tests.Shared.Mocks;
+using UniversityTimetable.Tests.Shared.Mocks.EntityFramework;
 
 namespace UniversityTimetable.Tests.Unit.BackEnd.Infrastructure.DataServices.ParametersSelector;
 

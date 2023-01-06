@@ -3,7 +3,7 @@ using UniversityTimetable.Infrastructure.Relationships;
 using UniversityTimetable.Shared.Exceptions.InfrastructureExceptions;
 using UniversityTimetable.Shared.Models;
 using UniversityTimetable.Shared.Models.RelationModels;
-using UniversityTimetable.Tests.Shared.Mocks;
+using UniversityTimetable.Tests.Shared.Mocks.EntityFramework;
 
 namespace UniversityTimetable.Tests.Unit.BackEnd.Infrastructure.DataServices.Relationships;
 

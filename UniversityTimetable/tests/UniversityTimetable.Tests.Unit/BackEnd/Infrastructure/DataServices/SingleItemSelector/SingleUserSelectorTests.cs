@@ -3,7 +3,8 @@ using UniversityTimetable.Infrastructure.DataSelectors.SingleItemSelectors;
 using UniversityTimetable.Shared.Models;
 using UniversityTimetable.Tests.Shared.DataFactories;
 using UniversityTimetable.Tests.Shared.Extensions;
-using UniversityTimetable.Tests.Shared.Mocks;
+
+using UniversityTimetable.Tests.Shared.Mocks.EntityFramework;
 
 namespace UniversityTimetable.Tests.Unit.BackEnd.Infrastructure.DataServices.SingleItemSelector;
 

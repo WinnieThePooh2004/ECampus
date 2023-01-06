@@ -1,7 +1,7 @@
 ﻿using UniversityTimetable.Infrastructure;
 using UniversityTimetable.Infrastructure.ValidationDataAccess;
 using UniversityTimetable.Shared.Models;
-using UniversityTimetable.Tests.Shared.Mocks;
+using UniversityTimetable.Tests.Shared.Mocks.EntityFramework;
 
 namespace UniversityTimetable.Tests.Unit.BackEnd.Infrastructure.DataServices.ValidationDataAccess;
 

@@ -1,7 +1,7 @@
 ﻿using UniversityTimetable.Infrastructure;
 using UniversityTimetable.Shared.Exceptions.InfrastructureExceptions;
 using UniversityTimetable.Shared.Models;
-using UniversityTimetable.Tests.Shared.Mocks;
+using UniversityTimetable.Tests.Shared.Mocks.EntityFramework;
 
 namespace UniversityTimetable.Tests.Unit.BackEnd.Infrastructure.AuthorizationDataAccess;
 

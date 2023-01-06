@@ -6,7 +6,7 @@ using UniversityTimetable.Shared.Models;
 using UniversityTimetable.Shared.QueryParameters;
 using UniversityTimetable.Tests.Shared.DataFactories;
 using UniversityTimetable.Tests.Shared.Extensions;
-using UniversityTimetable.Tests.Shared.Mocks;
+using UniversityTimetable.Tests.Shared.Mocks.EntityFramework;
 
 namespace UniversityTimetable.Tests.Unit.BackEnd.Infrastructure.DataAccessFacadesTests;
 
