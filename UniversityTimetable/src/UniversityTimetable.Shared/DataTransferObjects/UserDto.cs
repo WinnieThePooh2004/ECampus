@@ -1,8 +1,12 @@
-﻿using UniversityTimetable.Shared.Enums;
+﻿using UniversityTimetable.Shared.Attributes;
+using UniversityTimetable.Shared.Enums;
 using UniversityTimetable.Shared.Interfaces.Data.Models;
+using UniversityTimetable.Shared.Models;
 
 namespace UniversityTimetable.Shared.DataTransferObjects;
 
+[Dto<User>]
+[Validation(useUniversalValidator: false)]
 public class UserDto : IDataTransferObject
 {
     public int Id { get; set; }

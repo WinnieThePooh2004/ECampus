@@ -2,7 +2,7 @@
 using UniversityTimetable.Domain.Mapping;
 using UniversityTimetable.Domain.Validation.UpdateValidators;
 using UniversityTimetable.Shared.DataTransferObjects;
-using UniversityTimetable.Shared.Interfaces.Data.Validation;
+using UniversityTimetable.Shared.Interfaces.Domain.Validation;
 using UniversityTimetable.Shared.Models;
 
 namespace UniversityTimetable.Tests.Unit.BackEnd.Domain.Validation.UpdateValidators;
@@ -12,6 +12,7 @@ public class UserUpdateValidatorTests
     private readonly UserUpdateValidator _sut;
     private readonly IDataValidator<User> _dataValidator;
     private readonly IUpdateValidator<UserDto> _baseValidator;
+    private readonly IValidationDataAccess<User> _validationDataAccess = Substitute.For<IValidationDataAccess<User>>();
     private readonly Fixture _fixture = new();
 
     public UserUpdateValidatorTests()
@@ -20,7 +21,7 @@ public class UserUpdateValidatorTests
         var mapper = new MapperConfiguration(cfg => cfg.AddProfile<UserProfile>()).CreateMapper();
         _baseValidator = Substitute.For<IUpdateValidator<UserDto>>();
 
-        _sut = new UserUpdateValidator(_baseValidator, mapper, _dataValidator);
+        _sut = new UserUpdateValidator(_baseValidator, mapper, _dataValidator, _validationDataAccess);
     }
 
     [Fact]
@@ -30,7 +31,7 @@ public class UserUpdateValidatorTests
         var dataErrors = _fixture.CreateMany<KeyValuePair<string, string>>(10).ToList();
         var user = new UserDto{ Email = "abc@example.com", Password = "Password" };
         var userFromDb = new User { Email = "", Password = "" };
-        _dataValidator.LoadRequiredDataForUpdateAsync(Arg.Any<User>()).Returns(userFromDb);
+        _validationDataAccess.LoadRequiredDataForUpdateAsync(Arg.Any<User>()).Returns(userFromDb);
         _dataValidator.ValidateUpdate(Arg.Any<User>()).Returns(dataErrors);
         _baseValidator.ValidateAsync(user).Returns(baseErrors);
 

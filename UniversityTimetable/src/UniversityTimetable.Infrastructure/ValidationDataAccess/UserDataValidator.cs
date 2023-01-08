@@ -1,11 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using UniversityTimetable.Shared.Exceptions.InfrastructureExceptions;
-using UniversityTimetable.Shared.Interfaces.Data.Validation;
+using UniversityTimetable.Shared.Interfaces.Domain.Validation;
 using UniversityTimetable.Shared.Models;
 
 namespace UniversityTimetable.Infrastructure.ValidationDataAccess;
 
-public class UserDataValidator : IDataValidator<User>
+public class UserDataValidator : IDataValidator<User>, IValidationDataAccess<User>
 {
     private readonly ApplicationDbContext _context;
 

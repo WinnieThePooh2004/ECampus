@@ -9,6 +9,6 @@ public class SingleItemSelector<TModel> : ISingleItemSelector<TModel>
 {
     public async Task<TModel?> SelectModel(int id, DbSet<TModel> dataSource)
     {
-        return await dataSource.FirstOrDefaultAsync(model => model.Id == id);
+        return await dataSource.FirstOrDefaultAsync(model => model.Id.Equals(id));
     }
 }

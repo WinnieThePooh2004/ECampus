@@ -1,7 +1,11 @@
-﻿using UniversityTimetable.Shared.Interfaces.Data.Models;
+﻿using UniversityTimetable.Shared.Attributes;
+using UniversityTimetable.Shared.Interfaces.Data.Models;
+using UniversityTimetable.Shared.Models;
 
 namespace UniversityTimetable.Shared.DataTransferObjects;
 
+[Dto<Auditory>]
+[Validation]
 public class AuditoryDto : IDataTransferObject
 {
     public int Id { get; set; }

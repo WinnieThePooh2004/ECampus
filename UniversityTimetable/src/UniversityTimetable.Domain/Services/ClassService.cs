@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 using UniversityTimetable.Shared.DataContainers;
 using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Shared.Exceptions.DomainExceptions;
-using UniversityTimetable.Shared.Interfaces.Data.Validation;
+using UniversityTimetable.Shared.Interfaces.Domain.Validation;
 using UniversityTimetable.Shared.Interfaces.DataAccess;
 using UniversityTimetable.Shared.Interfaces.Domain;
 
@@ -15,16 +15,16 @@ public class ClassService : IClassService
     private readonly ITimetableDataAccessFacade _repository;
     private readonly IMapper _mapper;
     private readonly IBaseService<ClassDto> _baseService;
-    private readonly IValidationFacade<ClassDto> _validationFacade;
+    private readonly IUniversalValidator<ClassDto> _validator;
 
     public ClassService(ILogger<ClassService> logger, ITimetableDataAccessFacade repository, IMapper mapper,
-        IBaseService<ClassDto> baseService, IValidationFacade<ClassDto> validationFacade)
+        IBaseService<ClassDto> baseService, IUniversalValidator<ClassDto> validator)
     {
         _logger = logger;
         _repository = repository;
         _mapper = mapper;
         _baseService = baseService;
-        _validationFacade = validationFacade;
+        _validator = validator;
     }
 
     public Task<ClassDto> CreateAsync(ClassDto entity)
@@ -86,6 +86,6 @@ public class ClassService : IClassService
 
     public Task<List<KeyValuePair<string, string>>> ValidateAsync(ClassDto @class)
     {
-        return _validationFacade.ValidateCreate(@class);
+        return _validator.ValidateAsync(@class);
     }
 }

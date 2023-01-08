@@ -1,7 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Net;
+using Microsoft.EntityFrameworkCore;
+using UniversityTimetable.Shared.Exceptions.InfrastructureExceptions;
 using UniversityTimetable.Shared.Interfaces.Data.DataServices;
 using UniversityTimetable.Shared.Interfaces.Data.Models;
-using UniversityTimetable.Shared.Interfaces.DataAccess;
 
 namespace UniversityTimetable.Infrastructure.DataCreateServices;
 
@@ -10,19 +11,25 @@ public class DataCreateServiceWithRelationships<TModel, TRelatedModel, TRelation
     where TRelatedModel : class, IModel, new()
     where TRelations : class, IRelationModel<TModel, TRelatedModel>, new()
 {
-    private readonly IRelationshipsDataAccess<TModel, TRelatedModel, TRelations> _relationships;
     private readonly IDataCreateService<TModel> _baseCreateService;
 
-    public DataCreateServiceWithRelationships(IRelationshipsDataAccess<TModel, TRelatedModel, TRelations> relationships,
-        IDataCreateService<TModel> baseCreateService)
+    public DataCreateServiceWithRelationships(IDataCreateService<TModel> baseCreateService)
     {
-        _relationships = relationships;
         _baseCreateService = baseCreateService;
     }
 
     public async Task<TModel> CreateAsync(TModel model, DbContext context)
     {
-        _relationships.CreateRelationModels(model);
+        if (model.RelatedModels is null)
+        {
+            throw new InfrastructureExceptions(HttpStatusCode.BadRequest,
+                $"Please, send related models of object of type '{typeof(TModel)}' as empty list instead of null",
+                model);
+        }
+
+        model.RelationModels = model.RelatedModels
+            .Select(r => new TRelations { RightTableId = r.Id, LeftTableId = model.Id }).ToList();
+        model.RelatedModels = null;
         return await _baseCreateService.CreateAsync(model, context);
     }
 }

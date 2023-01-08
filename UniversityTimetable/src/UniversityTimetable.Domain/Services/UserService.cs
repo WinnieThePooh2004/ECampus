@@ -1,7 +1,7 @@
 ﻿using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Shared.Exceptions.DomainExceptions;
 using UniversityTimetable.Shared.Interfaces.Auth;
-using UniversityTimetable.Shared.Interfaces.Data.Validation;
+using UniversityTimetable.Shared.Interfaces.Domain.Validation;
 using UniversityTimetable.Shared.Interfaces.DataAccess;
 using UniversityTimetable.Shared.Interfaces.Domain;
 
@@ -11,19 +11,21 @@ public class UserService : IUserService
 {
     private readonly IBaseService<UserDto> _baseService;
     private readonly IAuthenticationService _authenticationService;
-    private readonly IValidationFacade<UserDto> _validationFacade;
     private readonly IUserDataAccessFacade _userDataAccessFacade;
+    private readonly ICreateValidator<UserDto> _createValidator;
+    private readonly IUpdateValidator<UserDto> _updateValidator;
     private readonly IUpdateValidator<PasswordChangeDto> _passwordChangeValidator;
 
     public UserService(IBaseService<UserDto> baseService,
         IAuthenticationService authenticationService, IUpdateValidator<PasswordChangeDto> passwordChangeValidator,
-        IValidationFacade<UserDto> validationFacade, IUserDataAccessFacade userDataAccessFacade)
+        IUserDataAccessFacade userDataAccessFacade, IUpdateValidator<UserDto> updateValidator, ICreateValidator<UserDto> createValidator)
     {
         _baseService = baseService;
         _authenticationService = authenticationService;
         _passwordChangeValidator = passwordChangeValidator;
-        _validationFacade = validationFacade;
         _userDataAccessFacade = userDataAccessFacade;
+        _updateValidator = updateValidator;
+        _createValidator = createValidator;
     }
 
     public Task<UserDto> CreateAsync(UserDto entity)
@@ -40,12 +42,12 @@ public class UserService : IUserService
 
     public async Task<List<KeyValuePair<string, string>>> ValidateCreateAsync(UserDto user)
     {
-        return await _validationFacade.ValidateCreate(user);
+        return await _createValidator.ValidateAsync(user);
     }
 
     public async Task<List<KeyValuePair<string, string>>> ValidateUpdateAsync(UserDto user)
     {
-        return await _validationFacade.ValidateUpdate(user);
+        return await _updateValidator.ValidateAsync(user);
     }
 
     public async Task<PasswordChangeDto> ChangePassword(PasswordChangeDto passwordChange)

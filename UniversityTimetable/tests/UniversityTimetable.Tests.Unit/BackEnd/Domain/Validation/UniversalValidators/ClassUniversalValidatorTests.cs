@@ -1,8 +1,6 @@
-﻿using FluentValidation;
-using FluentValidation.Results;
-using UniversityTimetable.Domain.Validation.UniversalValidators;
+﻿using UniversityTimetable.Domain.Validation.UniversalValidators;
 using UniversityTimetable.Shared.DataTransferObjects;
-using UniversityTimetable.Shared.Interfaces.Data.Validation;
+using UniversityTimetable.Shared.Interfaces.Domain.Validation;
 using UniversityTimetable.Shared.Models;
 using UniversityTimetable.Shared.Models.RelationModels;
 using UniversityTimetable.Tests.Shared.DataFactories;
@@ -14,13 +12,13 @@ public class ClassUniversalValidatorTests
 {
     private readonly ClassDtoUniversalValidator _sut;
     private readonly IValidationDataAccess<Class> _dataValidator;
-    private readonly IValidator<ClassDto> _baseValidator;
+    private readonly IUniversalValidator<ClassDto> _baseValidator;
     private readonly Fixture _fixture = new();
 
     public ClassUniversalValidatorTests()
     {
-        _dataValidator = Substitute.For<IDataValidator<Class>>();
-        _baseValidator = Substitute.For<IValidator<ClassDto>>();
+        _dataValidator = Substitute.For<IValidationDataAccess<Class>>();
+        _baseValidator = Substitute.For<IUniversalValidator<ClassDto>>();
         _sut = new ClassDtoUniversalValidator(MapperFactory.Mapper, _dataValidator, _baseValidator);
     }
 
@@ -29,7 +27,7 @@ public class ClassUniversalValidatorTests
     {
         var @class = new ClassDto();
         var classFromDb = CreateTestModel();
-        _baseValidator.ValidateAsync(Arg.Any<ClassDto>()).Returns(new ValidationResult());
+        _baseValidator.ValidateAsync(Arg.Any<ClassDto>()).Returns(new List<KeyValuePair<string, string>>());
         _dataValidator.LoadRequiredDataForCreateAsync(Arg.Any<Class>()).Returns(classFromDb);
         var expectedErrors = CreateExpectedErrors(classFromDb);
 
@@ -42,7 +40,7 @@ public class ClassUniversalValidatorTests
     public async Task Validate_AddedMessages_WhenPropertiesIsnull()
     {
         var classFromDb = new Class();
-        _baseValidator.ValidateAsync(Arg.Any<ClassDto>()).Returns(new ValidationResult());
+        _baseValidator.ValidateAsync(Arg.Any<ClassDto>()).Returns(new List<KeyValuePair<string, string>>());
         _dataValidator.LoadRequiredDataForCreateAsync(Arg.Any<Class>()).Returns(classFromDb);
         var expected = new List<KeyValuePair<string, string>>
         {
@@ -57,44 +55,12 @@ public class ClassUniversalValidatorTests
         actual.Should().ContainsKeysWithValues(expected);
     }
 
-    private Class CreateTestModel()
-    {
-        var teacher = new TeacherFactory().CreateModel(_fixture);
-        var subject = new SubjectFactory().CreateModel(_fixture);
-        var group = new GroupFactory().CreateModel(_fixture);
-        var auditory = new AuditoryFactory().CreateModel(_fixture);
-
-        var @class = _fixture.Build<Class>()
-            .With(c => c.Auditory, auditory)
-            .With(c => c.AuditoryId, auditory.Id)
-            .With(c => c.Group, group)
-            .With(c => c.GroupId, group.Id)
-            .With(c => c.Subject, subject)
-            .With(c => c.SubjectId, subject.Id)
-            .With(c => c.Teacher, teacher)
-            .With(c => c.TeacherId, teacher.Id)
-            .Create();
-
-        var existingClass = new Class
-        {
-            Id = -1, Number = @class.Number, DayOfWeek = @class.DayOfWeek, WeekDependency = @class.WeekDependency
-        };
-        teacher.Classes = new List<Class> { existingClass };
-        teacher.SubjectIds = new List<SubjectTeacher>();
-        group.Classes = new List<Class> { existingClass };
-        auditory.Classes = new List<Class> { existingClass };
-
-        return @class;
-    }
-
     [Fact]
     public async Task Validate_ShouldNotAddMoreErrors_WhenBaseValidatorFoundErrors()
     {
         var errors = _fixture.CreateMany<KeyValuePair<string, string>>(10).ToList();
         var classFromDb = CreateTestModel();
-        _baseValidator.ValidateAsync(Arg.Any<ClassDto>())
-            .Returns(new ValidationResult(errors
-                .Select(e => new ValidationFailure(e.Key, e.Value))));
+        _baseValidator.ValidateAsync(Arg.Any<ClassDto>()).Returns(errors);
         _dataValidator.LoadRequiredDataForCreateAsync(Arg.Any<Class>()).Returns(classFromDb);
 
         var actualErrors = await _sut.ValidateAsync(new ClassDto());
@@ -124,4 +90,34 @@ public class ClassUniversalValidatorTests
                 $"Teacher {@class.Teacher?.FirstName} {@class.Teacher?.LastName} " +
                 $"does not teach subject {@class.Subject?.Name}")
         };
+    
+    private Class CreateTestModel()
+    {
+        var teacher = new TeacherFactory().CreateModel(_fixture);
+        var subject = new SubjectFactory().CreateModel(_fixture);
+        var group = new GroupFactory().CreateModel(_fixture);
+        var auditory = new AuditoryFactory().CreateModel(_fixture);
+
+        var @class = _fixture.Build<Class>()
+            .With(c => c.Auditory, auditory)
+            .With(c => c.AuditoryId, auditory.Id)
+            .With(c => c.Group, group)
+            .With(c => c.GroupId, group.Id)
+            .With(c => c.Subject, subject)
+            .With(c => c.SubjectId, subject.Id)
+            .With(c => c.Teacher, teacher)
+            .With(c => c.TeacherId, teacher.Id)
+            .Create();
+
+        var existingClass = new Class
+        {
+            Id = -1, Number = @class.Number, DayOfWeek = @class.DayOfWeek, WeekDependency = @class.WeekDependency
+        };
+        teacher.Classes = new List<Class> { existingClass };
+        teacher.SubjectIds = new List<SubjectTeacher>();
+        group.Classes = new List<Class> { existingClass };
+        auditory.Classes = new List<Class> { existingClass };
+
+        return @class;
+    }
 }

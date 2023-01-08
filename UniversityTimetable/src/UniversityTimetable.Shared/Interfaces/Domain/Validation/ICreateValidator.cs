@@ -1,7 +1,6 @@
-﻿namespace UniversityTimetable.Shared.Interfaces.Data.Validation;
+﻿namespace UniversityTimetable.Shared.Interfaces.Domain.Validation;
 
 public interface ICreateValidator<in TDto>
-    where TDto : class
 {
     Task<List<KeyValuePair<string, string>>> ValidateAsync(TDto dataTransferObject);
 }
