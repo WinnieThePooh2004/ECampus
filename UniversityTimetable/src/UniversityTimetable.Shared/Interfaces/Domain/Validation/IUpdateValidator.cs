@@ -1,4 +1,4 @@
-﻿namespace UniversityTimetable.Shared.Interfaces.Data.Validation;
+﻿namespace UniversityTimetable.Shared.Interfaces.Domain.Validation;
 
 public interface IUpdateValidator<in TDto>
 {

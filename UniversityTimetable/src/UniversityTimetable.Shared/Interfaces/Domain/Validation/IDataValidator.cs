@@ -1,8 +1,8 @@
 ﻿using UniversityTimetable.Shared.Interfaces.Data.Models;
 
-namespace UniversityTimetable.Shared.Interfaces.Data.Validation;
+namespace UniversityTimetable.Shared.Interfaces.Domain.Validation;
 
-public interface IDataValidator<TModel> : IValidationDataAccess<TModel>
+public interface IDataValidator<in TModel>
     where TModel : class, IModel
 {
     /// <summary>

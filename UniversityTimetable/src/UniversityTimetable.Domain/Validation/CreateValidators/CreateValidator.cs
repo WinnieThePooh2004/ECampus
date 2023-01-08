@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using UniversityTimetable.Shared.Interfaces.Data.Validation;
+using UniversityTimetable.Shared.Interfaces.Domain.Validation;
 
 namespace UniversityTimetable.Domain.Validation.CreateValidators;
 

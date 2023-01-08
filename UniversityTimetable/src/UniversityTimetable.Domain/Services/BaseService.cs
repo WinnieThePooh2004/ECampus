@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Logging;
 using UniversityTimetable.Shared.Exceptions.DomainExceptions;
 using UniversityTimetable.Shared.Interfaces.Data.Models;
-using UniversityTimetable.Shared.Interfaces.Data.Validation;
 using UniversityTimetable.Shared.Interfaces.DataAccess;
 using UniversityTimetable.Shared.Interfaces.Domain;
 
@@ -15,24 +14,18 @@ namespace UniversityTimetable.Domain.Services
         private readonly IBaseDataAccessFacade<TRepositoryModel> _dataAccessFacade;
         private readonly ILogger<BaseService<TDto, TRepositoryModel>> _logger;
         private readonly IMapper _mapper;
-        private readonly IValidationFacade<TDto> _validationFacade;
 
         public BaseService(IBaseDataAccessFacade<TRepositoryModel> dataAccessFacade, ILogger<BaseService<TDto, TRepositoryModel>> logger,
-            IMapper mapper, IValidationFacade<TDto> validationFacade)
+            IMapper mapper)
         {
             _dataAccessFacade = dataAccessFacade;
             _logger = logger;
             _mapper = mapper;
-            _validationFacade = validationFacade;
         }
 
         public async Task<TDto> CreateAsync(TDto entity)
         {
-            var errors = await _validationFacade.ValidateCreate(entity);
-            if (errors.Any())
-            {
-                throw new ValidationException(typeof(TDto), errors);
-            }
+            _logger.LogInformation("Creating object of type {Type}", typeof(TDto));
             var auditory = _mapper.Map<TRepositoryModel>(entity);
             return _mapper.Map<TDto>(await _dataAccessFacade.CreateAsync(auditory));
         }
@@ -59,11 +52,7 @@ namespace UniversityTimetable.Domain.Services
 
         public async Task<TDto> UpdateAsync(TDto entity)
         {
-            var errors = await _validationFacade.ValidateUpdate(entity);
-            if (errors.Any())
-            {
-                throw new ValidationException(typeof(TDto), errors);
-            }
+            _logger.LogInformation("Updating object of type {Type}", typeof(TDto));
             var auditory = _mapper.Map<TRepositoryModel>(entity);
             return _mapper.Map<TDto>(await _dataAccessFacade.UpdateAsync(auditory));
         }

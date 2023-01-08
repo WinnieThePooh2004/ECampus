@@ -1,7 +1,11 @@
-﻿using UniversityTimetable.Shared.Interfaces.Data.Models;
+﻿using UniversityTimetable.Shared.Attributes;
+using UniversityTimetable.Shared.Interfaces.Data.Models;
+using UniversityTimetable.Shared.Models;
 
 namespace UniversityTimetable.Shared.DataTransferObjects;
 
+[Validation]
+[Dto<Subject>]
 public class SubjectDto : IDataTransferObject
 {
     public int Id { get; set; }

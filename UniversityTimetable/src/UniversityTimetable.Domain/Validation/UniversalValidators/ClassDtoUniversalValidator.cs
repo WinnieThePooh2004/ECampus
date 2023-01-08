@@ -1,22 +1,22 @@
 ﻿using AutoMapper;
-using FluentValidation;
 using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Shared.Enums;
-using UniversityTimetable.Shared.Interfaces.Data.Validation;
+using UniversityTimetable.Shared.Interfaces.Domain.Validation;
 using UniversityTimetable.Shared.Models;
+
 #pragma warning disable CS8602
 #pragma warning disable CS8604
 
 namespace UniversityTimetable.Domain.Validation.UniversalValidators;
 
-public class ClassDtoUniversalValidator : ICreateValidator<ClassDto>, IUpdateValidator<ClassDto>
+public class ClassDtoUniversalValidator : IUniversalValidator<ClassDto>
 {
     private readonly IMapper _mapper;
     private readonly IValidationDataAccess<Class> _dataAccess;
-    private readonly IValidator<ClassDto> _baseValidator;
+    private readonly IUniversalValidator<ClassDto> _baseValidator;
 
     public ClassDtoUniversalValidator(IMapper mapper, IValidationDataAccess<Class> dataAccess,
-        IValidator<ClassDto> baseValidator)
+        IUniversalValidator<ClassDto> baseValidator)
     {
         _mapper = mapper;
         _dataAccess = dataAccess;
@@ -26,10 +26,9 @@ public class ClassDtoUniversalValidator : ICreateValidator<ClassDto>, IUpdateVal
     public async Task<List<KeyValuePair<string, string>>> ValidateAsync(ClassDto dataTransferObject)
     {
         var baseErrors = await _baseValidator.ValidateAsync(dataTransferObject);
-        if (baseErrors.Errors.Any())
+        if (baseErrors.Any())
         {
-            return new List<KeyValuePair<string, string>>(baseErrors.Errors.Select(error =>
-                new KeyValuePair<string, string>(error.PropertyName, error.ErrorMessage)));
+            return baseErrors;
         }
 
         var model = await _dataAccess.LoadRequiredDataForCreateAsync(_mapper.Map<Class>(dataTransferObject));

@@ -1,7 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Net;
+using Microsoft.EntityFrameworkCore;
+using UniversityTimetable.Shared.Exceptions.InfrastructureExceptions;
 using UniversityTimetable.Shared.Interfaces.Data.DataServices;
 using UniversityTimetable.Shared.Interfaces.Data.Models;
-using UniversityTimetable.Shared.Interfaces.DataAccess;
 
 namespace UniversityTimetable.Infrastructure.DataUpdateServices;
 
@@ -10,19 +11,28 @@ public class DataUpdateServiceWithRelationships<TModel, TRelatedModel, TRelation
     where TRelatedModel : class, IModel, new()
     where TRelations : class, IRelationModel<TModel, TRelatedModel>, new()
 {
-    private readonly IRelationshipsDataAccess<TModel, TRelatedModel, TRelations> _relationships;
     private readonly IDataUpdateService<TModel> _baseUpdateService;
 
-    public DataUpdateServiceWithRelationships(IRelationshipsDataAccess<TModel, TRelatedModel, TRelations> relationships,
-        IDataUpdateService<TModel> baseUpdateService)
+    public DataUpdateServiceWithRelationships(IDataUpdateService<TModel> baseUpdateService)
     {
-        _relationships = relationships;
         _baseUpdateService = baseUpdateService;
     }
 
     public async Task<TModel> UpdateAsync(TModel model, DbContext context)
     {
-        await _relationships.UpdateRelations(model, context);
+        if (model.RelatedModels is null)
+        {
+            throw new InfrastructureExceptions(HttpStatusCode.BadRequest,
+                $"Please, send related models of object of type '{typeof(TModel)}' as empty list instead of null",
+                model);
+        }
+
+        model.RelationModels = await context.Set<TRelations>().Where(model.IsRelated).ToListAsync();
+        context.RemoveRange(model.RelationModels.Where(st => model.RelatedModels.All(s => s.Id != st.RightTableId)));
+        context.AddRange(model.RelatedModels.Where(s => model.RelationModels.All(st => s.Id != st.RightTableId))
+            .Select(s => new TRelations { LeftTableId = model.Id, RightTableId = s.Id }));
+        model.RelationModels = null;
+        model.RelatedModels = null;
         return await _baseUpdateService.UpdateAsync(model, context);
     }
 }

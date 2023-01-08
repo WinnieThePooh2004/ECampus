@@ -1,13 +1,13 @@
 ﻿using FluentValidation;
 using UniversityTimetable.Shared.Interfaces.Domain.Validation;
 
-namespace UniversityTimetable.Domain.Validation.UpdateValidators;
+namespace UniversityTimetable.Domain.Validation.UniversalValidators;
 
-public class UpdateValidator<TDto> : IUpdateValidator<TDto> 
+public class UniversalValidator<TDto> : IUniversalValidator<TDto>
 {
     private readonly IValidator<TDto> _fluentValidationValidator;
 
-    public UpdateValidator(IValidator<TDto> fluentValidationValidator)
+    public UniversalValidator(IValidator<TDto> fluentValidationValidator)
     {
         _fluentValidationValidator = fluentValidationValidator;
     }
