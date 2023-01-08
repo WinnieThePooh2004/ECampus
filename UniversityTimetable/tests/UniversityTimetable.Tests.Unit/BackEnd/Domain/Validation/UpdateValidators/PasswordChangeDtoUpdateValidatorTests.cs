@@ -1,6 +1,6 @@
 ﻿using UniversityTimetable.Domain.Validation.UpdateValidators;
 using UniversityTimetable.Shared.DataTransferObjects;
-using UniversityTimetable.Shared.Interfaces.Data.Validation;
+using UniversityTimetable.Shared.Interfaces.Domain.Validation;
 using UniversityTimetable.Shared.Models;
 
 namespace UniversityTimetable.Tests.Unit.BackEnd.Domain.Validation.UpdateValidators;

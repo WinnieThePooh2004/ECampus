@@ -2,7 +2,7 @@
 using UniversityTimetable.Domain.Mapping;
 using UniversityTimetable.Domain.Validation.CreateValidators;
 using UniversityTimetable.Shared.DataTransferObjects;
-using UniversityTimetable.Shared.Interfaces.Data.Validation;
+using UniversityTimetable.Shared.Interfaces.Domain.Validation;
 using UniversityTimetable.Shared.Models;
 
 namespace UniversityTimetable.Tests.Unit.BackEnd.Domain.Validation.CreateValidators;

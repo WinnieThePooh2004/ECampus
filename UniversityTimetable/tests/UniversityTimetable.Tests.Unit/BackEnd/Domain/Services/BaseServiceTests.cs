@@ -3,7 +3,6 @@ using Microsoft.Extensions.Logging;
 using UniversityTimetable.Domain.Services;
 using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Shared.Exceptions.DomainExceptions;
-using UniversityTimetable.Shared.Interfaces.Data.Validation;
 using UniversityTimetable.Shared.Interfaces.DataAccess;
 using UniversityTimetable.Shared.Models;
 using UniversityTimetable.Tests.Shared.DataFactories;
@@ -16,15 +15,13 @@ public sealed class BaseServiceTests
     private readonly IBaseDataAccessFacade<Auditory> _dataAccessFacade;
     private readonly Fixture _fixture;
     private readonly IMapper _mapper = MapperFactory.Mapper;
-    private readonly IValidationFacade<AuditoryDto> _validation;
 
     public BaseServiceTests()
     {
         _dataAccessFacade = Substitute.For<IBaseDataAccessFacade<Auditory>>();
-        _validation = Substitute.For<IValidationFacade<AuditoryDto>>();
         _service = new BaseService<AuditoryDto, Auditory>(_dataAccessFacade,
             Substitute.For<ILogger<BaseService<AuditoryDto, Auditory>>>(),
-            _mapper, _validation);
+            _mapper);
         _fixture = new Fixture();
         _fixture.Behaviors.Add(new OmitOnRecursionBehavior());
     }
@@ -34,7 +31,6 @@ public sealed class BaseServiceTests
     {
         var item = _fixture.Create<AuditoryDto>();
         Auditory? createdAuditory = null;
-        _validation.ValidateCreate(item).Returns(new List<KeyValuePair<string, string>>());
         _dataAccessFacade.CreateAsync(Arg.Do<Auditory>(a => createdAuditory = a)).Returns(_mapper.Map<Auditory>(item));
 
         var result = await _service.CreateAsync(item);
@@ -51,7 +47,6 @@ public sealed class BaseServiceTests
     {
         var item = _fixture.Create<AuditoryDto>();
         Auditory? updatedAuditory = null;
-        _validation.ValidateUpdate(item).Returns(new List<KeyValuePair<string, string>>());
         _dataAccessFacade.UpdateAsync(Arg.Do<Auditory>(a => updatedAuditory = a)).Returns(_mapper.Map<Auditory>(item));
 
         var result = await _service.UpdateAsync(item);
@@ -63,29 +58,29 @@ public sealed class BaseServiceTests
         await _dataAccessFacade.Received(1).UpdateAsync(Arg.Any<Auditory>());
     }
 
-    [Fact]
-    private async Task Update_ThrowsValidationException_WhenValidationErrorOccured()
-    {
-        var errors = new List<KeyValuePair<string, string>> { KeyValuePair.Create<string, string>("", "") };
-        _validation.ValidateUpdate(Arg.Any<AuditoryDto>()).Returns(errors);
-
-        await new Func<Task>(() => _service.UpdateAsync(new AuditoryDto())).Should().ThrowAsync<ValidationException>()
-            .WithMessage(new ValidationException(typeof(AuditoryDto), errors).Message);
-
-        await _dataAccessFacade.DidNotReceive().UpdateAsync(Arg.Any<Auditory>());
-    }
-
-    [Fact]
-    private async Task Create_ThrowsValidationException_WhenValidationErrorOccured()
-    {
-        var errors = new List<KeyValuePair<string, string>> { KeyValuePair.Create<string, string>("", "") };
-        _validation.ValidateCreate(Arg.Any<AuditoryDto>()).Returns(errors);
-
-        await new Func<Task>(() => _service.CreateAsync(new AuditoryDto())).Should().ThrowAsync<ValidationException>()
-            .WithMessage(new ValidationException(typeof(AuditoryDto), errors).Message);
-
-        await _dataAccessFacade.DidNotReceive().UpdateAsync(Arg.Any<Auditory>());
-    }
+    // [Fact]
+    // private async Task Update_ThrowsValidationException_WhenValidationErrorOccured()
+    // {
+    //     var errors = new List<KeyValuePair<string, string>> { KeyValuePair.Create<string, string>("", "") };
+    //     _validation.ValidateUpdate(Arg.Any<AuditoryDto>()).Returns(errors);
+    //
+    //     await new Func<Task>(() => _service.UpdateAsync(new AuditoryDto())).Should().ThrowAsync<ValidationException>()
+    //         .WithMessage(new ValidationException(typeof(AuditoryDto), errors).Message);
+    //
+    //     await _dataAccessFacade.DidNotReceive().UpdateAsync(Arg.Any<Auditory>());
+    // }
+    //
+    // [Fact]
+    // private async Task Create_ThrowsValidationException_WhenValidationErrorOccured()
+    // {
+    //     var errors = new List<KeyValuePair<string, string>> { KeyValuePair.Create<string, string>("", "") };
+    //     _validation.ValidateCreate(Arg.Any<AuditoryDto>()).Returns(errors);
+    //
+    //     await new Func<Task>(() => _service.CreateAsync(new AuditoryDto())).Should().ThrowAsync<ValidationException>()
+    //         .WithMessage(new ValidationException(typeof(AuditoryDto), errors).Message);
+    //
+    //     await _dataAccessFacade.DidNotReceive().UpdateAsync(Arg.Any<Auditory>());
+    // }
 
     [Fact]
     private async Task Delete_ShouldThrowException_WhenIdIsNull()

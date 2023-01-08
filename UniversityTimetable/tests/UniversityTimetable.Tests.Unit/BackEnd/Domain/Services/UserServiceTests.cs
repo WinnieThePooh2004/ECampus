@@ -2,7 +2,7 @@
 using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Shared.Exceptions.DomainExceptions;
 using UniversityTimetable.Shared.Interfaces.Auth;
-using UniversityTimetable.Shared.Interfaces.Data.Validation;
+using UniversityTimetable.Shared.Interfaces.Domain.Validation;
 using UniversityTimetable.Shared.Interfaces.DataAccess;
 using UniversityTimetable.Shared.Interfaces.Domain;
 
@@ -12,21 +12,21 @@ public class UserServiceTests
 {
     private readonly UserService _sut;
     private readonly IUpdateValidator<PasswordChangeDto> _passwordChangeValidator;
-    private readonly IValidationFacade<UserDto> _userValidator;
     private readonly IBaseService<UserDto> _baseService;
     private readonly IUserDataAccessFacade _userDataAccessFacade;
     private readonly Fixture _fixture = new();
+    private readonly ICreateValidator<UserDto> _createValidator = Substitute.For<ICreateValidator<UserDto>>();
+    private readonly IUpdateValidator<UserDto> _updateValidator = Substitute.For<IUpdateValidator<UserDto>>();
 
     public UserServiceTests()
     {
-        _userValidator = Substitute.For<IValidationFacade<UserDto>>();
         var authenticationService = Substitute.For<IAuthenticationService>();
         _passwordChangeValidator = Substitute.For<IUpdateValidator<PasswordChangeDto>>();
         _baseService = Substitute.For<IBaseService<UserDto>>();
         _userDataAccessFacade = Substitute.For<IUserDataAccessFacade>();
 
         _sut = new UserService(_baseService,
-            authenticationService, _passwordChangeValidator, _userValidator, _userDataAccessFacade);
+            authenticationService, _passwordChangeValidator, _userDataAccessFacade, _updateValidator, _createValidator);
     }
 
     [Fact]
@@ -152,12 +152,12 @@ public class UserServiceTests
     {
         var errors = _fixture.CreateMany<KeyValuePair<string, string>>(5).ToList();
         var user = new UserDto();
-        _userValidator.ValidateCreate(user).Returns(errors);
+        _createValidator.ValidateAsync(user).Returns(errors);
 
         var result = await _sut.ValidateCreateAsync(user);
 
         result.Should().BeEquivalentTo(errors);
-        await _userValidator.Received(1).ValidateCreate(user);
+        await _createValidator.Received(1).ValidateAsync(user);
     }
 
     [Fact]
@@ -165,12 +165,12 @@ public class UserServiceTests
     {
         var errors = _fixture.CreateMany<KeyValuePair<string, string>>(5).ToList();
         var user = new UserDto();
-        _userValidator.ValidateUpdate(user).Returns(errors);
+        _updateValidator.ValidateAsync(user).Returns(errors);
 
         var result = await _sut.ValidateUpdateAsync(user);
 
         result.Should().BeEquivalentTo(errors);
-        await _userValidator.Received(1).ValidateUpdate(user);
+        await _updateValidator.Received(1).ValidateAsync(user);
     }
     
     private UserDto CreateUser() =>

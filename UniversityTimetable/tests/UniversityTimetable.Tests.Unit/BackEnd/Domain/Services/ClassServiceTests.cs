@@ -4,7 +4,7 @@ using UniversityTimetable.Domain.Services;
 using UniversityTimetable.Shared.DataContainers;
 using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Shared.Exceptions.DomainExceptions;
-using UniversityTimetable.Shared.Interfaces.Data.Validation;
+using UniversityTimetable.Shared.Interfaces.Domain.Validation;
 using UniversityTimetable.Shared.Interfaces.DataAccess;
 using UniversityTimetable.Shared.Interfaces.Domain;
 using UniversityTimetable.Shared.Models;
@@ -18,14 +18,14 @@ public class ClassServiceTests
     private readonly ClassService _sut;
     private readonly ITimetableDataAccessFacade _dataAccess = Substitute.For<ITimetableDataAccessFacade>();
     private readonly IBaseService<ClassDto> _baseService = Substitute.For<IBaseService<ClassDto>>();
-    private readonly IValidationFacade<ClassDto> _validationFacade = Substitute.For<IValidationFacade<ClassDto>>();
+    private readonly IUniversalValidator<ClassDto> _validator = Substitute.For<IUniversalValidator<ClassDto>>();
     private readonly Fixture _fixture = new();
     private readonly IMapper _mapper = MapperFactory.Mapper;
 
     public ClassServiceTests()
     {
         var logger = Substitute.For<ILogger<ClassService>>();
-        _sut = new ClassService(logger, _dataAccess, _mapper, _baseService, _validationFacade);
+        _sut = new ClassService(logger, _dataAccess, _mapper, _baseService, _validator);
     }
 
     [Fact]
@@ -77,12 +77,12 @@ public class ClassServiceTests
     {
         var errors = _fixture.CreateMany<KeyValuePair<string, string>>(10).ToList();
         var @class = CreateClass();
-        _validationFacade.ValidateCreate(@class).Returns(errors);
+        _validator.ValidateAsync(@class).Returns(errors);
 
         var result = await _sut.ValidateAsync(@class);
 
         result.Should().BeEquivalentTo(errors);
-        await _validationFacade.Received(1).ValidateCreate(@class);
+        await _validator.Received(1).ValidateAsync(@class);
     }
 
     [Fact]
