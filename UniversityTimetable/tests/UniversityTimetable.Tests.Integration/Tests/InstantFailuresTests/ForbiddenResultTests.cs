@@ -9,12 +9,12 @@ using UniversityTimetable.Tests.Shared.Mocks.EntityFramework;
 
 namespace UniversityTimetable.Tests.Integration.Tests.InstantFailuresTests;
 
-public class ForbiddenResultTests : IClassFixture<ApplicationFactory>, IAsyncLifetime
+public class ForbiddenResultTests : IClassFixture<ApplicationWithoutDatabase>, IAsyncLifetime
 {
     private readonly HttpClient _client;
-    private readonly ApplicationFactory _applicationFactory;
+    private readonly ApplicationWithoutDatabase _applicationFactory;
 
-    public ForbiddenResultTests(ApplicationFactory applicationFactory)
+    public ForbiddenResultTests(ApplicationWithoutDatabase applicationFactory)
     {
         _applicationFactory = applicationFactory;
         _client = _applicationFactory.CreateClient();

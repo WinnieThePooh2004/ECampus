@@ -7,12 +7,12 @@ using UniversityTimetable.Tests.Shared.Mocks.EntityFramework;
 
 namespace UniversityTimetable.Tests.Integration.Tests.InstantFailuresTests;
 
-public class BadRequestStatusCodeWhenIdIsNullTests : IClassFixture<ApplicationFactory>, IAsyncLifetime
+public class BadRequestStatusCodeWhenIdIsNullTests : IClassFixture<ApplicationWithoutDatabase>, IAsyncLifetime
 {
-    private readonly ApplicationFactory _factory;
+    private readonly ApplicationWithoutDatabase _factory;
     private readonly HttpClient _client;
 
-    public BadRequestStatusCodeWhenIdIsNullTests(ApplicationFactory factory)
+    public BadRequestStatusCodeWhenIdIsNullTests(ApplicationWithoutDatabase factory)
     {
         _factory = factory;
         _client = _factory.CreateClient();

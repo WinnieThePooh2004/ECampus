@@ -7,12 +7,12 @@ using UniversityTimetable.Tests.Shared.Mocks.EntityFramework;
 
 namespace UniversityTimetable.Tests.Integration.Tests.InstantFailuresTests;
 
-public class VerifyUserFailuresTests : IClassFixture<ApplicationFactory>
+public class VerifyUserFailuresTests : IClassFixture<ApplicationWithoutDatabase>
     {
-    private readonly ApplicationFactory _factory;
+    private readonly ApplicationWithoutDatabase _factory;
     private readonly HttpClient _client;
 
-    public VerifyUserFailuresTests(ApplicationFactory factory)
+    public VerifyUserFailuresTests(ApplicationWithoutDatabase factory)
     {
         _factory = factory;
         _client = _factory.CreateClient();

@@ -2,21 +2,18 @@
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using NSubstitute;
 using UniversityTimetable.Infrastructure;
-using UniversityTimetable.Tests.Integration.TestDatabase;
 
 namespace UniversityTimetable.Tests.Integration.AppFactories;
 
-public class ApplicationFactory : WebApplicationFactory<Program>
+public class ApplicationWithoutDatabase : WebApplicationFactory<Program>
 {
     public ApplicationDbContext Context { get; }
 
-    public ApplicationFactory()
+    public ApplicationWithoutDatabase()
     {
-        Context = TestDatabaseFactory.CreateContext();
-        Context.Database.EnsureDeleted();
-        Context.Database.EnsureCreated();
-        Context.SeedData();
+        Context = Substitute.For<ApplicationDbContext>();
     }
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
