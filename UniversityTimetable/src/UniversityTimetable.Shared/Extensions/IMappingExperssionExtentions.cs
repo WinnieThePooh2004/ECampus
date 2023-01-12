@@ -8,9 +8,5 @@ namespace UniversityTimetable.Shared.Extensions
         public static IMappingExpression<T, TTo> IgnoreMember<T, TTo, TMember>(this IMappingExpression<T, TTo> expression,
             Expression<Func<TTo, TMember>> member)
             => expression.ForMember(member, opt => opt.Ignore());
-
-        public static IMappingExpression<T, TTo> UseAsValue<T, TTo, TMember>(this IMappingExpression<T, TTo> expression,
-            Expression<Func<TTo, TMember>> member, TMember value)
-            => expression.ForMember(member, opt => opt.MapFrom(c => value));
     }
 }

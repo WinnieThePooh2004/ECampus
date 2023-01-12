@@ -8,17 +8,6 @@ namespace UniversityTimetable.Shared.Extensions;
 
 public static class HttpContextExtensions
 {
-    public static async Task SignInAsync(this HttpContext context, LoginResult loginResult,
-        AuthenticationProperties properties)
-    {
-        var claims = CreateClaims(loginResult);
-
-        var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-
-        await context.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
-            new ClaimsPrincipal(claimsIdentity), properties);
-    }
-
     public static IEnumerable<Claim> CreateClaims(LoginResult loginResult)
         => new List<Claim>
         {
