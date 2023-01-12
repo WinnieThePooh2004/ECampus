@@ -6,14 +6,14 @@ using UniversityTimetable.Shared.Interfaces.Data.Models;
 
 namespace UniversityTimetable.Infrastructure.DataCreateServices;
 
-public class DataCreateServiceWithRelationships<TModel, TRelatedModel, TRelations> : IDataCreateService<TModel>
+public class DataCreateWithRelationships<TModel, TRelatedModel, TRelations> : IDataCreateService<TModel>
     where TModel : class, IModel, IModelWithManyToManyRelations<TRelatedModel, TRelations>, new()
     where TRelatedModel : class, IModel, new()
     where TRelations : class, IRelationModel<TModel, TRelatedModel>, new()
 {
     private readonly IDataCreateService<TModel> _baseCreateService;
 
-    public DataCreateServiceWithRelationships(IDataCreateService<TModel> baseCreateService)
+    public DataCreateWithRelationships(IDataCreateService<TModel> baseCreateService)
     {
         _baseCreateService = baseCreateService;
     }
