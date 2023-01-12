@@ -51,7 +51,7 @@ namespace UniversityTimetable.Api.Controllers
             return Ok(teacher);
         }
         
-        [HttpDelete("{id:int?}")]
+        [HttpDelete("{id:int}")]
         [Authorized(UserRole.Admin)]
         public async Task<IActionResult> Delete(int? id)
         {
