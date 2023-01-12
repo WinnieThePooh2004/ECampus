@@ -13,12 +13,7 @@ public class HttpMessageHandlerMock : HttpMessageHandler
     {
         public bool Equals(HttpRequestMessage? x, HttpRequestMessage? y)
         {
-            if (x is null || y is null)
-            {
-                return ReferenceEquals(x, y);
-            }
-
-            return x.RequestUri == y.RequestUri && x.Method == y.Method;
+            return x?.RequestUri == y?.RequestUri && x?.Method == y?.Method;
         }
 
         public int GetHashCode(HttpRequestMessage obj)
