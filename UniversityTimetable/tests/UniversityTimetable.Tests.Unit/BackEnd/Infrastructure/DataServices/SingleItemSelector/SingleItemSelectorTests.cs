@@ -1,4 +1,5 @@
-﻿using UniversityTimetable.Infrastructure.DataSelectors.SingleItemSelectors;
+﻿using Microsoft.EntityFrameworkCore;
+using UniversityTimetable.Infrastructure.DataSelectors.SingleItemSelectors;
 using UniversityTimetable.Shared.Models;
 using UniversityTimetable.Tests.Shared.DataFactories;
 using UniversityTimetable.Tests.Shared.Extensions;
@@ -8,7 +9,7 @@ namespace UniversityTimetable.Tests.Unit.BackEnd.Infrastructure.DataServices.Sin
 
 public class SingleItemSelectorTests
 {
-    private readonly DbSetMock<Auditory> _testSet;
+    private readonly DbSet<Auditory> _testSet;
     private readonly Fixture _fixture = new();
     private readonly SingleItemSelector<Auditory> _singleItemSelector;
     private readonly List<Auditory> _testDataSource;
@@ -23,13 +24,13 @@ public class SingleItemSelectorTests
     [Fact]
     public async Task GetById_ReturnsFromSet_IfModelExists()
     {
-        var item = await _singleItemSelector.SelectModel(_testDataSource[0].Id, _testSet.Object);
-        item.Should().Be(_testDataSource[0]);
+        var item = await _singleItemSelector.SelectModel(_testDataSource[0].Id, _testSet);
+        await _testSet.Received(1).FindAsync(_testDataSource[0].Id);
     }
     
     [Fact]
     public async Task GetById_ReturnsNull_IfItemDoesNotExist()
     {
-        await _singleItemSelector.SelectModel(-1, _testSet.Object);
+        await _singleItemSelector.SelectModel(-1, _testSet);
     }
 }
