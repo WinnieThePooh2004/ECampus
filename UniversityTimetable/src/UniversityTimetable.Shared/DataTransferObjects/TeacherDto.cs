@@ -17,5 +17,4 @@ public class TeacherDto : IDataTransferObject
 
     public int DepartmentId { get; set; }
     public List<SubjectDto>? Subjects { get; set; }
-    [JsonIgnore] public string FullName => $"{FirstName[0]}. {LastName}";
 }
