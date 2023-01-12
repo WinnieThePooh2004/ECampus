@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Components;
 
-namespace UniversityTimetable.FrontEnd.Components.EditForms
+namespace UniversityTimetable.FrontEnd.Components.EditForms;
+
+public partial class ClassEditForm
 {
-    public partial class ClassEditForm
-    {
-        [Parameter] public TimetableMode TimetableMode { get; set; }
-    }
+    [Parameter] public TimetableMode TimetableMode { get; set; }
 }
