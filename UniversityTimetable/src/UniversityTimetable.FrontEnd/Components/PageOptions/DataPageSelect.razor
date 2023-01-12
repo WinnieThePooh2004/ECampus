@@ -2,23 +2,23 @@
 @using Microsoft.AspNetCore.Components.Forms
 
 <text>Page @("   ")</text>
-@if (_pageNumber < QueryParameters.PagesInLine + 2)
+@if (_pageNumber < PagesInLine + 2)
 {
-    @foreach (var i in Enumerable.Range(1, Math.Min(QueryParameters.PagesInLine + 3, MaxPageNumber)))
+    @foreach (var i in Enumerable.Range(1, Math.Min(PagesInLine + 3, MaxPageNumber)))
     {
         <a onclick="@(async () => await PageNumberChanged(i))"><u>@i</u>@(" ")</a>
     }
-    @if (MaxPageNumber > QueryParameters.PagesInLine)
+    @if (MaxPageNumber > PagesInLine)
     {
         <a onclick="@(async () => await PageNumberChanged(MaxPageNumber))">
             <u>@("...")@MaxPageNumber</u>
         </a>
     }
 }
-else if (_pageNumber >= MaxPageNumber - QueryParameters.PagesInLine - 1)
+else if (_pageNumber >= MaxPageNumber - PagesInLine - 1)
 {
     <a onclick="@(async () => await PageNumberChanged(1))">1@("...")</a>
-    @foreach (var i in Enumerable.Range(MaxPageNumber - QueryParameters.PagesInLine - 2, QueryParameters.PagesInLine + 3))
+    @foreach (var i in Enumerable.Range(MaxPageNumber - PagesInLine - 2, PagesInLine + 3))
     {
         <a onclick="@(async () => await PageNumberChanged(i))"><u>@i</u>@(" ")</a>
     }
@@ -26,7 +26,7 @@ else if (_pageNumber >= MaxPageNumber - QueryParameters.PagesInLine - 1)
 else
 {
     <a onclick="@(async () => await PageNumberChanged(1))"><u>1@("...")</u></a>
-    foreach (var i in Enumerable.Range(_pageNumber - QueryParameters.PagesInLine + 2, QueryParameters.PagesInLine + 2))
+    foreach (var i in Enumerable.Range(_pageNumber - PagesInLine + 2, PagesInLine + 2))
     {
         <a onclick="@(async () => await PageNumberChanged(i))"><u>@i</u>@(" ")</a>
     }
