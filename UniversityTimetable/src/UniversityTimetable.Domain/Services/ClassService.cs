@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
+using UniversityTimetable.Shared.Attributes;
 using UniversityTimetable.Shared.DataContainers;
 using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Shared.Exceptions.DomainExceptions;
@@ -9,16 +10,17 @@ using UniversityTimetable.Shared.Interfaces.Domain;
 
 namespace UniversityTimetable.Domain.Services;
 
+[Inject(typeof(IClassService))]
 public class ClassService : IClassService
 {
     private readonly ILogger<ClassService> _logger;
     private readonly ITimetableDataAccessFacade _repository;
     private readonly IMapper _mapper;
     private readonly IBaseService<ClassDto> _baseService;
-    private readonly IUniversalValidator<ClassDto> _validator;
+    private readonly IUpdateValidator<ClassDto> _validator;
 
     public ClassService(ILogger<ClassService> logger, ITimetableDataAccessFacade repository, IMapper mapper,
-        IBaseService<ClassDto> baseService, IUniversalValidator<ClassDto> validator)
+        IBaseService<ClassDto> baseService, IUpdateValidator<ClassDto> validator)
     {
         _logger = logger;
         _repository = repository;

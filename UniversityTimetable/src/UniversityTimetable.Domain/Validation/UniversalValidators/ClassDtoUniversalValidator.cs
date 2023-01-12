@@ -9,28 +9,45 @@ using UniversityTimetable.Shared.Models;
 
 namespace UniversityTimetable.Domain.Validation.UniversalValidators;
 
-public class ClassDtoUniversalValidator : IUniversalValidator<ClassDto>
+public class ClassDtoUniversalValidator : IUpdateValidator<ClassDto>, ICreateValidator<ClassDto>
 {
     private readonly IMapper _mapper;
     private readonly IValidationDataAccess<Class> _dataAccess;
-    private readonly IUniversalValidator<ClassDto> _baseValidator;
+    private readonly IUpdateValidator<ClassDto> _baseUpdateValidator;
+    private readonly ICreateValidator<ClassDto> _baseCreateValidator;
 
     public ClassDtoUniversalValidator(IMapper mapper, IValidationDataAccess<Class> dataAccess,
-        IUniversalValidator<ClassDto> baseValidator)
+        IUpdateValidator<ClassDto> baseUpdateValidator, ICreateValidator<ClassDto> baseCreateValidator)
     {
         _mapper = mapper;
         _dataAccess = dataAccess;
-        _baseValidator = baseValidator;
+        _baseUpdateValidator = baseUpdateValidator;
+        _baseCreateValidator = baseCreateValidator;
     }
-
-    public async Task<List<KeyValuePair<string, string>>> ValidateAsync(ClassDto dataTransferObject)
+    
+    async Task<List<KeyValuePair<string, string>>> IUpdateValidator<ClassDto>.ValidateAsync(ClassDto dataTransferObject)
     {
-        var baseErrors = await _baseValidator.ValidateAsync(dataTransferObject);
+        var baseErrors = await _baseUpdateValidator.ValidateAsync(dataTransferObject);
         if (baseErrors.Any())
         {
             return baseErrors;
         }
 
+        return await ValidateAsync(dataTransferObject);
+    }
+
+    async Task<List<KeyValuePair<string, string>>> ICreateValidator<ClassDto>.ValidateAsync(ClassDto dataTransferObject)
+    {
+        var baseErrors = await _baseCreateValidator.ValidateAsync(dataTransferObject);
+        if (baseErrors.Any())
+        {
+            return baseErrors;
+        }
+
+        return await ValidateAsync(dataTransferObject);    }
+
+    private async Task<List<KeyValuePair<string, string>>> ValidateAsync(ClassDto dataTransferObject)
+    {
         var model = await _dataAccess.LoadRequiredDataForCreateAsync(_mapper.Map<Class>(dataTransferObject));
         var errors = ValidateReferencedValues(model);
         if (errors.Any())
@@ -49,7 +66,7 @@ public class ClassDtoUniversalValidator : IUniversalValidator<ClassDto>
     {
         var errors = new List<KeyValuePair<string, string>>();
         if (@class.Teacher.Classes
-            .Any(c => c.Id != @class.Id && 
+            .Any(c => c.Id != @class.Id &&
                       c.Number == @class.Number &&
                       c.DayOfWeek == @class.DayOfWeek &&
                       (c.WeekDependency == WeekDependency.None ||
