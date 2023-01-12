@@ -9,27 +9,22 @@ namespace UniversityTimetable.Tests.Integration.AppFactories;
 
 public class ApplicationFactory : WebApplicationFactory<Program>
 {
-    public ApplicationDbContext Context { get; }
-
-    public ApplicationFactory()
-    {
-        Context = TestDatabaseFactory.CreateContext();
-        Context.Database.EnsureDeleted();
-        Context.Database.EnsureCreated();
-        Context.SeedData();
-    }
+    public static ApplicationDbContext Context =>
+        new((DbContextOptions<ApplicationDbContext>)
+            new DbContextOptionsBuilder<ApplicationDbContext>().UseInMemoryDb().Options);
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         builder.ConfigureServices(services =>
         {
-            var descriptor = services.SingleOrDefault(_ =>
-                services.GetType() == typeof(DbContextOptions<ApplicationDbContext>));
+            var descriptor = services.SingleOrDefault(service =>
+                service.ServiceType == typeof(DbContextOptions<ApplicationDbContext>));
             if (descriptor is not null)
             {
                 services.Remove(descriptor);
             }
-            services.AddSingleton(Context);
+
+            services.AddDbContext<ApplicationDbContext>(options => options.UseInMemoryDb());
         });
     }
 }

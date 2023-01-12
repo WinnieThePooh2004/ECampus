@@ -24,7 +24,7 @@ public class ForbiddenResultTests : IClassFixture<ApplicationWithoutDatabase>, I
     {
         var user = DefaultUsers.Guest;
         _applicationFactory.Context.Users = new DbSetMock<User>(user);
-        await _client.Login(user);
+        _client.Login(user);
     }
 
     public Task DisposeAsync()

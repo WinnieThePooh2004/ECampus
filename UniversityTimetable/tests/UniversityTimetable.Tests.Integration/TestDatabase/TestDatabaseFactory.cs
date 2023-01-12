@@ -6,11 +6,8 @@ namespace UniversityTimetable.Tests.Integration.TestDatabase;
 
 public static class TestDatabaseFactory
 {
-    public static ApplicationDbContext CreateContext()
+    public static DbContextOptionsBuilder UseInMemoryDb(this DbContextOptionsBuilder optionsBuilder)
     {
-        var connection = new SqliteConnection("Data Source=:memory:");
-        connection.Open();
-        var options = new DbContextOptionsBuilder<ApplicationDbContext>().UseSqlite(connection).Options;
-        return new ApplicationDbContext(options);
+        return optionsBuilder.UseInMemoryDatabase("DataBase");
     }
 }

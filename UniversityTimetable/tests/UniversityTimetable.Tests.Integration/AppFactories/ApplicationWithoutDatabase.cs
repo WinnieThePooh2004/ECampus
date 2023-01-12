@@ -20,8 +20,8 @@ public class ApplicationWithoutDatabase : WebApplicationFactory<Program>
     {
         builder.ConfigureServices(services =>
         {
-            var descriptor = services.SingleOrDefault(_ =>
-                services.GetType() == typeof(DbContextOptions<ApplicationDbContext>));
+            var descriptor = services.SingleOrDefault(service =>
+                service.ServiceType == typeof(DbContextOptions<ApplicationDbContext>));
             if (descriptor is not null)
             {
                 services.Remove(descriptor);
