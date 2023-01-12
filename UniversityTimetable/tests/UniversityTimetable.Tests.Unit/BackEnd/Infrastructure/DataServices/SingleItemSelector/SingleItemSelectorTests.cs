@@ -24,7 +24,7 @@ public class SingleItemSelectorTests
     [Fact]
     public async Task GetById_ReturnsFromSet_IfModelExists()
     {
-        var item = await _singleItemSelector.SelectModel(_testDataSource[0].Id, _testSet);
+        await _singleItemSelector.SelectModel(_testDataSource[0].Id, _testSet);
         await _testSet.Received(1).FindAsync(_testDataSource[0].Id);
     }
     

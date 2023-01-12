@@ -9,28 +9,18 @@ using UniversityTimetable.Tests.Shared.Mocks.EntityFramework;
 
 namespace UniversityTimetable.Tests.Integration.Tests.InstantFailuresTests;
 
-public class ForbiddenResultTests : IClassFixture<ApplicationWithoutDatabase>, IAsyncLifetime
+public class ForbiddenResultTests : IClassFixture<ApplicationWithoutDatabase>
 {
     private readonly HttpClient _client;
-    private readonly ApplicationWithoutDatabase _applicationFactory;
 
     public ForbiddenResultTests(ApplicationWithoutDatabase applicationFactory)
     {
-        _applicationFactory = applicationFactory;
-        _client = _applicationFactory.CreateClient();
-    }
-
-    public async Task InitializeAsync()
-    {
+        _client = applicationFactory.CreateClient();
         var user = DefaultUsers.Guest;
-        _applicationFactory.Context.Users = new DbSetMock<User>(user);
+        applicationFactory.Context.Users = new DbSetMock<User>(user);
         _client.Login(user);
     }
 
-    public Task DisposeAsync()
-    {
-        return Task.CompletedTask;
-    }
 
     [Fact]
     public async Task PutToAuditories_ShouldReturn403_WhenUnauthorized()

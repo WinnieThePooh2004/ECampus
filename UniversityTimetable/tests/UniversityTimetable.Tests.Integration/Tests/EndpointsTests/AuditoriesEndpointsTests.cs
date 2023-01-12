@@ -7,7 +7,6 @@ using UniversityTimetable.Api.MiddlewareFilters;
 using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Shared.Exceptions.InfrastructureExceptions;
 using UniversityTimetable.Shared.Models;
-using UniversityTimetable.Shared.Models.RelationModels;
 using UniversityTimetable.Tests.Integration.AppFactories;
 using UniversityTimetable.Tests.Integration.AuthHelpers;
 using UniversityTimetable.Tests.Shared.Mocks.HttpRequests;

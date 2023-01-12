@@ -1,7 +1,6 @@
 ﻿using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using UniversityTimetable.Shared.Auth;
-using UniversityTimetable.Shared.Extensions;
 
 namespace UniversityTimetable.FrontEnd.HttpHandlers;
 

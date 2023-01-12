@@ -1,6 +1,4 @@
-﻿using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore;
-using UniversityTimetable.Infrastructure;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace UniversityTimetable.Tests.Integration.TestDatabase;
 

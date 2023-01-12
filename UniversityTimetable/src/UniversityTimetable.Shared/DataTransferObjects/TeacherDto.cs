@@ -1,5 +1,4 @@
-﻿using System.Text.Json.Serialization;
-using UniversityTimetable.Shared.Attributes;
+﻿using UniversityTimetable.Shared.Attributes;
 using UniversityTimetable.Shared.Enums;
 using UniversityTimetable.Shared.Interfaces.Data.Models;
 using UniversityTimetable.Shared.Models;
