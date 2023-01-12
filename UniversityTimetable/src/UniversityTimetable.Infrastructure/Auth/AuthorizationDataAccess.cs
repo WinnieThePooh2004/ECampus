@@ -1,11 +1,13 @@
 ﻿using System.Net;
 using Microsoft.EntityFrameworkCore;
+using UniversityTimetable.Shared.Attributes;
 using UniversityTimetable.Shared.Exceptions.InfrastructureExceptions;
 using UniversityTimetable.Shared.Interfaces.Auth;
 using UniversityTimetable.Shared.Models;
 
 namespace UniversityTimetable.Infrastructure.Auth;
 
+[Inject(typeof(IAuthorizationDataAccess))]
 public class AuthorizationDataAccess : IAuthorizationDataAccess
 {
     private readonly ApplicationDbContext _context;

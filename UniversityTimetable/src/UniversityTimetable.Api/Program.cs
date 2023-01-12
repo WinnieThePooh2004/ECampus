@@ -6,18 +6,8 @@ using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using UniversityTimetable.Api.MiddlewareFilters;
 using UniversityTimetable.Api.Extensions;
-using UniversityTimetable.Domain.Auth;
-using UniversityTimetable.Domain.Services;
-using UniversityTimetable.Infrastructure.DataAccessFacades;
 using UniversityTimetable.Infrastructure;
-using UniversityTimetable.Infrastructure.Auth;
-using UniversityTimetable.Infrastructure.DataUpdateServices;
-using UniversityTimetable.Infrastructure.Relationships;
 using UniversityTimetable.Shared.Auth;
-using UniversityTimetable.Shared.Interfaces.Data.DataServices;
-using UniversityTimetable.Shared.Interfaces.DataAccess;
-using UniversityTimetable.Shared.Interfaces.Domain;
-using UniversityTimetable.Shared.Interfaces.Auth;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,24 +31,11 @@ builder.Services.AddSingleItemSelectors(Assembly.Load("UniversityTimetable.Share
 builder.Services.AddMultipleDataSelectors(Assembly.Load("UniversityTimetable.Infrastructure"));
 builder.Services.DecorateDataServicesWithRelationshipsServices(Assembly.Load("UniversityTimetable.Shared"));
 builder.Services.AddDataValidator(Assembly.Load("UniversityTimetable.Infrastructure"));
+builder.Services.AddUniqueServices(Assembly.Load("UniversityTimetable.Infrastructure"), Assembly.Load("UniversityTimetable.Domain"));
 
 builder.Services.AddValidatorsFromAssembly(Assembly.Load("UniversityTimetable.Domain"));
 
 builder.Services.AddAutoMapper(Assembly.Load("UniversityTimetable.Domain"));
-
-builder.Services.AddSingleton<IRelationsDataAccess, RelationsDataAccess>();
-
-builder.Services.AddScoped<IClassService, ClassService>();
-builder.Services.AddScoped<ITimetableDataAccessFacade, TimetableDataAccessFacade>();
-
-builder.Services.AddScoped<IUserDataAccessFacade, UserDataAccessFacade>();
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IPasswordChange, PasswordChange>();
-
-builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
-
-builder.Services.AddScoped<IAuthorizationService, AuthorizationService>();
-builder.Services.AddScoped<IAuthorizationDataAccess, AuthorizationDataAccess>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using IdentityServer4.Extensions;
 using Microsoft.AspNetCore.Http;
+using UniversityTimetable.Shared.Attributes;
 using UniversityTimetable.Shared.Enums;
 using UniversityTimetable.Shared.Exceptions.DomainExceptions;
 using UniversityTimetable.Shared.Extensions;
@@ -8,6 +9,7 @@ using UniversityTimetable.Shared.Interfaces.Auth;
 
 namespace UniversityTimetable.Domain.Auth;
 
+[Inject(typeof(IAuthenticationService))]
 public class AuthenticationService : IAuthenticationService
 {
     private readonly IHttpContextAccessor _httpContextAccessor;

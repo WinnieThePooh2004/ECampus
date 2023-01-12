@@ -1,12 +1,15 @@
 ﻿using System.Net;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using UniversityTimetable.Shared.Attributes;
 using UniversityTimetable.Shared.Exceptions.InfrastructureExceptions;
 using UniversityTimetable.Shared.Interfaces.Data.DataServices;
 using UniversityTimetable.Shared.Interfaces.Data.Models;
 
 namespace UniversityTimetable.Infrastructure.Relationships;
 
+[Inject(typeof(IRelationsDataAccess), ServiceLifetime.Singleton)]
 public class RelationsDataAccess : IRelationsDataAccess
 {
     private readonly ILogger<RelationsDataAccess> _logger;

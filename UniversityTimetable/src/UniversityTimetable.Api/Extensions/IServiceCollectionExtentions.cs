@@ -23,6 +23,14 @@ namespace UniversityTimetable.Api.Extensions;
 // ReSharper disable once InconsistentNaming
 internal static class IServiceCollectionExtensions
 {
+    public static void AddUniqueServices(this IServiceCollection services, params Assembly[] assemblies)
+    {
+        services.AddRange(assemblies.SelectMany(assembly => assembly.GetTypes().Where(type =>
+                type.GetCustomAttributes().Any(attribute => attribute.GetType() == typeof(InjectAttribute))))
+            .SelectMany(type => type.GetCustomAttributes().OfType<InjectAttribute>().Select(attribute =>
+                new ServiceDescriptor(attribute.ServiceType, type, attribute.ServiceLifetime))));
+    }
+
     public static void AddDefaultDataServices(this IServiceCollection services, Assembly assembly)
     {
         var modelsFromAssembly = GetModels(assembly);
@@ -51,7 +59,7 @@ internal static class IServiceCollectionExtensions
                     typeof(DataUpdateServiceWithRelationships<,,>).MakeGenericType(relationModel, genericArgs[0],
                         genericArgs[1]));
                 services.Decorate(typeof(IDataCreateService<>).MakeGenericType(relationModel),
-                    typeof(DataCreateServiceWithRelationships<,,>).MakeGenericType(relationModel, genericArgs[0],
+                    typeof(DataCreateWithRelationships<,,>).MakeGenericType(relationModel, genericArgs[0],
                         genericArgs[1]));
             }
         }
@@ -159,18 +167,11 @@ internal static class IServiceCollectionExtensions
 
             AddBaseValidators(services, typeValidation, modelType);
 
-            LoadValidatorTypes(servicesAssembly, modelType, out var createValidator,
-                out var universalValidator, out var updateValidator);
+            LoadValidatorTypes(servicesAssembly, modelType, out var createValidator, out var updateValidator);
 
             if (typeValidation.RequireService)
             {
                 AddServicesWithValidation(services, typeValidation, modelType);
-            }
-
-            if (universalValidator is not null)
-            {
-                services.Decorate(typeof(IUniversalValidator<>).MakeGenericType(modelType), universalValidator);
-                continue;
             }
 
             if (createValidator is not null)
@@ -185,8 +186,7 @@ internal static class IServiceCollectionExtensions
         }
     }
 
-    private static void LoadValidatorTypes(Assembly servicesAssembly, Type modelType, out Type? createValidator,
-        out Type? universalValidator, out Type? updateValidator)
+    private static void LoadValidatorTypes(Assembly servicesAssembly, Type modelType, out Type? createValidator, out Type? updateValidator)
     {
         updateValidator = servicesAssembly.GetTypes().FirstOrDefault(type =>
             type.IsClass && type.GetInterfaces()
@@ -194,9 +194,6 @@ internal static class IServiceCollectionExtensions
         createValidator = servicesAssembly.GetTypes().FirstOrDefault(type =>
             type.IsClass && type.GetInterfaces()
                 .Any(i => i == typeof(ICreateValidator<>).MakeGenericType(modelType)));
-        universalValidator = servicesAssembly.GetTypes().FirstOrDefault(type =>
-            type.IsClass && type.GetInterfaces()
-                .Any(i => i == typeof(IUniversalValidator<>).MakeGenericType(modelType)));
     }
 
     private static void AddServicesWithValidation(IServiceCollection services, ValidationAttribute typeValidation,
@@ -210,7 +207,9 @@ internal static class IServiceCollectionExtensions
         if (typeValidation.UseUniversalValidator)
         {
             services.Decorate(typeof(IBaseService<>).MakeGenericType(modelType),
-                typeof(ServiceWithUniversalValidation<>).MakeGenericType(modelType));
+                typeof(ServiceWithUpdateValidation<>).MakeGenericType(modelType));
+            services.Decorate(typeof(IBaseService<>).MakeGenericType(modelType),
+                typeof(ServiceWithCreateValidation<>).MakeGenericType(modelType));
             return;
         }
 
@@ -235,7 +234,9 @@ internal static class IServiceCollectionExtensions
 
         if (typeValidation.UseUniversalValidator)
         {
-            services.AddScoped(typeof(IUniversalValidator<>).MakeGenericType(modelType),
+            services.AddScoped(typeof(ICreateValidator<>).MakeGenericType(modelType),
+                typeof(UniversalValidator<>).MakeGenericType(modelType));
+            services.AddScoped(typeof(IUpdateValidator<>).MakeGenericType(modelType),
                 typeof(UniversalValidator<>).MakeGenericType(modelType));
             return;
         }
@@ -252,7 +253,14 @@ internal static class IServiceCollectionExtensions
                 typeof(UpdateValidator<>).MakeGenericType(modelType));
         }
     }
-
+    
+    private static void AddRange(this IServiceCollection services, IEnumerable<ServiceDescriptor> descriptors)
+    {
+        foreach (var descriptor in descriptors)
+        {
+            services.Add(descriptor);
+        }
+    }
 
     private static List<Type> GetModels(Assembly assembly)
         => assembly.GetTypes().Where(type => type.GetInterfaces().Any(i => i == typeof(IModel))).ToList();
