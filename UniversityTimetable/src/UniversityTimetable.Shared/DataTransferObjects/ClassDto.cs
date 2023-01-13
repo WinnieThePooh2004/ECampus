@@ -19,7 +19,7 @@ public class ClassDto : IDataTransferObject
     public int GroupId { get; set; }
     public int AuditoryId { get; set; }
     public int SubjectId { get; set; }
-    public AuditoryDto? Auditory { get; init; }
+    public AuditoryDto? Auditory { get; set; }
     public TeacherDto? Teacher { get; set; }
     public GroupDto? Group { get; set; }
     public SubjectDto? Subject { get; set; }
