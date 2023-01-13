@@ -1,3 +1,4 @@
+using System.Reflection;
 using System.Text.Json;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -30,14 +31,9 @@ builder.Services.AddRequests<DepartmentDto, DepartmentParameters>();
 builder.Services.AddRequests<TeacherDto, TeacherParameters>();
 builder.Services.AddRequests<SubjectDto, SubjectParameters>();
 builder.Services.AddRequests<AuditoryDto, AuditoryParameters>();
+builder.Services.AddRequests<StudentDto, StudentParameters>();
 
-builder.Services.AddScoped<IValidator<FacultyDto>, FacultyDtoValidator>();
-builder.Services.AddScoped<IValidator<AuditoryDto>, AuditoryDtoValidator>();
-builder.Services.AddScoped<IValidator<TeacherDto>, TeacherDtoValidator>();
-builder.Services.AddScoped<IValidator<GroupDto>, GroupDtoValidator>();
-builder.Services.AddScoped<IValidator<SubjectDto>, SubjectDtoValidator>();
-builder.Services.AddScoped<IValidator<DepartmentDto>, DepartmentDtoValidator>();
-builder.Services.AddScoped<IValidator<UserDto>, UserDtoValidator>();
+builder.Services.AddValidatorsFromAssembly(Assembly.Load("UniversityTimetable.Domain"));
 
 builder.Services.AddScoped<IValidator<ClassDto>, ClassDtoValidator>();
 builder.Services.AddScoped<IValidationRequests<ClassDto>, ClassValidationRequests>();

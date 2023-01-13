@@ -47,7 +47,7 @@
                     }
                     @foreach(var link in ActionLinks)
                     {
-                        <a role="button" href="@link.Item2(item)" class="btn btn-info">@link.Item1</a>
+                        <a role="button" href="@link.LinkSource(item)" class="btn btn-info">@link.LinkName</a>
                         <text> | </text>
                     }
                     @if (_isAdmin && ShowDeleteButton)
