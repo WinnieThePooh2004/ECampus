@@ -2,16 +2,19 @@
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using NSubstitute;
 using UniversityTimetable.Infrastructure;
-using UniversityTimetable.Tests.Integration.TestDatabase;
 
 namespace UniversityTimetable.Tests.Integration.AppFactories;
 
-public class ApplicationFactory : WebApplicationFactory<Program>
+public class ApplicationWithoutDatabase : WebApplicationFactory<Program>
 {
-    public static ApplicationDbContext Context =>
-        new((DbContextOptions<ApplicationDbContext>)
-            new DbContextOptionsBuilder<ApplicationDbContext>().UseInMemoryDb().Options);
+    public ApplicationDbContext Context { get; }
+
+    public ApplicationWithoutDatabase()
+    {
+        Context = Substitute.For<ApplicationDbContext>();
+    }
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
@@ -23,8 +26,7 @@ public class ApplicationFactory : WebApplicationFactory<Program>
             {
                 services.Remove(descriptor);
             }
-
-            services.AddDbContext<ApplicationDbContext>(options => options.UseInMemoryDb());
+            services.AddSingleton(Context);
         });
     }
 }

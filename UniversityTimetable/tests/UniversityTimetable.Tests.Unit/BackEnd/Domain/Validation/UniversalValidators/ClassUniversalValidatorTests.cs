@@ -12,35 +12,36 @@ public class ClassUniversalValidatorTests
 {
     private readonly ClassDtoUniversalValidator _sut;
     private readonly IValidationDataAccess<Class> _dataValidator;
-    private readonly IUniversalValidator<ClassDto> _baseValidator;
+    private readonly IUpdateValidator<ClassDto> _baseUpdateValidator = Substitute.For<IUpdateValidator<ClassDto>>();
+    private readonly ICreateValidator<ClassDto> _baseCreateValidator = Substitute.For<ICreateValidator<ClassDto>>();
     private readonly Fixture _fixture = new();
 
     public ClassUniversalValidatorTests()
     {
         _dataValidator = Substitute.For<IValidationDataAccess<Class>>();
-        _baseValidator = Substitute.For<IUniversalValidator<ClassDto>>();
-        _sut = new ClassDtoUniversalValidator(MapperFactory.Mapper, _dataValidator, _baseValidator);
+        _sut = new ClassDtoUniversalValidator(MapperFactory.Mapper, _dataValidator, _baseUpdateValidator,
+            _baseCreateValidator);
     }
 
     [Fact]
-    public async Task Validate_ReturnsValidationFailures()
+    public async Task ValidateAsCreateValidator_ReturnsValidationFailures()
     {
         var @class = new ClassDto();
         var classFromDb = CreateTestModel();
-        _baseValidator.ValidateAsync(Arg.Any<ClassDto>()).Returns(new List<KeyValuePair<string, string>>());
+        _baseCreateValidator.ValidateAsync(Arg.Any<ClassDto>()).Returns(new List<KeyValuePair<string, string>>());
         _dataValidator.LoadRequiredDataForCreateAsync(Arg.Any<Class>()).Returns(classFromDb);
         var expectedErrors = CreateExpectedErrors(classFromDb);
 
-        var actual = await _sut.ValidateAsync(@class);
+        var actual = await ((ICreateValidator<ClassDto>)_sut).ValidateAsync(@class);
 
         actual.Should().ContainsKeysWithValues(expectedErrors);
     }
 
     [Fact]
-    public async Task Validate_AddedMessages_WhenPropertiesIsnull()
+    public async Task ValidateAsCreateValidator_AddedMessages_WhenPropertiesIsnull()
     {
         var classFromDb = new Class();
-        _baseValidator.ValidateAsync(Arg.Any<ClassDto>()).Returns(new List<KeyValuePair<string, string>>());
+        _baseCreateValidator.ValidateAsync(Arg.Any<ClassDto>()).Returns(new List<KeyValuePair<string, string>>());
         _dataValidator.LoadRequiredDataForCreateAsync(Arg.Any<Class>()).Returns(classFromDb);
         var expected = new List<KeyValuePair<string, string>>
         {
@@ -50,20 +51,67 @@ public class ClassUniversalValidatorTests
             KeyValuePair.Create("TeacherId", "Teacher does not exist")
         };
 
-        var actual = await _sut.ValidateAsync(new ClassDto());
+        var actual = await ((ICreateValidator<ClassDto>)_sut).ValidateAsync(new ClassDto());
 
         actual.Should().ContainsKeysWithValues(expected);
     }
 
     [Fact]
-    public async Task Validate_ShouldNotAddMoreErrors_WhenBaseValidatorFoundErrors()
+    public async Task ValidateAsCreateValidator_ShouldNotAddMoreErrors_WhenBaseValidatorFoundErrors()
     {
         var errors = _fixture.CreateMany<KeyValuePair<string, string>>(10).ToList();
         var classFromDb = CreateTestModel();
-        _baseValidator.ValidateAsync(Arg.Any<ClassDto>()).Returns(errors);
+        _baseCreateValidator.ValidateAsync(Arg.Any<ClassDto>()).Returns(errors);
         _dataValidator.LoadRequiredDataForCreateAsync(Arg.Any<Class>()).Returns(classFromDb);
 
-        var actualErrors = await _sut.ValidateAsync(new ClassDto());
+        var actualErrors = await ((ICreateValidator<ClassDto>)_sut).ValidateAsync(new ClassDto());
+
+        actualErrors.Should().ContainsKeysWithValues(errors);
+        actualErrors.Count.Should().Be(10);
+    }
+
+    [Fact]
+    public async Task ValidateAsUpdateValidator_ReturnsValidationFailures()
+    {
+        var @class = new ClassDto();
+        var classFromDb = CreateTestModel();
+        _baseUpdateValidator.ValidateAsync(Arg.Any<ClassDto>()).Returns(new List<KeyValuePair<string, string>>());
+        _dataValidator.LoadRequiredDataForCreateAsync(Arg.Any<Class>()).Returns(classFromDb);
+        var expectedErrors = CreateExpectedErrors(classFromDb);
+
+        var actual = await ((IUpdateValidator<ClassDto>)_sut).ValidateAsync(@class);
+
+        actual.Should().ContainsKeysWithValues(expectedErrors);
+    }
+
+    [Fact]
+    public async Task ValidateAsUpdateValidator_AddedMessages_WhenPropertiesIsnull()
+    {
+        var classFromDb = new Class();
+        _baseUpdateValidator.ValidateAsync(Arg.Any<ClassDto>()).Returns(new List<KeyValuePair<string, string>>());
+        _dataValidator.LoadRequiredDataForCreateAsync(Arg.Any<Class>()).Returns(classFromDb);
+        var expected = new List<KeyValuePair<string, string>>
+        {
+            KeyValuePair.Create("GroupId", "Group does not exist"),
+            KeyValuePair.Create("AuditoryId", "Auditory does not exist"),
+            KeyValuePair.Create("SubjectId", "Subject does not exist"),
+            KeyValuePair.Create("TeacherId", "Teacher does not exist")
+        };
+
+        var actual = await ((IUpdateValidator<ClassDto>)_sut).ValidateAsync(new ClassDto());
+
+        actual.Should().ContainsKeysWithValues(expected);
+    }
+
+    [Fact]
+    public async Task ValidateAsUpdateValidator_ShouldNotAddMoreErrors_WhenBaseValidatorFoundErrors()
+    {
+        var errors = _fixture.CreateMany<KeyValuePair<string, string>>(10).ToList();
+        var classFromDb = CreateTestModel();
+        _baseUpdateValidator.ValidateAsync(Arg.Any<ClassDto>()).Returns(errors);
+        _dataValidator.LoadRequiredDataForCreateAsync(Arg.Any<Class>()).Returns(classFromDb);
+
+        var actualErrors = await ((IUpdateValidator<ClassDto>)_sut).ValidateAsync(new ClassDto());
 
         actualErrors.Should().ContainsKeysWithValues(errors);
         actualErrors.Count.Should().Be(10);
@@ -88,9 +136,9 @@ public class ClassUniversalValidatorTests
                 $"with week dependency {@class.WeekDependency}"),
             KeyValuePair.Create<string, string>("SubjectId",
                 $"Teacher {@class.Teacher?.FirstName} {@class.Teacher?.LastName} " +
-                $"does not teach subject {@class.Subject?.Name}")
+                $"does not teach subject {@class.Subject?.Name}"),
         };
-    
+
     private Class CreateTestModel()
     {
         var teacher = new TeacherFactory().CreateModel(_fixture);

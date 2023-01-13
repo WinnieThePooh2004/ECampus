@@ -110,6 +110,33 @@ public class UserControllerTest
     }
 
     [Fact]
+    public async Task ValidatePasswordChange_ShouldReturnFromService()
+    {
+        var passwordChange = _fixture.Create<PasswordChangeDto>();
+        var errors = _fixture.CreateMany<KeyValuePair<string, string>>(10).ToList();
+        _service.ValidatePasswordChange(passwordChange).Returns(errors);
+
+        var actionResult = await _controller.ValidatePasswordChange(passwordChange);
+
+        actionResult.Should().BeOfType<OkObjectResult>();
+        actionResult.As<OkObjectResult>().Value.Should().Be(errors);
+        await _service.Received(1).ValidatePasswordChange(passwordChange);
+    }
+
+    [Fact]
+    public async Task ChangePassword_ShouldReturnFromPasswordService()
+    {
+        var passwordChange = _fixture.Create<PasswordChangeDto>();
+        _service.ChangePassword(passwordChange).Returns(passwordChange);
+
+        var actionResult = await _controller.ChangePassword(passwordChange);
+
+        actionResult.Should().BeOfType<OkObjectResult>();
+        actionResult.As<OkObjectResult>().Value.Should().Be(passwordChange);
+        await _service.Received(1).ChangePassword(passwordChange);
+    }
+
+    [Fact]
     public async Task SaveAuditory_ReturnsNoContent_ServiceCalled()
     {
         var actionResult = await _controller.SaveAuditory(10, 10);
@@ -117,7 +144,7 @@ public class UserControllerTest
         actionResult.Should().BeOfType<NoContentResult>();
         await _service.Received().SaveAuditory(10, 10);
     }
-    
+
     [Fact]
     public async Task RemoveSavedAuditory_ReturnsNoContent_ServiceCalled()
     {

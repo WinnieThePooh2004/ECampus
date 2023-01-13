@@ -3,7 +3,7 @@ using UniversityTimetable.Shared.Interfaces.Domain.Validation;
 
 namespace UniversityTimetable.Domain.Validation.UniversalValidators;
 
-public class UniversalValidator<TDto> : IUniversalValidator<TDto>
+public class UniversalValidator<TDto> : ICreateValidator<TDto>, IUpdateValidator<TDto>
 {
     private readonly IValidator<TDto> _fluentValidationValidator;
 

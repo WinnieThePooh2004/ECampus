@@ -1,6 +1,6 @@
 ﻿using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using UniversityTimetable.Shared.Extensions;
+using UniversityTimetable.Shared.Auth;
 
 namespace UniversityTimetable.FrontEnd.HttpHandlers;
 
@@ -15,7 +15,7 @@ public class TokenHandler : DelegatingHandler
 
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
-        var token = _httpContextAccessor.HttpContext?.User.GetBearer();
+        var token = _httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(claim => claim.Type == CustomClaimTypes.JwtBearer)?.Value;
         if (token is null)
         {
             return await base.SendAsync(request, cancellationToken);

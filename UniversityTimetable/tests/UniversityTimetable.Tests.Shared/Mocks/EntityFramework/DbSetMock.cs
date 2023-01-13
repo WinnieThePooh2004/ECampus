@@ -19,7 +19,6 @@ public sealed class DbSetMock<T>
         Object.GetAsyncEnumerator(Arg.Any<CancellationToken>())
             .Returns(new TestAsyncEnumerator<T>(source.GetEnumerator()));
         Object.Add(Arg.Do<T>(source.Add));
-        Object.Remove(Arg.Do<T>(model => source.Remove(model)));
     }
 
     public DbSetMock()

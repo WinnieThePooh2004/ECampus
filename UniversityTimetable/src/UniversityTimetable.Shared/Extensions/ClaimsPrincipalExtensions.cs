@@ -19,6 +19,4 @@ public static class ClaimsPrincipalExtensions
 
         return id;
     }
-
-    public static string? GetBearer(this ClaimsPrincipal user) => user.Claims.FirstOrDefault(claim => claim.Type == CustomClaimTypes.JwtBearer)?.Value;
 }

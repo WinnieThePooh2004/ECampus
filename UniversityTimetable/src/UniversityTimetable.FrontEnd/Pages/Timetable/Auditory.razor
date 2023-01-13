@@ -4,7 +4,7 @@
 <TimetableModel CreateLink="@($"timetable/Create/{(int)TimetableMode.Auditory}/{AuditoryId}")"
                 EditLink="@($"timetable/edit/{(int)TimetableMode.Auditory}")"
                 DescriptionList="@(new List<Func<ClassDto, string>> { c => $"{c.Subject?.Name} {c.ClassType}",
-                                     c => $"Group {c.Group?.Name}", c => $"Teacher: {c.Teacher?.FullName}" })"
+                                     c => $"Group {c.Group?.Name}", c => $"Teacher: {c.Teacher?.FirstName} {c.Teacher?.LastName}" })"
                 RefreshData="@(requests => requests.AuditoryTimetable(AuditoryId))" />
 
 <br />

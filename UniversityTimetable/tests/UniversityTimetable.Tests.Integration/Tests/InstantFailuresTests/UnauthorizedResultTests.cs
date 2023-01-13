@@ -6,11 +6,11 @@ using UniversityTimetable.Tests.Integration.AppFactories;
 
 namespace UniversityTimetable.Tests.Integration.Tests.InstantFailuresTests;
 
-public class UnauthorizedResultTests : IClassFixture<ApplicationFactory>
+public class UnauthorizedResultTests : IClassFixture<ApplicationWithoutDatabase>
 {
     private readonly HttpClient _client;
 
-    public UnauthorizedResultTests(ApplicationFactory factory)
+    public UnauthorizedResultTests(ApplicationWithoutDatabase factory)
     {
         _client = factory.CreateClient();
     }

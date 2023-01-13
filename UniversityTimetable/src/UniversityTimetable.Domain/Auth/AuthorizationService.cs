@@ -3,6 +3,7 @@ using System.Net;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
+using UniversityTimetable.Shared.Attributes;
 using UniversityTimetable.Shared.Auth;
 using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Shared.Exceptions.DomainExceptions;
@@ -11,6 +12,7 @@ using UniversityTimetable.Shared.Interfaces.Auth;
 
 namespace UniversityTimetable.Domain.Auth;
 
+[Inject(typeof(IAuthorizationService))]
 public class AuthorizationService : IAuthorizationService
 {
     private readonly IAuthorizationDataAccess _repository;
@@ -56,10 +58,5 @@ public class AuthorizationService : IAuthorizationService
         
         result.Token = new JwtSecurityTokenHandler().WriteToken(jwt);
         return result;
-    }
-
-    public Task Logout()
-    {
-        return Task.CompletedTask;
     }
 }

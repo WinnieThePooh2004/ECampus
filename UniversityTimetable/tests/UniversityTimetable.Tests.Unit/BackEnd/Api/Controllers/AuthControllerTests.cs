@@ -33,13 +33,4 @@ public class AuthControllerTests
         actionResult.As<OkObjectResult>().Value.Should().Be(loginResult);
         await _service.Received().Login(login);
     }
-
-    [Fact]
-    public async Task Logout_ServiceCalled()
-    {
-        var actionResult = await _controller.Logout();
-
-        actionResult.Should().BeOfType<NoContentResult>();
-        await _service.Received().Logout();
-    }
 }

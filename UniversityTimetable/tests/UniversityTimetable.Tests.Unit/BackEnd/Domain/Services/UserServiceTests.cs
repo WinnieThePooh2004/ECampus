@@ -66,6 +66,18 @@ public class UserServiceTests
     }
 
     [Fact]
+    public async Task ValidatePasswordChange_ShouldReturnFromPasswordChange()
+    {
+        var passwordChange = new PasswordChangeDto();
+        var errors = _fixture.CreateMany<KeyValuePair<string, string>>(10).ToList();
+        _passwordChangeValidator.ValidateAsync(passwordChange).Returns(errors);
+
+        var result = await _sut.ValidatePasswordChange(passwordChange);
+
+        ((object)result).Should().Be(errors);
+    }
+
+    [Fact]
     private async Task Delete_BaseServiceCalled()
     {
         await _sut.DeleteAsync(10);

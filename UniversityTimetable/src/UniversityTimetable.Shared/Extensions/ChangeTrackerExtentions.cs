@@ -11,11 +11,7 @@ public static class ChangeTrackerExtensions
         changeTracker.DetectChanges();
 
         var entities = changeTracker.Entries().Where(t => t.Entity is IIsDeleted && t.State == EntityState.Deleted).ToList();
-
-        if (!entities.Any())
-        {
-            return;
-        }
+        
         foreach (var entry in entities)
         {
             var entity = (IIsDeleted)entry.Entity;

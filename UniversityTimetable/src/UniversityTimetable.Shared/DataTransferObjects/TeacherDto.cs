@@ -1,5 +1,4 @@
-﻿using System.Text.Json.Serialization;
-using UniversityTimetable.Shared.Attributes;
+﻿using UniversityTimetable.Shared.Attributes;
 using UniversityTimetable.Shared.Enums;
 using UniversityTimetable.Shared.Interfaces.Data.Models;
 using UniversityTimetable.Shared.Models;
@@ -17,5 +16,4 @@ public class TeacherDto : IDataTransferObject
 
     public int DepartmentId { get; set; }
     public List<SubjectDto>? Subjects { get; set; }
-    [JsonIgnore] public string FullName => $"{FirstName[0]}. {LastName}";
 }

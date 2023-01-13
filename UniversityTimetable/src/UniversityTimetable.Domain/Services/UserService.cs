@@ -1,4 +1,5 @@
-﻿using UniversityTimetable.Shared.DataTransferObjects;
+﻿using UniversityTimetable.Shared.Attributes;
+using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Shared.Exceptions.DomainExceptions;
 using UniversityTimetable.Shared.Interfaces.Auth;
 using UniversityTimetable.Shared.Interfaces.Domain.Validation;
@@ -7,6 +8,7 @@ using UniversityTimetable.Shared.Interfaces.Domain;
 
 namespace UniversityTimetable.Domain.Services;
 
+[Inject(typeof(IUserService))]
 public class UserService : IUserService
 {
     private readonly IBaseService<UserDto> _baseService;

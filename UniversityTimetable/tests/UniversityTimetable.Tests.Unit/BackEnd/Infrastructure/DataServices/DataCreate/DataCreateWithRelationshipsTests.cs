@@ -10,7 +10,7 @@ namespace UniversityTimetable.Tests.Unit.BackEnd.Infrastructure.DataServices.Dat
 
 public class DataCreateWithRelationshipsTests
 {
-    private readonly DataCreateServiceWithRelationships<User, Auditory, UserAuditory> _sut;
+    private readonly DataCreateWithRelationships<User, Auditory, UserAuditory> _sut;
     private readonly ApplicationDbContext _context;
     private readonly IDataCreateService<User> _baseCreateService;
     
@@ -18,7 +18,7 @@ public class DataCreateWithRelationshipsTests
     {
         _context = Substitute.For<ApplicationDbContext>();
         _baseCreateService = Substitute.For<IDataCreateService<User>>();
-        _sut = new DataCreateServiceWithRelationships<User, Auditory, UserAuditory>(_baseCreateService);
+        _sut = new DataCreateWithRelationships<User, Auditory, UserAuditory>(_baseCreateService);
     }
 
     [Fact]

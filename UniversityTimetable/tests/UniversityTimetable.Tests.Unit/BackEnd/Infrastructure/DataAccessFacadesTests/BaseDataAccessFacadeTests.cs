@@ -53,6 +53,16 @@ public class BaseDataAccessFacadeTests
     }
 
     [Fact]
+    public async Task Update_ShouldThrowInfrastructureException_WhenSaveChangesThrowsException()
+    {
+        _context.SaveChangesAsync().Returns(1).AndDoes(_ => throw new Exception());
+
+        await new Func<Task>(() => _sut.UpdateAsync(new Auditory())).Should()
+            .ThrowAsync<InfrastructureExceptions>()
+            .WithMessage("Error occured while saving changes to database\nError code: 500");
+    }
+
+    [Fact]
     public async Task Update_ShouldThrowException_IfSaveChangeThrowsException()
     {
         _context.SaveChangesAsync().Returns(1).AndDoes(_ => throw new DbUpdateConcurrencyException());

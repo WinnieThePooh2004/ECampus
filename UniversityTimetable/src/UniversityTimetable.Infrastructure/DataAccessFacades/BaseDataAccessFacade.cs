@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Net;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using UniversityTimetable.Shared.Exceptions.InfrastructureExceptions;
 using UniversityTimetable.Shared.Interfaces.Data.DataServices;
@@ -69,6 +70,12 @@ public class BaseDataAccessFacade<TModel> : IBaseDataAccessFacade<TModel>
             _logger.LogError(e, "Db update was not successful");
             throw new ObjectNotFoundByIdException(typeof(TModel), entity.Id);
         }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Db update was not successful");
+            throw new InfrastructureExceptions(HttpStatusCode.InternalServerError, "Error occured while saving changes to database");
+        }
+
         return entity;
     }
 }

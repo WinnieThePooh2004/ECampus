@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using UniversityTimetable.Shared.Attributes;
 using UniversityTimetable.Shared.Interfaces.DataAccess;
 using UniversityTimetable.Shared.Models;
 using UniversityTimetable.Shared.Exceptions.InfrastructureExceptions;
@@ -6,6 +7,7 @@ using UniversityTimetable.Shared.DataContainers;
 
 namespace UniversityTimetable.Infrastructure.DataAccessFacades;
 
+[Inject(typeof(ITimetableDataAccessFacade))]
 public class TimetableDataAccessFacade : ITimetableDataAccessFacade
 {
     private readonly ApplicationDbContext _context;

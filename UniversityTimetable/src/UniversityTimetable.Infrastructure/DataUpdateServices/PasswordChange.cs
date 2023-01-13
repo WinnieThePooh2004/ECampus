@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using UniversityTimetable.Shared.Attributes;
 using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Shared.Exceptions.InfrastructureExceptions;
 using UniversityTimetable.Shared.Interfaces.DataAccess;
@@ -6,6 +7,7 @@ using UniversityTimetable.Shared.Models;
 
 namespace UniversityTimetable.Infrastructure.DataUpdateServices;
 
+[Inject(typeof(IPasswordChange))]
 public class PasswordChange : IPasswordChange
 {
     public async Task<User> ChangePassword(PasswordChangeDto passwordChange, DbContext context)

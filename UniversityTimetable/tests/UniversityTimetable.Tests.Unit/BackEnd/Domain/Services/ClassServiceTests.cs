@@ -18,7 +18,7 @@ public class ClassServiceTests
     private readonly ClassService _sut;
     private readonly ITimetableDataAccessFacade _dataAccess = Substitute.For<ITimetableDataAccessFacade>();
     private readonly IBaseService<ClassDto> _baseService = Substitute.For<IBaseService<ClassDto>>();
-    private readonly IUniversalValidator<ClassDto> _validator = Substitute.For<IUniversalValidator<ClassDto>>();
+    private readonly IUpdateValidator<ClassDto> _validator = Substitute.For<IUpdateValidator<ClassDto>>();
     private readonly Fixture _fixture = new();
     private readonly IMapper _mapper = MapperFactory.Mapper;
 

@@ -6,5 +6,4 @@ namespace UniversityTimetable.Shared.Interfaces.Auth;
 public interface IAuthorizationService
 {
     Task<LoginResult> Login(LoginDto login);
-    Task Logout();
 }
