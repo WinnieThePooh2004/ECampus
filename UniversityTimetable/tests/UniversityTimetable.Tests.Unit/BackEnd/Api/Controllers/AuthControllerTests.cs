@@ -8,14 +8,14 @@ namespace UniversityTimetable.Tests.Unit.BackEnd.Api.Controllers;
 
 public class AuthControllerTests
 {
-    private readonly AuthController _controller;
+    private readonly AuthController _sut;
     private readonly IAuthorizationService _service;
     private readonly Fixture _fixture = new();
 
     public AuthControllerTests()
     {
         _service = Substitute.For<IAuthorizationService>();
-        _controller = new AuthController(_service);
+        _sut = new AuthController(_service);
         
         _fixture.Behaviors.Add(new OmitOnRecursionBehavior());
     }
@@ -27,7 +27,7 @@ public class AuthControllerTests
         var login = _fixture.Create<LoginDto>();
         _service.Login(login).Returns(loginResult);
 
-        var actionResult = await _controller.Login(login);
+        var actionResult = await _sut.Login(login);
 
         actionResult.Should().BeOfType<OkObjectResult>();
         actionResult.As<OkObjectResult>().Value.Should().Be(loginResult);

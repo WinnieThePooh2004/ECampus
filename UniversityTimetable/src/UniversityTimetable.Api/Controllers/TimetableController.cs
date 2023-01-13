@@ -12,10 +12,12 @@ namespace UniversityTimetable.Api.Controllers
     public class TimetableController : ControllerBase
     {
         private readonly IClassService _service;
+        private readonly IBaseService<ClassDto> _baseService;
 
-        public TimetableController(IClassService service)
+        public TimetableController(IClassService service, IBaseService<ClassDto> baseService)
         {
             _service = service;
+            _baseService = baseService;
         }
 
         [HttpGet("Auditory/{auditoryId:int?}")]
@@ -47,7 +49,7 @@ namespace UniversityTimetable.Api.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Get(int? id)
         {
-            return Ok(await _service.GetByIdAsync(id));
+            return Ok(await _baseService.GetByIdAsync(id));
         }
 
 
@@ -56,22 +58,21 @@ namespace UniversityTimetable.Api.Controllers
         [Authorized(UserRole.Admin)]
         public async Task<IActionResult> Post(ClassDto @class)
         {
-            return Ok(await _service.CreateAsync(@class));
+            return Ok(await _baseService.CreateAsync(@class));
         }
 
         [HttpPut]
         [Authorized(UserRole.Admin)]
         public async Task<IActionResult> Put(ClassDto @class)
         {
-            return Ok(await _service.UpdateAsync(@class));
+            return Ok(await _baseService.UpdateAsync(@class));
         }
 
         [HttpDelete("{id:int?}")]
         [Authorized(UserRole.Admin)]
         public async Task<IActionResult> Delete(int? id)
         {
-            await _service.DeleteAsync(id);
-            return Ok(id);
+            return Ok(await _baseService.DeleteAsync(id));
         }
 
         [HttpPut("Validate")]

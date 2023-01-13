@@ -12,32 +12,35 @@ namespace UniversityTimetable.Api.Controllers
     [Route("api/[controller]")]
     public class AuditoriesController : ControllerBase
     {
-        private readonly IParametersService<AuditoryDto, AuditoryParameters> _service;
+        private readonly IParametersService<AuditoryDto, AuditoryParameters> _parametersService;
+        private readonly IBaseService<AuditoryDto> _baseService;
 
-        public AuditoriesController(IParametersService<AuditoryDto, AuditoryParameters> service)
+        public AuditoriesController(IParametersService<AuditoryDto, AuditoryParameters> parametersService,
+            IBaseService<AuditoryDto> baseService)
         {
-            _service = service;
+            _parametersService = parametersService;
+            _baseService = baseService;
         }
 
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> Get([FromQuery] AuditoryParameters parameters)
         {
-            return Ok(await _service.GetByParametersAsync(parameters));
+            return Ok(await _parametersService.GetByParametersAsync(parameters));
         }
 
         [HttpGet("{id:int}")]
         [AllowAnonymous]
         public async Task<IActionResult> Get(int? id)
         {
-            return Ok(await _service.GetByIdAsync(id));
+            return Ok(await _baseService.GetByIdAsync(id));
         }
 
         [HttpPost]
         [Authorized(UserRole.Admin)]
         public async Task<IActionResult> Post(AuditoryDto auditory)
         {
-            await _service.CreateAsync(auditory);
+            await _baseService.CreateAsync(auditory);
             return Ok(auditory);
         }
 
@@ -45,7 +48,7 @@ namespace UniversityTimetable.Api.Controllers
         [Authorized(UserRole.Admin)]
         public async Task<IActionResult> Put(AuditoryDto auditory)
         {
-            await _service.UpdateAsync(auditory);
+            await _baseService.UpdateAsync(auditory);
             return Ok(auditory);
         }
 
@@ -53,8 +56,7 @@ namespace UniversityTimetable.Api.Controllers
         [Authorized(UserRole.Admin)]
         public async Task<IActionResult> Delete(int? id)
         {
-            await _service.DeleteAsync(id);
-            return Ok(id);
+            return Ok(await _baseService.DeleteAsync(id));
         }
     }
 }

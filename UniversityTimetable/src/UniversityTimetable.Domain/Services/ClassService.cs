@@ -16,28 +16,16 @@ public class ClassService : IClassService
     private readonly ILogger<ClassService> _logger;
     private readonly ITimetableDataAccessFacade _repository;
     private readonly IMapper _mapper;
-    private readonly IBaseService<ClassDto> _baseService;
     private readonly IUpdateValidator<ClassDto> _validator;
 
-    public ClassService(ILogger<ClassService> logger, ITimetableDataAccessFacade repository, IMapper mapper,
-        IBaseService<ClassDto> baseService, IUpdateValidator<ClassDto> validator)
+    public ClassService(ILogger<ClassService> logger, ITimetableDataAccessFacade repository, IMapper mapper, IUpdateValidator<ClassDto> validator)
     {
         _logger = logger;
         _repository = repository;
         _mapper = mapper;
-        _baseService = baseService;
         _validator = validator;
     }
-
-    public Task<ClassDto> CreateAsync(ClassDto entity)
-        => _baseService.CreateAsync(entity);
-
-    public Task DeleteAsync(int? id)
-        => _baseService.DeleteAsync(id);
-
-    public Task<ClassDto> GetByIdAsync(int? id)
-        => _baseService.GetByIdAsync(id);
-
+    
     public async Task<Timetable> GetTimetableForAuditoryAsync(int? auditoryId)
     {
         if (auditoryId is null)
@@ -82,9 +70,6 @@ public class ClassService : IClassService
             Teacher = _mapper.Map<TeacherDto>(timetable.Teacher)
         };
     }
-
-    public Task<ClassDto> UpdateAsync(ClassDto entity)
-        => _baseService.UpdateAsync(entity);
 
     public Task<List<KeyValuePair<string, string>>> ValidateAsync(ClassDto @class)
     {

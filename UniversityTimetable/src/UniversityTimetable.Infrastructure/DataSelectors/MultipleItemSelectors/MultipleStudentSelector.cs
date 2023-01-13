@@ -6,17 +6,17 @@ using UniversityTimetable.Shared.QueryParameters;
 
 namespace UniversityTimetable.Infrastructure.DataSelectors.MultipleItemSelectors;
 
-public class MultipleTeacherSelector : IMultipleItemSelector<Teacher, TeacherParameters>
+public class MultipleStudentSelector : IMultipleItemSelector<Student, StudentParameters>
 {
-    public IQueryable<Teacher> SelectData(DbSet<Teacher> data, TeacherParameters parameters)
+    public IQueryable<Student> SelectData(DbSet<Student> data, StudentParameters parameters)
     {
         var result = data.Search(s => s.FirstName, parameters.FirstName)
             .Search(s => s.LastName, parameters.LastName);
-        if (parameters.DepartmentId == 0)
+        if (parameters.GroupId == 0)
         {
             return result;
         }
 
-        return result.Where(s => s.DepartmentId == parameters.DepartmentId);
+        return result.Where(s => s.GroupId == parameters.GroupId);
     }
 }

@@ -32,7 +32,7 @@ public class MultipleGroupSelectorTests
         var selectedData = _sut.SelectData(_dataSet, parameters).ToList();
 
         selectedData.Should().Contain(_data[1]);
-        selectedData.Count().Should().Be(1);
+        selectedData.Count.Should().Be(1);
     }
     
     [Fact]

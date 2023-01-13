@@ -32,5 +32,5 @@ public class ServiceWithCreateValidation<TDto> : IBaseService<TDto>
         return await _baseService.CreateAsync(entity);
     }
 
-    public Task DeleteAsync(int? id) => _baseService.DeleteAsync(id);
+    public Task<TDto> DeleteAsync(int? id) => _baseService.DeleteAsync(id);
 }

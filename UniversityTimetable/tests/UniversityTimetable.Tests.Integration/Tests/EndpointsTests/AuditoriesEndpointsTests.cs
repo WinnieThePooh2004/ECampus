@@ -111,7 +111,7 @@ public class AuditoriesEndpointsTests : IClassFixture<ApplicationFactory>, IAsyn
     }
 
     [Fact]
-    public async Task CreateTeacher_ShouldAddToDataBase_WhenNoValidationErrorOccured()
+    public async Task Create_ShouldAddToDataBase_WhenNoValidationErrorOccured()
     {
         var teacher = new AuditoryDto
         {
@@ -125,7 +125,7 @@ public class AuditoriesEndpointsTests : IClassFixture<ApplicationFactory>, IAsyn
     }
 
     [Fact]
-    public async Task CreateTeacher_ShouldReturn400_WhenValidationErrorOccured()
+    public async Task Create_ShouldReturn400_WhenValidationErrorOccured()
     {
         var teacher = new AuditoryDto { Id = 100 };
         var response = await _client.PostAsJsonAsync("/api/Auditories", teacher);
@@ -138,15 +138,15 @@ public class AuditoriesEndpointsTests : IClassFixture<ApplicationFactory>, IAsyn
     }
 
     [Fact]
-    public async Task DeleteTeacher_ShouldReturnDeleteInDb()
+    public async Task Delete_ShouldReturnDeleteInDb()
     {
-        var response = await _client.DeleteAsync("/api/Auditories/1");
+        var response = await _client.DeleteAsync("/api/Auditories/3");
         response.EnsureSuccessStatusCode();
         (await ApplicationFactory.Context.Auditories.CountAsync()).Should().Be(2);
     }
 
     [Fact]
-    public async Task DeleteTeacher_ShouldReturn404_WhenNoObjectExists()
+    public async Task Delete_ShouldReturn404_WhenNoObjectExists()
     {
         var response = await _client.DeleteAsync("/api/Auditories/10");
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);

@@ -1,9 +1,8 @@
 ﻿using UniversityTimetable.Shared.Models;
 
-namespace UniversityTimetable.Shared.QueryParameters
+namespace UniversityTimetable.Shared.QueryParameters;
+
+public class GroupParameters : QueryParameters, IQueryParameters<Group>
 {
-    public class GroupParameters : QueryParameters, IQueryParameters<Group>
-    {
-        public int DepartmentId { get; set; }
-    }
+    public int DepartmentId { get; set; }
 }

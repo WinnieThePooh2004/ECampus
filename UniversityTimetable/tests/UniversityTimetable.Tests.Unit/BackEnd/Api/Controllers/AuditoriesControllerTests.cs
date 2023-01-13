@@ -12,12 +12,14 @@ public class AuditoriesControllerTests
     private readonly IParametersService<AuditoryDto, AuditoryParameters> _service =
         Substitute.For<IParametersService<AuditoryDto, AuditoryParameters>>();
 
-    private readonly AuditoriesController _controller;
+    private readonly IBaseService<AuditoryDto> _baseService = Substitute.For<IBaseService<AuditoryDto>>();
+
+    private readonly AuditoriesController _sut;
     private readonly Fixture _fixture;
 
     public AuditoriesControllerTests()
     {
-        _controller = new AuditoriesController(_service);
+        _sut = new AuditoriesController(_service, _baseService);
         _fixture = new Fixture();
         _fixture.Behaviors.Add(new OmitOnRecursionBehavior());
     }
@@ -26,49 +28,52 @@ public class AuditoriesControllerTests
     public async Task GetById_ReturnsFromService_ServiceCalled()
     {
         var data = _fixture.Build<AuditoryDto>().With(t => t.Id, 10).Create();
-
-        _service.GetByIdAsync(10).Returns(data);
-        var actionResult = await _controller.Get(10);
+        _baseService.GetByIdAsync(10).Returns(data);
+        
+        var actionResult = await _sut.Get(10);
 
         actionResult.Should().BeOfType<OkObjectResult>();
         actionResult.As<OkObjectResult>().Value.Should().Be(data);
-        await _service.Received().GetByIdAsync(10);
+        await _baseService.Received().GetByIdAsync(10);
     }
 
     [Fact]
     public async Task Delete_ReturnsIdFromService_ServiceCalled()
     {
-        var actionResult = await _controller.Delete(10);
+        var data = _fixture.Build<AuditoryDto>().With(t => t.Id, 10).Create();
+        _baseService.DeleteAsync(10).Returns(data);
+        
+        var actionResult = await _sut.Delete(10);
 
         actionResult.Should().BeOfType<OkObjectResult>();
-        actionResult.As<OkObjectResult>().Value.Should().Be(10);
-        await _service.Received().DeleteAsync(10);
+        actionResult.As<OkObjectResult>().Value.Should().Be(data);
+        await _baseService.Received().DeleteAsync(10);
     }
 
     [Fact]
     public async Task Create_ReturnsFromService_ServiceCalled()
     {
         var data = _fixture.Create<AuditoryDto>();
-        _service.CreateAsync(data).Returns(data);
+        _baseService.CreateAsync(data).Returns(data);
 
-        var actionResult = await _controller.Post(data);
+        var actionResult = await _sut.Post(data);
 
         actionResult.Should().BeOfType<OkObjectResult>();
         actionResult.As<OkObjectResult>().Value.Should().Be(data);
-        await _service.Received().CreateAsync(data);
+        await _baseService.Received().CreateAsync(data);
     }
 
     [Fact]
     public async Task Update_ReturnsFromService_ServiceCalled()
     {
         var data = _fixture.Create<AuditoryDto>();
-        _service.UpdateAsync(data).Returns(data);
+        _baseService.UpdateAsync(data).Returns(data);
 
-        var actionResult = await _controller.Put(data);
+        var actionResult = await _sut.Put(data);
 
         actionResult.Should().BeOfType<OkObjectResult>();
         actionResult.As<OkObjectResult>().Value.Should().Be(data);
-        await _service.Received().UpdateAsync(data);
+        await _baseService.Received().UpdateAsync(data);
     }
 
     [Fact]
@@ -80,7 +85,7 @@ public class AuditoriesControllerTests
             .Create();
 
         _service.GetByParametersAsync(Arg.Any<AuditoryParameters>()).Returns(data);
-        var actionResult = await _controller.Get(new AuditoryParameters());
+        var actionResult = await _sut.Get(new AuditoryParameters());
 
         actionResult.Should().BeOfType<OkObjectResult>();
         actionResult.As<OkObjectResult>().Value.Should().Be(data);

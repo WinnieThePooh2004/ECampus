@@ -12,24 +12,14 @@ public class ParametersDataAccessFacade<TModel, TParameters> : IParametersDataAc
     where TParameters : IQueryParameters<TModel>
 {
     private readonly ApplicationDbContext _context;
-    private readonly IBaseDataAccessFacade<TModel> _baseDataAccessFacade;
     private readonly IMultipleItemSelector<TModel, TParameters> _multipleItemSelector;
+
     public ParametersDataAccessFacade(ApplicationDbContext context,
-        IBaseDataAccessFacade<TModel> baseDataAccessFacade, IMultipleItemSelector<TModel, TParameters> multipleItemSelector)
+        IMultipleItemSelector<TModel, TParameters> multipleItemSelector)
     {
         _context = context;
-        _baseDataAccessFacade = baseDataAccessFacade;
         _multipleItemSelector = multipleItemSelector;
     }
-
-    public Task<TModel> CreateAsync(TModel entity)
-        => _baseDataAccessFacade.CreateAsync(entity);
-
-    public Task DeleteAsync(int id)
-        => _baseDataAccessFacade.DeleteAsync(id);
-
-    public Task<TModel> GetByIdAsync(int id)
-        => _baseDataAccessFacade.GetByIdAsync(id);
 
     public async Task<ListWithPaginationData<TModel>> GetByParameters(TParameters parameters)
     {
@@ -43,7 +33,4 @@ public class ParametersDataAccessFacade<TModel, TParameters> : IParametersDataAc
 
         return new ListWithPaginationData<TModel>(pagedItems, totalCount, parameters.PageNumber, parameters.PageSize);
     }
-
-    public Task<TModel> UpdateAsync(TModel entity)
-        => _baseDataAccessFacade.UpdateAsync(entity);
 }

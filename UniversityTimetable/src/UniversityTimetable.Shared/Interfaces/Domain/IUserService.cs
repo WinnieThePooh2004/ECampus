@@ -2,7 +2,7 @@
 
 namespace UniversityTimetable.Shared.Interfaces.Domain;
 
-public interface IUserService : IBaseService<UserDto>
+public interface IUserService
 {
     Task<List<KeyValuePair<string, string>>> ValidateCreateAsync(UserDto user);
     Task<List<KeyValuePair<string, string>>> ValidateUpdateAsync(UserDto user);

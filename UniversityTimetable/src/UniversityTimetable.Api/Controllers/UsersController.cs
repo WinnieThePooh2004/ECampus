@@ -11,38 +11,40 @@ namespace UniversityTimetable.Api.Controllers;
 public class UsersController : ControllerBase
 {
     private readonly IUserService _service;
-    public UsersController(IUserService service)
+    private readonly IBaseService<UserDto> _baseService;
+
+    public UsersController(IUserService service, IBaseService<UserDto> baseService)
     {
         _service = service;
+        _baseService = baseService;
     }
 
     [HttpGet("{id:int?}")]
     [AllowAnonymous]
     public async Task<IActionResult> Get(int? id)
     {
-        return Ok(await _service.GetByIdAsync(id));
+        return Ok(await _baseService.GetByIdAsync(id));
     }
 
     [HttpPost]
     [AllowAnonymous]
     public async Task<IActionResult> Post(UserDto user)
     {
-        return Ok(await _service.CreateAsync(user));
+        return Ok(await _baseService.CreateAsync(user));
     }
 
     [HttpPut]
     [Authorized]
     public async Task<IActionResult> Put(UserDto user)
     {
-        return Ok(await _service.UpdateAsync(user));
+        return Ok(await _baseService.UpdateAsync(user));
     }
 
     [HttpDelete("{id:int?}")]
     [Authorized]
     public async Task<IActionResult> Delete(int? id)
     {
-        await _service.DeleteAsync(id);
-        return Ok(id);
+        return Ok(await _baseService.DeleteAsync(id));
     }
 
     [HttpPut("Validate/Create")]
@@ -57,7 +59,7 @@ public class UsersController : ControllerBase
     {
         return Ok(await _service.ChangePassword(passwordChange));
     }
-    
+
     [HttpPut("changePassword/validate")]
     public async Task<IActionResult> ValidatePasswordChange(PasswordChangeDto passwordChange)
     {
@@ -78,7 +80,7 @@ public class UsersController : ControllerBase
         await _service.SaveAuditory(userId, auditoryId);
         return NoContent();
     }
-        
+
     [HttpDelete("auditory")]
     [Authorized]
     public async Task<IActionResult> RemoveAuditory([FromQuery] int userId, [FromQuery] int auditoryId)
@@ -94,7 +96,7 @@ public class UsersController : ControllerBase
         await _service.SaveGroup(userId, groupId);
         return NoContent();
     }
-    
+
     [HttpDelete("group")]
     [Authorized]
     public async Task<IActionResult> RemoveGroup([FromQuery] int userId, [FromQuery] int groupId)
@@ -110,7 +112,7 @@ public class UsersController : ControllerBase
         await _service.SaveTeacher(userId, teacherId);
         return NoContent();
     }
-    
+
     [HttpDelete("teacher")]
     [Authorized]
     public async Task<IActionResult> RemoveTeacher([FromQuery] int userId, [FromQuery] int teacherId)

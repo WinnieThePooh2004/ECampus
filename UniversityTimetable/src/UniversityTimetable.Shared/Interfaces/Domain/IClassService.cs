@@ -3,7 +3,7 @@ using UniversityTimetable.Shared.DataTransferObjects;
 
 namespace UniversityTimetable.Shared.Interfaces.Domain;
 
-public interface IClassService : IBaseService<ClassDto>
+public interface IClassService
 {
     Task<Timetable> GetTimetableForGroupAsync(int? groupId);
     Task<Timetable> GetTimetableForTeacherAsync(int? teacherId);

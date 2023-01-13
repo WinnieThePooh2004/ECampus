@@ -13,9 +13,11 @@ namespace UniversityTimetable.Api.Controllers;
 public class FacultiesController : ControllerBase
 {
     private readonly IParametersService<FacultyDto, FacultyParameters> _service;
-    public FacultiesController(IParametersService<FacultyDto, FacultyParameters> service)
+    private readonly IBaseService<FacultyDto> _baseService;
+    public FacultiesController(IParametersService<FacultyDto, FacultyParameters> service, IBaseService<FacultyDto> baseService)
     {
         _service = service;
+        _baseService = baseService;
     }
 
     [HttpGet]
@@ -28,14 +30,14 @@ public class FacultiesController : ControllerBase
     [AllowAnonymous]
     public async Task<IActionResult> Get(int? id)
     {
-        return Ok(await _service.GetByIdAsync(id));
+        return Ok(await _baseService.GetByIdAsync(id));
     }
 
     [HttpPost]
     [Authorized(UserRole.Admin)]
     public async Task<IActionResult> Post([Bind("Name")] FacultyDto faculty)
     {
-        await _service.CreateAsync(faculty);
+        await _baseService.CreateAsync(faculty);
         return Ok(faculty);
     }
 
@@ -43,7 +45,7 @@ public class FacultiesController : ControllerBase
     [Authorized(UserRole.Admin)]
     public async Task<IActionResult> Put(FacultyDto faculty)
     {
-        await _service.UpdateAsync(faculty);
+        await _baseService.UpdateAsync(faculty);
         return Ok(faculty);
     }
 
@@ -51,7 +53,6 @@ public class FacultiesController : ControllerBase
     [Authorized(UserRole.Admin)]
     public async Task<IActionResult> Delete(int? id)
     {
-        await _service.DeleteAsync(id);
-        return Ok(id);
+        return Ok(await _baseService.DeleteAsync(id));
     }
 }

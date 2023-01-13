@@ -6,7 +6,6 @@ using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Shared.Exceptions.DomainExceptions;
 using UniversityTimetable.Shared.Interfaces.Domain.Validation;
 using UniversityTimetable.Shared.Interfaces.DataAccess;
-using UniversityTimetable.Shared.Interfaces.Domain;
 using UniversityTimetable.Shared.Models;
 using UniversityTimetable.Tests.Shared.DataFactories;
 using UniversityTimetable.Tests.Shared.Extensions;
@@ -17,7 +16,6 @@ public class ClassServiceTests
 {
     private readonly ClassService _sut;
     private readonly ITimetableDataAccessFacade _dataAccess = Substitute.For<ITimetableDataAccessFacade>();
-    private readonly IBaseService<ClassDto> _baseService = Substitute.For<IBaseService<ClassDto>>();
     private readonly IUpdateValidator<ClassDto> _validator = Substitute.For<IUpdateValidator<ClassDto>>();
     private readonly Fixture _fixture = new();
     private readonly IMapper _mapper = MapperFactory.Mapper;
@@ -25,51 +23,7 @@ public class ClassServiceTests
     public ClassServiceTests()
     {
         var logger = Substitute.For<ILogger<ClassService>>();
-        _sut = new ClassService(logger, _dataAccess, _mapper, _baseService, _validator);
-    }
-
-    [Fact]
-    public async Task Create_ReturnsFromBaseService()
-    {
-        var @class = CreateClass();
-        _baseService.CreateAsync(@class).Returns(@class);
-
-        var result = await _sut.CreateAsync(@class);
-
-        result.Should().Be(@class);
-        await _baseService.Received(1).CreateAsync(@class);
-    }
-
-    [Fact]
-    public async Task Update_ReturnsFromBaseService()
-    {
-        var @class = CreateClass();
-        _baseService.UpdateAsync(@class).Returns(@class);
-
-        var result = await _sut.UpdateAsync(@class);
-
-        result.Should().Be(@class);
-        await _baseService.Received(1).UpdateAsync(@class);
-    }
-
-    [Fact]
-    public async Task GetById_ReturnsFromBaseService()
-    {
-        var @class = CreateClass();
-        _baseService.GetByIdAsync(10).Returns(@class);
-
-        var result = await _sut.GetByIdAsync(10);
-
-        result.Should().Be(@class);
-        await _baseService.Received(1).GetByIdAsync(10);
-    }
-
-    [Fact]
-    public async Task Delete_ReturnsFromBaseService()
-    {
-        await _sut.DeleteAsync(10);
-
-        await _baseService.Received(1).DeleteAsync(10);
+        _sut = new ClassService(logger, _dataAccess, _mapper, _validator);
     }
 
     [Fact]

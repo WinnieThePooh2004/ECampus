@@ -37,9 +37,9 @@ public class BaseDataAccessFacade<TModel> : IBaseDataAccessFacade<TModel>
         return entity;
     }
 
-    public async Task DeleteAsync(int id)
+    public async Task<TModel> DeleteAsync(int id)
     {
-        await _deleteService.DeleteAsync(id, _context);
+        var deletedModel = await _deleteService.DeleteAsync(id, _context);
         try
         {
             await _context.SaveChangesAsync();
@@ -49,6 +49,7 @@ public class BaseDataAccessFacade<TModel> : IBaseDataAccessFacade<TModel>
             _logger.LogError(e, "Db update to successful");
             throw new ObjectNotFoundByIdException(typeof(TModel), id);
         }
+        return deletedModel;
     }
 
     public async Task<TModel> GetByIdAsync(int id)

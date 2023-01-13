@@ -4,7 +4,7 @@ using UniversityTimetable.Shared.QueryParameters;
 
 namespace UniversityTimetable.Shared.Interfaces.DataAccess;
 
-public interface IParametersDataAccessFacade<TEntity, in TParams> : IBaseDataAccessFacade<TEntity>
+public interface IParametersDataAccessFacade<TEntity, in TParams>
     where TEntity : class, IModel
     where TParams : IQueryParameters<TEntity>
 {
