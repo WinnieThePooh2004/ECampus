@@ -1,7 +1,6 @@
-﻿namespace UniversityTimetable.FrontEnd.Pages.Departments
+﻿namespace UniversityTimetable.FrontEnd.Pages.Departments;
+
+public partial class Edit
 {
-    public partial class Edit
-    {
-        protected override string PageAfterSave => $"/departments/{Model?.FacultyId}";
-    }
+    protected override string PageAfterSave => $"/departments/{Model?.FacultyId}";
 }

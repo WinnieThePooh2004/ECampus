@@ -1,0 +1,12 @@
+﻿@page "/Students/{GroupId:int}"
+<DataTable TData="StudentDto" TParameters="StudentParameters"
+           ParameterOptions="p => p.GroupId = GroupId"
+           TableHeaders="@(new List<string> { "Last name", "First name" })"
+           TableData="@(new List<Func<StudentDto, string>> { t => t.LastName, t => t.FirstName })"
+           CreateLink="@($"/students/Create/{GroupId}")"
+           EditLink="/students/edit"
+           />
+
+@code{
+    [Parameter] public int GroupId { get; set; }
+}

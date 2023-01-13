@@ -19,7 +19,7 @@ namespace UniversityTimetable.FrontEnd.Components.PageModels
         [Parameter] public string EditLink { get; set; } = default!;
         [Parameter] public List<string> TableHeaders { get; set; } = new();
         [Parameter] public List<Func<TData, string>> TableData { get; set; } = new();
-        [Parameter] public List<(string, Func<TData, string>)> ActionLinks { get; set; } = new();
+        [Parameter] public List<(string LinkName, Func<TData, string> LinkSource)> ActionLinks { get; set; } = new();
         [Parameter] public Action<TParameters> ParameterOptions { get; set; } = _ => { };
 
         [Inject] private AuthenticationStateProvider AuthProvider { get; set; } = default!;

@@ -6,7 +6,7 @@ public class RequestOptions : IRequestOptions
 {
     private readonly Dictionary<Type, string> _controllerNames;
     
-    public RequestOptions(ConfigurationManager configuration)
+    public RequestOptions(IConfiguration configuration)
     {
         _controllerNames = new Dictionary<Type, string>
         {
@@ -17,7 +17,8 @@ public class RequestOptions : IRequestOptions
             [typeof(GroupDto)] = configuration["Requests:Groups"] ?? throw new UnreachableException($"find route to Groups"),
             [typeof(SubjectDto)] = configuration["Requests:Subjects"] ?? throw new UnreachableException($"find route to Subjects"),
             [typeof(DepartmentDto)] = configuration["Requests:Departments"] ?? throw new UnreachableException($"find route to Departments"),
-            [typeof(UserDto)] = configuration["Requests:Users"] ?? throw new UnreachableException($"find route to users")
+            [typeof(UserDto)] = configuration["Requests:Users"] ?? throw new UnreachableException($"find route to users"),
+            [typeof(StudentDto)] = configuration["Requests:Students"] ?? throw new UnreachableException($"find route to users")
         };
     }
 
