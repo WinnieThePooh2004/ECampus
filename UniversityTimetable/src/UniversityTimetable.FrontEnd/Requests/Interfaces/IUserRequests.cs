@@ -2,7 +2,6 @@
 
 public interface IUserRequests : IBaseRequests<UserDto>
 {
-    Task<UserDto> GetCurrentUserAsync();
     Task ChangePassword(PasswordChangeDto passwordChange);
     Task SaveAuditory(int auditoryId);
     Task RemoveSavedAuditory(int auditoryId);
