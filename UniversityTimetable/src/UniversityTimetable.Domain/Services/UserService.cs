@@ -11,36 +11,23 @@ namespace UniversityTimetable.Domain.Services;
 [Inject(typeof(IUserService))]
 public class UserService : IUserService
 {
-    private readonly IBaseService<UserDto> _baseService;
     private readonly IAuthenticationService _authenticationService;
     private readonly IUserDataAccessFacade _userDataAccessFacade;
     private readonly ICreateValidator<UserDto> _createValidator;
     private readonly IUpdateValidator<UserDto> _updateValidator;
     private readonly IUpdateValidator<PasswordChangeDto> _passwordChangeValidator;
 
-    public UserService(IBaseService<UserDto> baseService,
-        IAuthenticationService authenticationService, IUpdateValidator<PasswordChangeDto> passwordChangeValidator,
-        IUserDataAccessFacade userDataAccessFacade, IUpdateValidator<UserDto> updateValidator, ICreateValidator<UserDto> createValidator)
+    public UserService(IAuthenticationService authenticationService,
+        IUpdateValidator<PasswordChangeDto> passwordChangeValidator,
+        IUserDataAccessFacade userDataAccessFacade, IUpdateValidator<UserDto> updateValidator,
+        ICreateValidator<UserDto> createValidator)
     {
-        _baseService = baseService;
         _authenticationService = authenticationService;
         _passwordChangeValidator = passwordChangeValidator;
         _userDataAccessFacade = userDataAccessFacade;
         _updateValidator = updateValidator;
         _createValidator = createValidator;
     }
-
-    public Task<UserDto> CreateAsync(UserDto entity)
-        => _baseService.CreateAsync(entity);
-
-    public Task DeleteAsync(int? id)
-        => _baseService.DeleteAsync(id);
-
-    public Task<UserDto> GetByIdAsync(int? id)
-        => _baseService.GetByIdAsync(id);
-
-    public Task<UserDto> UpdateAsync(UserDto entity)
-        => _baseService.UpdateAsync(entity);
 
     public async Task<List<KeyValuePair<string, string>>> ValidateCreateAsync(UserDto user)
     {

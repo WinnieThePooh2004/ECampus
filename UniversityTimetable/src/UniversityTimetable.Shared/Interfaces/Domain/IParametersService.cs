@@ -4,7 +4,7 @@ using UniversityTimetable.Shared.QueryParameters;
 
 namespace UniversityTimetable.Shared.Interfaces.Domain;
 
-public interface IParametersService<TEntity, in TParams> : IBaseService<TEntity>
+public interface IParametersService<TEntity, in TParams>
     where TEntity : class, IDataTransferObject
     where TParams : IQueryParameters
 {

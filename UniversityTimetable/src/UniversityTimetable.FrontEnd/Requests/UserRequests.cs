@@ -1,5 +1,4 @@
-﻿using IdentityServer4.Extensions;
-using UniversityTimetable.FrontEnd.Requests.Interfaces;
+﻿using UniversityTimetable.FrontEnd.Requests.Interfaces;
 using UniversityTimetable.Shared.Extensions;
 
 namespace UniversityTimetable.FrontEnd.Requests;
@@ -28,17 +27,6 @@ public class UserRequests : IUserRequests
 
     public Task DeleteAsync(int id)
         => _baseRequests.DeleteAsync(id);
-
-    public Task<UserDto> GetCurrentUserAsync()
-    {
-        var user = _httpContextAccessor.HttpContext?.User;
-        if (!user.IsAuthenticated())
-        {
-            throw new UnauthorizedAccessException();
-        }
-        
-        return _baseRequests.GetByIdAsync(user?.GetId() ?? throw new UnauthorizedAccessException());
-    }
 
     public async Task ChangePassword(PasswordChangeDto passwordChange)
     {

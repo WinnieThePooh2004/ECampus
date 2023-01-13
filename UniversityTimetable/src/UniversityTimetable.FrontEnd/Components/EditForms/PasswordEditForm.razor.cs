@@ -11,6 +11,4 @@ public partial class PasswordEditForm
     {
         Model.UserId = HttpContextAccessor.HttpContext?.User.GetId() ?? throw new UnauthorizedAccessException();
     }
-    
-    
 }

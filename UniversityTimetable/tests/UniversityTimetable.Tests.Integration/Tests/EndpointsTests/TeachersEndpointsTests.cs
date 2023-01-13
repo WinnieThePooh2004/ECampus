@@ -122,7 +122,7 @@ public class TeachersEndpointsTests : IClassFixture<ApplicationFactory>, IAsyncL
     [Fact]
     public async Task DeleteTeacher_ShouldReturnDeleteInDb()
     {
-        var response = await _client.DeleteAsync("/api/Teachers/1");
+        var response = await _client.DeleteAsync("/api/Teachers/3");
         response.EnsureSuccessStatusCode();
         (await ApplicationFactory.Context.Teachers.CountAsync()).Should().Be(2);
     }

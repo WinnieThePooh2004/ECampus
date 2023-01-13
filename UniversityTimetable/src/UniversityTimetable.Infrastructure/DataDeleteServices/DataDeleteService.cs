@@ -7,7 +7,7 @@ namespace UniversityTimetable.Infrastructure.DataDeleteServices;
 public class DataDeleteService<TModel> : IDataDeleteService<TModel>
     where TModel : class, IModel, new()
 {
-    public Task DeleteAsync(int id, DbContext context)
+    public Task<TModel> DeleteAsync(int id, DbContext context)
     {
         var model = new TModel { Id = id };
         context.Remove(model);

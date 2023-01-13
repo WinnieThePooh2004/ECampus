@@ -7,5 +7,5 @@ public interface IBaseService<TEntity> where TEntity : class, IDataTransferObjec
     public Task<TEntity> GetByIdAsync(int? id);
     public Task<TEntity> CreateAsync(TEntity entity);
     public Task<TEntity> UpdateAsync(TEntity entity);
-    public Task DeleteAsync(int? id);
+    public Task<TEntity> DeleteAsync(int? id);
 }

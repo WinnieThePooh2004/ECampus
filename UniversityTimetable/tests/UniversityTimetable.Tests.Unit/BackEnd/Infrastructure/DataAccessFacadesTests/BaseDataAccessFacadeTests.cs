@@ -76,6 +76,7 @@ public class BaseDataAccessFacadeTests
     {
         var item = CreateModel();
         _selector.SelectModel(1, Arg.Any<DbSet<Auditory>>()).Returns(item);
+        
         var model = await _sut.GetByIdAsync(1);
 
         model.Should().Be(item);
@@ -91,9 +92,12 @@ public class BaseDataAccessFacadeTests
     [Fact]
     public async Task Delete_ShouldCall_DeleteService()
     {
-        await _sut.DeleteAsync(10);
+        var item = CreateModel();
+        _deleteService.DeleteAsync(1, Arg.Any<DbContext>()).Returns(item);
+        
+        var model = await _sut.DeleteAsync(1);
 
-        await _deleteService.Received(1).DeleteAsync(10, _context);
+        model.Should().Be(item);
     }
 
     [Fact]

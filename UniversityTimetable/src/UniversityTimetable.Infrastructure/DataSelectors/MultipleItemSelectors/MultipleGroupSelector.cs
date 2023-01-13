@@ -9,6 +9,12 @@ namespace UniversityTimetable.Infrastructure.DataSelectors.MultipleItemSelectors
 public class MultipleGroupSelector : IMultipleItemSelector<Group, GroupParameters>
 {
     public IQueryable<Group> SelectData(DbSet<Group> data, GroupParameters parameters)
-        => data.Search(g => g.Name, parameters.SearchTerm)
-            .Where(g => parameters.DepartmentId == 0 || g.DepartmentId == parameters.DepartmentId);
+    {
+        var result = data.Search(g => g.Name, parameters.SearchTerm);
+        if (parameters.DepartmentId == 0)
+        {
+            return result;
+        }
+        return result.Where(g => g.DepartmentId == parameters.DepartmentId);
+    }
 }

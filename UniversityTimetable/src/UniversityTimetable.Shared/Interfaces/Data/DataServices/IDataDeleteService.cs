@@ -7,5 +7,5 @@ namespace UniversityTimetable.Shared.Interfaces.Data.DataServices;
 public interface IDataDeleteService<TModel>
     where TModel : class, IModel, new()
 {
-    Task DeleteAsync(int id, DbContext context);
+    Task<TModel> DeleteAsync(int id, DbContext context);
 }

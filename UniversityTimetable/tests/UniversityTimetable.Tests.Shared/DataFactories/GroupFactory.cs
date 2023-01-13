@@ -11,5 +11,6 @@ public class GroupFactory : IAbstractFactory<Group>
             .Without(g => g.Users)
             .Without(g => g.UsersIds)
             .Without(g => g.Department)
+            .Without(g => g.Students)
             .Create();
 }

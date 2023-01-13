@@ -58,30 +58,6 @@ public sealed class BaseServiceTests
         await _dataAccessFacade.Received(1).UpdateAsync(Arg.Any<Auditory>());
     }
 
-    // [Fact]
-    // private async Task Update_ThrowsValidationException_WhenValidationErrorOccured()
-    // {
-    //     var errors = new List<KeyValuePair<string, string>> { KeyValuePair.Create<string, string>("", "") };
-    //     _validation.ValidateUpdate(Arg.Any<AuditoryDto>()).Returns(errors);
-    //
-    //     await new Func<Task>(() => _service.UpdateAsync(new AuditoryDto())).Should().ThrowAsync<ValidationException>()
-    //         .WithMessage(new ValidationException(typeof(AuditoryDto), errors).Message);
-    //
-    //     await _dataAccessFacade.DidNotReceive().UpdateAsync(Arg.Any<Auditory>());
-    // }
-    //
-    // [Fact]
-    // private async Task Create_ThrowsValidationException_WhenValidationErrorOccured()
-    // {
-    //     var errors = new List<KeyValuePair<string, string>> { KeyValuePair.Create<string, string>("", "") };
-    //     _validation.ValidateCreate(Arg.Any<AuditoryDto>()).Returns(errors);
-    //
-    //     await new Func<Task>(() => _service.CreateAsync(new AuditoryDto())).Should().ThrowAsync<ValidationException>()
-    //         .WithMessage(new ValidationException(typeof(AuditoryDto), errors).Message);
-    //
-    //     await _dataAccessFacade.DidNotReceive().UpdateAsync(Arg.Any<Auditory>());
-    // }
-
     [Fact]
     private async Task Delete_ShouldThrowException_WhenIdIsNull()
     {
@@ -91,10 +67,15 @@ public sealed class BaseServiceTests
     }
 
     [Fact]
-    private async Task Delete_ShouldCallService_WhenIdIsNotNull()
+    private async Task Delete_ShouldReturnFromService_WhenIdIsNotNull()
     {
-        await _service.DeleteAsync(10);
+        var item = _fixture.Create<AuditoryDto>();
+        _dataAccessFacade.DeleteAsync(10).Returns(_mapper.Map<Auditory>(item));
 
+        var result = await _service.DeleteAsync(10);
+        
+        result.Should().BeEquivalentTo(_mapper.Map<AuditoryDto>(_mapper.Map<Auditory>(item)),
+            opt => opt.ComparingByMembers<AuditoryDto>());
         await _dataAccessFacade.Received(1).DeleteAsync(10);
     }
 
@@ -113,6 +94,7 @@ public sealed class BaseServiceTests
         _dataAccessFacade.GetByIdAsync(10).Returns(_mapper.Map<Auditory>(item));
 
         var result = await _service.GetByIdAsync(10);
+        
         result.Should().BeEquivalentTo(_mapper.Map<AuditoryDto>(_mapper.Map<Auditory>(item)),
             opt => opt.ComparingByMembers<AuditoryDto>());
         await _dataAccessFacade.Received(1).GetByIdAsync(10);

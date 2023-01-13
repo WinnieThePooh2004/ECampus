@@ -12,10 +12,14 @@ namespace UniversityTimetable.Api.Controllers
     [Route("api/[controller]")]
     public class DepartmentsController : ControllerBase
     {
-        private readonly IParametersService<DepartmentDto, DepartmentParameters> _service;
-        public DepartmentsController(IParametersService<DepartmentDto, DepartmentParameters> service)
+        private readonly IParametersService<DepartmentDto, DepartmentParameters> _parametersService;
+        private readonly IBaseService<DepartmentDto> _baseService;
+
+        public DepartmentsController(IParametersService<DepartmentDto, DepartmentParameters> parametersService,
+            IBaseService<DepartmentDto> baseService)
         {
-            _service = service;
+            _parametersService = parametersService;
+            _baseService = baseService;
         }
 
         // GET: Departments
@@ -23,7 +27,7 @@ namespace UniversityTimetable.Api.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Get([FromQuery] DepartmentParameters parameters)
         {
-            return Ok(await _service.GetByParametersAsync(parameters));
+            return Ok(await _parametersService.GetByParametersAsync(parameters));
         }
 
         // GET: Departments/Details/5
@@ -31,7 +35,7 @@ namespace UniversityTimetable.Api.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Get(int? id)
         {
-            return Ok(await _service.GetByIdAsync(id));
+            return Ok(await _baseService.GetByIdAsync(id));
         }
 
         // POST: Departments/Create
@@ -41,7 +45,7 @@ namespace UniversityTimetable.Api.Controllers
         [Authorized(UserRole.Admin)]
         public async Task<IActionResult> Post(DepartmentDto department)
         {
-            await _service.CreateAsync(department);
+            await _baseService.CreateAsync(department);
             return Ok(department);
         }
 
@@ -49,7 +53,7 @@ namespace UniversityTimetable.Api.Controllers
         [Authorized(UserRole.Admin)]
         public async Task<IActionResult> Put(DepartmentDto department)
         {
-            await _service.UpdateAsync(department);
+            await _baseService.UpdateAsync(department);
             return Ok(department);
         }
 
@@ -58,8 +62,7 @@ namespace UniversityTimetable.Api.Controllers
         [Authorized(UserRole.Admin)]
         public async Task<IActionResult> Delete(int? id)
         {
-            await _service.DeleteAsync(id);
-            return Ok(id);
+            return Ok(await _baseService.DeleteAsync(id));
         }
     }
 }

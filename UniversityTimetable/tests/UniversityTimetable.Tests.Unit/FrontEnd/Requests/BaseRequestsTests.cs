@@ -7,21 +7,17 @@ using UniversityTimetable.Tests.Shared.Mocks.HttpRequests;
 
 namespace UniversityTimetable.Tests.Unit.FrontEnd.Requests;
 
-public class BaseRequestsTests : IDisposable
+public class BaseRequestsTests
 {
     private readonly BaseRequests<AuditoryDto> _sut;
     private readonly Fixture _fixture = new();
+    private readonly HttpClientFactory _clientFactory = new();
 
     public BaseRequestsTests()
     {
         var requestsOptions = Substitute.For<IRequestOptions>();
         requestsOptions.GetControllerName(Arg.Any<Type>()).Returns("Auditories");
-        _sut = new BaseRequests<AuditoryDto>(new HttpClientFactory(), HttpClientFactory.Options, requestsOptions);
-    }
-    
-    public void Dispose()
-    {
-        HttpClientFactory.MessageHandler.Responses.Clear();
+        _sut = new BaseRequests<AuditoryDto>(_clientFactory, HttpClientFactory.Options, requestsOptions);
     }
 
     [Fact]
@@ -30,7 +26,7 @@ public class BaseRequestsTests : IDisposable
         var auditory = _fixture.Create<AuditoryDto>();
         var response = new HttpResponseMessage();
         response.Content = new StringContent(JsonSerializer.Serialize(auditory));
-        HttpClientFactory.MessageHandler.Responses.Add(
+        _clientFactory.MessageHandler.Responses.Add(
             new HttpRequestMessage(HttpMethod.Get, "https://google.com/api/Auditories/10"), response);
 
         var result = await _sut.GetByIdAsync(10);
@@ -42,7 +38,7 @@ public class BaseRequestsTests : IDisposable
     public async Task GetById_ShouldThrowException_WhenStatusCodeIsNotSuccessful()
     {
         var response = new HttpResponseMessage { StatusCode = HttpStatusCode.BadGateway };
-        HttpClientFactory.MessageHandler.Responses.Add(
+        _clientFactory.MessageHandler.Responses.Add(
             new HttpRequestMessage(HttpMethod.Get, "https://google.com/api/Auditories/10"), response);
 
         await new Func<Task>(() => _sut.GetByIdAsync(10)).Should()
@@ -56,7 +52,7 @@ public class BaseRequestsTests : IDisposable
         var auditory = _fixture.Create<AuditoryDto>();
         var response = new HttpResponseMessage();
         response.Content = new StringContent(JsonSerializer.Serialize(auditory));
-        HttpClientFactory.MessageHandler.Responses.Add(
+        _clientFactory.MessageHandler.Responses.Add(
             new HttpRequestMessage(HttpMethod.Post, "https://google.com/api/Auditories"), response);
 
         var result = await _sut.CreateAsync(auditory);
@@ -68,7 +64,7 @@ public class BaseRequestsTests : IDisposable
     public async Task Create_ShouldThrowException_WhenStatusCodeIsNotSuccessful()
     {
         var response = new HttpResponseMessage { StatusCode = HttpStatusCode.BadGateway };
-        HttpClientFactory.MessageHandler.Responses.Add(
+        _clientFactory.MessageHandler.Responses.Add(
             new HttpRequestMessage(HttpMethod.Post, "https://google.com/api/Auditories"), response);
 
         await new Func<Task>(() => _sut.CreateAsync(new AuditoryDto())).Should()
@@ -82,7 +78,7 @@ public class BaseRequestsTests : IDisposable
         var auditory = _fixture.Create<AuditoryDto>();
         var response = new HttpResponseMessage();
         response.Content = new StringContent(JsonSerializer.Serialize(auditory));
-        HttpClientFactory.MessageHandler.Responses.Add(
+        _clientFactory.MessageHandler.Responses.Add(
             new HttpRequestMessage(HttpMethod.Put, "https://google.com/api/Auditories"), response);
 
         var result = await _sut.UpdateAsync(auditory);
@@ -94,7 +90,7 @@ public class BaseRequestsTests : IDisposable
     public async Task Update_ShouldThrowException_WhenStatusCodeIsNotSuccessful()
     {
         var response = new HttpResponseMessage { StatusCode = HttpStatusCode.BadGateway };
-        HttpClientFactory.MessageHandler.Responses.Add(
+        _clientFactory.MessageHandler.Responses.Add(
             new HttpRequestMessage(HttpMethod.Put, "https://google.com/api/Auditories"), response);
 
         await new Func<Task>(() => _sut.UpdateAsync(new AuditoryDto())).Should()
@@ -108,7 +104,7 @@ public class BaseRequestsTests : IDisposable
         var auditory = _fixture.Create<AuditoryDto>();
         var response = new HttpResponseMessage();
         response.Content = new StringContent(JsonSerializer.Serialize(auditory));
-        HttpClientFactory.MessageHandler.Responses.Add(
+        _clientFactory.MessageHandler.Responses.Add(
             new HttpRequestMessage(HttpMethod.Delete, "https://google.com/api/Auditories/10"), response);
 
         await _sut.DeleteAsync(10);
@@ -118,7 +114,7 @@ public class BaseRequestsTests : IDisposable
     public async Task Delete_ShouldThrowException_WhenStatusCodeIsNotSuccessful()
     {
         var response = new HttpResponseMessage { StatusCode = HttpStatusCode.BadGateway };
-        HttpClientFactory.MessageHandler.Responses.Add(
+        _clientFactory.MessageHandler.Responses.Add(
             new HttpRequestMessage(HttpMethod.Delete, "https://google.com/api/Auditories/10"), response);
 
         await new Func<Task>(() => _sut.DeleteAsync(10)).Should()

@@ -13,10 +13,13 @@ namespace UniversityTimetable.Api.Controllers;
 public class TeachersController : ControllerBase
 {
     private readonly IParametersService<TeacherDto, TeacherParameters> _service;
+    private readonly IBaseService<TeacherDto> _baseService;
 
-    public TeachersController(IParametersService<TeacherDto, TeacherParameters> service)
+    public TeachersController(IParametersService<TeacherDto, TeacherParameters> service,
+        IBaseService<TeacherDto> baseService)
     {
         _service = service;
+        _baseService = baseService;
     }
 
     // GET: Teachers
@@ -32,14 +35,14 @@ public class TeachersController : ControllerBase
     [AllowAnonymous]
     public async Task<IActionResult> Get(int? id)
     {
-        return Ok(await _service.GetByIdAsync(id));
+        return Ok(await _baseService.GetByIdAsync(id));
     }
 
     [HttpPost]
     [Authorized(UserRole.Admin)]
     public async Task<IActionResult> Post(TeacherDto teacher)
     {
-        await _service.CreateAsync(teacher);
+        await _baseService.CreateAsync(teacher);
         return Ok(teacher);
     }
 
@@ -47,15 +50,14 @@ public class TeachersController : ControllerBase
     [Authorized(UserRole.Admin)]
     public async Task<IActionResult> Put(TeacherDto teacher)
     {
-        await _service.UpdateAsync(teacher);
+        await _baseService.UpdateAsync(teacher);
         return Ok(teacher);
     }
-        
+
     [HttpDelete("{id:int}")]
     [Authorized(UserRole.Admin)]
     public async Task<IActionResult> Delete(int? id)
     {
-        await _service.DeleteAsync(id);
-        return Ok(id);
+        return Ok(await _baseService.DeleteAsync(id));
     }
 }

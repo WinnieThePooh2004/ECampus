@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using System.Diagnostics;
+using System.Linq.Expressions;
 
 namespace UniversityTimetable.Shared.Extensions
 {
@@ -20,7 +21,7 @@ namespace UniversityTimetable.Shared.Extensions
                 typeof(string).GetMethod("ToLower", new Type[] { })!);
             var checkContainsExpression = Expression.Call(toLowerPropertyValueExpression,
                 typeof(string).GetMethod("Contains", new[] { typeof(string) }) ??
-                throw new InvalidOperationException(),
+                throw new UnreachableException(),
                 searchTermExpression);
 
             var notNullAndContainsExpression = Expression.AndAlso(isNotNullExpression, checkContainsExpression);

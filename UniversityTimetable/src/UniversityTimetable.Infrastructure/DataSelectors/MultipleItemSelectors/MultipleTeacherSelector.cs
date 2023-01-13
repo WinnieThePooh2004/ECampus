@@ -9,7 +9,14 @@ namespace UniversityTimetable.Infrastructure.DataSelectors.MultipleItemSelectors
 public class MultipleTeacherSelector : IMultipleItemSelector<Teacher, TeacherParameters>
 {
     public IQueryable<Teacher> SelectData(DbSet<Teacher> data, TeacherParameters parameters)
-        => data.Search(g => g.LastName, parameters.SearchTerm)
-            .Search(t => t.FirstName, parameters.FirstName)
-            .Where(t => parameters.DepartmentId == 0 || t.DepartmentId == parameters.DepartmentId);
+    {
+        var result = data.Search(s => s.FirstName, parameters.FirstName)
+            .Search(s => s.LastName, parameters.LastName);
+        if (parameters.DepartmentId == 0)
+        {
+            return result;
+        }
+
+        return result.Where(s => s.DepartmentId == parameters.DepartmentId);
+    }
 }
