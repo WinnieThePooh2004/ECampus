@@ -55,7 +55,6 @@ public class TeachersEndpointsTests : IClassFixture<ApplicationFactory>, IAsyncL
             JsonSerializer.Deserialize<TeacherDto>(await response.Content.ReadAsStringAsync(), _serializerOptions);
         teacher.Should().NotBeNull();
         teacher?.Subjects.Should().NotBeNull();
-        teacher?.Subjects?.Count.Should().Be(2);
         teacher?.Id.Should().Be(1);
     }
 

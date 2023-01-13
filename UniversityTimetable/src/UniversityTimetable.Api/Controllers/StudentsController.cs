@@ -33,7 +33,7 @@ public class StudentsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Post(StudentDto student)
     {
-        return Ok(await _baseService.UpdateAsync(student));
+        return Ok(await _baseService.CreateAsync(student));
     }
 
     [HttpDelete("{id:int}")]
