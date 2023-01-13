@@ -1,5 +1,6 @@
 ﻿using IdentityServer4.Extensions;
 using Microsoft.AspNetCore.Components;
+using UniversityTimetable.FrontEnd.Extensions;
 using UniversityTimetable.FrontEnd.Requests.Interfaces;
 
 namespace UniversityTimetable.FrontEnd.Components.PageBases;
@@ -22,7 +23,7 @@ public abstract class TimetablePageBase : ComponentBase
 
     protected virtual async Task RefreshData()
     {
-        User = await UserRequests.GetCurrentUserAsync();
+        User = await UserRequests.GetCurrentUserAsync(HttpContextAccessor);
     }
 
     protected abstract Task OnSave();

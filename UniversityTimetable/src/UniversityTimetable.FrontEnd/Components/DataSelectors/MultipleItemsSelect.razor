@@ -40,7 +40,7 @@
         </tr>
     }
     </tbody>
-    <DataPageSelect MaxPageNumber="Data.Metadata.MaxPageNumber" OnPageNumberChanged="@(PageNumberChanged)"/>
+    <DataPageSelect TotalPages="Data.Metadata.MaxPageNumber" OnPageNumberChanged="@(PageNumberChanged)"/>
     <br/>
     <DataPageSizeSelect OnPageSizeChanged="@(PageSizeChanged)" PageSize="Parameters.PageSize"/>
 </table>
