@@ -14,18 +14,19 @@ public class ParametersRequestsTests : IDisposable
 {
     private readonly ParametersRequests<AuditoryDto, AuditoryParameters> _sut;
     private readonly Fixture _fixture = new();
+    private readonly HttpClientFactory _clientFactory = new();
 
     public ParametersRequestsTests()
     {
         var requestsOptions = Substitute.For<IRequestOptions>();
         requestsOptions.GetControllerName(Arg.Any<Type>()).Returns("Auditories");
-        _sut = new ParametersRequests<AuditoryDto, AuditoryParameters>(new HttpClientFactory(),
+        _sut = new ParametersRequests<AuditoryDto, AuditoryParameters>(_clientFactory,
             HttpClientFactory.Options, requestsOptions);
     }
 
     public void Dispose()
     {
-        HttpClientFactory.MessageHandler.Responses.Clear();
+        _clientFactory.MessageHandler.Responses.Clear();
     }
 
     [Fact]
@@ -39,7 +40,7 @@ public class ParametersRequestsTests : IDisposable
         var parameters = _fixture.Create<AuditoryParameters>();
         var response = new HttpResponseMessage();
         response.Content = new StringContent(JsonSerializer.Serialize(list));
-        HttpClientFactory.MessageHandler.Responses.Add(
+        _clientFactory.MessageHandler.Responses.Add(
             new HttpRequestMessage(HttpMethod.Get, $"https://google.com/api/Auditories?{parameters.ToQueryString()}"),
             response);
 
@@ -54,7 +55,7 @@ public class ParametersRequestsTests : IDisposable
     {
         var response = new HttpResponseMessage { StatusCode = HttpStatusCode.BadGateway };
         var parameters = _fixture.Create<AuditoryParameters>();
-        HttpClientFactory.MessageHandler.Responses.Add(
+        _clientFactory.MessageHandler.Responses.Add(
             new HttpRequestMessage(HttpMethod.Get, $"https://google.com/api/Auditories?{parameters.ToQueryString()}"),
             response);
 
