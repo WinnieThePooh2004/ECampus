@@ -14,6 +14,7 @@ public static class MapperFactory
             new DepartmentProfile(),
             new FacultyProfile(),
             new GroupProfile(),
+            new StudentProfile(),
             new SubjectProfile(),
             new TeacherProfile(),
             new UserProfile()
