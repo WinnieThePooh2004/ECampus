@@ -1,5 +1,7 @@
 ﻿@page "/teachers/{DepartmentId:int}"
 <DataTable TData="TeacherDto" TParameters="TeacherParameters"
+           SearchTerms="@(new List<(string placeHolder, Expression<Func<TeacherParameters, string?>>)> { ("first name", parameters => parameters.FirstName),
+                                       ("last name", parameters => parameters.LastName) })"
            ParameterOptions="p => p.DepartmentId = DepartmentId"
            TableHeaders="@(new List<string> { "Last name", "First name" })"
            TableData="@(new List<Func<TeacherDto, string>> { t => t.LastName, t => t.FirstName })"

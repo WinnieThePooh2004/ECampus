@@ -14,6 +14,13 @@
 }
 <table>
     <thead>
+    @foreach (var searchTerm in SearchTerms)
+    {
+        <InputText Value="@searchTerm.Item2.GetFromExpression(Parameters)"
+                   ValueChanged="@(s => searchTerm.Item2.SetFromExpression(Parameters, s))"
+                   ValueExpression="searchTerm.Item2.SetLambdaParameter(Parameters)" @onblur="RefreshData"
+                   style="background-color: rgb(235, 235, 235)" placeholder="@searchTerm.placeHolder"/>
+    }
     <tr>
         @foreach (var header in TableHeaders)
         {

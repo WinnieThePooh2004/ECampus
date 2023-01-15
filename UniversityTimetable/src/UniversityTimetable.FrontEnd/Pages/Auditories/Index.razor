@@ -1,9 +1,11 @@
 ﻿@page "/auditories"
+@using System.Linq.Expressions
 <h3>Auditories</h3>
 <DataTable TData="AuditoryDto" TParameters="AuditoryParameters"
-    TableHeaders="@(new List<string> { "building", "name" })"
-    TableData="@(new List<Func<AuditoryDto, string>> { a => a.Building, a => a.Name })"
-    CreateLink="/auditories/create"
-    EditLink="/auditories/edit"
-    ActionLinks="@(new List<(string, Func<AuditoryDto, string>)> { ("Timetable", a => $"/Timetable/auditory/{a.Id}") })"
-    />
+           SearchTerms="@(new List<(string placeHolder, Expression<Func<AuditoryParameters, string?>>)> { ("name", parameters => parameters.AuditoryName),
+                            ("Building", parameters => parameters.BuildingName) })"
+           TableHeaders="@(new List<string> { "building", "name" })"
+           TableData="@(new List<Func<AuditoryDto, string>> { a => a.Building, a => a.Name })"
+           CreateLink="/auditories/create"
+           EditLink="/auditories/edit"
+           ActionLinks="@(new List<(string, Func<AuditoryDto, string>)> { ("Timetable", a => $"/Timetable/auditory/{a.Id}") })"/>

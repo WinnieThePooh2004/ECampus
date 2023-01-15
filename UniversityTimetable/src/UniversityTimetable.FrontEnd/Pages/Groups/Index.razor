@@ -1,9 +1,9 @@
 ﻿@page "/groups/{DepartmentId:int}"
 <DataTable TData="GroupDto" TParameters="GroupParameters"
+           SearchTerms="@(new List<(string placeHolder, Expression<Func<GroupParameters, string?>>)> { ("name", parameters => parameters.Name) })"
            ParameterOptions="p => p.DepartmentId = DepartmentId"
            TableHeaders="@(new List<string> { "Last name", "First name" })"
            TableData="@(new List<Func<GroupDto, string>> { g => g.Name })"
            CreateLink="@($"/groups/Create/{DepartmentId}")"
            EditLink="/groups/edit"
-           ActionLinks="@(new List<(string, Func<GroupDto, string>)> { ("Timetable", g => $"/timetable/group/{g.Id}"),
-                            ("students", g => $"/students/{g.Id}") })"/>
+           ActionLinks="@(new List<(string, Func<GroupDto, string>)> { ("Timetable", g => $"/timetable/group/{g.Id}"), ("students", g => $"/students/{g.Id}") })"/>

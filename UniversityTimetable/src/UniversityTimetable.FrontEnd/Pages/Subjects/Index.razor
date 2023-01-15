@@ -1,8 +1,8 @@
 ﻿@page "/subjects"
 
 <DataTable TData="SubjectDto" TParameters="SubjectParameters"
-                TableHeaders="@(new List<string> { "Name" })"
-                TableData="@(new List<Func<SubjectDto, string>> { s => s.Name })"
-                CreateLink="@($"/subjects/Create")"
-                EditLink="/subjects/edit"
-/>
+           SearchTerms="@(new List<(string placeHolder, Expression<Func<SubjectParameters, string?>>)> { ("first name", parameters => parameters.Name)})"
+           TableHeaders="@(new List<string> { "Name" })"
+           TableData="@(new List<Func<SubjectDto, string>> { s => s.Name })"
+           CreateLink="@($"/subjects/Create")"
+           EditLink="/subjects/edit"/>
