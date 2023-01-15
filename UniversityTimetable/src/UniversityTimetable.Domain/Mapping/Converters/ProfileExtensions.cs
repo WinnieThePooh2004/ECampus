@@ -10,6 +10,6 @@ internal static class ProfileExtensions
         where TTo : class
     {
         profile.CreateMap<ListWithPaginationData<T>, ListWithPaginationData<TTo>>()
-            .ConvertUsing<ListWithPaginationDataConvert<T, TTo>>();
+            .ConvertUsing(new ListWithPaginationDataConvert<T, TTo>());
     }
 }

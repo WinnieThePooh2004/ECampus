@@ -10,6 +10,7 @@ using UniversityTimetable.Shared.Exceptions.DomainExceptions;
 using UniversityTimetable.Shared.Extensions;
 using UniversityTimetable.Shared.Interfaces.Auth;
 using UniversityTimetable.Shared.Models;
+using UniversityTimetable.Tests.Shared;
 using UniversityTimetable.Tests.Shared.DataFactories;
 
 namespace UniversityTimetable.Tests.Unit.BackEnd.Domain.Auth;
@@ -21,13 +22,14 @@ public class AuthorizationServiceTests
     private readonly IHttpContextAccessor _httpContextAccessor = Substitute.For<IHttpContextAccessor>();
     private readonly HttpContext _httpContext = Substitute.For<HttpContext>();
     private readonly IMapper _mapper = MapperFactory.Mapper;
+    private readonly JwtAuthOptions _authOptions = AuthData.DefaultOptions;
 
     public AuthorizationServiceTests()
     {
         _dataAccess = Substitute.For<IAuthorizationDataAccess>();
         _httpContextAccessor.HttpContext.Returns(_httpContext);
         _sut = new AuthorizationService(_dataAccess, _mapper,
-            _httpContextAccessor);
+            _httpContextAccessor, _authOptions);
     }
 
     [Fact]
@@ -73,14 +75,14 @@ public class AuthorizationServiceTests
         actual.Should().BeEquivalentTo(actual);
     }
 
-    private static string CreateExpectedToken(LoginResult loginResult)
+    private string CreateExpectedToken(LoginResult loginResult)
     {
         var jwt = new JwtSecurityToken(
-            issuer: JwtAuthOptions.Issuer,
-            audience: JwtAuthOptions.Audience,
+            issuer: _authOptions.Issuer,
+            audience: _authOptions.Audience,
             claims: HttpContextExtensions.CreateClaims(loginResult),
             expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(2)),
-            signingCredentials: new SigningCredentials(JwtAuthOptions.GetSymmetricSecurityKey(),
+            signingCredentials: new SigningCredentials(_authOptions.GetSymmetricSecurityKey(),
                 SecurityAlgorithms.HmacSha256));
         return new JwtSecurityTokenHandler().WriteToken(jwt);
     }
