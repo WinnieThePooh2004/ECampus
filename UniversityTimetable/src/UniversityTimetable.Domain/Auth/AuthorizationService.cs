@@ -18,13 +18,15 @@ public class AuthorizationService : IAuthorizationService
     private readonly IAuthorizationDataAccess _repository;
     private readonly IMapper _mapper;
     private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly JwtAuthOptions _authOptions;
 
     public AuthorizationService(IAuthorizationDataAccess repository,
-        IMapper mapper, IHttpContextAccessor httpContextAccessor)
+        IMapper mapper, IHttpContextAccessor httpContextAccessor, JwtAuthOptions authOptions)
     {
         _repository = repository;
         _mapper = mapper;
         _httpContextAccessor = httpContextAccessor;
+        _authOptions = authOptions;
     }
 
     public async Task<LoginResult> Login(LoginDto login)
@@ -49,11 +51,11 @@ public class AuthorizationService : IAuthorizationService
         };
         
         var jwt = new JwtSecurityToken(
-            issuer: JwtAuthOptions.Issuer,
-            audience: JwtAuthOptions.Audience,
+            issuer: _authOptions.Issuer,
+            audience: _authOptions.Audience,
             claims: HttpContextExtensions.CreateClaims(result),
             expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(2)),
-            signingCredentials: new SigningCredentials(JwtAuthOptions.GetSymmetricSecurityKey(),
+            signingCredentials: new SigningCredentials(_authOptions.GetSymmetricSecurityKey(),
                 SecurityAlgorithms.HmacSha256));
         
         result.Token = new JwtSecurityTokenHandler().WriteToken(jwt);

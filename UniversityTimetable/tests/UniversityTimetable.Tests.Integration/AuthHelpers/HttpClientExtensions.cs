@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using UniversityTimetable.Shared.Auth;
 using UniversityTimetable.Shared.Extensions;
 using UniversityTimetable.Shared.Models;
+using UniversityTimetable.Tests.Shared;
 
 namespace UniversityTimetable.Tests.Integration.AuthHelpers;
 
@@ -12,6 +13,7 @@ public static class HttpClientExtensions
 {
     public static void Login(this HttpClient client, User user)
     {
+        var options = AuthData.DefaultOptions;
         var loginResult = new LoginResult
         {
             Email = user.Email,
@@ -20,11 +22,11 @@ public static class HttpClientExtensions
             UserId = user.Id
         };
         var jwt = new JwtSecurityToken(
-            issuer: JwtAuthOptions.Issuer,
-            audience: JwtAuthOptions.Audience,
+            issuer: options.Issuer,
+            audience: options.Audience,
             claims: HttpContextExtensions.CreateClaims(loginResult),
             expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(2)),
-            signingCredentials: new SigningCredentials(JwtAuthOptions.GetSymmetricSecurityKey(),
+            signingCredentials: new SigningCredentials(options.GetSymmetricSecurityKey(),
                 SecurityAlgorithms.HmacSha256));
         
         loginResult.Token = new JwtSecurityTokenHandler().WriteToken(jwt);
