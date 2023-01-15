@@ -15,8 +15,6 @@
     {
         <h3>@Title</h3>
     }
-    <input type="text" @bind-value="@Parameters.SearchTerm" @onblur="RefreshData" style="background-color: rgb(235, 235, 235)"
-           placeholder="Search"/>
     <tr>
         @foreach (var propertyName in PropertyNames)
         {

@@ -27,7 +27,7 @@ public class MultipleFacultySelectorTests
     [Fact]
     public void SelectData_ShouldReturnSuitableData()
     {
-        var parameters = new FacultyParameters { SearchTerm = "name" };
+        var parameters = new FacultyParameters { Name = "name" };
 
         var selectedData = _sut.SelectData(_dataSet, parameters).ToList();
 

@@ -10,7 +10,7 @@ public class MultipleGroupSelector : IMultipleItemSelector<Group, GroupParameter
 {
     public IQueryable<Group> SelectData(DbSet<Group> data, GroupParameters parameters)
     {
-        var result = data.Search(g => g.Name, parameters.SearchTerm);
+        var result = data.Search(g => g.Name, parameters.Name);
         if (parameters.DepartmentId == 0)
         {
             return result;

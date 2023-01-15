@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using System.Linq.Expressions;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using UniversityTimetable.Shared.Interfaces.Data;
 using UniversityTimetable.Shared.Interfaces.Data.Models;
@@ -12,6 +13,8 @@ namespace UniversityTimetable.FrontEnd.Components.PageModels
         [Parameter] public string? CreateLink { get; set; }
         [Parameter] public bool ShowDeleteButton { get; set; } = true;
         [Parameter] public bool ShowEditButton { get; set; } = true;
+
+        [Parameter] public List<(string placeHolder, Func<TParameters, string>)> SearchTerms { get; set; } = new();
 
         /// <summary>
         /// provide it without id

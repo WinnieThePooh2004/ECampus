@@ -27,7 +27,7 @@ public class MultipleSubjectSelectorTests
     [Fact]
     public void SelectData_ShouldReturnSuitableData()
     {
-        var parameters = new SubjectParameters { SearchTerm = "name" };
+        var parameters = new SubjectParameters { Name = "name" };
 
         var selectedData = _sut.SelectData(_dataSet, parameters).ToList();
 

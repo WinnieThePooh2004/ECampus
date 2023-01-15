@@ -14,20 +14,18 @@
 }
 <table>
     <thead>
-        <input type="text" @bind-value="@Parameters.SearchTerm" @onblur="RefreshData" style="background-color: rgb(235, 235, 235)"
-               placeholder="Search" />
-        <tr>
-            @foreach(var header in TableHeaders)
-            {
-                <th>
-                    @header
-                </th>
-            }
-            @if (TotalLinks != 0)
-            {
-                <th></th>
-            }
-        </tr>
+    <tr>
+        @foreach (var header in TableHeaders)
+        {
+            <th>
+                @header
+            </th>
+        }
+        @if (TotalLinks != 0)
+        {
+            <th></th>
+        }
+    </tr>
     </thead>
     <tbody>
         @foreach (var item in Data.Data)
