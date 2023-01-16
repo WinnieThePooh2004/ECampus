@@ -17,8 +17,15 @@ public class HttpCallingValidator<T> : IValidator<T>
 
     public ValidationResult Validate(IValidationContext context) => _baseValidator.Validate(context);
 
-    public Task<ValidationResult> ValidateAsync(IValidationContext context, CancellationToken cancellation = new CancellationToken()) 
-        => ValidateAsync((T)context.InstanceToValidate, cancellation);
+    public async Task<ValidationResult> ValidateAsync(IValidationContext context, CancellationToken cancellation = new())
+    {
+        if (context.InstanceToValidate is T instanceToValidate)
+        {
+            return await ValidateAsync(instanceToValidate, cancellation);
+        }
+
+        return new ValidationResult();
+    }
 
     public IValidatorDescriptor CreateDescriptor()
         => _baseValidator.CreateDescriptor();
@@ -30,7 +37,7 @@ public class HttpCallingValidator<T> : IValidator<T>
     public ValidationResult Validate(T instance)
         => _baseValidator.Validate(instance);
 
-    public async Task<ValidationResult> ValidateAsync(T instance, CancellationToken cancellation = new CancellationToken())
+    public async Task<ValidationResult> ValidateAsync(T instance, CancellationToken cancellation = new())
     {
         var baseResult = await _baseValidator.ValidateAsync(instance, cancellation);
         if (baseResult.Errors.Any())
