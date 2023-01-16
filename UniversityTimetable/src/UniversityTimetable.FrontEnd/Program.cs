@@ -2,7 +2,6 @@ using System.Reflection;
 using System.Text.Json;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using MudBlazor.Services;
 using UniversityTimetable.Domain.Validation.FluentValidators;
 using UniversityTimetable.FrontEnd.Auth;
 using UniversityTimetable.FrontEnd.Extensions;
@@ -57,7 +56,6 @@ builder.Services.Decorate<IValidator<PasswordChangeDto>, HttpCallingValidator<Pa
 
 builder.Services.AddSingleton<IRequestOptions>(new RequestOptions(builder.Configuration));
 
-builder.Services.AddMudServices();
 builder.Services.Configure<CookiePolicyOptions>(options =>
 {
     options.CheckConsentNeeded = _ => true;
