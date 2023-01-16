@@ -16,7 +16,7 @@ public sealed partial class SingleItemSelect<TData, TParameters>
 
     [Parameter] public TData? SelectedItem { get; set; }
 
-    private Dictionary<TData, bool> Select { get; set; } = new(new DataTransferObjectComparer<TData>());
+    private Dictionary<TData, bool> Select { get; } = new(new DataTransferObjectComparer<TData>());
 
     private bool this[TData item]
     {
