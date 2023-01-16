@@ -13,6 +13,8 @@ public class TeacherDto : IDataTransferObject
     public string FirstName { get; set; } = string.Empty;
     public string LastName { get; set; } = string.Empty;
     public ScienceDegree ScienceDegree { get; set; }
+    
+    public int? UserId { get; set; }
 
     public int DepartmentId { get; set; }
     public List<SubjectDto>? Subjects { get; set; }

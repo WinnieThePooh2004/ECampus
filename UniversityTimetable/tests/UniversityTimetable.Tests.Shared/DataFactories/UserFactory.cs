@@ -12,6 +12,8 @@ public class UserFactory : IAbstractFactory<User>
             .Without(u => u.SavedGroups)
             .Without(u => u.SavedGroupsIds)
             .Without(u => u.SavedTeachers)
+            .Without(u => u.Student)
+            .Without(u => u.Teacher)
             .Without(u => u.SavedTeachersIds)
             .Create();
 }

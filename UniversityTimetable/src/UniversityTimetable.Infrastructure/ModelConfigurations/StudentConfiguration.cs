@@ -13,5 +13,10 @@ public class StudentConfiguration : IEntityTypeConfiguration<Student>
             .WithMany(g => g.Students)
             .IsRequired()
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasOne(s => s.User)
+            .WithOne(u => u.Student)
+            .HasForeignKey<User>(u => u.StudentId)
+            .OnDelete(DeleteBehavior.SetNull);
     }
 }
