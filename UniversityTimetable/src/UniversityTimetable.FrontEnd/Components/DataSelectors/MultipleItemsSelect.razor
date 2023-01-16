@@ -32,8 +32,7 @@
                 <td width="@(90 / TotalColumns)%">@property(item)</td>
             }
             <td width="10%">
-                <MudCheckBox T="bool" Checked="@this[item]" Color="Color.Primary"
-                             CheckedChanged="@(isChecked => ValueChecked(isChecked, item))"/>
+                <Checkbox Value="@this[item]" ValueChanged="@(isChecked => ValueChecked(isChecked, item))"/>
             </td>
         </tr>
     }
