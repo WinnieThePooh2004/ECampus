@@ -1,5 +1,4 @@
 ﻿@page "/auditories"
-@using System.Linq.Expressions
 <h3>Auditories</h3>
 <DataTable TData="AuditoryDto" TParameters="AuditoryParameters"
            SearchTerms="@(new List<(string placeHolder, Expression<Func<AuditoryParameters, string?>>)> { ("name", parameters => parameters.AuditoryName),
@@ -9,3 +8,4 @@
            CreateLink="/auditories/create"
            EditLink="/auditories/edit"
            ActionLinks="@(new List<(string, Func<AuditoryDto, string>)> { ("Timetable", a => $"/Timetable/auditory/{a.Id}") })"/>
+           
