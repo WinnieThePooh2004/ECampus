@@ -1,12 +1,16 @@
 ﻿@page "/Students/{GroupId:int}"
 <DataTable TData="StudentDto" TParameters="StudentParameters"
+           SearchTerms="@(new List<(string placeHolder, Expression<Func<StudentParameters, string?>>)> { ("first name", parameters => parameters.FirstName),
+                            ("last name", parameters => parameters.LastName) })"
            ParameterOptions="p => p.GroupId = GroupId"
            TableHeaders="@(new List<string> { "Last name", "First name" })"
            TableData="@(new List<Func<StudentDto, string>> { t => t.LastName, t => t.FirstName })"
            CreateLink="@($"/students/Create/{GroupId}")"
-           EditLink="/students/edit"
-           />
+           EditLink="/students/edit"/>
 
 @code{
-    [Parameter] public int GroupId { get; set; }
+
+    [Parameter]
+    public int GroupId { get; set; }
+
 }

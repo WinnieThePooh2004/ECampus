@@ -7,11 +7,11 @@ public class DataTableBase<TData, TParameters> : ComponentBase
     where TData : class
     where TParameters : class, IQueryParameters, new()
 {
-    [Inject] protected IParametersRequests<TData, TParameters> DataRequests { get; set; } = default!;
+    [Inject] private IParametersRequests<TData, TParameters> DataRequests { get; set; } = default!;
     protected ListWithPaginationData<TData>? Data { get; private set; }
     protected TParameters Parameters { get; } = new();
 
-    protected async Task RefreshData()
+    protected virtual async Task RefreshData()
     {
         Data = await DataRequests.GetByParametersAsync(Parameters);
         StateHasChanged();

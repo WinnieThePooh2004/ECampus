@@ -14,20 +14,25 @@
 }
 <table>
     <thead>
-        <input type="text" @bind-value="@Parameters.SearchTerm" @onblur="RefreshData" style="background-color: rgb(235, 235, 235)"
-               placeholder="Search" />
-        <tr>
-            @foreach(var header in TableHeaders)
-            {
-                <th>
-                    @header
-                </th>
-            }
-            @if (TotalLinks != 0)
-            {
-                <th></th>
-            }
-        </tr>
+    @foreach (var searchTerm in SearchTerms)
+    {
+        <InputText Value="@searchTerm.Item2.GetFromExpression(Parameters)"
+                   ValueChanged="@(s => searchTerm.Item2.SetFromExpression(Parameters, s))"
+                   ValueExpression="searchTerm.Item2.SetLambdaParameter(Parameters)" @onblur="RefreshData"
+                   style="background-color: rgb(235, 235, 235)" placeholder="@searchTerm.placeHolder"/>
+    }
+    <tr>
+        @foreach (var header in TableHeaders)
+        {
+            <th>
+                @header
+            </th>
+        }
+        @if (TotalLinks != 0)
+        {
+            <th></th>
+        }
+    </tr>
     </thead>
     <tbody>
         @foreach (var item in Data.Data)

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using System.Linq.Expressions;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using UniversityTimetable.Shared.Interfaces.Data;
 using UniversityTimetable.Shared.Interfaces.Data.Models;
@@ -13,18 +14,24 @@ namespace UniversityTimetable.FrontEnd.Components.PageModels
         [Parameter] public bool ShowDeleteButton { get; set; } = true;
         [Parameter] public bool ShowEditButton { get; set; } = true;
 
+        [Parameter] public List<(string placeHolder, Expression<Func<TParameters, string?>>)> SearchTerms { get; set; } = new();
+        
         /// <summary>
         /// provide it without id
         /// </summary>
         [Parameter] public string EditLink { get; set; } = default!;
+
         [Parameter] public List<string> TableHeaders { get; set; } = new();
         [Parameter] public List<Func<TData, string>> TableData { get; set; } = new();
+
         [Parameter] public List<(string LinkName, Func<TData, string> LinkSource)> ActionLinks { get; set; } = new();
+
         [Parameter] public Action<TParameters> ParameterOptions { get; set; } = _ => { };
 
         [Inject] private AuthenticationStateProvider AuthProvider { get; set; } = default!;
         private int TotalLinks => ActionLinks.Count + (ShowDeleteButton ? 1 : 0) + (ShowEditButton ? 1 : 0);
         private bool _isAdmin;
+
         protected override async Task OnInitializedAsync()
         {
             var authState = await AuthProvider.GetAuthenticationStateAsync();

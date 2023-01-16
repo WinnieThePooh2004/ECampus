@@ -9,5 +9,5 @@ namespace UniversityTimetable.Infrastructure.DataSelectors.MultipleItemSelectors
 public class MultipleFacultySelector : IMultipleItemSelector<Faculty, FacultyParameters>
 {
     public IQueryable<Faculty> SelectData(DbSet<Faculty> data, FacultyParameters parameters)
-        => data.Search(f => f.Name, parameters.SearchTerm);
+        => data.Search(f => f.Name, parameters.Name);
 }

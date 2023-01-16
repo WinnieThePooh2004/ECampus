@@ -12,4 +12,6 @@ public class StudentDto : IDataTransferObject
     public string LastName { get; set; } = string.Empty;
     public string FirstName { get; set; } = string.Empty;
     public int GroupId { get; set; }
+    
+    public int? UserId { get; set; }
 }

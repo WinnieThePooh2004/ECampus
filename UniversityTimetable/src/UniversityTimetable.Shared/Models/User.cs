@@ -16,6 +16,8 @@ public class User : IModel, IIsDeleted,
     public bool IsDeleted { get; set; }
     public string Username { get; set; } = string.Empty;
     public UserRole Role { get; set; }
+    public int? StudentId { get; set; }
+    public int? TeacherId { get; set; }
 
     public List<Group>? SavedGroups { get; set; }
     public List<Teacher>? SavedTeachers { get; set; }
@@ -23,6 +25,9 @@ public class User : IModel, IIsDeleted,
     public List<UserGroup>? SavedGroupsIds { get; set; }
     public List<UserAuditory>? SavedAuditoriesIds { get; set; }
     public List<UserTeacher>? SavedTeachersIds { get; set; }
+    
+    public Teacher? Teacher { get; set; }
+    public Student? Student { get; set; }
     List<Auditory>? IModelWithManyToManyRelations<Auditory, UserAuditory>.RelatedModels
     {
         get => SavedAuditories;

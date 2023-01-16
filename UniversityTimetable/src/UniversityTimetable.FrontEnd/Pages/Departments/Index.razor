@@ -2,9 +2,10 @@
 
 <h1>Departments</h1>
 <DataTable TData="DepartmentDto" TParameters="DepartmentParameters"
-                ParameterOptions="p => p.FacultyId = FacultyId"
-                TableHeaders="@(new List<string> { "Name" })"
-                TableData="@(new List<Func<DepartmentDto, string>> { f => f.Name })"
-                CreateLink="@($"/departments/Create/{FacultyId}")"
-                EditLink="/departments/edit"
-                ActionLinks="@(new List<(string, Func<DepartmentDto, string>)> { ("View teachers", d => $"/Teachers/{d.Id}"), ("View groups", d => $"/Groups/{d.Id}") })" />
+           SearchTerms="@(new List<(string placeHolder, Expression<Func<DepartmentParameters, string?>>)> { ("name", parameters => parameters.DepartmentName) })"
+           ParameterOptions="p => p.FacultyId = FacultyId"
+           TableHeaders="@(new List<string> { "Name" })"
+           TableData="@(new List<Func<DepartmentDto, string>> { f => f.Name })"
+           CreateLink="@($"/departments/Create/{FacultyId}")"
+           EditLink="/departments/edit"
+           ActionLinks="@(new List<(string, Func<DepartmentDto, string>)> { ("View teachers", d => $"/Teachers/{d.Id}"), ("View groups", d => $"/Groups/{d.Id}") })"/>

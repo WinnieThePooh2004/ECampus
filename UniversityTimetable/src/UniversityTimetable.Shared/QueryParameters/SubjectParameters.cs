@@ -4,4 +4,5 @@ namespace UniversityTimetable.Shared.QueryParameters;
 
 public class SubjectParameters : QueryParameters, IQueryParameters<Subject>
 {
+    public string? Name { get; set; }
 }

@@ -12,29 +12,44 @@ public sealed partial class MultipleItemsSelect<TData, TParameters>
 {
     [Parameter] public string Title { get; set; } = string.Empty;
     [Parameter] public List<string> PropertyNames { get; set; } = new();
-    [Parameter] public Action OnChanged { get; set; } = () => { };
+    [Parameter] public EventCallback OnChanged { get; set; }
     [Parameter] public List<Func<TData, object>> PropertiesToShow { get; set; } = new();
     [Parameter] public List<TData> SelectTo { get; set; } = new();
-    private Dictionary<TData, bool> Select { get; set; } = new();
 
-    private DataTransferObjectComparer<TData> _comparer = new();
+    private Dictionary<TData, bool> Select { get; } =
+        new(new Dictionary<TData, bool>(new DataTransferObjectComparer<TData>()));
 
-    private int TotalColumns => PropertiesToShow.Count + 1;
-    protected override void OnInitialized()
+    protected override async Task RefreshData()
     {
-        Select = new Dictionary<TData, bool>(_comparer);
+        Select.Clear();
+        await base.RefreshData();
+        Select.Clear();
     }
+
+    private bool DataRefreshed()
+    {
+        return Data?.Data.Count == Select.Count;
+    }
+    
+    private int TotalColumns => PropertiesToShow.Count + 1;
 
     private void ValueChecked(bool isChecked, TData item)
     {
         var selectInSourceList = SelectTo.FirstOrDefault(i => i.Id == item.Id);
-        if(!isChecked && selectInSourceList is not null)
+        if (!isChecked && selectInSourceList is not null)
         {
-            SelectTo.Remove(selectInSourceList);
+            if (DataRefreshed())
+            {
+                SelectTo.Remove(selectInSourceList);
+            }
             this[item] = false;
             return;
         }
-        SelectTo.Add(item);
+
+        if (DataRefreshed())
+        {
+            SelectTo.Add(item);
+        }
         this[item] = true;
     }
 
@@ -44,14 +59,15 @@ public sealed partial class MultipleItemsSelect<TData, TParameters>
         {
             if (!Select.ContainsKey(item))
             {
-                Select.Add(item, SelectTo.Any(i => _comparer.Equals(i, item)));
+                Select.Add(item, SelectTo.Any(i => i.Id == item.Id));
             }
+
             return Select[item];
         }
         set
         {
             Select[item] = value;
-            OnChanged();
+            OnChanged.InvokeAsync();
         }
     }
 }

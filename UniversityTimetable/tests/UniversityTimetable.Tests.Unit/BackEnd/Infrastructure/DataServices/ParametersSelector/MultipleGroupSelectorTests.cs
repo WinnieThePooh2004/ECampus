@@ -27,7 +27,7 @@ public class MultipleGroupSelectorTests
     [Fact]
     public void SelectData_ShouldReturnSuitableData()
     {
-        var parameters = new GroupParameters { DepartmentId = 10, SearchTerm = "a" };
+        var parameters = new GroupParameters { DepartmentId = 10, Name = "a" };
 
         var selectedData = _sut.SelectData(_dataSet, parameters).ToList();
 
@@ -38,7 +38,7 @@ public class MultipleGroupSelectorTests
     [Fact]
     public void SelectData_ShouldNotFilterByFacultyId_WhenFacultyIdIs0()
     {
-        var parameters = new GroupParameters { DepartmentId = 0, SearchTerm = "a" };
+        var parameters = new GroupParameters { DepartmentId = 0, Name = "a" };
 
         var selectedData = _sut.SelectData(_dataSet, parameters).ToList();
 

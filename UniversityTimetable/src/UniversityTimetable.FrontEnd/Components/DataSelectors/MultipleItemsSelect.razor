@@ -15,8 +15,6 @@
     {
         <h3>@Title</h3>
     }
-    <input type="text" @bind-value="@Parameters.SearchTerm" @onblur="RefreshData" style="background-color: rgb(235, 235, 235)"
-           placeholder="Search"/>
     <tr>
         @foreach (var propertyName in PropertyNames)
         {
@@ -34,8 +32,7 @@
                 <td width="@(90 / TotalColumns)%">@property(item)</td>
             }
             <td width="10%">
-                <MudCheckBox T="bool" Checked="@this[item]" Color="Color.Primary"
-                             CheckedChanged="@(isChecked => ValueChecked(isChecked, item))"/>
+                <Checkbox Value="@this[item]" ValueChanged="@(isChecked => ValueChecked(isChecked, item))"/>
             </td>
         </tr>
     }

@@ -2,9 +2,10 @@
 <h1>Faculties</h1>
 
 <DataTable TData="FacultyDto" TParameters="FacultyParameters"
-                TableHeaders="@(new(){ "Name" })"
-                TableData="@(new(){ f => f.Name })"
-                CreateLink="/faculties/Create"
-                EditLink="/faculties/edit"
-                ActionLinks="@(new(){ ("View departments", f => $"/Departments/{f.Id}") })"
-/>
+           SearchTerms="@(new List<(string placeHolder, Expression<Func<FacultyParameters, string?>>)> 
+                        { new("Name", parameters => parameters.Name) })"
+           TableHeaders="@(new List<string> { "Name" })"
+           TableData="@(new List<Func<FacultyDto, string>> { f => f.Name })"
+           CreateLink="/faculties/Create"
+           EditLink="/faculties/edit"
+           ActionLinks="@(new List<(string LinkName, Func<FacultyDto, string> LinkSource)> { ("View departments", f => $"/Departments/{f.Id}") })"/>

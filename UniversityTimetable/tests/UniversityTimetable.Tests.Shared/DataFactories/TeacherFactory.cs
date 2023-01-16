@@ -12,6 +12,7 @@ public class TeacherFactory : IAbstractFactory<Teacher>
             .Without(t => t.Users)
             .Without(t => t.UsersIds)
             .Without(t => t.Subjects)
+            .Without(t => t.User)
             .Without(t => t.SubjectIds)
             .Create();
 }
