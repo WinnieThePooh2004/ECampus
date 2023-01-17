@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
 
 namespace UniversityTimetable.FrontEnd.Components.EditForms;
 
@@ -7,6 +8,13 @@ public class ModelEditForm<TModel> : ComponentBase where TModel : class
 {
     [Parameter] public TModel Model { get; set; } = default!;
     [Parameter] public EventCallback<TModel> OnSubmit { get; set; }
+
+    [CascadingParameter] protected EditContext EditContext { get; set; } = default!;
+
+    protected override void OnInitialized()
+    {
+        EditContext = new EditContext(Model);
+    }
 
     [Inject] protected IValidator<TModel>? Validator { get; set; }
 

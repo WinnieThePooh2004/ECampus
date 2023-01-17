@@ -1,7 +1,7 @@
 ﻿@inherits ModelEditForm<ClassDto>
 <div class="row">
     <div class="col-md-4">
-        <EditForm Model="Model" on OnValidSubmit="Submit">
+        <EditForm EditContext="EditContext" on OnValidSubmit="Submit">
             <button type="submit" class="btn btn-success">Save</button>
             <FluentValidationValidator Validator="Validator"/>
             @if (TimetableMode == TimetableMode.Auditory)
@@ -47,7 +47,7 @@
                 <ValidationMessage For="@(() => Model.TeacherId)"/>
                 <SingleItemSelect TData="TeacherDto" TParameters="TeacherParameters" PropertyNames="@(new List<string> { "First name", "Last name" })"
                                   PropertiesToShow="@(new List<Func<TeacherDto, object>> { t => t.FirstName, t => t.LastName })"
-                                  @bind-SelectedItem="Model.Teacher" Title="Select teacher"/>
+                                  @bind-SelectedId="Model.TeacherId" Title="Select teacher"/>
                 <br/>
             }
             @if (TimetableMode != TimetableMode.Auditory)
@@ -55,14 +55,14 @@
                 <ValidationMessage For="@(() => Model.AuditoryId)"/>
                 <SingleItemSelect TData="AuditoryDto" TParameters="AuditoryParameters" PropertyNames="@(new List<string> { "Building", "Name" })"
                                   PropertiesToShow=@(new List<Func<AuditoryDto, object>> { a => a.Building, a => a.Name }) 
-                                  @bind-SelectedItem="Model.Auditory" Title="Select auditory"/>
+                                  @bind-SelectedId="Model.AuditoryId" Title="Select auditory"/>
                 <br/>
             }
             @if (TimetableMode != TimetableMode.Group)
             {
                 <ValidationMessage For="@(() => Model.GroupId)"/>
                 <SingleItemSelect TData="GroupDto" TParameters="GroupParameters" PropertyNames="@(new List<string> { "Name" })"
-                                  PropertiesToShow=@(new List<Func<GroupDto, object>> { s => s.Name }) @bind-SelectedItem="Model.Group"
+                                  PropertiesToShow=@(new List<Func<GroupDto, object>> { s => s.Name }) @bind-SelectedId="Model.GroupId"
                                   Title="Select group"/>
                 <br/>
             }
@@ -70,7 +70,7 @@
             <ValidationMessage For="@(() => Model.SubjectId)"/>
             <SingleItemSelect TData="SubjectDto" TParameters="SubjectParameters" PropertyNames="@(new List<string> { "Name" })"
                               PropertiesToShow="@(new List<Func<SubjectDto, object>> { s => s.Name })"
-                              @bind-SelectedItem="Model.Subject" Title="Select subject"/>
+                              @bind-SelectedId="Model.SubjectId" Title="Select subject"/>
 
         </EditForm>
     </div>
