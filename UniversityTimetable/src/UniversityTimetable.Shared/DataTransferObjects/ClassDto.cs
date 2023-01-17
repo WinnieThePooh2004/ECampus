@@ -6,7 +6,6 @@ using UniversityTimetable.Shared.Models;
 namespace UniversityTimetable.Shared.DataTransferObjects;
 
 [Dto<Class>]
-[Validation]
 public class ClassDto : IDataTransferObject
 {
     public int Id { get; set; }
@@ -23,16 +22,4 @@ public class ClassDto : IDataTransferObject
     public TeacherDto? Teacher { get; set; }
     public GroupDto? Group { get; set; }
     public SubjectDto? Subject { get; set; }
-
-    public override string ToString()
-    {
-        return $"ClassDTO:\n" +
-               $"DayOfTheWeek:{DayOfWeek},\n" +
-               $"Number:{Number},\n" +
-               $"AuditoryName:{Auditory?.Name},\n" +
-               $"AuditoryId:{Auditory?.Id},\n" +
-               $"GroupName:{Group?.Name},\n" +
-               $"GroupId:{Group?.Id},\n" +
-               $"TeacherId:{Teacher?.Id}\n";
-    }
 }

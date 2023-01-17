@@ -4,7 +4,6 @@ using UniversityTimetable.Shared.Models;
 
 namespace UniversityTimetable.Shared.DataTransferObjects;
 
-[Validation]
 [Dto<Subject>]
 public class SubjectDto : IDataTransferObject
 {

@@ -6,8 +6,13 @@ using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using UniversityTimetable.Api.MiddlewareFilters;
 using UniversityTimetable.Api.Extensions;
+using UniversityTimetable.Domain.Validation.CreateValidators;
+using UniversityTimetable.Domain.Validation.UniversalValidators;
+using UniversityTimetable.Domain.Validation.UpdateValidators;
 using UniversityTimetable.Infrastructure;
 using UniversityTimetable.Shared.Auth;
+using UniversityTimetable.Shared.DataTransferObjects;
+using UniversityTimetable.Shared.Interfaces.Domain.Validation;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,10 +27,12 @@ builder.Services.AddScoped<DbContext, ApplicationDbContext>();
 builder.Services.AddControllers(options => { options.Filters.Add<MiddlewareExceptionFilter>(); })
     .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 
+builder.Services.AddValidatorsFromAssembly(Assembly.Load("UniversityTimetable.Domain"));
+
+builder.Services.AddAutoMapper(Assembly.Load("UniversityTimetable.Domain"));
+
 builder.Services.AddDefaultFacades(Assembly.Load("UniversityTimetable.Shared"));
 builder.Services.AddDefaultDataServices(Assembly.Load("UniversityTimetable.Shared"));
-builder.Services.AddDefaultDomainServices(Assembly.Load("UniversityTimetable.Shared"),
-    Assembly.Load("UniversityTimetable.Domain"));
 builder.Services.AddSingleItemSelectors(Assembly.Load("UniversityTimetable.Shared"),
     Assembly.Load("UniversityTimetable.Infrastructure"));
 builder.Services.AddMultipleDataSelectors(Assembly.Load("UniversityTimetable.Infrastructure"));
@@ -34,9 +41,24 @@ builder.Services.AddDataValidator(Assembly.Load("UniversityTimetable.Infrastruct
 builder.Services.AddUniqueServices(Assembly.Load("UniversityTimetable.Infrastructure"),
     Assembly.Load("UniversityTimetable.Domain"));
 
-builder.Services.AddValidatorsFromAssembly(Assembly.Load("UniversityTimetable.Domain"));
+builder.Services.AddFluentValidationWrappers<AuditoryDto>();
+builder.Services.AddFluentValidationWrappers<ClassDto>();
+builder.Services.AddFluentValidationWrappers<GroupDto>();
+builder.Services.AddFluentValidationWrappers<FacultyDto>();
+builder.Services.AddFluentValidationWrappers<DepartmentDto>();
+builder.Services.AddFluentValidationWrappers<SubjectDto>();
+builder.Services.AddFluentValidationWrappers<StudentDto>();
+builder.Services.AddFluentValidationWrappers<TeacherDto>();
+builder.Services.AddFluentValidationWrappers<UserDto>();
 
-builder.Services.AddAutoMapper(Assembly.Load("UniversityTimetable.Domain"));
+builder.Services.Decorate<IUpdateValidator<UserDto>, UserUpdateValidator>();
+builder.Services.Decorate<ICreateValidator<UserDto>, UserCreateValidator>();
+
+builder.Services.Decorate<IUpdateValidator<ClassDto>, ClassDtoUniversalValidator>();
+builder.Services.Decorate<ICreateValidator<ClassDto>, ClassDtoUniversalValidator>();
+
+builder.Services.AddScoped<IUpdateValidator<PasswordChangeDto>, FluentValidatorWrapper<PasswordChangeDto>>();
+builder.Services.Decorate<IUpdateValidator<PasswordChangeDto>, PasswordChangeDtoUpdateValidator>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

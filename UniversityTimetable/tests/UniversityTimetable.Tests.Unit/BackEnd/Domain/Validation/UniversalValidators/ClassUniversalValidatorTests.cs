@@ -13,14 +13,12 @@ public class ClassUniversalValidatorTests
     private readonly ClassDtoUniversalValidator _sut;
     private readonly IValidationDataAccess<Class> _dataValidator;
     private readonly IUpdateValidator<ClassDto> _baseUpdateValidator = Substitute.For<IUpdateValidator<ClassDto>>();
-    private readonly ICreateValidator<ClassDto> _baseCreateValidator = Substitute.For<ICreateValidator<ClassDto>>();
     private readonly Fixture _fixture = new();
 
     public ClassUniversalValidatorTests()
     {
         _dataValidator = Substitute.For<IValidationDataAccess<Class>>();
-        _sut = new ClassDtoUniversalValidator(MapperFactory.Mapper, _dataValidator, _baseUpdateValidator,
-            _baseCreateValidator);
+        _sut = new ClassDtoUniversalValidator(MapperFactory.Mapper, _dataValidator, _baseUpdateValidator);
     }
 
     [Fact]
@@ -28,7 +26,7 @@ public class ClassUniversalValidatorTests
     {
         var @class = new ClassDto();
         var classFromDb = CreateTestModel();
-        _baseCreateValidator.ValidateAsync(Arg.Any<ClassDto>()).Returns(new List<KeyValuePair<string, string>>());
+        _baseUpdateValidator.ValidateAsync(Arg.Any<ClassDto>()).Returns(new List<KeyValuePair<string, string>>());
         _dataValidator.LoadRequiredDataForCreateAsync(Arg.Any<Class>()).Returns(classFromDb);
         var expectedErrors = CreateExpectedErrors(classFromDb);
 
@@ -41,7 +39,7 @@ public class ClassUniversalValidatorTests
     public async Task ValidateAsCreateValidator_AddedMessages_WhenPropertiesIsnull()
     {
         var classFromDb = new Class();
-        _baseCreateValidator.ValidateAsync(Arg.Any<ClassDto>()).Returns(new List<KeyValuePair<string, string>>());
+        _baseUpdateValidator.ValidateAsync(Arg.Any<ClassDto>()).Returns(new List<KeyValuePair<string, string>>());
         _dataValidator.LoadRequiredDataForCreateAsync(Arg.Any<Class>()).Returns(classFromDb);
         var expected = new List<KeyValuePair<string, string>>
         {
@@ -61,7 +59,7 @@ public class ClassUniversalValidatorTests
     {
         var errors = _fixture.CreateMany<KeyValuePair<string, string>>(10).ToList();
         var classFromDb = CreateTestModel();
-        _baseCreateValidator.ValidateAsync(Arg.Any<ClassDto>()).Returns(errors);
+        _baseUpdateValidator.ValidateAsync(Arg.Any<ClassDto>()).Returns(errors);
         _dataValidator.LoadRequiredDataForCreateAsync(Arg.Any<Class>()).Returns(classFromDb);
 
         var actualErrors = await ((ICreateValidator<ClassDto>)_sut).ValidateAsync(new ClassDto());

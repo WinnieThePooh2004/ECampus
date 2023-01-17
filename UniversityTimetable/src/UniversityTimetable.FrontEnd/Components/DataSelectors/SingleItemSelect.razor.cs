@@ -9,12 +9,12 @@ public sealed partial class SingleItemSelect<TData, TParameters>
     where TData : class, IDataTransferObject, new()
     where TParameters : class, IQueryParameters, new()
 {
-    [Parameter] public string Title { get; set; } = string.Empty;
-    [Parameter] public EventCallback<TData> SelectedItemChanged { get; set; }
+    [Parameter] public string Title { get; set; } = "";
+    [Parameter] public EventCallback<int> SelectedIdChanged { get; set; }
     [Parameter] public List<string> PropertyNames { get; set; } = new();
     [Parameter] public List<Func<TData, object>> PropertiesToShow { get; set; } = new();
 
-    [Parameter] public TData? SelectedItem { get; set; }
+    [Parameter] public int SelectedId { get; set; }
 
     private Dictionary<TData, bool> Select { get; set; } = new(new DataTransferObjectComparer<TData>());
 
@@ -23,7 +23,7 @@ public sealed partial class SingleItemSelect<TData, TParameters>
         get
         {
             Select.TryAdd(item, false);
-            if (item.Id == SelectedItem?.Id)
+            if (item.Id == SelectedId)
             {
                 Select[item] = true;
             }
@@ -35,12 +35,13 @@ public sealed partial class SingleItemSelect<TData, TParameters>
             {
                 return;
             }
-            if (SelectedItem is not null && Select.ContainsKey(SelectedItem))
+            var selectedValue = new TData { Id = SelectedId };
+            if (Select.ContainsKey(selectedValue))
             {
-                Select[SelectedItem] = false;
+                Select[selectedValue] = false;
             }
-            SelectedItem = item;
-            SelectedItemChanged.InvokeAsync(item);
+            SelectedId = item.Id;
+            SelectedIdChanged.InvokeAsync(item.Id);
             Select[item] = true;
             StateHasChanged();
         }

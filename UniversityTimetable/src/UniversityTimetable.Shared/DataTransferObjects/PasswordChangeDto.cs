@@ -1,8 +1,5 @@
-﻿using UniversityTimetable.Shared.Attributes;
+﻿namespace UniversityTimetable.Shared.DataTransferObjects;
 
-namespace UniversityTimetable.Shared.DataTransferObjects;
-
-[Validation(ValidationTypes.UpdateOnly, false, false)]
 public class PasswordChangeDto
 {
     public int UserId { get; set; }

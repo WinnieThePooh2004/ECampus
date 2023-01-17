@@ -8,13 +8,13 @@ namespace UniversityTimetable.Tests.Unit.BackEnd.Domain.Validation.UniversalVali
 
 public class UniversalValidatorTests
 {
-    private readonly UniversalValidator<FacultyDto> _sut;
+    private readonly FluentValidatorWrapper<FacultyDto> _sut;
     private readonly IValidator<FacultyDto> _fluentValidator;
 
     public UniversalValidatorTests()
     {
         _fluentValidator = Substitute.For<IValidator<FacultyDto>>();
-        _sut = new UniversalValidator<FacultyDto>(_fluentValidator);
+        _sut = new FluentValidatorWrapper<FacultyDto>(_fluentValidator);
     }
 
     [Fact]
