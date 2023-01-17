@@ -1,16 +1,16 @@
 ﻿using Microsoft.AspNetCore.Components;
 
-namespace UniversityTimetable.FrontEnd.Components.PageOptions
-{
-    public partial class DataPageSizeSelect
-    {
-        private static readonly int[] PageSizes = { 5, 10, 20, 50, 100 };
+namespace UniversityTimetable.FrontEnd.Components.PageOptions;
 
-        [Parameter] public EventCallback<int> OnPageSizeChanged { get; set; }
-        [Parameter] public int PageSize { get; set; } = 5;
-        private Task PageSizeChanged(int pageSize)
-        {
-            return OnPageSizeChanged.InvokeAsync(pageSize);
-        }
+public partial class DataPageSizeSelect
+{
+    private static readonly int[] PageSizes = { 5, 10, 20, 50, 100 };
+    [Parameter] public EventCallback<int> OnPageSizeChanged { get; set; }
+    [Parameter] public int PageSize { get; set; } = 5;
+        
+    private Task PageSizeChanged(int pageSize)
+    {
+        PageSize = pageSize;
+        return OnPageSizeChanged.InvokeAsync(pageSize);
     }
 }

@@ -12,6 +12,7 @@ public partial class DataPageSelect
     private Task PageNumberChanged(int pageNumber)
     {
         _pageNumber = pageNumber;
+        StateHasChanged();
         return OnPageNumberChanged.InvokeAsync(pageNumber);
     }
 }
