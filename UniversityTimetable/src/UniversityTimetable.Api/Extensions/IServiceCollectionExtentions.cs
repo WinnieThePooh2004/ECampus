@@ -1,10 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using UniversityTimetable.Domain.Services;
-using UniversityTimetable.Domain.Validation.CreateValidators;
 using UniversityTimetable.Domain.Validation.UniversalValidators;
-using UniversityTimetable.Domain.Validation.UpdateValidators;
 using UniversityTimetable.Infrastructure.DataSelectors.SingleItemSelectors;
 using UniversityTimetable.Infrastructure.DataAccessFacades;
 using UniversityTimetable.Infrastructure.DataCreateServices;
@@ -151,109 +148,19 @@ internal static class IServiceCollectionExtensions
         }
     }
 
-    public static void AddDefaultDomainServices(this IServiceCollection services, Assembly dataTransferObjectsAssembly,
-        Assembly servicesAssembly)
+    public static void AddFluentValidationWrappers<TDto>(this IServiceCollection services, bool addServices = true)
+        where TDto : class, IDataTransferObject
     {
-        var types = TypesRequiresValidation(dataTransferObjectsAssembly);
-
-        foreach (var modelType in types)
+        services.AddScoped<IUpdateValidator<TDto>, FluentValidatorWrapper<TDto>>();
+        services.AddScoped<ICreateValidator<TDto>, FluentValidatorWrapper<TDto>>();
+        if (!addServices)
         {
-            var typeValidation = (ValidationAttribute?)modelType.GetCustomAttributes()
-                .FirstOrDefault(attribute => attribute.GetType() == typeof(ValidationAttribute));
-            if (typeValidation is null || typeValidation.ValidationType == ValidationTypes.None)
-            {
-                continue;
-            }
-
-            AddBaseValidators(services, typeValidation, modelType);
-
-            LoadValidatorTypes(servicesAssembly, modelType, out var createValidator, out var updateValidator);
-
-            if (typeValidation.RequireService)
-            {
-                AddServicesWithValidation(services, typeValidation, modelType);
-            }
-
-            if (createValidator is not null)
-            {
-                services.Decorate(typeof(ICreateValidator<>).MakeGenericType(modelType), createValidator);
-            }
-
-            if (updateValidator is not null)
-            {
-                services.Decorate(typeof(IUpdateValidator<>).MakeGenericType(modelType), updateValidator);
-            }
+            return;
         }
+        services.Decorate<IBaseService<TDto>, ServiceWithCreateValidation<TDto>>();
+        services.Decorate<IBaseService<TDto>, ServiceWithUpdateValidation<TDto>>();
     }
 
-    private static void LoadValidatorTypes(Assembly servicesAssembly, Type modelType, out Type? createValidator, out Type? updateValidator)
-    {
-        updateValidator = servicesAssembly.GetTypes().FirstOrDefault(type =>
-            type.IsClass && type.GetInterfaces()
-                .Any(i => i == typeof(IUpdateValidator<>).MakeGenericType(modelType)));
-        createValidator = servicesAssembly.GetTypes().FirstOrDefault(type =>
-            type.IsClass && type.GetInterfaces()
-                .Any(i => i == typeof(ICreateValidator<>).MakeGenericType(modelType)));
-    }
-
-    private static void AddServicesWithValidation(IServiceCollection services, ValidationAttribute typeValidation,
-        Type modelType)
-    {
-        if (typeValidation.ValidationType == ValidationTypes.None)
-        {
-            return;
-        }
-
-        if (typeValidation.UseUniversalValidator)
-        {
-            services.Decorate(typeof(IBaseService<>).MakeGenericType(modelType),
-                typeof(ServiceWithUpdateValidation<>).MakeGenericType(modelType));
-            services.Decorate(typeof(IBaseService<>).MakeGenericType(modelType),
-                typeof(ServiceWithCreateValidation<>).MakeGenericType(modelType));
-            return;
-        }
-
-        if (typeValidation.ValidationType == ValidationTypes.CreateOnly)
-        {
-            services.Decorate(typeof(IBaseService<>).MakeGenericType(modelType),
-                typeof(ServiceWithCreateValidation<>).MakeGenericType(modelType));
-            return;
-        }
-
-        services.Decorate(typeof(IBaseService<>).MakeGenericType(modelType),
-            typeof(ServiceWithUpdateValidation<>).MakeGenericType(modelType));
-    }
-
-    private static void AddBaseValidators(IServiceCollection services, ValidationAttribute typeValidation,
-        Type modelType)
-    {
-        if (typeValidation.ValidationType == ValidationTypes.None)
-        {
-            return;
-        }
-
-        if (typeValidation.UseUniversalValidator)
-        {
-            services.AddScoped(typeof(ICreateValidator<>).MakeGenericType(modelType),
-                typeof(UniversalValidator<>).MakeGenericType(modelType));
-            services.AddScoped(typeof(IUpdateValidator<>).MakeGenericType(modelType),
-                typeof(UniversalValidator<>).MakeGenericType(modelType));
-            return;
-        }
-
-        if (typeValidation.ValidationType != ValidationTypes.UpdateOnly)
-        {
-            services.TryAddScoped(typeof(ICreateValidator<>).MakeGenericType(modelType),
-                typeof(CreateValidator<>).MakeGenericType(modelType));
-        }
-
-        if (typeValidation.ValidationType != ValidationTypes.CreateOnly)
-        {
-            services.TryAddScoped(typeof(IUpdateValidator<>).MakeGenericType(modelType),
-                typeof(UpdateValidator<>).MakeGenericType(modelType));
-        }
-    }
-    
     private static void AddRange(this IServiceCollection services, IEnumerable<ServiceDescriptor> descriptors)
     {
         foreach (var descriptor in descriptors)
@@ -274,10 +181,6 @@ internal static class IServiceCollectionExtensions
 
     private static List<Type> GetQueryParameters(Assembly assembly)
         => assembly.GetTypes().Where(type => type.BaseType == typeof(QueryParameters)).ToList();
-
-    private static List<Type> TypesRequiresValidation(Assembly assembly)
-        => assembly.GetTypes().Where(type => type.GetCustomAttributes()
-            .Any(attribute => attribute.GetType() == typeof(ValidationAttribute))).ToList();
 
     private static List<Type> GetRelationModels(Assembly assembly)
         => assembly.GetTypes().Where(type =>
