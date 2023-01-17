@@ -14,17 +14,15 @@ public class ClassDtoUniversalValidator : IUpdateValidator<ClassDto>, ICreateVal
     private readonly IMapper _mapper;
     private readonly IValidationDataAccess<Class> _dataAccess;
     private readonly IUpdateValidator<ClassDto> _baseUpdateValidator;
-    private readonly ICreateValidator<ClassDto> _baseCreateValidator;
 
     public ClassDtoUniversalValidator(IMapper mapper, IValidationDataAccess<Class> dataAccess,
-        IUpdateValidator<ClassDto> baseUpdateValidator, ICreateValidator<ClassDto> baseCreateValidator)
+        IUpdateValidator<ClassDto> baseUpdateValidator)
     {
         _mapper = mapper;
         _dataAccess = dataAccess;
         _baseUpdateValidator = baseUpdateValidator;
-        _baseCreateValidator = baseCreateValidator;
     }
-    
+
     async Task<List<KeyValuePair<string, string>>> IUpdateValidator<ClassDto>.ValidateAsync(ClassDto dataTransferObject)
     {
         var baseErrors = await _baseUpdateValidator.ValidateAsync(dataTransferObject);
@@ -38,13 +36,14 @@ public class ClassDtoUniversalValidator : IUpdateValidator<ClassDto>, ICreateVal
 
     async Task<List<KeyValuePair<string, string>>> ICreateValidator<ClassDto>.ValidateAsync(ClassDto dataTransferObject)
     {
-        var baseErrors = await _baseCreateValidator.ValidateAsync(dataTransferObject);
+        var baseErrors = await _baseUpdateValidator.ValidateAsync(dataTransferObject);
         if (baseErrors.Any())
         {
             return baseErrors;
         }
 
-        return await ValidateAsync(dataTransferObject);    }
+        return await ValidateAsync(dataTransferObject);
+    }
 
     private async Task<List<KeyValuePair<string, string>>> ValidateAsync(ClassDto dataTransferObject)
     {
