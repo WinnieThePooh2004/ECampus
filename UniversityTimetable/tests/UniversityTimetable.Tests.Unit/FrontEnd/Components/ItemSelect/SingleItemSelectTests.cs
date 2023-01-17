@@ -107,9 +107,6 @@ public class SingleItemSelectTests
 
             select.Should().Be(data.Data[i]);
         }
-        //checkbox.Change(new ChangeEventArgs { Value = true });
-
-        //select.Should().Be(data.Data[0]);
     }
 
     private IRenderedComponent<SingleItemSelect<GroupDto, GroupParameters>> RenderSelector(GroupDto? select,
