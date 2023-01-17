@@ -5,7 +5,6 @@ using UniversityTimetable.Shared.Models;
 namespace UniversityTimetable.Shared.DataTransferObjects;
 
 [Dto<Group>]
-[Validation]
 public class GroupDto : IDataTransferObject
 {
     public int Id { get; set; }

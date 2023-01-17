@@ -5,7 +5,6 @@ using UniversityTimetable.Shared.Models;
 namespace UniversityTimetable.Shared.DataTransferObjects;
 
 [Dto<Faculty>]
-[Validation]
 public class FacultyDto : IDataTransferObject
 {
     public int Id { get; set; }
