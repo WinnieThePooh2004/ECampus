@@ -9,7 +9,7 @@
 
 <div class="row">
     <div class="col-md-4">
-        <EditForm Model="_model" OnSubmit="@Save">
+        <EditForm Model="_model" OnValidSubmit="@Save">
             <button type="submit" class="btn btn-success">Save</button>
             <FluentValidationValidator Validator="_validator"/>
             <p>
