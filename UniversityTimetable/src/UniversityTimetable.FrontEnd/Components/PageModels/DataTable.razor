@@ -24,8 +24,8 @@
     <tr>
         @foreach (var header in TableHeaders)
         {
-            <th>
-                @header
+            <th onclick="@(() => OnPropertyNameClicked(header.propertyName))">
+                @header.header
             </th>
         }
         @if (TotalLinks != 0)

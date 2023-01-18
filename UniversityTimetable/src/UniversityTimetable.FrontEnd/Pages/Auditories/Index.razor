@@ -3,8 +3,9 @@
 <br/>
 <DataTable TData="AuditoryDto" TParameters="AuditoryParameters"
            SearchTerms="@(new List<(string placeHolder, Expression<Func<AuditoryParameters, string?>>)> { ("name", parameters => parameters.AuditoryName), ("Building", parameters => parameters.BuildingName) })"
-           TableHeaders="@(new List<string> { "building", "name" })"
+           TableHeaders="@(new List<(string, string)> { ("building", "Building"), ("name", "Name") })"
            TableData="@(new List<Func<AuditoryDto, string>> { a => a.Building, a => a.Name })"
            CreateLink="/auditories/create"
            EditLink="/auditories/edit"
-           ActionLinks="@(new List<(string, Func<AuditoryDto, string>)> { ("Timetable", a => $"/Timetable/auditory/{a.Id}") })"/>
+           ActionLinks="@(new List<(string, Func<AuditoryDto, string>)> { ("Timetable", a => $"/Timetable/auditory/{a.Id}") })"
+           ParameterOptions="@(p => p.OrderBy = "Building")"/>
