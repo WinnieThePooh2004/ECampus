@@ -21,7 +21,7 @@ public class Timetable
     
     public Timetable(IEnumerable<ClassDto> classes)
     {
-        DailyClasses = CreateEmptyDataTable();J
+        DailyClasses = CreateEmptyDataTable();
         classes.ToList().ForEach(Add);
     }
 
