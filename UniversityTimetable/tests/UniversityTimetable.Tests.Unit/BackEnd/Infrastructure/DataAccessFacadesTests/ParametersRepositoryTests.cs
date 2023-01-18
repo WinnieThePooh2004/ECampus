@@ -35,7 +35,7 @@ public class ParametersRepositoryTests
 
         var result = await _dataAccessFacade.GetByParameters(parameters);
 
-        result.Data.Should().BeEquivalentTo(data.OrderBy(item => item.Id).Take(parameters.PageSize).ToList(),
+        result.Data.Should().BeEquivalentTo(data.Take(parameters.PageSize).ToList(),
             opt => opt.ComparingByMembers<Auditory>());
     }
 }

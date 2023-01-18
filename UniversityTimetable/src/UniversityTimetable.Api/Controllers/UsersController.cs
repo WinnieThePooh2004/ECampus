@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using UniversityTimetable.Domain.Auth;
 using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Shared.Interfaces.Domain;
+using UniversityTimetable.Shared.QueryParameters;
 
 namespace UniversityTimetable.Api.Controllers;
 
@@ -12,11 +13,16 @@ public class UsersController : ControllerBase
 {
     private readonly IUserService _service;
     private readonly IBaseService<UserDto> _baseService;
+    private readonly IParametersService<UserDto, UserParameters> _parametersService;
+    private readonly IUserRelationsService _userRelationsService;
 
-    public UsersController(IUserService service, IBaseService<UserDto> baseService)
+    public UsersController(IUserService service, IBaseService<UserDto> baseService,
+        IParametersService<UserDto, UserParameters> parametersService, IUserRelationsService userRelationsService)
     {
         _service = service;
         _baseService = baseService;
+        _parametersService = parametersService;
+        _userRelationsService = userRelationsService;
     }
 
     [HttpGet("{id:int?}")]
@@ -24,6 +30,13 @@ public class UsersController : ControllerBase
     public async Task<IActionResult> Get(int? id)
     {
         return Ok(await _baseService.GetByIdAsync(id));
+    }
+
+    [HttpGet]
+    [AllowAnonymous]
+    public async Task<IActionResult> Get([FromQuery] UserParameters parameters)
+    {
+        return Ok(await _parametersService.GetByParametersAsync(parameters));
     }
 
     [HttpPost]
@@ -77,7 +90,7 @@ public class UsersController : ControllerBase
     [Authorized]
     public async Task<IActionResult> SaveAuditory([FromQuery] int userId, [FromQuery] int auditoryId)
     {
-        await _service.SaveAuditory(userId, auditoryId);
+        await _userRelationsService.SaveAuditory(userId, auditoryId);
         return NoContent();
     }
 
@@ -85,7 +98,7 @@ public class UsersController : ControllerBase
     [Authorized]
     public async Task<IActionResult> RemoveAuditory([FromQuery] int userId, [FromQuery] int auditoryId)
     {
-        await _service.RemoveSavedAuditory(userId, auditoryId);
+        await _userRelationsService.RemoveSavedAuditory(userId, auditoryId);
         return NoContent();
     }
 
@@ -93,7 +106,7 @@ public class UsersController : ControllerBase
     [Authorized]
     public async Task<IActionResult> SaveGroup([FromQuery] int userId, [FromQuery] int groupId)
     {
-        await _service.SaveGroup(userId, groupId);
+        await _userRelationsService.SaveGroup(userId, groupId);
         return NoContent();
     }
 
@@ -101,7 +114,7 @@ public class UsersController : ControllerBase
     [Authorized]
     public async Task<IActionResult> RemoveGroup([FromQuery] int userId, [FromQuery] int groupId)
     {
-        await _service.RemoveSavedGroup(userId, groupId);
+        await _userRelationsService.RemoveSavedGroup(userId, groupId);
         return NoContent();
     }
 
@@ -109,7 +122,7 @@ public class UsersController : ControllerBase
     [Authorized]
     public async Task<IActionResult> SaveTeacher([FromQuery] int userId, [FromQuery] int teacherId)
     {
-        await _service.SaveTeacher(userId, teacherId);
+        await _userRelationsService.SaveTeacher(userId, teacherId);
         return NoContent();
     }
 
@@ -117,7 +130,7 @@ public class UsersController : ControllerBase
     [Authorized]
     public async Task<IActionResult> RemoveTeacher([FromQuery] int userId, [FromQuery] int teacherId)
     {
-        await _service.RemoveSavedTeacher(userId, teacherId);
+        await _userRelationsService.RemoveSavedTeacher(userId, teacherId);
         return NoContent();
     }
 }

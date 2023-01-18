@@ -30,6 +30,7 @@ builder.Services.AddRequests<TeacherDto, TeacherParameters>();
 builder.Services.AddRequests<SubjectDto, SubjectParameters>();
 builder.Services.AddRequests<AuditoryDto, AuditoryParameters>();
 builder.Services.AddRequests<StudentDto, StudentParameters>();
+builder.Services.AddRequests<UserDto, UserParameters>();
 
 builder.Services.AddValidatorsFromAssembly(Assembly.Load("UniversityTimetable.Domain"));
 
@@ -40,8 +41,8 @@ builder.Services.Decorate<IValidator<ClassDto>, HttpCallingValidator<ClassDto>>(
 builder.Services.AddScoped<IClassRequests, ClassRequests>();
 builder.Services.AddScoped<IBaseRequests<ClassDto>, BaseRequests<ClassDto>>();
 
-builder.Services.AddScoped<IBaseRequests<UserDto>, BaseRequests<UserDto>>();
-builder.Services.AddScoped<IUserRequests, UserRequests>();
+builder.Services.AddScoped<IUserRelationshipsRequests, UserRelationshipsRequests>();
+builder.Services.AddScoped<IPasswordChangeRequests, PasswordChangeRequests>();
 
 builder.Services.AddScoped<IAuthRequests, AuthRequests>();
 

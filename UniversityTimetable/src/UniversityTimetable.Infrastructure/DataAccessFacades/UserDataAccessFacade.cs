@@ -27,34 +27,4 @@ public class UserDataAccessFacade : IUserDataAccessFacade
     {
         return await _passwordChange.ChangePassword(passwordChange, _context);
     }
-
-    public Task SaveAuditory(int userId, int auditoryId)
-    {
-        return _relationsDataAccess.CreateRelation<UserAuditory, User, Auditory>(userId, auditoryId, _context);
-    }
-
-    public Task RemoveSavedAuditory(int userId, int auditoryId)
-    {
-        return _relationsDataAccess.DeleteRelation<UserAuditory, User, Auditory>(userId, auditoryId, _context);
-    }
-
-    public Task SaveGroup(int userId, int groupId)
-    {
-        return _relationsDataAccess.CreateRelation<UserGroup, User, Group>(userId, groupId, _context);
-    }
-
-    public Task RemoveSavedGroup(int userId, int groupId)
-    {
-        return _relationsDataAccess.DeleteRelation<UserGroup, User, Group>(userId, groupId, _context);
-    }
-
-    public Task SaveTeacher(int userId, int teacherId)
-    {
-        return _relationsDataAccess.CreateRelation<UserTeacher, User, Teacher>(userId, teacherId, _context);
-    }
-
-    public Task RemoveSavedTeacher(int userId, int teacherId)
-    {
-        return _relationsDataAccess.DeleteRelation<UserTeacher, User, Teacher>(userId, teacherId, _context);
-    }
 }

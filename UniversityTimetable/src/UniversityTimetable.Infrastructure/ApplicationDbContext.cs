@@ -31,18 +31,6 @@ public class ApplicationDbContext : DbContext
 
     public DbSet<Student> Students { get; set; } = default!;
 
-    public override int SaveChanges()
-    {
-        ChangeTracker.UpdateDeleteStatus();
-        return base.SaveChanges();
-    }
-
-    public override int SaveChanges(bool acceptAllChangesOnSuccess)
-    {
-        ChangeTracker.UpdateDeleteStatus();
-        return base.SaveChanges(acceptAllChangesOnSuccess);
-    }
-
     public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
     {
         ChangeTracker.UpdateDeleteStatus();

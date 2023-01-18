@@ -25,7 +25,7 @@ public class UserServiceTests
         Substitute.For<IBaseService<UserDto>>();
         _userDataAccessFacade = Substitute.For<IUserDataAccessFacade>();
 
-        _sut = new UserService(authenticationService, _passwordChangeValidator, _userDataAccessFacade, _updateValidator,
+        _sut = new UserService(_passwordChangeValidator, _userDataAccessFacade, _updateValidator,
             _createValidator);
     }
 
@@ -39,54 +39,6 @@ public class UserServiceTests
         var result = await _sut.ValidatePasswordChange(passwordChange);
 
         result.Should().Be(errors);
-    }
-
-    [Fact]
-    private async Task SaveGroup_RelationsRepositoryCalled()
-    {
-        await _sut.SaveGroup(10, 10);
-
-        await _userDataAccessFacade.Received(1).SaveGroup(10, 10);
-    }
-
-    [Fact]
-    private async Task SaveAuditory_RelationsRepositoryCalled()
-    {
-        await _sut.SaveAuditory(10, 10);
-
-        await _userDataAccessFacade.Received(1).SaveAuditory(10, 10);
-    }
-
-    [Fact]
-    private async Task SaveTeacher_RelationsRepositoryCalled()
-    {
-        await _sut.SaveTeacher(10, 10);
-
-        await _userDataAccessFacade.Received(1).SaveTeacher(10, 10);
-    }
-
-    [Fact]
-    private async Task RemoveSavedGroup_RelationsRepositoryCalled()
-    {
-        await _sut.RemoveSavedGroup(10, 10);
-
-        await _userDataAccessFacade.Received(1).RemoveSavedGroup(10, 10);
-    }
-
-    [Fact]
-    private async Task RemoveSavedAuditory_RelationsRepositoryCalled()
-    {
-        await _sut.RemoveSavedAuditory(10, 10);
-
-        await _userDataAccessFacade.Received(1).RemoveSavedAuditory(10, 10);
-    }
-
-    [Fact]
-    private async Task RemoveSavedTeacher_RelationsRepositoryCalled()
-    {
-        await _sut.RemoveSavedTeacher(10, 10);
-
-        await _userDataAccessFacade.Received(1).RemoveSavedTeacher(10, 10);
     }
 
     [Fact]
