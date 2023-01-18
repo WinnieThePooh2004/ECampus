@@ -18,6 +18,8 @@ namespace UniversityTimetable.FrontEnd.Components.PageModels
 
         [Parameter] public Func<IClassRequests, Task<Timetable>> RefreshData { get; set; } = default!;
 
+        [Parameter] public Func<Timetable, string?>? Title { get; set; }
+
         [Inject] private IClassRequests Requests { get; set; } = default!;
         [Inject] private IBaseRequests<ClassDto> BaseRequests { get; set; } = default!;
         private Timetable? _timetable;

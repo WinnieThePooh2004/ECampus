@@ -5,7 +5,8 @@
                 EditLink="@($"timetable/edit/{(int)TimetableMode.Auditory}")"
                 DescriptionList="@(new List<Func<ClassDto, string>> { c => $"{c.Subject?.Name} {c.ClassType}",
                                      c => $"Group {c.Group?.Name}", c => $"Teacher: {c.Teacher?.FirstName} {c.Teacher?.LastName}" })"
-                RefreshData="@(requests => requests.AuditoryTimetable(AuditoryId))" />
+                RefreshData="@(requests => requests.AuditoryTimetable(AuditoryId))" 
+                Title="@(timetable => $"Timetable for auditory {timetable.Auditory?.Name} in building {timetable.Auditory?.Building}")"/>
 
 <br />
 @if (User is null)
