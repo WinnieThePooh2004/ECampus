@@ -5,6 +5,7 @@ using UniversityTimetable.Shared.Interfaces.Auth;
 using UniversityTimetable.Shared.Interfaces.Domain.Validation;
 using UniversityTimetable.Shared.Interfaces.DataAccess;
 using UniversityTimetable.Shared.Interfaces.Domain;
+using UniversityTimetable.Shared.Validation;
 
 namespace UniversityTimetable.Domain.Services;
 
@@ -29,12 +30,12 @@ public class UserService : IUserService
         _createValidator = createValidator;
     }
 
-    public async Task<List<KeyValuePair<string, string>>> ValidateCreateAsync(UserDto user)
+    public async Task<ValidationResult> ValidateCreateAsync(UserDto user)
     {
         return await _createValidator.ValidateAsync(user);
     }
 
-    public async Task<List<KeyValuePair<string, string>>> ValidateUpdateAsync(UserDto user)
+    public async Task<ValidationResult> ValidateUpdateAsync(UserDto user)
     {
         return await _updateValidator.ValidateAsync(user);
     }
@@ -42,7 +43,7 @@ public class UserService : IUserService
     public async Task<PasswordChangeDto> ChangePassword(PasswordChangeDto passwordChange)
     {
         var errors = await _passwordChangeValidator.ValidateAsync(passwordChange);
-        if (errors.Any())
+        if (!errors.IsValid)
         {
             throw new ValidationException(typeof(PasswordChangeDto), errors);
         }
@@ -51,7 +52,7 @@ public class UserService : IUserService
         return passwordChange;
     }
 
-    public async Task<List<KeyValuePair<string, string>>> ValidatePasswordChange(PasswordChangeDto passwordChange)
+    public async Task<ValidationResult> ValidatePasswordChange(PasswordChangeDto passwordChange)
     {
         return await _passwordChangeValidator.ValidateAsync(passwordChange);
     }

@@ -24,7 +24,7 @@ public class ServiceWithUpdateValidation<TDto> : IBaseService<TDto>
     public async Task<TDto> UpdateAsync(TDto entity)
     {
         var errors = await _validator.ValidateAsync(entity);
-        if (errors.Any())
+        if (!errors.IsValid)
         {
             throw new ValidationException(typeof(TDto), errors);
         }

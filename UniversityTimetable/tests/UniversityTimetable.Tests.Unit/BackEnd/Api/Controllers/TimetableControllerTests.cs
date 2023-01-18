@@ -3,6 +3,7 @@ using UniversityTimetable.Api.Controllers;
 using UniversityTimetable.Shared.DataContainers;
 using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Shared.Interfaces.Domain;
+using UniversityTimetable.Shared.Validation;
 
 namespace UniversityTimetable.Tests.Unit.BackEnd.Api.Controllers;
 
@@ -114,7 +115,7 @@ public class TimetableControllerTests
     [Fact]
     public async Task Validate_ReturnsFromService_ServiceCalled()
     {
-        var errors = new List<KeyValuePair<string, string>>(_fixture.CreateMany<KeyValuePair<string, string>>(5));
+        var errors = new ValidationResult(_fixture.CreateMany<ValidationError>(5));
         var @class = new ClassDto();
         _service.ValidateAsync(@class).Returns(errors);
 

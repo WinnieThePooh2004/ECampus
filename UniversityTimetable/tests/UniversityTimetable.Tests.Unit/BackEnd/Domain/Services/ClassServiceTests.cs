@@ -7,6 +7,7 @@ using UniversityTimetable.Shared.Exceptions.DomainExceptions;
 using UniversityTimetable.Shared.Interfaces.Domain.Validation;
 using UniversityTimetable.Shared.Interfaces.DataAccess;
 using UniversityTimetable.Shared.Models;
+using UniversityTimetable.Shared.Validation;
 using UniversityTimetable.Tests.Shared.DataFactories;
 using UniversityTimetable.Tests.Shared.Extensions;
 
@@ -29,7 +30,7 @@ public class ClassServiceTests
     [Fact]
     public async Task Validate_ReturnsFromValidationFacade()
     {
-        var errors = _fixture.CreateMany<KeyValuePair<string, string>>(10).ToList();
+        var errors = new ValidationResult(_fixture.CreateMany<ValidationError>(10).ToList());
         var @class = CreateClass();
         _validator.ValidateAsync(@class).Returns(errors);
 

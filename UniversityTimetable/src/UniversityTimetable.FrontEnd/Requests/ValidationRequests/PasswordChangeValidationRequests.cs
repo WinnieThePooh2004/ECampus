@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Text.Json;
 using UniversityTimetable.FrontEnd.Requests.Interfaces.Validation;
+using UniversityTimetable.Shared.Validation;
 
 namespace UniversityTimetable.FrontEnd.Requests.ValidationRequests;
 
@@ -15,11 +16,11 @@ public class PasswordChangeValidationRequests : IValidationRequests<PasswordChan
         _options = options;
     }
 
-    public async Task<List<KeyValuePair<string, string>>> ValidateAsync(PasswordChangeDto model)
+    public async Task<ValidationResult> ValidateAsync(PasswordChangeDto model)
     {
         var response = await _client.CreateClient("UTApi").PutAsJsonAsync("api/Users/changePassword/validate", model);
         response.EnsureSuccessStatusCode();
-        return JsonSerializer.Deserialize<List<KeyValuePair<string, string>>>(
+        return JsonSerializer.Deserialize<ValidationResult>(
                    await response.Content.ReadAsStreamAsync(), _options)
                ?? throw new UnreachableException($"cannot deserialize object of type {typeof(UserDto)}");
     }

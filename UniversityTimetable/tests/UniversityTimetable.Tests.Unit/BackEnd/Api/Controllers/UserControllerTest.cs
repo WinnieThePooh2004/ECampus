@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using UniversityTimetable.Api.Controllers;
 using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Shared.Interfaces.Domain;
+using UniversityTimetable.Shared.Validation;
 
 namespace UniversityTimetable.Tests.Unit.BackEnd.Api.Controllers;
 
@@ -50,7 +51,7 @@ public class UserControllerTest
     public async Task ValidateCreate_ReturnsFromService_ServiceCalled()
     {
         var data = _fixture.Create<UserDto>();
-        var errors = _fixture.CreateMany<KeyValuePair<string, string>>(10).ToList();
+        var errors = new ValidationResult(_fixture.CreateMany<ValidationError>(10).ToList());
         _service.ValidateCreateAsync(data).Returns(errors);
 
         var actionResult = await _sut.ValidateCreate(data);
@@ -64,7 +65,7 @@ public class UserControllerTest
     public async Task ValidateUpdate_ReturnsFromService_ServiceCalled()
     {
         var data = _fixture.Create<UserDto>();
-        var errors = _fixture.CreateMany<KeyValuePair<string, string>>(10).ToList();
+        var errors = new ValidationResult(_fixture.CreateMany<ValidationError>(10).ToList());
         _service.ValidateUpdateAsync(data).Returns(errors);
 
         var actionResult = await _sut.ValidateUpdate(data);
@@ -117,7 +118,7 @@ public class UserControllerTest
     public async Task ValidatePasswordChange_ShouldReturnFromService()
     {
         var passwordChange = _fixture.Create<PasswordChangeDto>();
-        var errors = _fixture.CreateMany<KeyValuePair<string, string>>(10).ToList();
+        var errors = new ValidationResult(_fixture.CreateMany<ValidationError>(10));
         _service.ValidatePasswordChange(passwordChange).Returns(errors);
 
         var actionResult = await _sut.ValidatePasswordChange(passwordChange);

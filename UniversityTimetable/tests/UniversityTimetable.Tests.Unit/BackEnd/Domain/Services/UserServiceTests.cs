@@ -5,6 +5,7 @@ using UniversityTimetable.Shared.Interfaces.Auth;
 using UniversityTimetable.Shared.Interfaces.Domain.Validation;
 using UniversityTimetable.Shared.Interfaces.DataAccess;
 using UniversityTimetable.Shared.Interfaces.Domain;
+using UniversityTimetable.Shared.Validation;
 
 namespace UniversityTimetable.Tests.Unit.BackEnd.Domain.Services;
 
@@ -24,21 +25,22 @@ public class UserServiceTests
         Substitute.For<IBaseService<UserDto>>();
         _userDataAccessFacade = Substitute.For<IUserDataAccessFacade>();
 
-        _sut = new UserService(authenticationService, _passwordChangeValidator, _userDataAccessFacade, _updateValidator, _createValidator);
+        _sut = new UserService(authenticationService, _passwordChangeValidator, _userDataAccessFacade, _updateValidator,
+            _createValidator);
     }
-    
+
     [Fact]
     public async Task ValidatePasswordChange_ShouldReturnFromPasswordChange()
     {
         var passwordChange = new PasswordChangeDto();
-        var errors = _fixture.CreateMany<KeyValuePair<string, string>>(10).ToList();
+        var errors = new ValidationResult(_fixture.CreateMany<ValidationError>(10).ToList());
         _passwordChangeValidator.ValidateAsync(passwordChange).Returns(errors);
 
         var result = await _sut.ValidatePasswordChange(passwordChange);
 
-        ((object)result).Should().Be(errors);
+        result.Should().Be(errors);
     }
-    
+
     [Fact]
     private async Task SaveGroup_RelationsRepositoryCalled()
     {
@@ -90,7 +92,7 @@ public class UserServiceTests
     [Fact]
     private async Task ChangePassword_ShouldThrowValidationException_WhenHasValidationError()
     {
-        var errors = new List<KeyValuePair<string, string>> { KeyValuePair.Create("", "") };
+        var errors = new ValidationResult(new ValidationError());
         var passwordChange = _fixture.Create<PasswordChangeDto>();
         _passwordChangeValidator.ValidateAsync(passwordChange).Returns(errors);
 
@@ -103,7 +105,7 @@ public class UserServiceTests
     [Fact]
     private async Task ChangePassword_ShouldReturnDtoBack_ShouldCallPasswordChange()
     {
-        var errors = new List<KeyValuePair<string, string>>();
+        var errors = new ValidationResult();
         var passwordChange = _fixture.Create<PasswordChangeDto>();
         _passwordChangeValidator.ValidateAsync(passwordChange).Returns(errors);
 
@@ -116,7 +118,7 @@ public class UserServiceTests
     [Fact]
     private async Task ValidateCreate_ShouldReturnFromValidationFacade()
     {
-        var errors = _fixture.CreateMany<KeyValuePair<string, string>>(5).ToList();
+        var errors = new ValidationResult(_fixture.CreateMany<ValidationError>(5).ToList());
         var user = new UserDto();
         _createValidator.ValidateAsync(user).Returns(errors);
 
@@ -129,7 +131,7 @@ public class UserServiceTests
     [Fact]
     private async Task ValidateUpdate_ShouldReturnFromValidationFacade()
     {
-        var errors = _fixture.CreateMany<KeyValuePair<string, string>>(5).ToList();
+        var errors = new ValidationResult(_fixture.CreateMany<ValidationError>(5).ToList());
         var user = new UserDto();
         _updateValidator.ValidateAsync(user).Returns(errors);
 

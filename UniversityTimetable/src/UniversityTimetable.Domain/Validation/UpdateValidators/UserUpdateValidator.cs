@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using UniversityTimetable.Shared.DataTransferObjects;
+using UniversityTimetable.Shared.Extensions;
 using UniversityTimetable.Shared.Interfaces.Domain.Validation;
 using UniversityTimetable.Shared.Models;
+using UniversityTimetable.Shared.Validation;
 
 namespace UniversityTimetable.Domain.Validation.UpdateValidators;
 
@@ -21,21 +23,21 @@ public class UserUpdateValidator : IUpdateValidator<UserDto>
         _validationDataAccess = validationDataAccess;
     }
 
-    public async Task<List<KeyValuePair<string, string>>> ValidateAsync(UserDto dataTransferObject)
+    public async Task<ValidationResult> ValidateAsync(UserDto dataTransferObject)
     {
         var errors = await _updateValidator.ValidateAsync(dataTransferObject);
         var model = _mapper.Map<User>(dataTransferObject);
-        errors.AddRange(await _dataAccess.ValidateUpdate(model));
+        errors.MergeResults(await _dataAccess.ValidateUpdate(model));
         var userFromDb = await _validationDataAccess.LoadRequiredDataForUpdateAsync(model);
 
         if (model.Email != userFromDb.Email)
         {
-            errors.Add(KeyValuePair.Create<string, string>(nameof(model.Email), "You cannot change email"));
+            errors.AddError(new ValidationError(nameof(model.Email), "You cannot change email"));
         }
 
         if (model.Password != userFromDb.Password)
         {
-            errors.Add(KeyValuePair.Create<string, string>(nameof(model.Password),
+            errors.AddError(new ValidationError(nameof(model.Password),
                 "To change password use action 'Users/ChangePassword'"));
         }
 

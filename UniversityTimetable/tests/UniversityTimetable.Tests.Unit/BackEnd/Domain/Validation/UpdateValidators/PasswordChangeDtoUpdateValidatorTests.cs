@@ -2,6 +2,7 @@
 using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Shared.Interfaces.Domain.Validation;
 using UniversityTimetable.Shared.Models;
+using UniversityTimetable.Shared.Validation;
 
 namespace UniversityTimetable.Tests.Unit.BackEnd.Domain.Validation.UpdateValidators;
 
@@ -23,11 +24,11 @@ public class PasswordChangeDtoUpdateValidatorTests
     {
         var passwordChange = new PasswordChangeDto
             { UserId = 10, NewPassword = "new", OldPassword = "old", NewPasswordConfirm = "new" };
-        _baseValidator.ValidateAsync(passwordChange).Returns(new List<KeyValuePair<string, string>>());
-        _dataAccess.LoadRequiredDataForUpdateAsync(Arg.Any<User>()).Returns(new User{ Password = ""});
+        _baseValidator.ValidateAsync(passwordChange).Returns(new ValidationResult());
+        _dataAccess.LoadRequiredDataForUpdateAsync(Arg.Any<User>()).Returns(new User { Password = "" });
 
         var errors = await _sut.ValidateAsync(passwordChange);
 
-        errors.Should().Contain(KeyValuePair.Create("OldPassword", "Invalid old password"));
+        errors.GetAllErrors().Should().Contain(new ValidationError("OldPassword", "Invalid old password"));
     }
 }

@@ -4,6 +4,7 @@ using UniversityTimetable.Domain.Validation.UpdateValidators;
 using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Shared.Interfaces.Domain.Validation;
 using UniversityTimetable.Shared.Models;
+using UniversityTimetable.Shared.Validation;
 
 namespace UniversityTimetable.Tests.Unit.BackEnd.Domain.Validation.UpdateValidators;
 
@@ -27,19 +28,19 @@ public class UserUpdateValidatorTests
     [Fact]
     public async Task Validate_ReturnsFromBaseValidatorAndDataValidator()
     {
-        var baseErrors = _fixture.CreateMany<KeyValuePair<string, string>>(10).ToList();
-        var dataErrors = _fixture.CreateMany<KeyValuePair<string, string>>(10).ToList();
+        var baseErrors = _fixture.CreateMany<ValidationError>(10).ToList();
+        var dataErrors = _fixture.CreateMany<ValidationError>(10).ToList();
         var user = new UserDto{ Email = "abc@example.com", Password = "Password" };
         var userFromDb = new User { Email = "", Password = "" };
         _validationDataAccess.LoadRequiredDataForUpdateAsync(Arg.Any<User>()).Returns(userFromDb);
-        _dataValidator.ValidateUpdate(Arg.Any<User>()).Returns(dataErrors);
-        _baseValidator.ValidateAsync(user).Returns(baseErrors);
+        _dataValidator.ValidateUpdate(Arg.Any<User>()).Returns(new ValidationResult(dataErrors));
+        _baseValidator.ValidateAsync(user).Returns(new ValidationResult(baseErrors));
 
-        var actualErrors = await _sut.ValidateAsync(user);
+        var actualErrors = (await _sut.ValidateAsync(user)).GetAllErrors().ToList();
 
         actualErrors.Should().Contain(baseErrors);
         actualErrors.Should().Contain(dataErrors);
-        actualErrors.Should().Contain(KeyValuePair.Create("Email", "You cannot change email"));
-        actualErrors.Should().Contain(KeyValuePair.Create("Password", "To change password use action 'Users/ChangePassword'"));
+        actualErrors.Should().Contain(new ValidationError("Email", "You cannot change email"));
+        actualErrors.Should().Contain(new ValidationError("Password", "To change password use action 'Users/ChangePassword'"));
     }
 }

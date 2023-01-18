@@ -46,11 +46,11 @@ public class TimetableEndpointsTest : IClassFixture<ApplicationFactory>, IAsyncL
     {
         await using var context = ApplicationFactory.Context;
         await context.Database.EnsureCreatedAsync();
-        context.Add(new Teacher { Id = 1 });
-        context.Add(new Subject { Id = 1 });
-        context.Add(new Group { Id = 1 });
-        context.Add(new Auditory { Id = 1 });
-        context.Add(new Class { Id = 1, AuditoryId = 1, GroupId = 1, TeacherId = 1, SubjectId = 1 });
+        context.Add(new Teacher { Id = 20 });
+        context.Add(new Subject { Id = 20 });
+        context.Add(new Group { Id = 20 });
+        context.Add(new Auditory { Id = 20 });
+        context.Add(new Class { Id = 1, AuditoryId = 20, GroupId = 20, TeacherId = 20, SubjectId = 20 });
         await context.SaveChangesAsync();
     }
 }

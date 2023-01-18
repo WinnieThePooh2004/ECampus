@@ -17,7 +17,8 @@ public class HttpCallingValidator<T> : IValidator<T>
 
     public ValidationResult Validate(IValidationContext context) => _baseValidator.Validate(context);
 
-    public async Task<ValidationResult> ValidateAsync(IValidationContext context, CancellationToken cancellation = new())
+    public async Task<ValidationResult> ValidateAsync(IValidationContext context,
+        CancellationToken cancellation = new())
     {
         if (context.InstanceToValidate is T instanceToValidate)
         {
@@ -46,7 +47,8 @@ public class HttpCallingValidator<T> : IValidator<T>
         }
 
         var serverErrors = await _validationRequests.ValidateAsync(instance);
-        baseResult.Errors.AddRange(serverErrors.Select(e => new ValidationFailure(e.Key, e.Value)));
+        baseResult.Errors.AddRange(serverErrors.GetAllErrors()
+            .Select(e => new ValidationFailure(e.PropertyName, e.ErrorMessage)));
         return baseResult;
     }
 }

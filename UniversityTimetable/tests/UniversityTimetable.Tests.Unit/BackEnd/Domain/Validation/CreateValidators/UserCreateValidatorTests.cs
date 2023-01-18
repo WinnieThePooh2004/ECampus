@@ -4,6 +4,7 @@ using UniversityTimetable.Domain.Validation.CreateValidators;
 using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Shared.Interfaces.Domain.Validation;
 using UniversityTimetable.Shared.Models;
+using UniversityTimetable.Shared.Validation;
 
 namespace UniversityTimetable.Tests.Unit.BackEnd.Domain.Validation.CreateValidators;
 
@@ -26,15 +27,15 @@ public class UserCreateValidatorTests
     [Fact]
     public async Task Validate_ReturnsFromBaseValidatorAndDataValidator()
     {
-        var baseErrors = _fixture.CreateMany<KeyValuePair<string, string>>(10).ToList();
-        var dataErrors = _fixture.CreateMany<KeyValuePair<string, string>>(10).ToList();
+        var baseErrors = new ValidationResult(_fixture.CreateMany<ValidationError>(5).ToList());
+        var dataErrors = new ValidationResult(_fixture.CreateMany<ValidationError>(5).ToList());
         var user = new UserDto();
         _dataValidator.ValidateCreate(Arg.Any<User>()).Returns(dataErrors);
         _baseValidator.ValidateAsync(user).Returns(baseErrors);
 
         var actualErrors = await _sut.ValidateAsync(user);
 
-        actualErrors.Should().Contain(baseErrors);
-        actualErrors.Should().Contain(dataErrors);
+        actualErrors.GetAllErrors().Should().Contain(baseErrors.GetAllErrors());
+        actualErrors.GetAllErrors().Should().Contain(dataErrors.GetAllErrors());
     }
 }
