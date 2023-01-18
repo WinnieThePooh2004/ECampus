@@ -1,10 +1,7 @@
 ﻿using UniversityTimetable.Infrastructure;
 using UniversityTimetable.Infrastructure.DataAccessFacades;
 using UniversityTimetable.Shared.DataTransferObjects;
-using UniversityTimetable.Shared.Interfaces.Data.DataServices;
 using UniversityTimetable.Shared.Interfaces.DataAccess;
-using UniversityTimetable.Shared.Models;
-using UniversityTimetable.Shared.Models.RelationModels;
 
 namespace UniversityTimetable.Tests.Unit.BackEnd.Infrastructure.DataAccessFacadesTests;
 
@@ -18,8 +15,7 @@ public class UserDataAccessFacadeTests
     {
         _context = Substitute.For<ApplicationDbContext>();
         _passwordChange = Substitute.For<IPasswordChange>();
-        var relationsDataAccess = Substitute.For<IRelationsDataAccess>();
-        _sut = new UserDataAccessFacade(_context, _passwordChange, relationsDataAccess);
+        _sut = new UserDataAccessFacade(_context, _passwordChange);
     }
 
     [Fact]

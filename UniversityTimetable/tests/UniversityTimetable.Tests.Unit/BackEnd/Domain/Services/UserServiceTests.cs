@@ -1,7 +1,6 @@
 ﻿using UniversityTimetable.Domain.Services;
 using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Shared.Exceptions.DomainExceptions;
-using UniversityTimetable.Shared.Interfaces.Auth;
 using UniversityTimetable.Shared.Interfaces.Domain.Validation;
 using UniversityTimetable.Shared.Interfaces.DataAccess;
 using UniversityTimetable.Shared.Interfaces.Domain;
@@ -20,7 +19,6 @@ public class UserServiceTests
 
     public UserServiceTests()
     {
-        var authenticationService = Substitute.For<IAuthenticationService>();
         _passwordChangeValidator = Substitute.For<IUpdateValidator<PasswordChangeDto>>();
         Substitute.For<IBaseService<UserDto>>();
         _userDataAccessFacade = Substitute.For<IUserDataAccessFacade>();
