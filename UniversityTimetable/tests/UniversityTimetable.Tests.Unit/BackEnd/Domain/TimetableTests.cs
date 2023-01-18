@@ -7,28 +7,12 @@ namespace UniversityTimetable.Tests.Unit.BackEnd.Domain;
 public class TimetableTests
 {
     [Fact]
-    public void CreateTimetable_ShouldCreateEmptyTable_WhenToListPassed()
-    {
-        var timetable = new Timetable();
-        timetable.DailyClasses.Length.Should().Be(6);
-        timetable.DailyClasses[0].Length.Should().Be(10);
-    }
-    
-    [Fact]
-    private void CreateTimetable_WidthShouldBe6_HeightShouldBe5()
-    {
-        var timetable = new Timetable(new List<ClassDto>());
-        timetable.DailyClasses.Length.Should().Be(6);
-        timetable.DailyClasses[0].Length.Should().Be(10);
-    }
-
-    [Fact]
     private void AddClass_WeekDependencyNone_ShouldBeOnRightPlace()
     {
         var @class = new ClassDto { Number = 3, DayOfWeek = 4, WeekDependency = WeekDependency.None };
         var timetable = new Timetable(new List<ClassDto>{ @class });
 
-        timetable.DailyClasses[4][6].Should().Be(@class);
+        timetable.GetClass(4, 3).Should().Be(@class);
     }
     
     [Fact]
@@ -37,7 +21,7 @@ public class TimetableTests
         var @class = new ClassDto { Number = 3, DayOfWeek = 4, WeekDependency = WeekDependency.AppearsOnOddWeeks };
         var timetable = new Timetable(new List<ClassDto>{ @class });
 
-        timetable.DailyClasses[4][6].Should().Be(@class);
+        timetable.GetClass(4, 3, WeekDependency.AppearsOnOddWeeks).Should().Be(@class);
     }
 
     [Fact]
@@ -46,7 +30,7 @@ public class TimetableTests
         var @class = new ClassDto { Number = 3, DayOfWeek = 4, WeekDependency = WeekDependency.AppearsOnEvenWeeks };
         var timetable = new Timetable(new List<ClassDto>{ @class });
 
-        timetable.DailyClasses[4][7].Should().Be(@class);
+        timetable.GetClass(4, 3, WeekDependency.AppearsOnEvenWeeks).Should().Be(@class);
     }
 
     [Fact]
