@@ -92,7 +92,7 @@ public class UserServiceTests
     [Fact]
     private async Task ChangePassword_ShouldThrowValidationException_WhenHasValidationError()
     {
-        var errors = new ValidationResult(new ValidationError());
+        var errors = new ValidationResult(new ValidationError("", ""));
         var passwordChange = _fixture.Create<PasswordChangeDto>();
         _passwordChangeValidator.ValidateAsync(passwordChange).Returns(errors);
 

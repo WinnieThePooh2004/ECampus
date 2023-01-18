@@ -1,15 +1,10 @@
 ﻿namespace UniversityTimetable.Shared.Validation;
 
-public sealed class ValidationError
+public readonly struct ValidationError
 {
-    public string PropertyName { get; set; } = string.Empty;
-    public string ErrorMessage { get; set; } = string.Empty;
-
-    public ValidationError()
-    {
-        
-    }
-
+    public readonly string PropertyName;
+    public readonly string ErrorMessage;
+    
     public ValidationError(string propertyName, string errorMessage)
     {
         PropertyName = propertyName;
