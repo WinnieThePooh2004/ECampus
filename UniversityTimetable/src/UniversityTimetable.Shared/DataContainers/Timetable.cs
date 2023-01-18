@@ -19,10 +19,10 @@ public class Timetable
     [JsonProperty]
     private ClassDto?[][] DailyClasses { get; set; }
     
-    public Timetable(IEnumerable<ClassDto> classes)
+    public Timetable(IEnumerable<ClassDto>? classes)
     {
         DailyClasses = CreateEmptyDataTable();
-        classes.ToList().ForEach(Add);
+        classes?.ToList().ForEach(Add);
     }
 
     public ClassDto? GetClass(int dayOfWeek, int number, WeekDependency weekDependency = WeekDependency.None)
