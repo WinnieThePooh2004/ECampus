@@ -2,6 +2,7 @@
 using UniversityTimetable.Shared.QueryParameters;
 using UniversityTimetable.Shared.Interfaces.DataAccess;
 using UniversityTimetable.Shared.DataContainers;
+using UniversityTimetable.Shared.Extensions;
 using UniversityTimetable.Shared.Interfaces.Data.DataServices;
 using UniversityTimetable.Shared.Interfaces.Data.Models;
 
@@ -26,7 +27,7 @@ public class ParametersDataAccessFacade<TModel, TParameters> : IParametersDataAc
         var query = _multipleItemSelector.SelectData(_context.Set<TModel>(), parameters);
         var totalCount = await query.CountAsync();
         var pagedItems = await query
-            .OrderBy(a => a.Id)
+            .Sort(parameters.OrderBy, parameters.SortOrder)
             .Skip((parameters.PageNumber - 1) * parameters.PageSize)
             .Take(parameters.PageSize)
             .ToListAsync();
