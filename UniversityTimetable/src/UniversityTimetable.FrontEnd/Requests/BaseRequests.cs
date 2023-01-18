@@ -2,7 +2,6 @@
 using Newtonsoft.Json;
 using UniversityTimetable.FrontEnd.Requests.Interfaces;
 using UniversityTimetable.FrontEnd.Requests.Options;
-using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace UniversityTimetable.FrontEnd.Requests;
 

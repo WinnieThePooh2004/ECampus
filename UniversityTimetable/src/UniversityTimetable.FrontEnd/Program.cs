@@ -1,7 +1,6 @@
 using System.Reflection;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Newtonsoft.Json;
 using UniversityTimetable.Domain.Validation.FluentValidators;
 using UniversityTimetable.FrontEnd.Auth;
 using UniversityTimetable.FrontEnd.Extensions;

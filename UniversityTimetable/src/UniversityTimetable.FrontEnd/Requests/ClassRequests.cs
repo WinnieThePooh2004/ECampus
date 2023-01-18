@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using Newtonsoft.Json;
 using UniversityTimetable.FrontEnd.Requests.Interfaces;
-using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace UniversityTimetable.FrontEnd.Requests;
 
