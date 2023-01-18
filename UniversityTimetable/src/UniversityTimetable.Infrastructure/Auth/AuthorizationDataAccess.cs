@@ -1,8 +1,8 @@
 ﻿using System.Net;
 using Microsoft.EntityFrameworkCore;
-using UniversityTimetable.Shared.Attributes;
 using UniversityTimetable.Shared.Exceptions.InfrastructureExceptions;
 using UniversityTimetable.Shared.Interfaces.Auth;
+using UniversityTimetable.Shared.Metadata;
 using UniversityTimetable.Shared.Models;
 
 namespace UniversityTimetable.Infrastructure.Auth;

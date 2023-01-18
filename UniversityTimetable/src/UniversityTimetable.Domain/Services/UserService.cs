@@ -1,9 +1,9 @@
-﻿using UniversityTimetable.Shared.Attributes;
-using UniversityTimetable.Shared.DataTransferObjects;
+﻿using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Shared.Exceptions.DomainExceptions;
 using UniversityTimetable.Shared.Interfaces.Domain.Validation;
 using UniversityTimetable.Shared.Interfaces.DataAccess;
 using UniversityTimetable.Shared.Interfaces.Domain;
+using UniversityTimetable.Shared.Metadata;
 using UniversityTimetable.Shared.Validation;
 
 namespace UniversityTimetable.Domain.Services;

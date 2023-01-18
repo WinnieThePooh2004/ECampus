@@ -1,11 +1,11 @@
 ﻿using System.Net;
 using IdentityServer4.Extensions;
 using Microsoft.AspNetCore.Http;
-using UniversityTimetable.Shared.Attributes;
 using UniversityTimetable.Shared.Enums;
 using UniversityTimetable.Shared.Exceptions.DomainExceptions;
 using UniversityTimetable.Shared.Extensions;
 using UniversityTimetable.Shared.Interfaces.Auth;
+using UniversityTimetable.Shared.Metadata;
 
 namespace UniversityTimetable.Domain.Auth;
 

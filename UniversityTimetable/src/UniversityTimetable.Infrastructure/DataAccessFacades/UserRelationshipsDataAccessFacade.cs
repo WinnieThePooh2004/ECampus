@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using UniversityTimetable.Shared.Attributes;
 using UniversityTimetable.Shared.Interfaces.Data.DataServices;
 using UniversityTimetable.Shared.Interfaces.DataAccess;
+using UniversityTimetable.Shared.Metadata;
 using UniversityTimetable.Shared.Models;
 using UniversityTimetable.Shared.Models.RelationModels;
 

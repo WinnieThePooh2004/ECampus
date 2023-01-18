@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using UniversityTimetable.Shared.Attributes;
 using UniversityTimetable.Shared.Interfaces.DataAccess;
 using UniversityTimetable.Shared.Models;
 using UniversityTimetable.Shared.Exceptions.InfrastructureExceptions;
 using UniversityTimetable.Shared.DataContainers;
+using UniversityTimetable.Shared.Metadata;
 
 namespace UniversityTimetable.Infrastructure.DataAccessFacades;
 

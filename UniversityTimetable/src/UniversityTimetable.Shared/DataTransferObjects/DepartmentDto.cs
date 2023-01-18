@@ -1,5 +1,5 @@
-﻿using UniversityTimetable.Shared.Attributes;
-using UniversityTimetable.Shared.Interfaces.Data.Models;
+﻿using UniversityTimetable.Shared.Interfaces.Data.Models;
+using UniversityTimetable.Shared.Metadata;
 using UniversityTimetable.Shared.Models;
 
 namespace UniversityTimetable.Shared.DataTransferObjects;

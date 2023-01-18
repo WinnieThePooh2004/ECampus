@@ -7,12 +7,12 @@ using UniversityTimetable.Infrastructure.DataAccessFacades;
 using UniversityTimetable.Infrastructure.DataCreateServices;
 using UniversityTimetable.Infrastructure.DataDeleteServices;
 using UniversityTimetable.Infrastructure.DataUpdateServices;
-using UniversityTimetable.Shared.Attributes;
 using UniversityTimetable.Shared.Interfaces.Data.DataServices;
 using UniversityTimetable.Shared.Interfaces.Data.Models;
 using UniversityTimetable.Shared.Interfaces.Domain.Validation;
 using UniversityTimetable.Shared.Interfaces.DataAccess;
 using UniversityTimetable.Shared.Interfaces.Domain;
+using UniversityTimetable.Shared.Metadata;
 using UniversityTimetable.Shared.QueryParameters;
 
 namespace UniversityTimetable.Api.Extensions;

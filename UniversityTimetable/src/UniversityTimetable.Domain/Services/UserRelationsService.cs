@@ -1,7 +1,7 @@
-﻿using UniversityTimetable.Shared.Attributes;
-using UniversityTimetable.Shared.Interfaces.Auth;
+﻿using UniversityTimetable.Shared.Interfaces.Auth;
 using UniversityTimetable.Shared.Interfaces.DataAccess;
 using UniversityTimetable.Shared.Interfaces.Domain;
+using UniversityTimetable.Shared.Metadata;
 
 namespace UniversityTimetable.Domain.Services;
 

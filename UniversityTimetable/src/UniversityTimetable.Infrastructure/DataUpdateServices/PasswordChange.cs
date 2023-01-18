@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using UniversityTimetable.Shared.Attributes;
 using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Shared.Exceptions.InfrastructureExceptions;
 using UniversityTimetable.Shared.Interfaces.DataAccess;
+using UniversityTimetable.Shared.Metadata;
 using UniversityTimetable.Shared.Models;
 
 namespace UniversityTimetable.Infrastructure.DataUpdateServices;
