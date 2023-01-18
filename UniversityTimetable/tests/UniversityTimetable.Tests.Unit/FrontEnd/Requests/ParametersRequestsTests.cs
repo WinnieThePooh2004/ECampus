@@ -20,8 +20,7 @@ public class ParametersRequestsTests : IDisposable
     {
         var requestsOptions = Substitute.For<IRequestOptions>();
         requestsOptions.GetControllerName(Arg.Any<Type>()).Returns("Auditories");
-        _sut = new ParametersRequests<AuditoryDto, AuditoryParameters>(_clientFactory,
-            HttpClientFactory.Options, requestsOptions);
+        _sut = new ParametersRequests<AuditoryDto, AuditoryParameters>(_clientFactory, requestsOptions);
     }
 
     public void Dispose()

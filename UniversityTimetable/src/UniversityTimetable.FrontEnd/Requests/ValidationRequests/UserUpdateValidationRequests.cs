@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics;
-using System.Text.Json;
+using Newtonsoft.Json;
 using UniversityTimetable.FrontEnd.Requests.Interfaces.Validation;
 using UniversityTimetable.Shared.Validation;
 
@@ -8,19 +8,17 @@ namespace UniversityTimetable.FrontEnd.Requests.ValidationRequests;
 public class UserUpdateValidationRequests : IUpdateValidationRequests<UserDto>
 {
     private readonly IHttpClientFactory _client;
-    private readonly JsonSerializerOptions _serializerOptions;
 
-    public UserUpdateValidationRequests(IHttpClientFactory client, JsonSerializerOptions serializerOptions)
+    public UserUpdateValidationRequests(IHttpClientFactory client)
     {
         _client = client;
-        _serializerOptions = serializerOptions;
     }
 
     public async Task<ValidationResult> ValidateAsync(UserDto data)
     {
         var response = await _client.CreateClient("UTApi").PutAsJsonAsync("api/Users/Validate/Update", data);
         response.EnsureSuccessStatusCode();
-        return JsonSerializer.Deserialize<ValidationResult>(await response.Content.ReadAsStringAsync(), _serializerOptions)
+        return JsonConvert.DeserializeObject<ValidationResult>(await response.Content.ReadAsStringAsync())
                ?? throw new UnreachableException($"cannot deserialize object of type {typeof(UserDto)}");
     }
 }

@@ -1,7 +1,8 @@
 ﻿using System.Diagnostics;
-using System.Text.Json;
+using Newtonsoft.Json;
 using UniversityTimetable.FrontEnd.Requests.Interfaces;
 using UniversityTimetable.FrontEnd.Requests.Options;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace UniversityTimetable.FrontEnd.Requests;
 
@@ -9,11 +10,9 @@ public class BaseRequests<TData> : IBaseRequests<TData>
 {
     private readonly string _controllerName;
     private readonly IHttpClientFactory _client;
-    private readonly JsonSerializerOptions _jsonOptions;
 
-    public BaseRequests(IHttpClientFactory client, JsonSerializerOptions jsonOptions, IRequestOptions options)
+    public BaseRequests(IHttpClientFactory client, IRequestOptions options)
     {
-        _jsonOptions = jsonOptions;
         _client = client;
         _controllerName = options.GetControllerName(typeof(TData));
     }
@@ -22,7 +21,7 @@ public class BaseRequests<TData> : IBaseRequests<TData>
     {
         var response = await _client.CreateClient("UTApi").PostAsJsonAsync($"/api/{_controllerName}", entity);
         response.EnsureSuccessStatusCode();
-        return JsonSerializer.Deserialize<TData>(await response.Content.ReadAsStringAsync(), _jsonOptions)
+        return JsonConvert.DeserializeObject<TData>(await response.Content.ReadAsStringAsync())
                ?? throw new UnreachableException($"cannot deserialize object of type {typeof(TData)}");
     }
 
@@ -36,7 +35,7 @@ public class BaseRequests<TData> : IBaseRequests<TData>
     {
         var response = await _client.CreateClient("UTApi").GetAsync($"/api/{_controllerName}/{id}");
         response.EnsureSuccessStatusCode();
-        return JsonSerializer.Deserialize<TData>(await response.Content.ReadAsStringAsync(), _jsonOptions)
+        return JsonConvert.DeserializeObject<TData>(await response.Content.ReadAsStringAsync())
                ?? throw new UnreachableException($"cannot deserialize object of type {typeof(TData)}");
     }
 
@@ -44,7 +43,7 @@ public class BaseRequests<TData> : IBaseRequests<TData>
     {
         var response = await _client.CreateClient("UTApi").PutAsJsonAsync($"/api/{_controllerName}", entity);
         response.EnsureSuccessStatusCode();
-        return JsonSerializer.Deserialize<TData>(await response.Content.ReadAsStringAsync(), _jsonOptions)
+        return JsonConvert.DeserializeObject<TData>(await response.Content.ReadAsStringAsync())
                ?? throw new UnreachableException($"cannot deserialize object of type {typeof(TData)}");
     }
 }

@@ -1,7 +1,7 @@
 using System.Reflection;
-using System.Text.Json;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Newtonsoft.Json;
 using UniversityTimetable.Domain.Validation.FluentValidators;
 using UniversityTimetable.FrontEnd.Auth;
 using UniversityTimetable.FrontEnd.Extensions;
@@ -57,7 +57,6 @@ builder.Services.AddScoped<IValidator<PasswordChangeDto>, PasswordChangeDtoValid
 builder.Services.AddScoped<IValidationRequests<PasswordChangeDto>, PasswordChangeValidationRequests>();
 builder.Services.Decorate<IValidator<PasswordChangeDto>, HttpCallingValidator<PasswordChangeDto>>();
 
-
 builder.Services.AddSingleton<IRequestOptions>(new RequestOptions(builder.Configuration));
 
 builder.Services.Configure<CookiePolicyOptions>(options =>
@@ -80,8 +79,6 @@ builder.Services.AddHttpClient("UTApi", client =>
     client.BaseAddress =
         new Uri(builder.Configuration["Api"] ?? throw new Exception("Cannot find section 'Api'"));
 }).AddHttpMessageHandler<TokenHandler>();
-
-builder.Services.AddSingleton(new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
 builder.Services.AddHttpContextAccessor();
 

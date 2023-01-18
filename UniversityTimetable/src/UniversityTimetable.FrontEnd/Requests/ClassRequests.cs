@@ -1,16 +1,16 @@
 ﻿using System.Diagnostics;
-using System.Text.Json;
+using Newtonsoft.Json;
 using UniversityTimetable.FrontEnd.Requests.Interfaces;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace UniversityTimetable.FrontEnd.Requests;
 
 public class ClassRequests : IClassRequests
 {
     private readonly IHttpClientFactory _client;
-    private readonly JsonSerializerOptions _options;
-    public ClassRequests(IHttpClientFactory clientFactory, JsonSerializerOptions options)
+
+    public ClassRequests(IHttpClientFactory clientFactory)
     {
-        _options = options;
         _client = clientFactory;
     }
 
@@ -18,7 +18,7 @@ public class ClassRequests : IClassRequests
     {
         var response = await _client.CreateClient("UTApi").GetAsync($"/api/Timetable/Auditory/{auditoryId}");
         response.EnsureSuccessStatusCode();
-        return JsonSerializer.Deserialize<Timetable>(await response.Content.ReadAsStringAsync(), _options)
+        return JsonConvert.DeserializeObject<Timetable>(await response.Content.ReadAsStringAsync())
                ?? throw new UnreachableException($"cannot deserialize object of type {typeof(UserDto)}");
     }
 
@@ -26,7 +26,7 @@ public class ClassRequests : IClassRequests
     {
         var response = await _client.CreateClient("UTApi").GetAsync($"/api/Timetable/Group/{groupId}");
         response.EnsureSuccessStatusCode();
-        return JsonSerializer.Deserialize<Timetable>(await response.Content.ReadAsStringAsync(), _options)
+        return JsonConvert.DeserializeObject<Timetable>(await response.Content.ReadAsStringAsync())
                ?? throw new UnreachableException($"cannot deserialize object of type {typeof(UserDto)}");
     }
 
@@ -34,7 +34,7 @@ public class ClassRequests : IClassRequests
     {
         var response = await _client.CreateClient("UTApi").GetAsync($"/api/Timetable/Teacher/{teacherId}");
         response.EnsureSuccessStatusCode();
-        return JsonSerializer.Deserialize<Timetable>(await response.Content.ReadAsStringAsync(), _options)
+        return JsonConvert.DeserializeObject<Timetable>(await response.Content.ReadAsStringAsync())
                ?? throw new UnreachableException($"cannot deserialize object of type {typeof(UserDto)}");
     }
 }

@@ -17,7 +17,7 @@ public class BaseRequestsTests
     {
         var requestsOptions = Substitute.For<IRequestOptions>();
         requestsOptions.GetControllerName(Arg.Any<Type>()).Returns("Auditories");
-        _sut = new BaseRequests<AuditoryDto>(_clientFactory, HttpClientFactory.Options, requestsOptions);
+        _sut = new BaseRequests<AuditoryDto>(_clientFactory, requestsOptions);
     }
 
     [Fact]
