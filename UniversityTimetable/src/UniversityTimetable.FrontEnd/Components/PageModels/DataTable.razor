@@ -4,7 +4,9 @@
 @using UniversityTimetable.Shared.Extensions;
 @if (Data is null)
 {
-    <p><em>Loading...</em></p>
+    <p>
+        <em>Loading...</em>
+    </p>
     return;
 }
 @if (CreateLink is not null && _isAdmin)
@@ -20,7 +22,7 @@
         <InputText Value="@searchTerm.Item1.Compile()()"
                    ValueExpression="searchTerm.Item1" @onblur="RefreshData"
                    ValueChanged="@(text => searchTerm.Item1.SetFromExpression(text))"
-                   style="background-color: rgb(235, 235, 235)" placeholder="@searchTerm.placeHolder" />
+                   style="background-color: rgb(235, 235, 235)" placeholder="@searchTerm.placeHolder"/>
     }
     <tr>
         @foreach (var header in _tableHeaders)
@@ -29,42 +31,39 @@
                 @header.header
             </th>
         }
-        @if (TotalLinks != 0)
-        {
-            <th></th>
-        }
+        <th></th>
     </tr>
     </thead>
     <tbody>
-        @foreach (var item in Data.Data)
-        {
-            <tr>
-                @foreach(var property in PropertySelector.GetAllPropertiesValues(item))
-                {
-                    <td>
-                        @property
-                    </td>
-                }
+    @foreach (var item in Data.Data)
+    {
+        <tr>
+            @foreach (var property in PropertySelector.GetAllPropertiesValues(item))
+            {
                 <td>
-                    @if (EditLink is not null && _isAdmin && ShowEditButton)
-                    {
-                        <a role="button" href="@($"{EditLink}/{item.Id}")" class="btn btn-info">Edit</a>
-                        <text> | </text>
-                    }
-                    @foreach(var link in ActionLinks)
-                    {
-                        <a role="button" href="@link.LinkSource(item)" class="btn btn-info">@link.LinkName</a>
-                        <text> | </text>
-                    }
-                    @if (_isAdmin && ShowDeleteButton)
-                    {
-                        <a role="button" class="btn btn-danger" onclick="@(() => Delete(item.Id))">Delete</a>
-                    }
+                    @property
                 </td>
-            </tr>
-        }
+            }
+            <td>
+                @if (EditLink is not null && _isAdmin)
+                {
+                    <a role="button" href="@($"{EditLink}/{item.Id}")" class="btn btn-info">Edit</a>
+                    <text> | </text>
+                }
+                @foreach (var link in ActionLinks)
+                {
+                    <a role="button" href="@link.LinkSource(item)" class="btn btn-info">@link.LinkName</a>
+                    <text> | </text>
+                }
+                @if (_isAdmin)
+                {
+                    <a role="button" class="btn btn-danger" onclick="@(() => Delete(item.Id))">Delete</a>
+                }
+            </td>
+        </tr>
+    }
     </tbody>
-    <DataPageSelect TotalPages="Data.Metadata.MaxPageNumber" OnPageNumberChanged="@(PageNumberChanged)" />
-    <br />
-    <DataPageSizeSelect OnPageSizeChanged="@(PageSizeChanged)" PageSize="Parameters.PageSize" />
+    <DataPageSelect TotalPages="Data.Metadata.MaxPageNumber" OnPageNumberChanged="@(PageNumberChanged)"/>
+    <br/>
+    <DataPageSizeSelect OnPageSizeChanged="@(PageSizeChanged)" PageSize="Parameters.PageSize"/>
 </table>

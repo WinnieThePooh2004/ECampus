@@ -12,7 +12,8 @@ public class PropertySelector<T> : IPropertySelector<T>
         _typeProperties = typeof(T).GetProperties().Where(property =>
                 !property.Name.Contains("Id") && (property.PropertyType.IsPrimitive ||
                                                   property.PropertyType.IsEnum ||
-                                                  property.PropertyType == typeof(string)))
+                                                  property.PropertyType == typeof(string)) &&
+                !property.GetCustomAttributes().OfType<NotDisplayAttribute>().Any())
             .Select(property => (property,
                 property.GetCustomAttributes(false).OfType<DisplayNameAttribute>().SingleOrDefault()?.Name ??
                 property.Name)).ToList();
