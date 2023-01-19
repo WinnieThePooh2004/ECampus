@@ -35,10 +35,12 @@ public class DataCreateWithRelationshipsTests
                 new() { Id = 2 }
             }
         };
+        IEnumerable<object>? addedObjects = null;
+        _context.AddRange(Arg.Do<IEnumerable<object>>(objects => addedObjects = objects));
 
         await _sut.CreateAsync(model, _context);
 
-        model.SavedAuditoriesIds.Should().BeEquivalentTo(new List<UserAuditory>
+        addedObjects.Should().BeEquivalentTo(new List<UserAuditory>
         {
             new() { UserId = 3, AuditoryId = 1 },
             new() { UserId = 3, AuditoryId = 2 }

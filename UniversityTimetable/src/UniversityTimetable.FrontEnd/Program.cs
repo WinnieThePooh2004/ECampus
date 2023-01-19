@@ -5,6 +5,7 @@ using UniversityTimetable.Domain.Validation.FluentValidators;
 using UniversityTimetable.FrontEnd.Auth;
 using UniversityTimetable.FrontEnd.Extensions;
 using UniversityTimetable.FrontEnd.HttpHandlers;
+using UniversityTimetable.FrontEnd.PropertySelectors;
 using UniversityTimetable.FrontEnd.Requests;
 using UniversityTimetable.FrontEnd.Requests.Interfaces;
 using UniversityTimetable.FrontEnd.Requests.Interfaces.Validation;
@@ -58,6 +59,9 @@ builder.Services.AddScoped<IValidationRequests<PasswordChangeDto>, PasswordChang
 builder.Services.Decorate<IValidator<PasswordChangeDto>, HttpCallingValidator<PasswordChangeDto>>();
 
 builder.Services.AddSingleton<IRequestOptions>(new RequestOptions(builder.Configuration));
+
+builder.Services.AddSingleton(typeof(IPropertySelector<>), typeof(PropertySelector<>));
+builder.Services.AddSingleton(typeof(ISearchTermsSelector<>), typeof(SearchTermsSelector<>));
 
 builder.Services.Configure<CookiePolicyOptions>(options =>
 {

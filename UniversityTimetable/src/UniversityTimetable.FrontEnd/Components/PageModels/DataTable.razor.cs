@@ -1,6 +1,7 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
+using UniversityTimetable.FrontEnd.PropertySelectors;
 using UniversityTimetable.Shared.Interfaces.Data;
 using UniversityTimetable.Shared.Interfaces.Data.Models;
 
@@ -15,7 +16,7 @@ public partial class DataTable<TData, TParameters>
     [Parameter] public bool ShowEditButton { get; set; } = true;
 
     [Parameter]
-    public List<(string placeHolder, Expression<Func<TParameters, string?>>)> SearchTerms { get; set; } = new();
+    public List<(Expression<Func<string?>>, string placeHolder)> SearchTerms { get; set; } = new();
 
     /// <summary>
     /// provide it without id
@@ -23,19 +24,24 @@ public partial class DataTable<TData, TParameters>
     [Parameter]
     public string EditLink { get; set; } = default!;
 
-    [Parameter] public List<(string header, string propertyName)> TableHeaders { get; set; } = new();
-    [Parameter] public List<Func<TData, string>> TableData { get; set; } = new();
-
     [Parameter] public List<(string LinkName, Func<TData, string> LinkSource)> ActionLinks { get; set; } = new();
 
     [Parameter] public Action<TParameters> ParameterOptions { get; set; } = _ => { };
 
     [Inject] private IHttpContextAccessor HttpContextAccessor { get; set; } = default!;
+
+    [Inject] private IPropertySelector<TData> PropertySelector { get; set; } = default!;
+
+    [Inject] private ISearchTermsSelector<TParameters> SearchTermsSelector { get; set; } = default!;
+
     private int TotalLinks => ActionLinks.Count + (ShowDeleteButton ? 1 : 0) + (ShowEditButton ? 1 : 0);
+    private List<(string header, string propertyName)> _tableHeaders = new();
     private bool _isAdmin;
 
     protected override async Task OnInitializedAsync()
     {
+        _tableHeaders = PropertySelector.GetAllPropertiesNames();
+        SearchTerms = SearchTermsSelector.PropertiesExpressions(Parameters);
         _isAdmin = HttpContextAccessor.HttpContext?.User.IsInRole(nameof(UserRole.Admin)) ?? false;
         ParameterOptions(Parameters);
         await base.OnInitializedAsync();
