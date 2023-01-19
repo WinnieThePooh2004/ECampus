@@ -12,8 +12,6 @@ public partial class DataTable<TData, TParameters>
     where TParameters : class, IQueryParameters, new()
 {
     [Parameter] public string? CreateLink { get; set; }
-    [Parameter] public bool ShowDeleteButton { get; set; } = true;
-    [Parameter] public bool ShowEditButton { get; set; } = true;
 
     [Parameter]
     public List<(Expression<Func<string?>>, string placeHolder)> SearchTerms { get; set; } = new();
@@ -34,7 +32,6 @@ public partial class DataTable<TData, TParameters>
 
     [Inject] private ISearchTermsSelector<TParameters> SearchTermsSelector { get; set; } = default!;
 
-    private int TotalLinks => ActionLinks.Count + (ShowDeleteButton ? 1 : 0) + (ShowEditButton ? 1 : 0);
     private List<(string header, string propertyName)> _tableHeaders = new();
     private bool _isAdmin;
 
