@@ -1,10 +1,6 @@
 ﻿@page "/teachers/{DepartmentId:int}"
 <DataTable TData="TeacherDto" TParameters="TeacherParameters"
-           SearchTerms="@(new List<(string placeHolder, Expression<Func<TeacherParameters, string?>>)> { ("first name", parameters => parameters.FirstName),
-                                       ("last name", parameters => parameters.LastName) })"
            ParameterOptions="@(p => { p.DepartmentId = DepartmentId; p.OrderBy = "LastName"; })"
-           TableHeaders="@(new List<(string, string)> { ("Last name", "LastName"), ("First name", "FirstName") })"
-           TableData="@(new List<Func<TeacherDto, string>> { t => t.LastName, t => t.FirstName })"
            CreateLink="@($"/teachers/Create/{DepartmentId}")"
            EditLink="/teachers/edit"
            ActionLinks="@(new List<(string, Func<TeacherDto, string>)> { ("Timetable", d => $"/timetable/teacher/{d.Id}")})" />

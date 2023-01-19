@@ -9,8 +9,11 @@ namespace UniversityTimetable.Shared.DataTransferObjects;
 public class TeacherDto : IDataTransferObject
 {
     public int Id { get; set; }
+    [DisplayName("First name")]
     public string FirstName { get; set; } = string.Empty;
+    [DisplayName("Last name")]
     public string LastName { get; set; } = string.Empty;
+    [DisplayName("Science degree")]
     public ScienceDegree ScienceDegree { get; set; }
     
     public int? UserId { get; set; }
