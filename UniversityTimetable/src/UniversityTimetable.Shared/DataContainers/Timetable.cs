@@ -1,4 +1,5 @@
-﻿using UniversityTimetable.Shared.DataTransferObjects;
+﻿using Newtonsoft.Json;
+using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Shared.Enums;
 
 namespace UniversityTimetable.Shared.DataContainers;
@@ -14,19 +15,16 @@ public class Timetable
     public AuditoryDto? Auditory { get; set; }
     public GroupDto? Group { get; set; }
     public TeacherDto? Teacher { get; set; }
-    public ClassDto?[][] DailyClasses { get; set; }
     
-    public Timetable(IEnumerable<ClassDto> classes)
+    [JsonProperty]
+    private ClassDto?[][] DailyClasses { get; set; }
+    
+    public Timetable(IEnumerable<ClassDto>? classes)
     {
         DailyClasses = CreateEmptyDataTable();
-        classes.ToList().ForEach(Add);
+        classes?.ToList().ForEach(Add);
     }
 
-    public Timetable()
-    {
-        DailyClasses = CreateEmptyDataTable();
-    }
-    
     public ClassDto? GetClass(int dayOfWeek, int number, WeekDependency weekDependency = WeekDependency.None)
     {
         return weekDependency == WeekDependency.AppearsOnEvenWeeks

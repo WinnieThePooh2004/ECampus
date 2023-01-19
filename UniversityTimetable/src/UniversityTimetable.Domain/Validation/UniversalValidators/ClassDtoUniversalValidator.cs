@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Shared.Enums;
+using UniversityTimetable.Shared.Extensions;
 using UniversityTimetable.Shared.Interfaces.Domain.Validation;
 using UniversityTimetable.Shared.Models;
+using UniversityTimetable.Shared.Validation;
 
 #pragma warning disable CS8602
 #pragma warning disable CS8604
@@ -23,10 +25,10 @@ public class ClassDtoUniversalValidator : IUpdateValidator<ClassDto>, ICreateVal
         _baseUpdateValidator = baseUpdateValidator;
     }
 
-    async Task<List<KeyValuePair<string, string>>> IUpdateValidator<ClassDto>.ValidateAsync(ClassDto dataTransferObject)
+    async Task<ValidationResult> IUpdateValidator<ClassDto>.ValidateAsync(ClassDto dataTransferObject)
     {
         var baseErrors = await _baseUpdateValidator.ValidateAsync(dataTransferObject);
-        if (baseErrors.Any())
+        if (!baseErrors.IsValid)
         {
             return baseErrors;
         }
@@ -34,10 +36,10 @@ public class ClassDtoUniversalValidator : IUpdateValidator<ClassDto>, ICreateVal
         return await ValidateAsync(dataTransferObject);
     }
 
-    async Task<List<KeyValuePair<string, string>>> ICreateValidator<ClassDto>.ValidateAsync(ClassDto dataTransferObject)
+    async Task<ValidationResult> ICreateValidator<ClassDto>.ValidateAsync(ClassDto dataTransferObject)
     {
         var baseErrors = await _baseUpdateValidator.ValidateAsync(dataTransferObject);
-        if (baseErrors.Any())
+        if (!baseErrors.IsValid)
         {
             return baseErrors;
         }
@@ -45,25 +47,25 @@ public class ClassDtoUniversalValidator : IUpdateValidator<ClassDto>, ICreateVal
         return await ValidateAsync(dataTransferObject);
     }
 
-    private async Task<List<KeyValuePair<string, string>>> ValidateAsync(ClassDto dataTransferObject)
+    private async Task<ValidationResult> ValidateAsync(ClassDto dataTransferObject)
     {
         var model = await _dataAccess.LoadRequiredDataForCreateAsync(_mapper.Map<Class>(dataTransferObject));
         var errors = ValidateReferencedValues(model);
-        if (errors.Any())
+        if (!errors.IsValid)
         {
             return errors;
         }
 
-        errors.AddRange(ValidateSubject(model));
-        errors.AddRange(ValidateTeacher(model));
-        errors.AddRange(ValidateAuditory(model));
-        errors.AddRange(ValidateGroup(model));
+        errors.MergeResults(ValidateSubject(model));
+        errors.MergeResults(ValidateTeacher(model));
+        errors.MergeResults(ValidateAuditory(model));
+        errors.MergeResults(ValidateGroup(model));
         return errors;
     }
 
-    private static IEnumerable<KeyValuePair<string, string>> ValidateTeacher(Class @class)
+    private static ValidationResult ValidateTeacher(Class @class)
     {
-        var errors = new List<KeyValuePair<string, string>>();
+        var errors = new ValidationResult();
         if (@class.Teacher.Classes
             .Any(c => c.Id != @class.Id &&
                       c.Number == @class.Number &&
@@ -72,7 +74,7 @@ public class ClassDtoUniversalValidator : IUpdateValidator<ClassDto>, ICreateVal
                        @class.WeekDependency != WeekDependency.None ||
                        c.WeekDependency == @class.WeekDependency)))
         {
-            errors.Add(KeyValuePair.Create(nameof(@class.TeacherId),
+            errors.AddError(new ValidationError(nameof(@class.TeacherId),
                 $"Teacher {@class.Teacher.FirstName} {@class.Teacher.LastName} " +
                 $"already has class number {@class.Number}" +
                 $" on {(DayOfWeek)@class.DayOfWeek}s " +
@@ -82,12 +84,12 @@ public class ClassDtoUniversalValidator : IUpdateValidator<ClassDto>, ICreateVal
         return errors;
     }
 
-    private static IEnumerable<KeyValuePair<string, string>> ValidateSubject(Class @class)
+    private static ValidationResult ValidateSubject(Class @class)
     {
-        var errors = new List<KeyValuePair<string, string>>();
+        var errors = new ValidationResult();
         if (@class.Teacher.SubjectIds.All(s => s.SubjectId != @class.SubjectId))
         {
-            errors.Add(KeyValuePair.Create<string, string>(nameof(@class.SubjectId),
+            errors.AddError(new ValidationError(nameof(@class.SubjectId),
                 $"Teacher {@class.Teacher.FirstName} {@class.Teacher.LastName} " +
                 $"does not teach subject {@class.Subject.Name}"));
         }
@@ -95,9 +97,9 @@ public class ClassDtoUniversalValidator : IUpdateValidator<ClassDto>, ICreateVal
         return errors;
     }
 
-    private static IEnumerable<KeyValuePair<string, string>> ValidateAuditory(Class @class)
+    private static ValidationResult ValidateAuditory(Class @class)
     {
-        var errors = new List<KeyValuePair<string, string>>();
+        var errors = new ValidationResult();
         if (@class.Auditory.Classes
             .Any(c => c.Number == @class.Number &&
                       c.DayOfWeek == @class.DayOfWeek &&
@@ -106,7 +108,7 @@ public class ClassDtoUniversalValidator : IUpdateValidator<ClassDto>, ICreateVal
                        @class.WeekDependency == WeekDependency.None ||
                        c.WeekDependency == @class.WeekDependency)))
         {
-            errors.Add(KeyValuePair.Create<string, string>(nameof(@class.AuditoryId),
+            errors.AddError(new ValidationError(nameof(@class.AuditoryId),
                 $"Auditory {@class.Auditory.Name} in building {@class.Auditory.Building} " +
                 $"already has class number {@class.Number}" +
                 $" on {(DayOfWeek)@class.DayOfWeek}s " +
@@ -116,35 +118,35 @@ public class ClassDtoUniversalValidator : IUpdateValidator<ClassDto>, ICreateVal
         return errors;
     }
 
-    private static List<KeyValuePair<string, string>> ValidateReferencedValues(Class @class)
+    private static ValidationResult ValidateReferencedValues(Class @class)
     {
-        var errors = new List<KeyValuePair<string, string>>();
+        var errors = new ValidationResult();
         if (@class.Group is null)
         {
-            errors.Add(KeyValuePair.Create<string, string>(nameof(@class.GroupId), "Group does not exist"));
+            errors.AddError(new ValidationError(nameof(@class.GroupId), "Group does not exist"));
         }
 
         if (@class.Auditory is null)
         {
-            errors.Add(KeyValuePair.Create(nameof(@class.AuditoryId), "Auditory does not exist"));
+            errors.AddError(new ValidationError(nameof(@class.AuditoryId), "Auditory does not exist"));
         }
 
         if (@class.Subject is null)
         {
-            errors.Add(KeyValuePair.Create(nameof(@class.SubjectId), "Subject does not exist"));
+            errors.AddError(new ValidationError(nameof(@class.SubjectId), "Subject does not exist"));
         }
 
         if (@class.Teacher is null)
         {
-            errors.Add(KeyValuePair.Create(nameof(@class.TeacherId), "Teacher does not exist"));
+            errors.AddError(new ValidationError(nameof(@class.TeacherId), "Teacher does not exist"));
         }
 
         return errors;
     }
 
-    private static IEnumerable<KeyValuePair<string, string>> ValidateGroup(Class @class)
+    private static ValidationResult ValidateGroup(Class @class)
     {
-        var errors = new List<KeyValuePair<string, string>>();
+        var errors = new ValidationResult();
         if (@class.Group.Classes
             .Any(c => c.Number == @class.Number &&
                       c.DayOfWeek == @class.DayOfWeek &&
@@ -153,7 +155,7 @@ public class ClassDtoUniversalValidator : IUpdateValidator<ClassDto>, ICreateVal
                        || @class.WeekDependency == WeekDependency.None ||
                        c.WeekDependency == @class.WeekDependency)))
         {
-            errors.Add(KeyValuePair.Create<string, string>(nameof(@class.GroupId),
+            errors.AddError(new ValidationError(nameof(@class.GroupId),
                 $"Group {@class.Group.Name} already has class number {@class.Number}" +
                 $" on {(DayOfWeek)@class.DayOfWeek}s " +
                 $"with week dependency {@class.WeekDependency}"));

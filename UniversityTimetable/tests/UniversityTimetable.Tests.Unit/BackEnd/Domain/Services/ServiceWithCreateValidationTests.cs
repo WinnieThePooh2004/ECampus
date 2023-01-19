@@ -3,6 +3,7 @@ using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Shared.Exceptions.DomainExceptions;
 using UniversityTimetable.Shared.Interfaces.Domain;
 using UniversityTimetable.Shared.Interfaces.Domain.Validation;
+using UniversityTimetable.Shared.Validation;
 
 namespace UniversityTimetable.Tests.Unit.BackEnd.Domain.Services;
 
@@ -11,7 +12,7 @@ public class ServiceWithCreateValidationTests
     private readonly ServiceWithCreateValidation<GroupDto> _sut;
     private readonly ICreateValidator<GroupDto> _validator = Substitute.For<ICreateValidator<GroupDto>>();
     private readonly IBaseService<GroupDto> _baseService = Substitute.For<IBaseService<GroupDto>>();
-    private readonly Fixture _fixture = new ();
+    private readonly Fixture _fixture = new();
 
     public ServiceWithCreateValidationTests()
     {
@@ -28,7 +29,7 @@ public class ServiceWithCreateValidationTests
 
         result.Should().Be(group);
     }
-    
+
     [Fact]
     public async Task Update_ReturnsFromBaseService()
     {
@@ -39,7 +40,7 @@ public class ServiceWithCreateValidationTests
 
         result.Should().Be(group);
     }
-    
+
     [Fact]
     public async Task Delete_CallsBaseService()
     {
@@ -47,12 +48,12 @@ public class ServiceWithCreateValidationTests
 
         await _baseService.Received().DeleteAsync(10);
     }
-    
+
     [Fact]
     public async Task Create_ReturnsFromBaseService_WhenNoValidationErrors()
     {
         var group = _fixture.Create<GroupDto>();
-        var errors = new List<KeyValuePair<string, string>>();
+        var errors = new ValidationResult();
         _validator.ValidateAsync(group).Returns(errors);
         _baseService.CreateAsync(group).Returns(group);
 
@@ -60,12 +61,13 @@ public class ServiceWithCreateValidationTests
 
         result.Should().Be(group);
     }
-    
+
     [Fact]
     public async Task Create_ShouldThrowException_WhenValidationErrorOccured()
     {
         var group = _fixture.Create<GroupDto>();
-        _validator.ValidateAsync(group).Returns(_fixture.CreateMany<KeyValuePair<string, string>>(10).ToList());
+        _validator.ValidateAsync(group)
+            .Returns(new ValidationResult(_fixture.CreateMany<ValidationError>(10).ToList()));
         _baseService.CreateAsync(group).Returns(group);
 
         await new Func<Task>(() => _sut.CreateAsync(group)).Should().ThrowAsync<ValidationException>();

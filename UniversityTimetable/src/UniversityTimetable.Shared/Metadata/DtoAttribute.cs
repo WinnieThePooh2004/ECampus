@@ -1,6 +1,6 @@
 ﻿using UniversityTimetable.Shared.Interfaces.Data.Models;
 
-namespace UniversityTimetable.Shared.Attributes;
+namespace UniversityTimetable.Shared.Metadata;
 
 /// <summary>
 /// use this attribute to show DI that BaseService and ParametersService of this Dto use TModel as model

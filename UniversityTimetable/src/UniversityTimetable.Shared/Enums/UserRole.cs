@@ -1,10 +1,9 @@
-﻿namespace UniversityTimetable.Shared.Enums
+﻿namespace UniversityTimetable.Shared.Enums;
+
+public enum UserRole
 {
-    public enum UserRole
-    {
-        Guest,
-        Teacher,
-        Student,
-        Admin,
-    }
+    Guest,
+    Student,
+    Teacher,
+    Admin,
 }

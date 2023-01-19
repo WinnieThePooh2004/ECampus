@@ -6,7 +6,7 @@ using UniversityTimetable.Shared.Extensions;
 
 namespace UniversityTimetable.FrontEnd.Pages.User;
 
-public partial class UserPageEdit
+public sealed partial class UserPageEdit
 {
     private IValidator<UserDto> _validator = default!;
     [Inject] private IBaseRequests<UserDto> UserRequests { get; set; } = default!;

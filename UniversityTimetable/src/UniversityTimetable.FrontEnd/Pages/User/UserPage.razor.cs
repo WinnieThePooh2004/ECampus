@@ -6,7 +6,7 @@ namespace UniversityTimetable.FrontEnd.Pages.User;
 
 public partial class UserPage
 {
-    [Inject] private IUserRequests Requests { get; set; } = default!;
+    [Inject] private IBaseRequests<UserDto> Requests { get; set; } = default!;
     [Inject] private IHttpContextAccessor HttpContextAccessor { get; set; } = default!;
     private UserDto? _user;
 

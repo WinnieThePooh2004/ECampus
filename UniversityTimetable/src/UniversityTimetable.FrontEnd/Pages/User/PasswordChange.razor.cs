@@ -5,7 +5,7 @@ namespace UniversityTimetable.FrontEnd.Pages.User;
 
 public sealed partial class PasswordChange
 {
-    [Inject] private IUserRequests UserRequests { get; set; } = default!;
+    [Inject] private IPasswordChangeRequests UserRequests { get; set; } = default!;
 
     [Inject] private NavigationManager NavigationManager { get; set; } = default!;
     

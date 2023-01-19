@@ -8,15 +8,15 @@ public partial class Teacher
 
     private bool _isSaved;
 
-    protected override async Task OnSave()
+    private async Task OnSave()
     {
-        await UserRequests.SaveTeacher(TeacherId);
+        await RelationsRequests.SaveTeacher(TeacherId);
         await RefreshData();
     }
 
-    protected override async Task OnSaveRemoved()
+    private async Task OnSaveRemoved()
     {
-        await UserRequests.RemoveSavedTeacher(TeacherId);
+        await RelationsRequests.RemoveSavedTeacher(TeacherId);
         await RefreshData();
     }
 

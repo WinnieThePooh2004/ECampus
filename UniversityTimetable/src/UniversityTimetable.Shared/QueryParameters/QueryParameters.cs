@@ -1,4 +1,6 @@
-﻿namespace UniversityTimetable.Shared.QueryParameters;
+﻿using UniversityTimetable.Shared.Enums;
+
+namespace UniversityTimetable.Shared.QueryParameters;
 
 public abstract class QueryParameters : IQueryParameters
 {
@@ -10,4 +12,7 @@ public abstract class QueryParameters : IQueryParameters
         get => _pageSize;
         set => _pageSize = value > MaxPageSize ? MaxPageSize : value;
     }
+
+    public string? OrderBy { get; set; }
+    public SortOrder SortOrder { get; set; } = SortOrder.Ascending;
 }

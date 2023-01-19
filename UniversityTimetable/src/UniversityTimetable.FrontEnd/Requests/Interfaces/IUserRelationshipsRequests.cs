@@ -1,8 +1,7 @@
 ﻿namespace UniversityTimetable.FrontEnd.Requests.Interfaces;
 
-public interface IUserRequests : IBaseRequests<UserDto>
+public interface IUserRelationshipsRequests
 {
-    Task ChangePassword(PasswordChangeDto passwordChange);
     Task SaveAuditory(int auditoryId);
     Task RemoveSavedAuditory(int auditoryId);
     Task SaveGroup(int groupId);

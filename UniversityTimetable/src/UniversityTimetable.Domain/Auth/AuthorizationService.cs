@@ -3,12 +3,12 @@ using System.Net;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
-using UniversityTimetable.Shared.Attributes;
 using UniversityTimetable.Shared.Auth;
 using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Shared.Exceptions.DomainExceptions;
 using UniversityTimetable.Shared.Extensions;
 using UniversityTimetable.Shared.Interfaces.Auth;
+using UniversityTimetable.Shared.Metadata;
 
 namespace UniversityTimetable.Domain.Auth;
 

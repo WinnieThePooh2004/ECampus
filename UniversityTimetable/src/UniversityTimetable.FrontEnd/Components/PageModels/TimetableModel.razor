@@ -3,6 +3,10 @@
     <p><em>Loading...</em></p>
     return;
 }
+@if (Title is not null && !string.IsNullOrEmpty(Title(_timetable)))
+{
+    <h3>@Title(_timetable)</h3>
+}
 <table>
     <thead>
         <tr>

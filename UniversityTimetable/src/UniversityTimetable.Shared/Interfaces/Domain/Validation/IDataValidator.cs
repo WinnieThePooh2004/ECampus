@@ -1,4 +1,5 @@
 ﻿using UniversityTimetable.Shared.Interfaces.Data.Models;
+using UniversityTimetable.Shared.Validation;
 
 namespace UniversityTimetable.Shared.Interfaces.Domain.Validation;
 
@@ -10,13 +11,13 @@ public interface IDataValidator<in TModel>
     /// </summary>
     /// <param name="model"></param>
     /// <returns></returns>
-    Task<List<KeyValuePair<string, string>>> ValidateCreate(TModel model);
+    Task<ValidationResult> ValidateCreate(TModel model);
 
     /// <summary>
     /// implement this method ONLY if it cannot be validated on domain level, e. g. username must be unique
     /// </summary>
     /// <param name="model"></param>
     /// <returns></returns>
-    Task<List<KeyValuePair<string, string>>> ValidateUpdate(TModel model);
+    Task<ValidationResult> ValidateUpdate(TModel model);
 
 }

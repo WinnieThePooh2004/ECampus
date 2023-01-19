@@ -1,12 +1,13 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
-using UniversityTimetable.Shared.Attributes;
 using UniversityTimetable.Shared.DataContainers;
 using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Shared.Exceptions.DomainExceptions;
 using UniversityTimetable.Shared.Interfaces.Domain.Validation;
 using UniversityTimetable.Shared.Interfaces.DataAccess;
 using UniversityTimetable.Shared.Interfaces.Domain;
+using UniversityTimetable.Shared.Metadata;
+using UniversityTimetable.Shared.Validation;
 
 namespace UniversityTimetable.Domain.Services;
 
@@ -71,7 +72,7 @@ public class ClassService : IClassService
         };
     }
 
-    public Task<List<KeyValuePair<string, string>>> ValidateAsync(ClassDto @class)
+    public Task<ValidationResult> ValidateAsync(ClassDto @class)
     {
         return _validator.ValidateAsync(@class);
     }

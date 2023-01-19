@@ -6,7 +6,8 @@
                 DescriptionList="@(new List<Func<ClassDto, string>>{ c => $"{c.Subject?.Name} {c.ClassType}", c => $"Teacher: {c.Teacher?.LastName}",
                                      c => $"Building: {c.Auditory?.Building}, aud: {c.Auditory?.Name}" })"
                 RefreshData="@(requests => requests.GroupTimetable(GroupId))"
-/>
+                                Title="@(timetable => $"Timetable for group {timetable.Group?.Name}")"/>
+
 
 <br />
 @if (User is null)

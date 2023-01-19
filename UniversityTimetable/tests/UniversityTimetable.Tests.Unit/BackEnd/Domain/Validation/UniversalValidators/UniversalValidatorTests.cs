@@ -2,7 +2,8 @@
 using FluentValidation.Results;
 using UniversityTimetable.Domain.Validation.UniversalValidators;
 using UniversityTimetable.Shared.DataTransferObjects;
-using UniversityTimetable.Tests.Shared.Extensions;
+using UniversityTimetable.Shared.Validation;
+using ValidationResult = FluentValidation.Results.ValidationResult;
 
 namespace UniversityTimetable.Tests.Unit.BackEnd.Domain.Validation.UniversalValidators;
 
@@ -29,6 +30,7 @@ public class UniversalValidatorTests
 
         var actualResult = await _sut.ValidateAsync(faculty);
 
-        actualResult.Should().ContainsKeysWithValues(errors);
+        actualResult.GetAllErrors().Should().Contain(errors.Select(e 
+            => new ValidationError(e.Key, e.Value)));
     }
 }

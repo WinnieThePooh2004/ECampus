@@ -6,15 +6,16 @@ public partial class Group
 {
     [Parameter] public int GroupId { get; set; }
     private bool _isSaved;
-    protected override async Task OnSave()
+
+    private async Task OnSave()
     {
-        await UserRequests.SaveGroup(GroupId);
+        await RelationsRequests.SaveGroup(GroupId);
         await RefreshData();
     }
 
-    protected override async Task OnSaveRemoved()
+    private async Task OnSaveRemoved()
     {
-        await UserRequests.RemoveSavedGroup(GroupId);
+        await RelationsRequests.RemoveSavedGroup(GroupId);
         await RefreshData();
     }
 

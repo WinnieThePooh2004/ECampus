@@ -74,7 +74,7 @@ public class BaseDataAccessFacade<TModel> : IBaseDataAccessFacade<TModel>
         catch (Exception e)
         {
             _logger.LogError(e, "Db update was not successful");
-            throw new InfrastructureExceptions(HttpStatusCode.InternalServerError, "Error occured while saving changes to database");
+            throw new InfrastructureExceptions(HttpStatusCode.InternalServerError, e.ToString());
         }
 
         return entity;

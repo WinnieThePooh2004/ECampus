@@ -10,8 +10,10 @@ using UniversityTimetable.Domain.Validation.CreateValidators;
 using UniversityTimetable.Domain.Validation.UniversalValidators;
 using UniversityTimetable.Domain.Validation.UpdateValidators;
 using UniversityTimetable.Infrastructure;
+using UniversityTimetable.Infrastructure.Relationships;
 using UniversityTimetable.Shared.Auth;
 using UniversityTimetable.Shared.DataTransferObjects;
+using UniversityTimetable.Shared.Interfaces.Data.DataServices;
 using UniversityTimetable.Shared.Interfaces.Domain.Validation;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -59,6 +61,11 @@ builder.Services.Decorate<ICreateValidator<ClassDto>, ClassDtoUniversalValidator
 
 builder.Services.AddScoped<IUpdateValidator<PasswordChangeDto>, FluentValidatorWrapper<PasswordChangeDto>>();
 builder.Services.Decorate<IUpdateValidator<PasswordChangeDto>, PasswordChangeDtoUpdateValidator>();
+
+builder.Services.AddSingleton(typeof(IRelationshipsUpdateHandler<,,>),typeof(RelationshipsHandler<,,>));
+builder.Services.AddSingleton(typeof(IRelationshipsCreateHandler<,,>),typeof(RelationshipsHandler<,,>));
+
+builder.Services.AddSingleton(typeof(IRelationsDataAccess<,,>), typeof(RelationsDataAccess<,,>));
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

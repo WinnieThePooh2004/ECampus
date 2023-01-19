@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics;
-using System.Text.Json;
+using Newtonsoft.Json;
 using UniversityTimetable.FrontEnd.Requests.Interfaces;
 using UniversityTimetable.FrontEnd.Requests.Options;
 using UniversityTimetable.Shared.Extensions;
@@ -12,11 +12,9 @@ public class ParametersRequests<TData, TParameters> : IParametersRequests<TData,
 {
     private readonly string _controllerName;
     private readonly HttpClient _client;
-    private readonly JsonSerializerOptions _jsonOptions;
 
-    public ParametersRequests(IHttpClientFactory clientFactory, JsonSerializerOptions jsonOptions, IRequestOptions options)
+    public ParametersRequests(IHttpClientFactory clientFactory, IRequestOptions options)
     {
-        _jsonOptions = jsonOptions;
         _client = clientFactory.CreateClient("UTApi");
         _controllerName = options.GetControllerName(typeof(TData));
     }
@@ -25,7 +23,7 @@ public class ParametersRequests<TData, TParameters> : IParametersRequests<TData,
     {
         var response = await _client.GetAsync($"/api/{_controllerName}?{parameters.ToQueryString()}");
         response.EnsureSuccessStatusCode();
-        return JsonSerializer.Deserialize<ListWithPaginationData<TData>>(await response.Content.ReadAsStringAsync(), _jsonOptions)
-            ?? throw new UnreachableException($"cannot get list with objects of type {typeof(TData)}");
+        return JsonConvert.DeserializeObject<ListWithPaginationData<TData>>(await response.Content.ReadAsStringAsync())
+               ?? throw new UnreachableException($"cannot get list with objects of type {typeof(TData)}");
     }
 }

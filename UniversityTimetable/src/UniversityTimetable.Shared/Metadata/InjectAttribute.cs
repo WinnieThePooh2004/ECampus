@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace UniversityTimetable.Shared.Attributes;
+namespace UniversityTimetable.Shared.Metadata;
 
 [AttributeUsage(AttributeTargets.Class)]
 public class InjectAttribute : Attribute

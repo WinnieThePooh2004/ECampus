@@ -4,7 +4,8 @@
 <DataTable TData="FacultyDto" TParameters="FacultyParameters"
            SearchTerms="@(new List<(string placeHolder, Expression<Func<FacultyParameters, string?>>)> 
                         { new("Name", parameters => parameters.Name) })"
-           TableHeaders="@(new List<string> { "Name" })"
+           ParameterOptions="@(p => p.OrderBy = "LastName")"
+           TableHeaders="@(new List<(string, string)> { ("name", "Name") })"
            TableData="@(new List<Func<FacultyDto, string>> { f => f.Name })"
            CreateLink="/faculties/Create"
            EditLink="/faculties/edit"

@@ -16,7 +16,7 @@ public class TimetableRequestsTests
     public TimetableRequestsTests()
     {
         _clientFactory = new HttpClientFactory();
-        _sut = new ClassRequests(_clientFactory, HttpClientFactory.Options);
+        _sut = new ClassRequests(_clientFactory);
         _fixture.Behaviors.Add(new OmitOnRecursionBehavior());
     }
     

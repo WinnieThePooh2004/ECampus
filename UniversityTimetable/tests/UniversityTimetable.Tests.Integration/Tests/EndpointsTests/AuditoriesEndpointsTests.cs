@@ -71,14 +71,14 @@ public class AuditoriesEndpointsTests : IClassFixture<ApplicationFactory>, IAsyn
     [Fact]
     public async Task Get_ShouldReturnTeacherAndSubjects_IfExists()
     {
-        var response = await _client.GetAsync($"/api/Auditories/{1}");
+        var response = await _client.GetAsync($"/api/Auditories/2");
         response.EnsureSuccessStatusCode();
         var auditory =
             JsonSerializer.Deserialize<Auditory>(await response.Content.ReadAsStringAsync(), _serializerOptions);
         auditory.Should().NotBeNull();
-        auditory?.Id.Should().Be(1);
-        auditory?.Name.Should().Be("name1");
-        auditory?.Building.Should().Be("building1");
+        auditory?.Id.Should().Be(2);
+        auditory?.Name.Should().Be("name2");
+        auditory?.Building.Should().Be("building2");
     }
 
     [Fact]

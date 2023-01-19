@@ -70,6 +70,7 @@ public class TeachersEndpointsTests : IClassFixture<ApplicationFactory>, IAsyncL
         };
         var response = await _client.PutAsJsonAsync("/api/Teachers", teacher);
         response.EnsureSuccessStatusCode();
+        
         var context = ApplicationFactory.Context;
         var subjectTeachers = await context.SubjectTeachers.ToListAsync();
         subjectTeachers.Should().ContainEquivalentOf(new SubjectTeacher { TeacherId = 1, SubjectId = 3 });

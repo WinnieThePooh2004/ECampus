@@ -3,35 +3,15 @@ using UniversityTimetable.Shared.Extensions;
 
 namespace UniversityTimetable.FrontEnd.Requests;
 
-public class UserRequests : IUserRequests
+public class UserRelationshipsRequests : IUserRelationshipsRequests
 {
-    private readonly IBaseRequests<UserDto> _baseRequests;
     private readonly IHttpClientFactory _client;
     private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public UserRequests(IBaseRequests<UserDto> baseRequests, IHttpClientFactory client, IHttpContextAccessor httpContextAccessor)
+    public UserRelationshipsRequests(IHttpClientFactory client, IHttpContextAccessor httpContextAccessor)
     {
-        _baseRequests = baseRequests;
         _client = client;
         _httpContextAccessor = httpContextAccessor;
-    }
-
-    public Task<UserDto> GetByIdAsync(int id)
-        => _baseRequests.GetByIdAsync(id);
-
-    public Task<UserDto> CreateAsync(UserDto entity)
-        => _baseRequests.CreateAsync(entity);
-
-    public Task<UserDto> UpdateAsync(UserDto entity)
-        => _baseRequests.UpdateAsync(entity);
-
-    public Task DeleteAsync(int id)
-        => _baseRequests.DeleteAsync(id);
-
-    public async Task ChangePassword(PasswordChangeDto passwordChange)
-    {
-        var response = await _client.CreateClient("UTApi").PutAsJsonAsync("api/Users/changePassword", passwordChange);
-        response.EnsureSuccessStatusCode();
     }
 
     public async Task SaveAuditory(int auditoryId)

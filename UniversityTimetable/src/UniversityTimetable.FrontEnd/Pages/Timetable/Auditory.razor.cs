@@ -26,15 +26,15 @@ public sealed partial class Auditory
         StateHasChanged();
     }
 
-    protected override async Task OnSave()
+    private async Task OnSave()
     {
-        await UserRequests.SaveAuditory(AuditoryId);
+        await RelationsRequests.SaveAuditory(AuditoryId);
         await RefreshData();
     }
 
-    protected override async Task OnSaveRemoved()
+    private async Task OnSaveRemoved()
     {
-        await UserRequests.RemoveSavedAuditory(AuditoryId);
+        await RelationsRequests.RemoveSavedAuditory(AuditoryId);
         await RefreshData();
     }
 }

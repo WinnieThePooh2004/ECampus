@@ -2,6 +2,7 @@
 using UniversityTimetable.Infrastructure.ValidationDataAccess;
 using UniversityTimetable.Shared.Exceptions.InfrastructureExceptions;
 using UniversityTimetable.Shared.Models;
+using UniversityTimetable.Shared.Validation;
 using UniversityTimetable.Tests.Shared.Mocks.EntityFramework;
 
 namespace UniversityTimetable.Tests.Unit.BackEnd.Infrastructure.DataServices.Validation;
@@ -51,12 +52,10 @@ public class UserDataValidatorTests
         _context.Users = new DbSetMock<User>(_testModel,
             new User { Email = _testModel.Email, Username = _testModel.Username });
 
-        var errors = await _sut.ValidateCreate(_testModel);
+        var errors = (await _sut.ValidateCreate(_testModel)).GetAllErrors().ToList();
 
-        errors.Should()
-            .ContainEquivalentOf(KeyValuePair.Create(nameof(_testModel.Email), "This email is already user"));
-        errors.Should()
-            .ContainEquivalentOf(KeyValuePair.Create(nameof(_testModel.Username), "This username is already user"));
+        errors.Should().Contain(new ValidationError(nameof(_testModel.Email), "This email is already user"));
+        errors.Should().Contain(new ValidationError(nameof(_testModel.Username), "This username is already user"));
     }
 
     [Fact]
@@ -64,9 +63,8 @@ public class UserDataValidatorTests
     {
         _context.Users = new DbSetMock<User>(_testModel, new User { Username = _testModel.Username });
 
-        var errors = await _sut.ValidateUpdate(_testModel);
+        var errors = (await _sut.ValidateUpdate(_testModel)).GetAllErrors().ToList();
 
-        errors.Should()
-            .ContainEquivalentOf(KeyValuePair.Create(nameof(_testModel.Username), "This username is already used"));
+        errors.Should().Contain(new ValidationError(nameof(_testModel.Username), "This username is already used"));
     }
 }

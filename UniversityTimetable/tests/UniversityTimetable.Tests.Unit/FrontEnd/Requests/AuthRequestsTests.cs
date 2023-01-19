@@ -14,7 +14,7 @@ public class AuthRequestsTests
 
     public AuthRequestsTests()
     {
-        _sut = new AuthRequests(_clientFactory, HttpClientFactory.Options);
+        _sut = new AuthRequests(_clientFactory);
     }
 
     [Fact]
