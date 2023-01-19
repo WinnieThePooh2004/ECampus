@@ -1,30 +1,31 @@
 ﻿using System.Net;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using UniversityTimetable.Shared.Exceptions.InfrastructureExceptions;
 using UniversityTimetable.Shared.Interfaces.Data.DataServices;
 using UniversityTimetable.Shared.Interfaces.Data.Models;
-using UniversityTimetable.Shared.Metadata;
 
 namespace UniversityTimetable.Infrastructure.Relationships;
 
-[Inject(typeof(IRelationsDataAccess), ServiceLifetime.Singleton)]
-public class RelationsDataAccess : IRelationsDataAccess
+public class RelationsDataAccess<TLeftTable, TRightTable, TRelations> :
+    IRelationsDataAccess<TLeftTable, TRightTable, TRelations> 
+    where TLeftTable : IModel 
+    where TRightTable : IModel
+    where TRelations : class, new()
 {
-    private readonly ILogger<RelationsDataAccess> _logger;
+    private readonly ILogger<RelationsDataAccess<TLeftTable, TRightTable, TRelations>> _logger;
+    private readonly IRelationshipsUpdateHandler<TLeftTable, TRightTable, TRelations> _relationshipsHandler;
 
-    public RelationsDataAccess(ILogger<RelationsDataAccess> logger)
+    public RelationsDataAccess(ILogger<RelationsDataAccess<TLeftTable, TRightTable, TRelations>> logger,
+        IRelationshipsUpdateHandler<TLeftTable, TRightTable, TRelations> relationshipsHandler)
     {
         _logger = logger;
+        _relationshipsHandler = relationshipsHandler;
     }
 
-    public async Task CreateRelation<TRelations, TLeftTable, TRightTable>(int leftTableId, int rightTableId, DbContext context) 
-        where TRelations : IRelationModel<TLeftTable, TRightTable>, new()
-        where TLeftTable : class, IModel 
-        where TRightTable : class, IModel
+    public async Task CreateRelation(int leftTableId, int rightTableId, DbContext context)
     {
-        var relation = new TRelations { RightTableId = rightTableId, LeftTableId = leftTableId };
+        var relation = _relationshipsHandler.CreateRelationModel(leftTableId, rightTableId);
         context.Add(relation);
         try
         {
@@ -39,12 +40,9 @@ public class RelationsDataAccess : IRelationsDataAccess
         }
     }
 
-    public async Task DeleteRelation<TRelations, TLeftTable, TRightTable>(int leftTableId, int rightTableId, DbContext context)
-        where TRelations : IRelationModel<TLeftTable, TRightTable>, new()
-        where TLeftTable : class, IModel 
-        where TRightTable : class, IModel
+    public async Task DeleteRelation(int leftTableId, int rightTableId, DbContext context)
     {
-        var relation = new TRelations { RightTableId = rightTableId, LeftTableId = leftTableId };
+        var relation = _relationshipsHandler.CreateRelationModel(leftTableId, rightTableId);
         context.Remove(relation);
         try
         {

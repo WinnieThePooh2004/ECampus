@@ -13,6 +13,7 @@ using UniversityTimetable.Shared.Interfaces.Domain.Validation;
 using UniversityTimetable.Shared.Interfaces.DataAccess;
 using UniversityTimetable.Shared.Interfaces.Domain;
 using UniversityTimetable.Shared.Metadata;
+using UniversityTimetable.Shared.Metadata.Relationships;
 using UniversityTimetable.Shared.QueryParameters;
 
 namespace UniversityTimetable.Api.Extensions;
@@ -45,19 +46,18 @@ internal static class IServiceCollectionExtensions
     public static void DecorateDataServicesWithRelationshipsServices(this IServiceCollection services,
         Assembly assembly)
     {
-        var relationModels = GetRelationModels(assembly);
+        var relationModels = GetModelsWithManyToManyRelationships(assembly);
         foreach (var relationModel in relationModels)
         {
-            var relationInterfaces = relationModel.GetInterfaces()
-                .Where(i => i.IsGenericOfType(typeof(IModelWithManyToManyRelations<,>)));
-            foreach (var genericArgs in relationInterfaces.Select(model => model.GenericTypeArguments))
+            var relationAttributes = relationModel.GetCustomAttributes(false).OfType<ManyToManyAttribute>();
+            foreach (var attribute in relationAttributes)
             {
                 services.Decorate(typeof(IDataUpdateService<>).MakeGenericType(relationModel),
-                    typeof(DataUpdateServiceWithRelationships<,,>).MakeGenericType(relationModel, genericArgs[0],
-                        genericArgs[1]));
+                    typeof(DataUpdateServiceWithRelationships<,,>).MakeGenericType(relationModel, attribute.RelatedModel,
+                        attribute.RelationModel));
                 services.Decorate(typeof(IDataCreateService<>).MakeGenericType(relationModel),
-                    typeof(DataCreateWithRelationships<,,>).MakeGenericType(relationModel, genericArgs[0],
-                        genericArgs[1]));
+                    typeof(DataCreateWithRelationships<,,>).MakeGenericType(relationModel,  attribute.RelatedModel,
+                        attribute.RelationModel));
             }
         }
     }
@@ -182,9 +182,8 @@ internal static class IServiceCollectionExtensions
     private static List<Type> GetQueryParameters(Assembly assembly)
         => assembly.GetTypes().Where(type => type.BaseType == typeof(QueryParameters)).ToList();
 
-    private static List<Type> GetRelationModels(Assembly assembly)
-        => assembly.GetTypes().Where(type =>
-            type.GetInterfaces().Any(i => i.IsGenericOfType(typeof(IModelWithManyToManyRelations<,>)))).ToList();
+    private static List<Type> GetModelsWithManyToManyRelationships(Assembly assembly)
+        => assembly.GetTypes().Where(type => type.GetCustomAttributes(false).OfType<ManyToManyAttribute>().Any()).ToList();
 
     private static bool IsGenericOfType(this Type type, Type genericType)
         => type.IsGenericType && type.GetGenericTypeDefinition() == genericType;

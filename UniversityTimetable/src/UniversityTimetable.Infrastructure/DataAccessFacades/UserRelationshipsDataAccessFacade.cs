@@ -10,42 +10,49 @@ namespace UniversityTimetable.Infrastructure.DataAccessFacades;
 [Inject(typeof(IUserRelationsDataAccessFacade))]
 public class UserRelationshipsDataAccessFacade : IUserRelationsDataAccessFacade
 {
-    private readonly IRelationsDataAccess _relationsDataAccess;
+    private readonly IRelationsDataAccess<User, Auditory, UserAuditory> _userAuditoryRelations;
+    private readonly IRelationsDataAccess<User, Group, UserGroup> _userGroupRelations;
+    private readonly IRelationsDataAccess<User, Teacher, UserTeacher> _userTeacherRelations;
     private readonly DbContext _context;
 
-    public UserRelationshipsDataAccessFacade(IRelationsDataAccess relationsDataAccess, DbContext context)
+    public UserRelationshipsDataAccessFacade(DbContext context,
+        IRelationsDataAccess<User, Auditory, UserAuditory> userAuditoryRelations,
+        IRelationsDataAccess<User, Group, UserGroup> userGroupRelations,
+        IRelationsDataAccess<User, Teacher, UserTeacher> userTeacherRelations)
     {
-        _relationsDataAccess = relationsDataAccess;
         _context = context;
+        _userAuditoryRelations = userAuditoryRelations;
+        _userGroupRelations = userGroupRelations;
+        _userTeacherRelations = userTeacherRelations;
     }
 
     public Task SaveAuditory(int userId, int auditoryId)
     {
-        return _relationsDataAccess.CreateRelation<UserAuditory, User, Auditory>(userId, auditoryId, _context);
+        return _userAuditoryRelations.CreateRelation(userId, auditoryId, _context);
     }
 
     public Task RemoveSavedAuditory(int userId, int auditoryId)
     {
-        return _relationsDataAccess.DeleteRelation<UserAuditory, User, Auditory>(userId, auditoryId, _context);
+        return _userAuditoryRelations.DeleteRelation(userId, auditoryId, _context);
     }
 
     public Task SaveGroup(int userId, int groupId)
     {
-        return _relationsDataAccess.CreateRelation<UserGroup, User, Group>(userId, groupId, _context);
+        return _userGroupRelations.CreateRelation(userId, groupId, _context);
     }
 
     public Task RemoveSavedGroup(int userId, int groupId)
     {
-        return _relationsDataAccess.DeleteRelation<UserGroup, User, Group>(userId, groupId, _context);
+        return _userGroupRelations.DeleteRelation(userId, groupId, _context);
     }
 
     public Task SaveTeacher(int userId, int teacherId)
     {
-        return _relationsDataAccess.CreateRelation<UserTeacher, User, Teacher>(userId, teacherId, _context);
+        return _userTeacherRelations.CreateRelation(userId, teacherId, _context);
     }
 
     public Task RemoveSavedTeacher(int userId, int teacherId)
     {
-        return _relationsDataAccess.DeleteRelation<UserTeacher, User, Teacher>(userId, teacherId, _context);
+        return _userTeacherRelations.DeleteRelation(userId, teacherId, _context);
     }
 }

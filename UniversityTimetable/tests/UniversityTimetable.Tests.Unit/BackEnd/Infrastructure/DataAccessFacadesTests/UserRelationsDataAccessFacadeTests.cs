@@ -9,20 +9,29 @@ namespace UniversityTimetable.Tests.Unit.BackEnd.Infrastructure.DataAccessFacade
 public class UserRelationsDataAccessFacadeTests
 {
     private readonly UserRelationshipsDataAccessFacade _sut;
-    private readonly IRelationsDataAccess _relationsDataAccess = Substitute.For<IRelationsDataAccess>();
+
+    private readonly IRelationsDataAccess<User, Auditory, UserAuditory> _userAuditoryRelationships =
+        Substitute.For<IRelationsDataAccess<User, Auditory, UserAuditory>>();
+
+    private readonly IRelationsDataAccess<User, Group, UserGroup> _userGroupRelationships =
+        Substitute.For<IRelationsDataAccess<User, Group, UserGroup>>();
+
+    private readonly IRelationsDataAccess<User, Teacher, UserTeacher> _userTeacherRelationships =
+        Substitute.For<IRelationsDataAccess<User, Teacher, UserTeacher>>();
+
     private readonly DbContext _context = Substitute.For<DbContext>();
 
     public UserRelationsDataAccessFacadeTests()
     {
-        _sut = new UserRelationshipsDataAccessFacade(_relationsDataAccess, _context);
+        _sut = new UserRelationshipsDataAccessFacade(_context, _userAuditoryRelationships, _userGroupRelationships, _userTeacherRelationships);
     }
-    
+
     [Fact]
     public async Task SaveAuditory_ShouldCallRelationsDataAccess()
     {
         await _sut.SaveAuditory(10, 10);
 
-        await _relationsDataAccess.Received(1).CreateRelation<UserAuditory, User, Auditory>(10, 10, _context);
+        await _userAuditoryRelationships.Received(1).CreateRelation(10, 10, _context);
     }
 
     [Fact]
@@ -30,7 +39,7 @@ public class UserRelationsDataAccessFacadeTests
     {
         await _sut.SaveGroup(10, 10);
 
-        await _relationsDataAccess.Received(1).CreateRelation<UserGroup, User, Group>(10, 10, _context);
+        await _userGroupRelationships.Received(1).CreateRelation(10, 10, _context);
     }
 
     [Fact]
@@ -38,7 +47,7 @@ public class UserRelationsDataAccessFacadeTests
     {
         await _sut.SaveTeacher(10, 10);
 
-        await _relationsDataAccess.Received(1).CreateRelation<UserTeacher, User, Teacher>(10, 10, _context);
+        await _userTeacherRelationships.Received(1).CreateRelation(10, 10, _context);
     }
 
     [Fact]
@@ -46,7 +55,7 @@ public class UserRelationsDataAccessFacadeTests
     {
         await _sut.RemoveSavedAuditory(10, 10);
 
-        await _relationsDataAccess.Received(1).DeleteRelation<UserAuditory, User, Auditory>(10, 10, _context);
+        await _userAuditoryRelationships.Received(1).DeleteRelation(10, 10, _context);
     }
 
     [Fact]
@@ -54,7 +63,7 @@ public class UserRelationsDataAccessFacadeTests
     {
         await _sut.RemoveSavedGroup(10, 10);
 
-        await _relationsDataAccess.Received(1).DeleteRelation<UserGroup, User, Group>(10, 10, _context);
+        await _userGroupRelationships.Received(1).DeleteRelation(10, 10, _context);
     }
 
     [Fact]
@@ -62,6 +71,6 @@ public class UserRelationsDataAccessFacadeTests
     {
         await _sut.RemoveSavedTeacher(10, 10);
 
-        await _relationsDataAccess.Received(1).DeleteRelation<UserTeacher, User, Teacher>(10, 10, _context);
+        await _userTeacherRelationships.Received(1).DeleteRelation(10, 10, _context);
     }
 }

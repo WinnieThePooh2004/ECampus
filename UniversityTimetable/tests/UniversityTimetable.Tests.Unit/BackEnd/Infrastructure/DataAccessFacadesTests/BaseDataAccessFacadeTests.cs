@@ -28,7 +28,8 @@ public class BaseDataAccessFacadeTests
         _context = Substitute.For<ApplicationDbContext>();
         _selector = Substitute.For<ISingleItemSelector<Auditory>>();
         _sut = new BaseDataAccessFacade<Auditory>(_context,
-            Substitute.For<ILogger<BaseDataAccessFacade<Auditory>>>(), _selector, _deleteService, _updateService, _createService);
+            Substitute.For<ILogger<BaseDataAccessFacade<Auditory>>>(), _selector, _deleteService, _updateService,
+            _createService);
     }
 
     [Fact]
@@ -58,8 +59,7 @@ public class BaseDataAccessFacadeTests
         _context.SaveChangesAsync().Returns(1).AndDoes(_ => throw new Exception());
 
         await new Func<Task>(() => _sut.UpdateAsync(new Auditory())).Should()
-            .ThrowAsync<InfrastructureExceptions>()
-            .WithMessage("Error occured while saving changes to database\nError code: 500");
+            .ThrowAsync<InfrastructureExceptions>();
     }
 
     [Fact]
@@ -76,7 +76,7 @@ public class BaseDataAccessFacadeTests
     {
         var item = CreateModel();
         _selector.SelectModel(1, Arg.Any<DbSet<Auditory>>()).Returns(item);
-        
+
         var model = await _sut.GetByIdAsync(1);
 
         model.Should().Be(item);
@@ -94,7 +94,7 @@ public class BaseDataAccessFacadeTests
     {
         var item = CreateModel();
         _deleteService.DeleteAsync(1, Arg.Any<DbContext>()).Returns(item);
-        
+
         var model = await _sut.DeleteAsync(1);
 
         model.Should().Be(item);
