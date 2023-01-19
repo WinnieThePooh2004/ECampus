@@ -2,7 +2,7 @@
 
 namespace UniversityTimetable.FrontEnd.PropertySelectors;
 
-public interface ISearchTermsSelector<T>
+public interface ISearchTermsSelector<in T>
 {
-    List<(Expression<Func<string>> propertyExpression, string displayName)> PropertiesExpressions(T item);
+    List<(Expression<Func<string?>>, string placeHolder)> PropertiesExpressions(T item);
 }
