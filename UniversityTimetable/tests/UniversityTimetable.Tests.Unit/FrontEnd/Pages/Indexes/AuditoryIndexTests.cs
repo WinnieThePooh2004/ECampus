@@ -2,6 +2,7 @@
 using Bunit;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using UniversityTimetable.FrontEnd.PropertySelectors;
 using UniversityTimetable.FrontEnd.Requests.Interfaces;
 using UniversityTimetable.Shared.DataContainers;
 using UniversityTimetable.Shared.DataTransferObjects;
@@ -21,6 +22,11 @@ public class AuditoryIndexTests
     private readonly HttpContext _httpContent = Substitute.For<HttpContext>();
     private readonly Fixture _fixture = new();
 
+    private static readonly IPropertySelector<AuditoryDto> PropertySelector = new PropertySelector<AuditoryDto>();
+
+    private static readonly ISearchTermsSelector<AuditoryParameters> SearchTermsSelector =
+        new SearchTermsSelector<AuditoryParameters>();
+
     private readonly TestContext _context = new();
 
     public AuditoryIndexTests()
@@ -28,6 +34,8 @@ public class AuditoryIndexTests
         _context.Services.AddSingleton(_parametersRequests);
         _context.Services.AddSingleton(_baseRequests);
         _context.Services.AddSingleton(_httpContextAccessor);
+        _context.Services.AddSingleton(PropertySelector);
+        _context.Services.AddSingleton(SearchTermsSelector);
         _httpContextAccessor.HttpContext.Returns(_httpContent);
     }
 
@@ -36,6 +44,18 @@ public class AuditoryIndexTests
     {
         var page = _context.RenderComponent<Index>();
         page.Markup.Should().Be("<h3>Auditories</h3>\r\n<br>\r\n<p><em>Loading...</em></p>");
+    }
+
+    [Fact]
+    public void Build_ShouldCreateCellsFromPropertySelectors()
+    {
+        var data = TestData(5);
+        _parametersRequests.GetByParametersAsync(Arg.Any<AuditoryParameters>()).Returns(data);
+        
+        var page = _context.RenderComponent<Index>();
+        var markup = page.Markup;
+
+        markup.Should().ContainAll(">Name</th>", ">Building</th>", "placeholder=\"AuditoryName\"", "placeholder=\"BuildingName\"");
     }
 
     [Theory]
@@ -80,21 +100,22 @@ public class AuditoryIndexTests
     }
 
     [Fact]
-    public void ChangePlaceSearch_ShouldInvokeRequests_WhenBlur()
+    public void ChangeSearch_ShouldInvokeRequests_WhenBlur()
     {
         SetRole(UserRole.Admin);
         var data = TestData(5);
         AuditoryParameters? parameters = null;
         _parametersRequests.GetByParametersAsync(Arg.Do<AuditoryParameters>(p => parameters = p)).Returns(data);
+        
         var page = _context.RenderComponent<Index>();
         var searchTerm = page.Find("input");
-        
+
         searchTerm.Change("abc");
         searchTerm.Blur();
 
         parameters?.AuditoryName.Should().Be("abc");
     }
-    
+
     [Fact]
     public void ChangePageNumber_ShouldInvokeRequests()
     {
@@ -104,12 +125,12 @@ public class AuditoryIndexTests
         _parametersRequests.GetByParametersAsync(Arg.Do<AuditoryParameters>(p => parameters = p)).Returns(data);
         var page = _context.RenderComponent<Index>();
         var pageSelect = page.FindAll("a").First(a => a.ToMarkup().Contains(">2<"));
-        
+
         pageSelect.Click();
-        
+
         parameters?.PageNumber.Should().Be(2);
     }
-    
+
     [Fact]
     public void ChangePageSize_ShouldInvokeRequests()
     {
@@ -119,10 +140,46 @@ public class AuditoryIndexTests
         _parametersRequests.GetByParametersAsync(Arg.Do<AuditoryParameters>(p => parameters = p)).Returns(data);
         var page = _context.RenderComponent<Index>();
         var pageSizeSelect = page.Find("select");
-        
+
         pageSizeSelect.Change("10");
-        
+
         parameters?.PageSize.Should().Be(10);
+    }
+
+    [Fact]
+    public void ClickOnTableHeader_ShouldChangeOrderBy()
+    {
+        SetRole(UserRole.Admin);
+        var data = TestData(5);
+        AuditoryParameters? parameters = null;
+        _parametersRequests.GetByParametersAsync(Arg.Do<AuditoryParameters>(p => parameters = p)).Returns(data);
+
+        var page = _context.RenderComponent<Index>();
+        var nameHeader = page.FindAll("th").Single(th => th.ToMarkup().ToLower().Contains("name"));
+        nameHeader.Click();
+
+        parameters.Should().NotBeNull();
+        parameters?.OrderBy.Should().Be("Name");
+        parameters?.SortOrder.Should().Be(SortOrder.Ascending);
+    }
+    
+    [Fact]
+    public void ClickOnTableHeader_ShouldChangeOrderByAndSortOrder_WhenClickedTwice()
+    {
+        SetRole(UserRole.Admin);
+        var data = TestData(5);
+        AuditoryParameters? parameters = null;
+        _parametersRequests.GetByParametersAsync(Arg.Do<AuditoryParameters>(p => parameters = p)).Returns(data);
+
+        var page = _context.RenderComponent<Index>();
+        var nameHeader = page.FindAll("th").Single(th => th.ToMarkup().ToLower().Contains("name"));
+        nameHeader.Click();
+        nameHeader = page.FindAll("th").Single(th => th.ToMarkup().ToLower().Contains("name"));
+        nameHeader.Click();
+
+        parameters.Should().NotBeNull();
+        parameters?.OrderBy.Should().Be("Name");
+        parameters?.SortOrder.Should().Be(SortOrder.Descending);
     }
 
     private void SetRole(UserRole role)
