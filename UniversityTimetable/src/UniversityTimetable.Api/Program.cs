@@ -10,13 +10,11 @@ using UniversityTimetable.Domain.Validation.CreateValidators;
 using UniversityTimetable.Domain.Validation.UniversalValidators;
 using UniversityTimetable.Domain.Validation.UpdateValidators;
 using UniversityTimetable.Infrastructure;
-using UniversityTimetable.Infrastructure.DataUpdateServices;
 using UniversityTimetable.Infrastructure.Relationships;
 using UniversityTimetable.Shared.Auth;
 using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Shared.Interfaces.Data.DataServices;
 using UniversityTimetable.Shared.Interfaces.Domain.Validation;
-using UniversityTimetable.Shared.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
