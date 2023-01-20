@@ -1,7 +1,6 @@
 ﻿using UniversityTimetable.Infrastructure;
 using UniversityTimetable.Infrastructure.DataUpdateServices;
 using UniversityTimetable.Infrastructure.Relationships;
-using UniversityTimetable.Shared.Exceptions.InfrastructureExceptions;
 using UniversityTimetable.Shared.Interfaces.Data.DataServices;
 using UniversityTimetable.Shared.Models;
 using UniversityTimetable.Shared.Models.RelationModels;
@@ -25,15 +24,15 @@ public class DataUpdateWithRelationshipsTests
     }
 
     [Fact]
-    public async Task UpdateRelationModels_ShouldThrowException_WhenRelatedModelsIsnull()
+    public async Task UpdateRelationModels_ShouldInstantlyReturnFromBaseCreate_WhenRelatedModelsIsnull()
     {
         var model = new User();
-        var set = new DbSetMock<UserAuditory>().Object;
-        _context.Set<UserAuditory>().Returns(set);
 
-        await new Func<Task>(() => _sut.UpdateAsync(model, _context)).Should()
-            .ThrowAsync<RelatedModelsIsNullException>()
-            .WithMessage(new RelatedModelsIsNullException(model, typeof(User)).Message);
+        await _sut.UpdateAsync(model, _context);
+
+        _context.DidNotReceive().Add(Arg.Any<object>());
+        _context.DidNotReceive().Remove(Arg.Any<UserAuditory>());
+        await _baseUpdate.Received().UpdateAsync(model, _context);
     }
 
     [Fact]

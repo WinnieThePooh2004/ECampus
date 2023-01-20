@@ -1,5 +1,8 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using UniversityTimetable.Shared.DataTransferObjects;
+using UniversityTimetable.Shared.Enums;
+using UniversityTimetable.Shared.Exceptions.DomainExceptions;
 using UniversityTimetable.Shared.Extensions;
 using UniversityTimetable.Shared.Interfaces.Domain.Validation;
 using UniversityTimetable.Shared.Models;
@@ -12,20 +15,24 @@ public class UserUpdateValidator : IUpdateValidator<UserDto>
     private readonly IUpdateValidator<UserDto> _updateValidator;
     private readonly IDataValidator<User> _dataAccess;
     private readonly IValidationDataAccess<User> _validationDataAccess;
+    private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IMapper _mapper;
 
     public UserUpdateValidator(IUpdateValidator<UserDto> updateValidator, IMapper mapper,
-        IDataValidator<User> dataAccess, IValidationDataAccess<User> validationDataAccess)
+        IDataValidator<User> dataAccess, IValidationDataAccess<User> validationDataAccess,
+        IHttpContextAccessor httpContextAccessor)
     {
         _updateValidator = updateValidator;
         _mapper = mapper;
         _dataAccess = dataAccess;
         _validationDataAccess = validationDataAccess;
+        _httpContextAccessor = httpContextAccessor;
     }
 
     public async Task<ValidationResult> ValidateAsync(UserDto dataTransferObject)
     {
         var errors = await _updateValidator.ValidateAsync(dataTransferObject);
+        ValidateRole(dataTransferObject, errors);
         var model = _mapper.Map<User>(dataTransferObject);
         errors.MergeResults(await _dataAccess.ValidateUpdate(model));
         var userFromDb = await _validationDataAccess.LoadRequiredDataForUpdateAsync(model);
@@ -42,5 +49,21 @@ public class UserUpdateValidator : IUpdateValidator<UserDto>
         }
 
         return errors;
+    }
+    
+    private void ValidateRole(UserDto user, ValidationResult currentErrors)
+    {
+        if (_httpContextAccessor.HttpContext is null)
+        {
+            throw new HttpContextNotFoundExceptions();
+        }
+
+        if (user.Role == UserRole.Guest || _httpContextAccessor.HttpContext.User.IsInRole(nameof(UserRole.Admin)))
+        {
+            return;
+        }
+
+        currentErrors.AddError(new ValidationError(nameof(user.Role),
+            $"Only admin can create user with roles different from {nameof(UserRole.Guest)}"));
     }
 }

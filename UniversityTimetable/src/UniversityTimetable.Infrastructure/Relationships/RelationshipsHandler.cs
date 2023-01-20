@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Reflection;
-using UniversityTimetable.Shared.Exceptions.InfrastructureExceptions;
 using UniversityTimetable.Shared.Interfaces.Data.DataServices;
 using UniversityTimetable.Shared.Interfaces.Data.Models;
 using UniversityTimetable.Shared.Metadata.Relationships;
@@ -45,14 +44,24 @@ public class RelationshipsHandler<TLeftTable, TRightTable, TRelationModel>
     public IEnumerable<TRelationModel> TransformRelatedModelsToRelationModels(TLeftTable leftTableModel)
     {
         var relatedModels = RelatedModels(leftTableModel);
+        if (relatedModels is null)
+        {
+            return Array.Empty<TRelationModel>();
+        }
         _relatedModels.SetMethod?.Invoke(leftTableModel, new object?[] { null });
         var relationModels = relatedModels.Select(m => CreateRelationModel(leftTableModel.Id, m.Id));
         return relationModels;
     }
 
+    public bool RelatedModelsAreNullOrEmpty(TLeftTable model)
+    {
+        var relatedModels = (IEnumerable<TRightTable>?)_relatedModels.GetMethod?.Invoke(model, null);
+        return relatedModels is null || !relatedModels.Any();
+    }
+
     public Expression<Func<TRightTable, bool>> AddedToModelExpression(TLeftTable leftTableModel)
     {
-        var relatedModels = RelatedModels(leftTableModel).ToList();
+        var relatedModels = RelatedModels(leftTableModel)!.ToList();
         var parameter = Expression.Parameter(typeof(TRightTable), "rightTableModel");
         var idExpression = Expression.Property(parameter, "Id");
         var isInRelatedModels = relatedModels.Select(relatedModel =>
@@ -87,7 +96,7 @@ public class RelationshipsHandler<TLeftTable, TRightTable, TRelationModel>
         var rightIdExpression = Expression.MakeMemberAccess(parameter, _rightTableId);
         var isRelated = IsRelatedToLeft(leftTableModel.Id, parameter);
 
-        var hasOneOfRelatedObjectsId = relatedModels
+        var hasOneOfRelatedObjectsId = relatedModels!
             .Select(relatedModel => Expression.Equal(rightIdExpression, Expression.Constant(relatedModel.Id)))
             .Aggregate(Expression.Or);
 
@@ -116,13 +125,9 @@ public class RelationshipsHandler<TLeftTable, TRightTable, TRelationModel>
         return body;
     }
 
-    private IEnumerable<TRightTable> RelatedModels(TLeftTable leftTableModel)
+    private IEnumerable<TRightTable>? RelatedModels(TLeftTable leftTableModel)
     {
         var relatedModels = (IEnumerable<TRightTable>?)_relatedModels.GetMethod?.Invoke(leftTableModel, null);
-        if (relatedModels is null)
-        {
-            throw new RelatedModelsIsNullException(leftTableModel, typeof(TLeftTable));
-        }
 
         return relatedModels;
     }

@@ -20,13 +20,5 @@
         <InputText class="form-control" @bind-Value="@_model.Username"/>
         <ValidationMessage For="() => _model.Username"/>
     </div>
-    <div class="col-md-3">
-        <label class="form-label" for="@(() => _model.Role)">You are</label><br/>
-        <InputSelect TValue="UserRole" @bind-Value="_model.Role">
-            <option value="@UserRole.Student">I am student</option>
-            <option value="@UserRole.Teacher">I am teacher</option>
-        </InputSelect>
-        <ValidationMessage For="() => _model.Role"/>
-    </div>
     <button type="submit">Sign in</button>
 </EditForm>

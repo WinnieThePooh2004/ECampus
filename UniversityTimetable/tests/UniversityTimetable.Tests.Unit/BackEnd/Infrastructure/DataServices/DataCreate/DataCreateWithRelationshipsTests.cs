@@ -1,8 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using UniversityTimetable.Infrastructure;
+﻿using UniversityTimetable.Infrastructure;
 using UniversityTimetable.Infrastructure.DataCreateServices;
 using UniversityTimetable.Infrastructure.Relationships;
-using UniversityTimetable.Shared.Exceptions.InfrastructureExceptions;
 using UniversityTimetable.Shared.Interfaces.Data.DataServices;
 using UniversityTimetable.Shared.Models;
 using UniversityTimetable.Shared.Models.RelationModels;
@@ -49,15 +47,14 @@ public class DataCreateWithRelationshipsTests
     }
 
     [Fact]
-    public async Task CreateRelationModels_ShouldThrowException_WhenRelatedModelsIsnull()
+    public async Task CreateRelationModels_ShouldAddEmptyArray_WhenRelatedModelsIsnull()
     {
         var model = new User();
+        IEnumerable<object>? addedModels = null;
+        _context.AddRange(Arg.Do<IEnumerable<object>>(entities => addedModels = entities));
 
-        await new Func<Task>(() => _sut.CreateAsync(model, _context)).Should().ThrowAsync<InfrastructureExceptions>()
-            .WithMessage(
-                $"Please, send related models of object of type '{typeof(User)}' as empty list instead of null" +
-                $"\nError code: 400");
+        await _sut.CreateAsync(model, _context);
 
-        await _baseCreateService.DidNotReceive().CreateAsync(Arg.Any<User>(), Arg.Any<DbContext>());
+        addedModels.Should().BeEmpty();
     }
 }
