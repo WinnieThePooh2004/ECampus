@@ -11,7 +11,8 @@ public sealed partial class SingleItemSelect<TData, TParameters>
 {
     [Parameter] public string Title { get; set; } = "";
     [Parameter] public EventCallback<int> SelectedIdChanged { get; set; }
-    [Parameter] public int SelectedId { get; set; }
+    [Parameter] public EventCallback<TData> SelectChanged { get; set; }
+    [Parameter] public int? SelectedId { get; set; }
     
     private int TotalColumns => TableHeaders.Count;
 
@@ -34,13 +35,14 @@ public sealed partial class SingleItemSelect<TData, TParameters>
             {
                 return;
             }
-            var selectedValue = new TData { Id = SelectedId };
+            var selectedValue = new TData { Id = SelectedId ?? -1 };
             if (Select.ContainsKey(selectedValue))
             {
                 Select[selectedValue] = false;
             }
             SelectedId = item.Id;
             SelectedIdChanged.InvokeAsync(item.Id);
+            SelectChanged.InvokeAsync(item);
             Select[item] = true;
             StateHasChanged();
         }

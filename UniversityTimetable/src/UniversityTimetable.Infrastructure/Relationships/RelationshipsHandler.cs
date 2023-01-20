@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Reflection;
-using UniversityTimetable.Shared.Exceptions.InfrastructureExceptions;
 using UniversityTimetable.Shared.Interfaces.Data.DataServices;
 using UniversityTimetable.Shared.Interfaces.Data.Models;
 using UniversityTimetable.Shared.Metadata.Relationships;
@@ -48,6 +47,12 @@ public class RelationshipsHandler<TLeftTable, TRightTable, TRelationModel>
         _relatedModels.SetMethod?.Invoke(leftTableModel, new object?[] { null });
         var relationModels = relatedModels.Select(m => CreateRelationModel(leftTableModel.Id, m.Id));
         return relationModels;
+    }
+
+    public bool RelatedModelsAreNullOrEmpty(TLeftTable model)
+    {
+        var relatedModels = (IEnumerable<TRightTable>?)_relatedModels.GetMethod?.Invoke(model, null);
+        return relatedModels is null || !relatedModels.Any();
     }
 
     public Expression<Func<TRightTable, bool>> AddedToModelExpression(TLeftTable leftTableModel)
@@ -119,11 +124,7 @@ public class RelationshipsHandler<TLeftTable, TRightTable, TRelationModel>
     private IEnumerable<TRightTable> RelatedModels(TLeftTable leftTableModel)
     {
         var relatedModels = (IEnumerable<TRightTable>?)_relatedModels.GetMethod?.Invoke(leftTableModel, null);
-        if (relatedModels is null)
-        {
-            throw new RelatedModelsIsNullException(leftTableModel, typeof(TLeftTable));
-        }
 
-        return relatedModels;
+        return relatedModels!;
     }
 }

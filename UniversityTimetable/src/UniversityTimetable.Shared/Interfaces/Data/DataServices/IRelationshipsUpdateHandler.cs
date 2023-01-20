@@ -14,5 +14,6 @@ public interface IRelationshipsUpdateHandler<in TLeftTable, TRightTable, TRelati
     int LeftTableId(TRelationModel relationModel);
     Expression<Func<TRelationModel, bool>> DeletedFromModelExpression(TLeftTable leftTableModel);
     void ClearRelatedModel(TLeftTable model);
+    bool RelatedModelsAreNullOrEmpty(TLeftTable model);
     TRelationModel CreateRelationModel(int leftTableId, int rightTableId);
 }
