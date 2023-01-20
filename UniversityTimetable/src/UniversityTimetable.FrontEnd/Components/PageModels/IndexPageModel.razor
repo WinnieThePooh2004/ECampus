@@ -2,6 +2,7 @@
 @typeparam TData
 @typeparam TParameters
 @using UniversityTimetable.Shared.Extensions;
+
 @if (Data is null)
 {
     <p>
@@ -17,13 +18,7 @@
 }
 <table>
     <thead>
-    @foreach (var searchTerm in SearchTerms)
-    {
-        <InputText Value="@searchTerm.Item1.Compile()()"
-                   ValueExpression="searchTerm.Item1" @onblur="RefreshData"
-                   ValueChanged="@(text => searchTerm.Item1.SetFromExpression(text))"
-                   style="background-color: rgb(235, 235, 235)" placeholder="@searchTerm.placeHolder"/>
-    }
+    <SearchTermsGroup OnBlur="RefreshData" SearchTerms="SearchTerms"/>
     <tr>
         @foreach (var header in TableHeaders)
         {
