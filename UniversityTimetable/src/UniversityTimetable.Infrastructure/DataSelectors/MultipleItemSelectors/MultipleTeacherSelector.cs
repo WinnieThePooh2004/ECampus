@@ -12,11 +12,16 @@ public class MultipleTeacherSelector : IMultipleItemSelector<Teacher, TeacherPar
     {
         var result = data.Search(s => s.FirstName, parameters.FirstName)
             .Search(s => s.LastName, parameters.LastName);
-        if (parameters.DepartmentId == 0)
+        if (parameters.DepartmentId != 0)
         {
-            return result;
+            result = result.Where(s => s.DepartmentId == parameters.DepartmentId);
         }
 
-        return result.Where(s => s.DepartmentId == parameters.DepartmentId);
+        if (!parameters.UserIdCanBeNull)
+        {
+            result = result.Where(t => t.UserId == null);
+        }
+
+        return result;
     }
 }
