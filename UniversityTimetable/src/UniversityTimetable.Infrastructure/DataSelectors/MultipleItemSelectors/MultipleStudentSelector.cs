@@ -12,11 +12,16 @@ public class MultipleStudentSelector : IMultipleItemSelector<Student, StudentPar
     {
         var result = data.Search(s => s.FirstName, parameters.FirstName)
             .Search(s => s.LastName, parameters.LastName);
-        if (parameters.GroupId == 0)
+        if (parameters.GroupId != 0)
         {
-            return result;
+            result = result.Where(s => s.GroupId == parameters.GroupId);
         }
 
-        return result.Where(s => s.GroupId == parameters.GroupId);
+        if (!parameters.UserIdCanBeNull)
+        {
+            result = result.Where(t => t.UserId == null);
+        }
+
+        return result;
     }
 }

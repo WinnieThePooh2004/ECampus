@@ -25,7 +25,6 @@ public partial class IndexPageModel<TData, TParameters>
     protected override async Task OnInitializedAsync()
     {
         _isAdmin = HttpContextAccessor.HttpContext?.User.IsInRole(nameof(UserRole.Admin)) ?? false;
-        ParameterOptions(Parameters);
         await base.OnInitializedAsync();
     }
 }

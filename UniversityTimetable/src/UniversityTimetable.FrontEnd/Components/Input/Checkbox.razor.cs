@@ -4,6 +4,7 @@ namespace UniversityTimetable.FrontEnd.Components.Input;
 
 public partial class Checkbox
 {
+#pragma warning disable
     [Parameter]
     public bool Value
     {
@@ -19,6 +20,7 @@ public partial class Checkbox
             ValueChanged.InvokeAsync(value);
         }
     }
+#pragma warning restore
 
     [Parameter] public EventCallback<bool> ValueChanged { get; set; }
     private bool _isChecked;

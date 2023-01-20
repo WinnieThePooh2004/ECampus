@@ -4,6 +4,7 @@ using UniversityTimetable.Shared.Enums;
 
 namespace UniversityTimetable.Domain.Auth;
 
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
 public class AuthorizedAttribute : AuthorizeAttribute
 {
     public AuthorizedAttribute(params UserRole[] roles)

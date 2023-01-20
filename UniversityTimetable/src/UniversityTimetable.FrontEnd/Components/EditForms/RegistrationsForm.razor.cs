@@ -5,7 +5,7 @@ using UniversityTimetable.FrontEnd.Validation.Interfaces;
 
 namespace UniversityTimetable.FrontEnd.Components.EditForms;
 
-public partial class UserEditForm
+public partial class RegistrationsForm
 {
     [Parameter] public EventCallback<UserDto> OnSubmit { get; set; }
     [Inject] private IUserValidatorFactory ValidatorFactory { get; set; } = default!;
@@ -16,7 +16,7 @@ public partial class UserEditForm
     [Inject] private IHttpContextAccessor HttpContextAccessor { get; set; } = default!;
 
     private IValidator<UserDto>? _validator;
-    private UserDto _model = new();
+    private readonly UserDto _model = new();
 
     protected override void OnInitialized()
     {
