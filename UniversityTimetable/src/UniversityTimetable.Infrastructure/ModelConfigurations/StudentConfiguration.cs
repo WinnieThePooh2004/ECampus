@@ -16,7 +16,7 @@ public class StudentConfiguration : IEntityTypeConfiguration<Student>
 
         builder.HasOne(s => s.User)
             .WithOne(u => u.Student)
-            .HasForeignKey<Student>(u => u.UserId)
+            .HasForeignKey<User>(u => u.StudentId)
             .OnDelete(DeleteBehavior.SetNull);
     }
 }
