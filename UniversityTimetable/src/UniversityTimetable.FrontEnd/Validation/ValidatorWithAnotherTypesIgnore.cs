@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
-using UniversityTimetable.FrontEnd.Components.Input;
 
 namespace UniversityTimetable.FrontEnd.Validation;
 
@@ -9,11 +8,11 @@ namespace UniversityTimetable.FrontEnd.Validation;
 /// so this class will check if object type is checkbox and won`t throw exception
 /// </summary>
 /// <typeparam name="T"></typeparam>
-public class ValidatorWithCheckboxIgnore<T> : IValidator<T>
+public class ValidatorWithAnotherTypesIgnore<T> : IValidator<T>
 {
     private readonly IValidator<T> _validator;
 
-    public ValidatorWithCheckboxIgnore(IValidator<T> validator)
+    public ValidatorWithAnotherTypesIgnore(IValidator<T> validator)
     {
         _validator = validator;
     }
@@ -22,7 +21,7 @@ public class ValidatorWithCheckboxIgnore<T> : IValidator<T>
 
     public Task<ValidationResult> ValidateAsync(IValidationContext context, CancellationToken cancellation = new())
     {
-        if (context.InstanceToValidate is Checkbox)
+        if (context.InstanceToValidate is not T)
         {
             return Task.FromResult(new ValidationResult());
         }
@@ -31,7 +30,7 @@ public class ValidatorWithCheckboxIgnore<T> : IValidator<T>
 
     public IValidatorDescriptor CreateDescriptor() => _validator.CreateDescriptor();
 
-    public bool CanValidateInstancesOfType(Type type) => type == typeof(T) || type == typeof(Checkbox);
+    public bool CanValidateInstancesOfType(Type type) => true;
 
     public ValidationResult Validate(T instance) => _validator.Validate(instance);
 
