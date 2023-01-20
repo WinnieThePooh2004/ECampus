@@ -32,6 +32,7 @@ builder.Services.AddRequests<SubjectDto, SubjectParameters>();
 builder.Services.AddRequests<AuditoryDto, AuditoryParameters>();
 builder.Services.AddRequests<StudentDto, StudentParameters>();
 builder.Services.AddRequests<UserDto, UserParameters>();
+builder.Services.AddScoped<IUserRolesRequests, UserRolesRequests>();
 
 builder.Services.AddValidatorsFromAssembly(Assembly.Load("UniversityTimetable.Domain"));
 

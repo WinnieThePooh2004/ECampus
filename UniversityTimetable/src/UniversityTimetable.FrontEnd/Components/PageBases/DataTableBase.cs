@@ -49,6 +49,7 @@ public class DataTableBase<TData, TParameters> : ComponentBase
 
     protected override Task OnInitializedAsync()
     {
+        ParameterOptions(Parameters);
         TableHeaders = PropertySelector.GetAllPropertiesNames();
         SearchTerms = SearchTermsSelector.PropertiesExpressions(Parameters);
         return RefreshData();

@@ -23,12 +23,23 @@ public class PropertySelector<T> : IPropertySelector<T>
 
     public List<(string displayName, string propertyName)> GetAllPropertiesNames()
     {
-        return _typeProperties.Select(property => (proprtyName: property.displayName, property.property.Name)).ToList();
+        return _typeProperties.Select(property => (property.displayName, property.property.Name)).ToList();
+    }
+
+    public List<(string displayName, string value)> GetAllProperties(T item)
+    {
+        return _typeProperties.Select(property =>
+            (property.displayName, GetPropertyValue(property.property, item))).ToList();
     }
 
     public List<string> GetAllPropertiesValues(T item)
     {
         return _typeProperties.Select(property =>
-            property.property.GetMethod?.Invoke(item, null)?.ToString() ?? throw new Exception()).ToList();
+            GetPropertyValue(property.property, item)).ToList();
+    }
+
+    private static string GetPropertyValue(PropertyInfo property, T item)
+    {
+        return property.GetMethod?.Invoke(item, null)?.ToString() ?? "";
     }
 }

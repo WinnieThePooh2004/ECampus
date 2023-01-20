@@ -12,14 +12,15 @@
 @if (Model.Role == UserRole.Teacher)
 {
     <SingleItemSelect TData="TeacherDto" TParameters="TeacherParameters"
-                      SelectedId="Model.TeacherId"
-                      SelectChanged="@(teacher => Model.Teacher = teacher)"/>
+                      ParameterOptions="@(parameters => parameters.UserIdCanBeNull = false)"
+                      SelectedId="Model.TeacherId" SelectChanged="@(teacher => Model.Teacher = teacher)"/>
     <button class="btn btn-success" type="submit">Save</button>
     return;
 }
 @if (Model.Role == UserRole.Student)
 {
     <SingleItemSelect TData="StudentDto" TParameters="StudentParameters"
+                      ParameterOptions="@(parameters => parameters.UserIdCanBeNull = false)"
                       SelectedId="Model.StudentId" SelectChanged="@(student => Model.Student = student)"/>
     <button class="btn btn-success" type="submit">Save</button>
     return;
