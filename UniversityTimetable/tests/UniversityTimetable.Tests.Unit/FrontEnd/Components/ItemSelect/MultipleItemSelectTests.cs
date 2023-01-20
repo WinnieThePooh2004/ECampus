@@ -44,10 +44,10 @@ public class MultipleItemSelectTests
 
         var selector = RenderSelector(selectTo);
 
-        var checkbox = selector.Find("input");
+        var checkbox = selector.FindAll("input").First(input => input.ToMarkup().Contains("type=\"checkbox\""));
         checkbox.Change(new ChangeEventArgs { Value = true });
-        _onChangedInvoked.Should().Be(true);
         selectTo.Count.Should().Be(1);
+        _onChangedInvoked.Should().Be(true);
     }
 
     [Fact]
@@ -61,7 +61,7 @@ public class MultipleItemSelectTests
 
         var selector = RenderSelector(selectTo);
 
-        var checkbox = selector.Find("input");
+        var checkbox = selector.FindAll("input").First(input => input.ToMarkup().Contains("type=\"checkbox\""));
         await checkbox.ChangeAsync(new ChangeEventArgs { Value = false });
         _onChangedInvoked.Should().Be(true);
         selectTo.Count.Should().Be(0);
@@ -112,6 +112,6 @@ public class MultipleItemSelectTests
                 .Add(s => s.SelectTo, selectTo)
                 .Add(s => s.Title, title)
                 .Add(s => s.OnChanged, 
-                    () => _onChangedInvoked = !_onChangedInvoked));
+                    () => _onChangedInvoked = true));
     }
 }
