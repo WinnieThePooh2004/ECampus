@@ -1,6 +1,6 @@
 ﻿@page "/subjects"
 
-<DataTable TData="SubjectDto" TParameters="SubjectParameters"
+<IndexPageModel TData="SubjectDto" TParameters="SubjectParameters"
            ParameterOptions="@(parameters => parameters.OrderBy = "Name")"
            CreateLink="@("/subjects/Create")"
            EditLink="/subjects/edit"/>

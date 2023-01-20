@@ -50,9 +50,9 @@ builder.Services.AddScoped<IAuthRequests, AuthRequests>();
 builder.Services.AddScoped<IUserValidatorFactory, UserValidatorFactory>();
 builder.Services.AddScoped<IUpdateValidationRequests<UserDto>, UserUpdateValidationRequests>();
 builder.Services.AddScoped<ICreateValidationRequests<UserDto>, UserCreateValidationRequests>();
-builder.Services.Decorate<IValidator<UserDto>, ValidatorWithCheckboxIgnore<UserDto>>();
+builder.Services.Decorate<IValidator<UserDto>, ValidatorWithAnotherTypesIgnore<UserDto>>();
 
-builder.Services.Decorate<IValidator<SubjectDto>, ValidatorWithCheckboxIgnore<SubjectDto>>();
+builder.Services.Decorate<IValidator<SubjectDto>, ValidatorWithAnotherTypesIgnore<SubjectDto>>();
 
 builder.Services.AddScoped<IValidator<PasswordChangeDto>, PasswordChangeDtoValidator>();
 builder.Services.AddScoped<IValidationRequests<PasswordChangeDto>, PasswordChangeValidationRequests>();

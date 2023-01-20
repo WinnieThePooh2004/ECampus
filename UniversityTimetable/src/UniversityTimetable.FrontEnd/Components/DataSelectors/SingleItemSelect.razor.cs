@@ -11,10 +11,9 @@ public sealed partial class SingleItemSelect<TData, TParameters>
 {
     [Parameter] public string Title { get; set; } = "";
     [Parameter] public EventCallback<int> SelectedIdChanged { get; set; }
-    [Parameter] public List<string> PropertyNames { get; set; } = new();
-    [Parameter] public List<Func<TData, object>> PropertiesToShow { get; set; } = new();
-
     [Parameter] public int SelectedId { get; set; }
+    
+    private int TotalColumns => TableHeaders.Count;
 
     private Dictionary<TData, bool> Select { get; set; } = new(new DataTransferObjectComparer<TData>());
 

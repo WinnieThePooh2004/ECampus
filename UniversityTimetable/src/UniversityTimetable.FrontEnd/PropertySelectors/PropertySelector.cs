@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using UniversityTimetable.Shared.Extensions;
 using UniversityTimetable.Shared.Metadata;
 
 namespace UniversityTimetable.FrontEnd.PropertySelectors;
@@ -12,11 +13,12 @@ public class PropertySelector<T> : IPropertySelector<T>
         _typeProperties = typeof(T).GetProperties().Where(property =>
                 !property.Name.Contains("Id") && (property.PropertyType.IsPrimitive ||
                                                   property.PropertyType.IsEnum ||
-                                                  property.PropertyType == typeof(string)) &&
+                                                  property.PropertyType == typeof(string) ||
+                                                  property.GetCustomAttributes(false).OfType<DisplayNameAttribute>()
+                                                      .Any()) &&
                 !property.GetCustomAttributes().OfType<NotDisplayAttribute>().Any())
-            .Select(property => (property,
-                property.GetCustomAttributes(false).OfType<DisplayNameAttribute>().SingleOrDefault()?.Name ??
-                property.Name)).ToList();
+            .OrderBy(property => property.DisplayOrder())
+            .Select(property => (property, property.DisplayName())).ToList();
     }
 
     public List<(string displayName, string propertyName)> GetAllPropertiesNames()

@@ -16,20 +16,22 @@
         <h3>@Title</h3>
     }
     <tr>
-        @foreach (var propertyName in PropertyNames)
+        @foreach (var propertyName in TableHeaders)
         {
-            <th>@propertyName</th>
+            <th width="@(90 / TotalColumns)%" onclick="@(() => OnTableHeaderClicked(propertyName.propertyName))">
+                @propertyName.header
+            </th>
         }
-        <th></th>
+        <th width="10%"></th>
     </tr>
     </thead>
     <tbody>
     @foreach (var item in Data.Data)
     {
         <tr>
-            @foreach (var property in PropertiesToShow)
+            @foreach (var property in GetAllPropertiesValues(item))
             {
-                <td>@property(item)</td>
+                <td>@property</td>
             }
             <td>
                 <Checkbox @bind-Value="@this[item]"/>

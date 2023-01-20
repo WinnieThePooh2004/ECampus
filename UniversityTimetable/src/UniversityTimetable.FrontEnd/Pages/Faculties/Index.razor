@@ -1,7 +1,7 @@
 ﻿@page "/faculties"
 <h1>Faculties</h1>
 
-<DataTable TData="FacultyDto" TParameters="FacultyParameters"
+<IndexPageModel TData="FacultyDto" TParameters="FacultyParameters"
            ParameterOptions="@(p => p.OrderBy = "Name")"
            CreateLink="/faculties/Create"
            EditLink="/faculties/edit"

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using UniversityTimetable.FrontEnd.Components.DataSelectors;
+using UniversityTimetable.FrontEnd.PropertySelectors;
 using UniversityTimetable.FrontEnd.Requests.Interfaces;
 using UniversityTimetable.Shared.DataContainers;
 using UniversityTimetable.Shared.DataTransferObjects;
@@ -18,10 +19,18 @@ public class MultipleItemSelectTests
 
     private readonly Fixture _fixture = new();
     private bool _onChangedInvoked;
+    
+    private static readonly IPropertySelector<FacultyDto> PropertySelector = new PropertySelector<FacultyDto>();
+
+    private static readonly ISearchTermsSelector<FacultyParameters> SearchTermsSelector =
+        new SearchTermsSelector<FacultyParameters>();
+
 
     public MultipleItemSelectTests()
     {
         _context.Services.AddSingleton(_parametersRequests);
+        _context.Services.AddSingleton(PropertySelector);
+        _context.Services.AddSingleton(SearchTermsSelector);
     }
 
     [Fact]
@@ -35,10 +44,10 @@ public class MultipleItemSelectTests
 
         var selector = RenderSelector(selectTo);
 
-        var checkbox = selector.Find("input");
+        var checkbox = selector.FindAll("input").First(input => input.ToMarkup().Contains("type=\"checkbox\""));
         checkbox.Change(new ChangeEventArgs { Value = true });
-        _onChangedInvoked.Should().Be(true);
         selectTo.Count.Should().Be(1);
+        _onChangedInvoked.Should().Be(true);
     }
 
     [Fact]
@@ -52,7 +61,7 @@ public class MultipleItemSelectTests
 
         var selector = RenderSelector(selectTo);
 
-        var checkbox = selector.Find("input");
+        var checkbox = selector.FindAll("input").First(input => input.ToMarkup().Contains("type=\"checkbox\""));
         await checkbox.ChangeAsync(new ChangeEventArgs { Value = false });
         _onChangedInvoked.Should().Be(true);
         selectTo.Count.Should().Be(0);
@@ -101,11 +110,8 @@ public class MultipleItemSelectTests
         return _context.RenderComponent<MultipleItemsSelect<FacultyDto, FacultyParameters>>(
             parameters => parameters
                 .Add(s => s.SelectTo, selectTo)
-                .Add(s => s.PropertyNames, new List<string> { "Name" })
-                .Add(s => s.PropertiesToShow,
-                    new List<Func<FacultyDto, object>> { f => f.Name })
                 .Add(s => s.Title, title)
                 .Add(s => s.OnChanged, 
-                    () => _onChangedInvoked = !_onChangedInvoked));
+                    () => _onChangedInvoked = true));
     }
 }

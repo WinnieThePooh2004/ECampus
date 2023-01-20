@@ -1,5 +1,5 @@
 ﻿@page "/Students/{GroupId:int}"
-<DataTable TData="StudentDto" TParameters="StudentParameters"
+<IndexPageModel TData="StudentDto" TParameters="StudentParameters"
            ParameterOptions="@(p => { p.GroupId = GroupId; p.OrderBy = "LastName"; })"
            CreateLink="@($"/students/Create/{GroupId}")"
            EditLink="/students/edit"/>

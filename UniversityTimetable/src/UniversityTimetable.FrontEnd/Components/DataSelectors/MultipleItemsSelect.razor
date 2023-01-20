@@ -15,10 +15,11 @@
     {
         <h3>@Title</h3>
     }
+    <SearchTermsGroup OnBlur="RefreshData" SearchTerms="SearchTerms"/>
     <tr>
-        @foreach (var propertyName in PropertyNames)
+        @foreach (var propertyName in TableHeaders)
         {
-            <th width="@(90 / TotalColumns)%">@propertyName</th>
+            <th width="@(90 / TotalColumns)%" onclick="@(() => OnTableHeaderClicked(propertyName.propertyName))">@propertyName.header</th>
         }
         <th width="10%"></th>
     </tr>
@@ -27,9 +28,9 @@
     @foreach (var item in Data.Data)
     {
         <tr>
-            @foreach (var property in PropertiesToShow)
+            @foreach (var property in GetAllPropertiesValues(item))
             {
-                <td width="@(90 / TotalColumns)%">@property(item)</td>
+                <td width="@(90 / TotalColumns)%">@property</td>
             }
             <td width="10%">
                 <Checkbox Value="@this[item]" ValueChanged="@(isChecked => ValueChecked(isChecked, item))"/>
