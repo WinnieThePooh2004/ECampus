@@ -25,9 +25,9 @@
                    style="background-color: rgb(235, 235, 235)" placeholder="@searchTerm.placeHolder"/>
     }
     <tr>
-        @foreach (var header in _tableHeaders)
+        @foreach (var header in TableHeaders)
         {
-            <th onclick="@(() => OnPropertyNameClicked(header.propertyName))">
+            <th onclick="@(() => OnTableHeaderClicked(header.propertyName))">
                 @header.header
             </th>
         }
@@ -38,7 +38,7 @@
     @foreach (var item in Data.Data)
     {
         <tr>
-            @foreach (var property in PropertySelector.GetAllPropertiesValues(item))
+            @foreach (var property in GetAllPropertiesValues(item))
             {
                 <td>
                     @property

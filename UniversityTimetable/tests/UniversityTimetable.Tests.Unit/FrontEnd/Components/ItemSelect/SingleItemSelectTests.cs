@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using UniversityTimetable.FrontEnd.Components.DataSelectors;
+using UniversityTimetable.FrontEnd.PropertySelectors;
 using UniversityTimetable.FrontEnd.Requests.Interfaces;
 using UniversityTimetable.Shared.DataContainers;
 using UniversityTimetable.Shared.DataTransferObjects;
@@ -15,12 +16,20 @@ public class SingleItemSelectTests
 
     private readonly IParametersRequests<GroupDto, GroupParameters> _parametersRequests =
         Substitute.For<IParametersRequests<GroupDto, GroupParameters>>();
+    
+    private static readonly IPropertySelector<GroupDto> PropertySelector = new PropertySelector<GroupDto>();
+
+    private static readonly ISearchTermsSelector<GroupParameters> SearchTermsSelector =
+        new SearchTermsSelector<GroupParameters>();
+
 
     private readonly Fixture _fixture = new();
 
     public SingleItemSelectTests()
     {
         _context.Services.AddSingleton(_parametersRequests);
+        _context.Services.AddSingleton(PropertySelector);
+        _context.Services.AddSingleton(SearchTermsSelector);
     }
 
     [Fact]
@@ -114,9 +123,6 @@ public class SingleItemSelectTests
     {
         return _context.RenderComponent<SingleItemSelect<GroupDto, GroupParameters>>(options =>
             options.Add(s => s.SelectedId, selectedId)
-                .Add(s => s.PropertyNames, new List<string> { "Name" })
-                .Add(s => s.PropertiesToShow,
-                    new List<Func<GroupDto, object>> { f => f.Name })
                 .Add(s => s.Title, title)
                 .Add(s => s.SelectedIdChanged, selectChanged));
     }

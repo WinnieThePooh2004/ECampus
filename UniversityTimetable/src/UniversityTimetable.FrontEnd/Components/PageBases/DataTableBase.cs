@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using System.Linq.Expressions;
+using Microsoft.AspNetCore.Components;
+using UniversityTimetable.FrontEnd.PropertySelectors;
 using UniversityTimetable.FrontEnd.Requests.Interfaces;
 
 namespace UniversityTimetable.FrontEnd.Components.PageBases;
@@ -7,8 +9,19 @@ public class DataTableBase<TData, TParameters> : ComponentBase
     where TData : class
     where TParameters : class, IQueryParameters, new()
 {
+    [Parameter] public Action<TParameters> ParameterOptions { get; set; } = _ => { };
+
     [Inject] private IParametersRequests<TData, TParameters> DataRequests { get; set; } = default!;
+    
+    [Inject] private IPropertySelector<TData> PropertySelector { get; set; } = default!;
+
+    [Inject] private ISearchTermsSelector<TParameters> SearchTermsSelector { get; set; } = default!;
+    
     protected ListWithPaginationData<TData>? Data { get; private set; }
+    
+    protected List<(string header, string propertyName)> TableHeaders { get; private set; } = new();
+    protected List<(Expression<Func<string?>>, string placeHolder)> SearchTerms { get; private set; } = new();
+
     protected TParameters Parameters { get; } = new();
 
     protected virtual async Task RefreshData()
@@ -17,8 +30,27 @@ public class DataTableBase<TData, TParameters> : ComponentBase
         StateHasChanged();
     }
 
+    protected List<string> GetAllPropertiesValues(TData item)
+    {
+        return PropertySelector.GetAllPropertiesValues(item);
+    }
+    
+    protected Task OnTableHeaderClicked(string propertyName)
+    {
+        if (Parameters.OrderBy == propertyName)
+        {
+            Parameters.SortOrder = (SortOrder)((int)(Parameters.SortOrder + 1) % 2);
+            return RefreshData();
+        }
+
+        Parameters.OrderBy = propertyName;
+        return RefreshData();
+    }
+
     protected override Task OnInitializedAsync()
     {
+        TableHeaders = PropertySelector.GetAllPropertiesNames();
+        SearchTerms = SearchTermsSelector.PropertiesExpressions(Parameters);
         return RefreshData();
     }
 

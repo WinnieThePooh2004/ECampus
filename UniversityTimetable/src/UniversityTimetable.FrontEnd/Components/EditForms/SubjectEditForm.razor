@@ -30,10 +30,7 @@
                 }
             </table>
             <br/><br/>
-            <MultipleItemsSelect TData="TeacherDto" TParameters="TeacherParameters"
-                                 SelectTo="@Model.Teachers" OnChanged="@StateHasChanged"
-                                 PropertyNames="@(new List<string> { "First name", "Last name" })"
-                                 PropertiesToShow="@(new List<Func<TeacherDto, object>> { t => t.FirstName, t => t.LastName })"/>
+            <MultipleItemsSelect TData="TeacherDto" TParameters="TeacherParameters" SelectTo="@Model.Teachers" OnChanged="@StateHasChanged" />
             <br/>
             <button type="submit" class="btn btn-success">Save</button>
         </div>

@@ -1,7 +1,7 @@
 ﻿@page "/auditories"
 <h3>Auditories</h3>
 <br/>
-<DataTable TData="AuditoryDto" TParameters="AuditoryParameters"
+<IndexPageModel TData="AuditoryDto" TParameters="AuditoryParameters"
            CreateLink="/auditories/create"
            EditLink="/auditories/edit"
            ActionLinks="@(new List<(string, Func<AuditoryDto, string>)> { ("Timetable", a => $"/Timetable/auditory/{a.Id}") })"

@@ -3,6 +3,7 @@ using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.Extensions.DependencyInjection;
 using UniversityTimetable.FrontEnd.Components.EditForms;
+using UniversityTimetable.FrontEnd.PropertySelectors;
 using UniversityTimetable.FrontEnd.Requests.Interfaces;
 using UniversityTimetable.Shared.DataContainers;
 using UniversityTimetable.Shared.DataTransferObjects;
@@ -20,11 +21,18 @@ public class SubjectEditFormTests
     private readonly Fixture _fixture = new();
 
     private readonly IValidator<SubjectDto> _validator = Substitute.For<IValidator<SubjectDto>>();
+    
+    private static readonly IPropertySelector<TeacherDto> PropertySelector = new PropertySelector<TeacherDto>();
+
+    private static readonly ISearchTermsSelector<TeacherParameters> SearchTermsSelector =
+        new SearchTermsSelector<TeacherParameters>();
 
     public SubjectEditFormTests()
     {
         _context.Services.AddSingleton(_requests);
         _context.Services.AddSingleton(_validator);
+        _context.Services.AddSingleton(PropertySelector);
+        _context.Services.AddSingleton(SearchTermsSelector);
     }
 
     [Fact]

@@ -11,9 +11,7 @@ public sealed partial class MultipleItemsSelect<TData, TParameters>
     where TParameters : class, IQueryParameters, new()
 {
     [Parameter] public string Title { get; set; } = string.Empty;
-    [Parameter] public List<string> PropertyNames { get; set; } = new();
     [Parameter] public EventCallback OnChanged { get; set; }
-    [Parameter] public List<Func<TData, object>> PropertiesToShow { get; set; } = new();
     [Parameter] public List<TData> SelectTo { get; set; } = new();
 
     private Dictionary<TData, bool> Select { get; } =
@@ -31,7 +29,7 @@ public sealed partial class MultipleItemsSelect<TData, TParameters>
         return Data?.Data.Count == Select.Count;
     }
     
-    private int TotalColumns => PropertiesToShow.Count + 1;
+    private int TotalColumns => TableHeaders.Count;
 
     private void ValueChecked(bool isChecked, TData item)
     {
