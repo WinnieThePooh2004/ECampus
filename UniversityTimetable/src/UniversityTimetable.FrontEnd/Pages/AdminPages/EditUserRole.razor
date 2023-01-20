@@ -10,36 +10,11 @@
 }
 
 <div class="col-md-3">
-    <label class="form-label">Username @Model.Username</label>
+    <label class="form-label">Username: @Model.Username</label>
 </div>
 <div class="col-md-3">
-    <label class="form-label">Email @Model.Email</label>
+    <label class="form-label">Email: @Model.Email</label>
 </div>
 <EditForm class="form-select" Model="Model" OnValidSubmit="@(() => Save(Model))">
-    <InputSelect TValue="UserRole" Value="Model.Role" ValueExpression="@(() => Model.Role)" ValueChanged="RoleChanged">
-        @foreach (var role in Enum.GetValues<UserRole>())
-        {
-            <option value="@role">@role</option>
-        }
-    </InputSelect>
-    @if (Model.Role is UserRole.Admin or UserRole.Guest)
-    {
-        <button class="btn btn-success" type="submit">Save</button>
-        return;
-    }
-    @if (Model.Role == UserRole.Teacher)
-    {
-        <SingleItemSelect TData="TeacherDto" TParameters="TeacherParameters"
-                          SelectedId="Model.TeacherId"
-                          SelectChanged="@(teacher => Model.Teacher = teacher)"/>
-        <button class="btn btn-success" type="submit">Save</button>
-        return;
-    }
-    @if (Model.Role == UserRole.Student)
-    {
-        <SingleItemSelect TData="StudentDto" TParameters="StudentParameters"
-                          SelectedId="Model.StudentId" SelectChanged="@(student => Model.Student = student)"/>
-        <button class="btn btn-success" type="submit">Save</button>
-        return; 
-    }
+    <UserRoleEditForm Model="Model"/>
 </EditForm>
