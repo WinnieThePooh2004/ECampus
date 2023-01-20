@@ -1,4 +1,5 @@
-﻿<InputSelect TValue="UserRole" Value="Model.Role" ValueExpression="@(() => Model.Role)" ValueChanged="RoleChanged">
+﻿<ValidationMessage For="@(() => Model.Role)"/>
+<InputSelect TValue="UserRole" Value="Model.Role" ValueExpression="@(() => Model.Role)" ValueChanged="RoleChanged">
     @foreach (var role in Enum.GetValues<UserRole>())
     {
         <option value="@role">@role</option>
@@ -12,6 +13,7 @@
 }
 @if (Model.Role == UserRole.Teacher)
 {
+    <ValidationMessage For="@(() => Model.TeacherId)"/>
     <SingleItemSelect TData="TeacherDto" TParameters="TeacherParameters"
                       ParameterOptions="@(parameters => parameters.UserIdCanBeNull = false)"
                       SelectedId="Model.TeacherId" SelectChanged="@(teacher => Model.Teacher = teacher)"/>
@@ -20,6 +22,7 @@
 }
 @if (Model.Role == UserRole.Student)
 {
+    <ValidationMessage For="@(() => Model.StudentId)"/>
     <SingleItemSelect TData="StudentDto" TParameters="StudentParameters"
                       ParameterOptions="@(parameters => parameters.UserIdCanBeNull = false)"
                       SelectedId="Model.StudentId" SelectChanged="@(student => Model.Student = student)"/>
