@@ -16,4 +16,14 @@ public static class PropertyInfoExtensions
         var displayName = property.GetCustomAttributes(false).OfType<DisplayNameAttribute>().SingleOrDefault()?.Name;
         return string.IsNullOrWhiteSpace(displayName) ? property.Name : displayName;
     }
+
+    public static TProperty? GetFromProperty<TProperty>(this PropertyInfo property, object item)
+    {
+        return (TProperty?)property.GetMethod?.Invoke(item, null);
+    }
+
+    public static void SetFromProperty<TProperty>(this PropertyInfo property, object item, TProperty? value)
+    {
+        property.SetMethod!.Invoke(item, new object?[] { value });
+    }
 }
