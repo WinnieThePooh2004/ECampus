@@ -31,8 +31,8 @@
   </ItemGroup>
 
 <ItemGroup>
-    <ProjectReference Include="..\src\UniversityTimetable.Api\UniversityTimetable.Api.csproj" />
-    <ProjectReference Include="..\src\UniversityTimetable.Infrastructure\UniversityTimetable.Infrastructure.csproj" />
+    <ProjectReference Include="..\src\ECampus.Api\ECampus.Api.csproj" />
+    <ProjectReference Include="..\src\ECampus.Infrastructure\ECampus.Infrastructure.csproj" />
 </ItemGroup>
 
 <ItemGroup>

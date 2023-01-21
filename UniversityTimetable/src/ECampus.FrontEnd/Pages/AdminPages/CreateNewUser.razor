@@ -1,0 +1,18 @@
+﻿@page "/users/create"
+@using Microsoft.AspNetCore.Components
+<h3>Create new user</h3>
+<EditForm Model="_model" OnValidSubmit="Save">
+    <FluentValidationValidator Validator="_validator"/>
+    <div class="col-md-3">
+        <label for="@(() => _model.Email)">Email</label>
+        <ValidationMessage For="@(() => _model.Email)"/>
+        <InputText @bind-Value="@_model.Email"/>
+    </div>
+    <div class="col-md-3">
+        <label for="@(() => _model.Password)">Password</label>
+        <ValidationMessage For="@(() => _model.Password)"/>
+        <InputText Value="@_model.Password" ValueExpression="@(() => _model.Password)" ValueChanged="@(OnPasswordChanges)"/>
+    </div>
+    <br />
+    <UserRoleEditForm Model="_model"/>
+</EditForm>

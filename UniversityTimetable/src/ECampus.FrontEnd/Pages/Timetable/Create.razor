@@ -1,0 +1,5 @@
+﻿@page "/Timetable/create/{Mode:int}/{Id:int}"
+@using ECampus.Shared.Enums
+@inherits CreatePageBase<ECampus.Shared.DataTransferObjects.ClassDto>
+
+<ClassEditForm Model="CreateModel()" OnSubmit="Save" TimetableMode="(TimetableMode)Mode" />
