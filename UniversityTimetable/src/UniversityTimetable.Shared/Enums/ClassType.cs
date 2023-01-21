@@ -1,9 +1,8 @@
-﻿namespace UniversityTimetable.Shared.Enums
+﻿namespace UniversityTimetable.Shared.Enums;
+
+public enum ClassType
 {
-    public enum ClassType
-    {
-        Lecture,
-        Practical,
-        Lab
-    }
+    Lecture,
+    Practical,
+    Lab
 }
