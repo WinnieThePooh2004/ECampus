@@ -6,7 +6,7 @@ namespace UniversityTimetable.Shared.Models.RelationModels;
 public class UserAuditory
 {
     [Key]
-    [LeftTableId(typeof(User), typeof(Auditory))]
+    [LeftTableId(typeof(User))]
     public int UserId { get; set; }
     
     [Key] 

@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Blazored.FluentValidation" Version="2.1.0-preview.2" />
+    <PackageReference Include="Blazored.FluentValidation" Version="2.1.0" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.4.0" />
     <PackageReference Include="IdentityServer4" Version="4.1.2" />
     <PackageReference Include="Scrutor" Version="4.2.0" />
@@ -17,6 +17,10 @@
   <ItemGroup>
     <ProjectReference Include="..\UniversityTimetable.Domain\UniversityTimetable.Domain.csproj" />
     <ProjectReference Include="..\UniversityTimetable.Shared\UniversityTimetable.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Shared\NavMenu.razor.css" />
   </ItemGroup>
 
 </Project>

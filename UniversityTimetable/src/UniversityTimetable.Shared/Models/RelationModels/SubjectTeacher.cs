@@ -6,12 +6,12 @@ namespace UniversityTimetable.Shared.Models.RelationModels;
 public class SubjectTeacher
 {
     [Key]
-    [LeftTableId(typeof(Teacher), typeof(Subject))]
+    [LeftTableId(typeof(Teacher))]
     [RightTableId(typeof(Teacher))]
     public int TeacherId { get; set; }
     
     [Key]
-    [LeftTableId(typeof(Subject), typeof(Teacher))]
+    [LeftTableId(typeof(Subject))]
     [RightTableId(typeof(Subject))]
     public int SubjectId { get; set; }
 

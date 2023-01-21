@@ -94,6 +94,64 @@ namespace Migrations.Migrations
                     b.ToTable("Classes");
                 });
 
+            modelBuilder.Entity("UniversityTimetable.Shared.Models.Course", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("SubjectId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SubjectId");
+
+                    b.ToTable("Courses");
+                });
+
+            modelBuilder.Entity("UniversityTimetable.Shared.Models.CourseTask", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CourseId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Deadline")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("MaxPoints")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("ValidAfterDeadline")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
+
+                    b.ToTable("CourseTasks");
+                });
+
             modelBuilder.Entity("UniversityTimetable.Shared.Models.Department", b =>
                 {
                     b.Property<int>("Id")
@@ -162,6 +220,36 @@ namespace Migrations.Migrations
                     b.HasIndex("DepartmentId");
 
                     b.ToTable("Groups");
+                });
+
+            modelBuilder.Entity("UniversityTimetable.Shared.Models.RelationModels.CourseGroup", b =>
+                {
+                    b.Property<int>("CourseId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("GroupId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CourseId", "GroupId");
+
+                    b.HasIndex("GroupId");
+
+                    b.ToTable("CourseGroups");
+                });
+
+            modelBuilder.Entity("UniversityTimetable.Shared.Models.RelationModels.CourseTeacher", b =>
+                {
+                    b.Property<int>("CourseId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TeacherId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CourseId", "TeacherId");
+
+                    b.HasIndex("TeacherId");
+
+                    b.ToTable("CourseTeachers");
                 });
 
             modelBuilder.Entity("UniversityTimetable.Shared.Models.RelationModels.SubjectTeacher", b =>
@@ -278,6 +366,40 @@ namespace Migrations.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Subjects");
+                });
+
+            modelBuilder.Entity("UniversityTimetable.Shared.Models.TaskSubmission", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CourseTaskId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SubmissionContent")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("TotalPoints")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseTaskId");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("TaskSubmissions");
                 });
 
             modelBuilder.Entity("UniversityTimetable.Shared.Models.Teacher", b =>
@@ -397,6 +519,26 @@ namespace Migrations.Migrations
                     b.Navigation("Teacher");
                 });
 
+            modelBuilder.Entity("UniversityTimetable.Shared.Models.Course", b =>
+                {
+                    b.HasOne("UniversityTimetable.Shared.Models.Subject", "Subject")
+                        .WithMany("Courses")
+                        .HasForeignKey("SubjectId");
+
+                    b.Navigation("Subject");
+                });
+
+            modelBuilder.Entity("UniversityTimetable.Shared.Models.CourseTask", b =>
+                {
+                    b.HasOne("UniversityTimetable.Shared.Models.Course", "Course")
+                        .WithMany("Tasks")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+                });
+
             modelBuilder.Entity("UniversityTimetable.Shared.Models.Department", b =>
                 {
                     b.HasOne("UniversityTimetable.Shared.Models.Faculty", "Faculty")
@@ -417,6 +559,44 @@ namespace Migrations.Migrations
                         .IsRequired();
 
                     b.Navigation("Department");
+                });
+
+            modelBuilder.Entity("UniversityTimetable.Shared.Models.RelationModels.CourseGroup", b =>
+                {
+                    b.HasOne("UniversityTimetable.Shared.Models.Course", "Course")
+                        .WithMany("CourseGroups")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("UniversityTimetable.Shared.Models.Group", "Group")
+                        .WithMany("CourseGroups")
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+
+                    b.Navigation("Group");
+                });
+
+            modelBuilder.Entity("UniversityTimetable.Shared.Models.RelationModels.CourseTeacher", b =>
+                {
+                    b.HasOne("UniversityTimetable.Shared.Models.Course", "Course")
+                        .WithMany("CourseTeachers")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("UniversityTimetable.Shared.Models.Teacher", "Teacher")
+                        .WithMany("CourseTeachers")
+                        .HasForeignKey("TeacherId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+
+                    b.Navigation("Teacher");
                 });
 
             modelBuilder.Entity("UniversityTimetable.Shared.Models.RelationModels.SubjectTeacher", b =>
@@ -513,6 +693,25 @@ namespace Migrations.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("UniversityTimetable.Shared.Models.TaskSubmission", b =>
+                {
+                    b.HasOne("UniversityTimetable.Shared.Models.CourseTask", "CourseTask")
+                        .WithMany("Submissions")
+                        .HasForeignKey("CourseTaskId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("UniversityTimetable.Shared.Models.Student", "Student")
+                        .WithMany("Submissions")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CourseTask");
+
+                    b.Navigation("Student");
+                });
+
             modelBuilder.Entity("UniversityTimetable.Shared.Models.Teacher", b =>
                 {
                     b.HasOne("UniversityTimetable.Shared.Models.Department", "Department")
@@ -538,6 +737,20 @@ namespace Migrations.Migrations
                     b.Navigation("UsersIds");
                 });
 
+            modelBuilder.Entity("UniversityTimetable.Shared.Models.Course", b =>
+                {
+                    b.Navigation("CourseGroups");
+
+                    b.Navigation("CourseTeachers");
+
+                    b.Navigation("Tasks");
+                });
+
+            modelBuilder.Entity("UniversityTimetable.Shared.Models.CourseTask", b =>
+                {
+                    b.Navigation("Submissions");
+                });
+
             modelBuilder.Entity("UniversityTimetable.Shared.Models.Department", b =>
                 {
                     b.Navigation("Groups");
@@ -554,14 +767,23 @@ namespace Migrations.Migrations
                 {
                     b.Navigation("Classes");
 
+                    b.Navigation("CourseGroups");
+
                     b.Navigation("Students");
 
                     b.Navigation("UsersIds");
                 });
 
+            modelBuilder.Entity("UniversityTimetable.Shared.Models.Student", b =>
+                {
+                    b.Navigation("Submissions");
+                });
+
             modelBuilder.Entity("UniversityTimetable.Shared.Models.Subject", b =>
                 {
                     b.Navigation("Classes");
+
+                    b.Navigation("Courses");
 
                     b.Navigation("TeacherIds");
                 });
@@ -569,6 +791,8 @@ namespace Migrations.Migrations
             modelBuilder.Entity("UniversityTimetable.Shared.Models.Teacher", b =>
                 {
                     b.Navigation("Classes");
+
+                    b.Navigation("CourseTeachers");
 
                     b.Navigation("SubjectIds");
 

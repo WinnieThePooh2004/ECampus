@@ -15,4 +15,6 @@ public class Student : IModel, IIsDeleted
     
     public Group? Group { get; set; }
     public User? User { get; set; }
+    
+    public List<TaskSubmission>? Submissions { get; set; }
 }

@@ -52,6 +52,8 @@ builder.Services.AddFluentValidationWrappers<SubjectDto>();
 builder.Services.AddFluentValidationWrappers<StudentDto>();
 builder.Services.AddFluentValidationWrappers<TeacherDto>();
 builder.Services.AddFluentValidationWrappers<UserDto>();
+builder.Services.AddFluentValidationWrappers<CourseDto>();
+builder.Services.AddFluentValidationWrappers<CourseTaskDto>();
 
 builder.Services.Decorate<IUpdateValidator<UserDto>, UserUpdateValidator>();
 builder.Services.Decorate<ICreateValidator<UserDto>, UserCreateValidator>();

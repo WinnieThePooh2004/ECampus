@@ -1,12 +1,11 @@
-﻿namespace UniversityTimetable.Shared.Enums
+﻿namespace UniversityTimetable.Shared.Enums;
+
+public enum ScienceDegree
 {
-    public enum ScienceDegree
-    {
-        /// <summary>
-        /// used only for teacher parameters as value that accepts all variants
-        /// </summary>
-        None,
-        Master,
-        PhD
-    }
+    /// <summary>
+    /// used only for teacher parameters as value that accepts all variants
+    /// </summary>
+    None,
+    Master,
+    PhD
 }

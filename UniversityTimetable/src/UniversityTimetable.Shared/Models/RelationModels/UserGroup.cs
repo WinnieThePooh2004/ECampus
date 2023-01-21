@@ -6,7 +6,7 @@ namespace UniversityTimetable.Shared.Models.RelationModels;
 public class UserGroup
 {
     [Key]
-    [LeftTableId(typeof(User), typeof(Group))]
+    [LeftTableId(typeof(User))]
     public int UserId { get; set; }
     
     [Key] 

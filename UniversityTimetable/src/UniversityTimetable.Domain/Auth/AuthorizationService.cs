@@ -47,7 +47,10 @@ public class AuthorizationService : IAuthorizationService
             Email = user.Email,
             Role = user.Role,
             Username = user.Username,
-            UserId = user.Id
+            UserId = user.Id,
+            StudentId = user.StudentId,
+            TeacherId = user.TeacherId,
+            GroupId = user.Student?.GroupId
         };
         
         var jwt = new JwtSecurityToken(

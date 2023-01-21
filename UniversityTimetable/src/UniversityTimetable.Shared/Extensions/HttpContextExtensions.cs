@@ -12,6 +12,9 @@ public static class HttpContextExtensions
             new(ClaimTypes.Name, loginResult.Username),
             new(ClaimTypes.Role, loginResult.Role.ToString()),
             new(CustomClaimTypes.Id, loginResult.UserId.ToString(), ClaimValueTypes.Integer32),
-            new(CustomClaimTypes.JwtBearer, loginResult.Token)
+            new(CustomClaimTypes.JwtBearer, loginResult.Token),
+            new(CustomClaimTypes.StudentId, loginResult.StudentId?.ToString() ?? "-1"),
+            new(CustomClaimTypes.TeacherId, loginResult.TeacherId?.ToString() ?? "-1"),
+            new(CustomClaimTypes.GroupId, loginResult.GroupId?.ToString() ?? "-1")
         };
 }

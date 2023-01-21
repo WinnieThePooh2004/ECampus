@@ -1,9 +1,8 @@
-﻿namespace UniversityTimetable.Shared.Enums
+﻿namespace UniversityTimetable.Shared.Enums;
+
+public enum TimetableMode
 {
-    public enum TimetableMode
-    {
-        Group,
-        Auditory,
-        Teacher
-    }
+    Group,
+    Auditory,
+    Teacher
 }

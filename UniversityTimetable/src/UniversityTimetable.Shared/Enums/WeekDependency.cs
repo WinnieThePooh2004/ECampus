@@ -1,9 +1,8 @@
-﻿namespace UniversityTimetable.Shared.Enums
+﻿namespace UniversityTimetable.Shared.Enums;
+
+public enum WeekDependency
 {
-    public enum WeekDependency
-    {
-        AppearsOnOddWeeks,
-        AppearsOnEvenWeeks,
-        None
-    }
+    AppearsOnOddWeeks,
+    AppearsOnEvenWeeks,
+    None
 }
