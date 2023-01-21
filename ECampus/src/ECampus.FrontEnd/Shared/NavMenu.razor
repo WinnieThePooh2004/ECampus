@@ -1,0 +1,63 @@
+﻿@using IdentityServer4.Extensions
+@using System.Security.Claims
+@using ECampus.Shared.Enums
+<div class="top-row ps-3 navbar navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="">ECampus.FrontEnd2</a>
+        <button title="Navigation menu" class="navbar-toggled" @onclick="ToggleNavMenu">
+            <span class="navbar-toggled-icon"></span>
+        </button>
+    </div>
+</div>
+
+<div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
+    <nav class="flex-column">
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                <span class="oi oi-home" aria-hidden="true"></span> Home
+            </NavLink>
+            <NavLink class="nav-link" href="/faculties" Match="NavLinkMatch.All">
+                <span class="oi oi-home" aria-hidden="true"></span> Search by faculties
+            </NavLink>
+            <NavLink class="nav-link" href="/auditories" Match="NavLinkMatch.All">
+                <span class="oi oi-home" aria-hidden="true"></span> Search by auditories
+            </NavLink>
+            <NavLink class="nav-link" href="/subjects" Match="NavLinkMatch.All">
+                <span class="oi oi-home" aria-hidden="true"></span> Edit subjects
+            </NavLink>
+            @if (Context.HttpContext?.User.IsAuthenticated() ?? false)
+            {
+                <NavLink class="nav-link" href="/profile" Match="NavLinkMatch.All">
+                    <span class="oi oi-home" aria-hidden="true"></span> My profile
+                </NavLink>
+            }
+            @if (_role == UserRole.Admin)
+            {
+                <NavLink class="nav-link" href="/users" Match="NavLinkMatch.All">
+                    <span class="oi oi-home" aria-hidden="true"></span> Users
+                </NavLink>
+            }
+        </div>
+    </nav>
+</div>
+
+@code {
+
+    [Inject] private IHttpContextAccessor Context { get; set; } = default!;
+
+    private bool _collapseNavMenu = false;
+    private UserRole _role;
+
+    private string? NavMenuCssClass => _collapseNavMenu ? "collapse" : null;
+
+    protected override void OnInitialized()
+    {
+        Enum.TryParse(Context.HttpContext?.User.Claims.SingleOrDefault(claim => claim.Type == ClaimTypes.Role)?.Value, out _role);
+    }
+
+    private void ToggleNavMenu()
+    {
+        _collapseNavMenu = false;
+    }
+
+}

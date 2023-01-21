@@ -1,0 +1,25 @@
+﻿@using Microsoft.AspNetCore.Components
+<EditForm Model="_model" OnValidSubmit="Submit">
+    <FluentValidationValidator Validator="_validator"/>
+    <div class="col-md-3">
+        <label class="form-label" for="@(() => _model.Email)">Email</label><br/>
+        <InputText class="form-control" @bind-Value="@_model.Email"/>
+        <ValidationMessage For="() => _model.Email"/>
+    </div>
+    <div class="col-md-3">
+        <label class="form-label" for="@(() => _model.Password)">Password</label><br/>
+        <InputText class="form-control" @bind-Value="@_model.Password"/>
+        <ValidationMessage For="() => _model.Password"/>
+    </div>
+    <div class="col-md-3">
+        <label class="form-label" for="@(() => _model.PasswordConfirm)">Password confirm</label><br/>
+        <InputText class="form-control" @bind-Value="@_model.PasswordConfirm"/>
+        <ValidationMessage For="() => _model.PasswordConfirm"/>
+    </div>
+    <div class="col-md-3">
+        <label class="form-label" for="@(() => _model.Username)">Username</label><br/>
+        <InputText class="form-control" @bind-Value="@_model.Username"/>
+        <ValidationMessage For="() => _model.Username"/>
+    </div>
+    <button type="submit">Sign in</button>
+</EditForm>

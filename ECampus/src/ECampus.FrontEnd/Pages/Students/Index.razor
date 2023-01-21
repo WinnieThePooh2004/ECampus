@@ -1,0 +1,14 @@
+﻿@page "/Students/{GroupId:int}"
+@using ECampus.Shared.DataTransferObjects
+@using ECampus.Shared.QueryParameters
+<IndexPageModel TData="StudentDto" TParameters="StudentParameters"
+           ParameterOptions="@(p => { p.GroupId = GroupId; p.OrderBy = "LastName"; })"
+           CreateLink="@($"/students/Create/{GroupId}")"
+           EditLink="/students/edit"/>
+
+@code{
+
+    [Parameter]
+    public int GroupId { get; set; }
+
+}

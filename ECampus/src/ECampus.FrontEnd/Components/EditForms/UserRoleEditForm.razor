@@ -1,0 +1,34 @@
+﻿@using ECampus.Shared.Enums
+@using ECampus.Shared.QueryParameters
+@using ECampus.Shared.DataTransferObjects
+<ValidationMessage For="@(() => Model.Role)"/>
+<InputSelect TValue="UserRole" Value="Model.Role" ValueExpression="@(() => Model.Role)" ValueChanged="RoleChanged">
+    @foreach (var role in Enum.GetValues<UserRole>())
+    {
+        <option value="@role">@role</option>
+    }
+</InputSelect>
+@if (Model.Role is UserRole.Admin or UserRole.Guest)
+{
+    <br/>
+    <button class="btn btn-success" type="submit">Save</button>
+    return;
+}
+@if (Model.Role == UserRole.Teacher)
+{
+    <ValidationMessage For="@(() => Model.TeacherId)"/>
+    <SingleItemSelect TData="TeacherDto" TParameters="TeacherParameters"
+                      ParameterOptions="@(parameters => parameters.UserIdCanBeNull = false)"
+                      SelectedId="Model.TeacherId" SelectChanged="@(teacher => Model.Teacher = teacher)"/>
+    <button class="btn btn-success" type="submit">Save</button>
+    return;
+}
+@if (Model.Role == UserRole.Student)
+{
+    <ValidationMessage For="@(() => Model.StudentId)"/>
+    <SingleItemSelect TData="StudentDto" TParameters="StudentParameters"
+                      ParameterOptions="@(parameters => parameters.UserIdCanBeNull = false)"
+                      SelectedId="Model.StudentId" SelectChanged="@(student => Model.Student = student)"/>
+    <button class="btn btn-success" type="submit">Save</button>
+    return;
+}

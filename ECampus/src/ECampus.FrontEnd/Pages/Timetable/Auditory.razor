@@ -1,0 +1,26 @@
+﻿@page "/timetable/auditory/{AuditoryId:int}"
+@using ECampus.Shared.DataTransferObjects
+@using ECampus.Shared.Enums
+@inherits TimetablePageBase
+
+<TimetableModel CreateLink="@($"timetable/Create/{(int)TimetableMode.Auditory}/{AuditoryId}")"
+                EditLink="@($"timetable/edit/{(int)TimetableMode.Auditory}")"
+                DescriptionList="@(new List<Func<ClassDto, string>> { c => $"{c.Subject?.Name} {c.ClassType}",
+                                     c => $"Group {c.Group?.Name}", c => $"Teacher: {c.Teacher?.FirstName} {c.Teacher?.LastName}" })"
+                RefreshData="@(requests => requests.AuditoryTimetable(AuditoryId))" 
+                Title="@(timetable => $"Timetable for auditory {timetable.Auditory?.Name} in building {timetable.Auditory?.Building}")"/>
+
+<br />
+@if (User is null)
+{
+    return;
+}
+
+@if (!_isSaved)
+{
+    <a role="button" class="bnt btn-success" @onclick="async () => await OnSave()">Save</a>
+}
+else
+{
+    <a role="button" class="bnt btn-danger" @onclick="async () => await OnSaveRemoved()">Remove save</a>
+}

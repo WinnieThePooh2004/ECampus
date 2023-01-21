@@ -1,0 +1,17 @@
+﻿@inherits ModelEditForm<ECampus.Shared.DataTransferObjects.AuditoryDto>
+<EditForm Model="Model" OnValidSubmit="Submit">
+    <FluentValidationValidator Validator="Validator" />
+    <div class="col-md-3">
+        <label class="form-label" for="@Model.Building">Building</label>
+        <InputText class="form-control" @bind-Value="Model.Building" />
+        <ValidationMessage For="@(() => Model.Building)" />
+    </div>
+    <br />
+    <div class="col-md-3">
+        <label class="form-label" for="@Model.Name">Name</label>
+        <InputText class="form-control" @bind-Value="Model.Name" />
+        <ValidationMessage For="@(() => Model.Name)" />
+    </div>
+    <br />
+    <button type="submit" class="btn btn-success">Save</button>
+</EditForm>

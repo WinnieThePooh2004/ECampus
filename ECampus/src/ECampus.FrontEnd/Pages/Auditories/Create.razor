@@ -1,0 +1,8 @@
+﻿@page "/auditories/create"
+@using ECampus.Shared.DataTransferObjects
+@inherits CreatePageBase<ECampus.Shared.DataTransferObjects.AuditoryDto>
+<AuditoryEditForm Model="@(new AuditoryDto())" OnSubmit="Save" />
+
+@code{
+    protected override string PageAfterSave => "/auditories";
+}

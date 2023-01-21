@@ -1,0 +1,8 @@
+﻿@page "/teachers/{DepartmentId:int}"
+@using ECampus.Shared.DataTransferObjects
+@using ECampus.Shared.QueryParameters
+<IndexPageModel TData="TeacherDto" TParameters="TeacherParameters"
+           ParameterOptions="@(p => { p.DepartmentId = DepartmentId; p.OrderBy = "LastName"; })"
+           CreateLink="@($"/teachers/Create/{DepartmentId}")"
+           EditLink="/teachers/edit"
+           ActionLinks="@(new List<(string, Func<TeacherDto, string>)> { ("Timetable", d => $"/timetable/teacher/{d.Id}")})" />

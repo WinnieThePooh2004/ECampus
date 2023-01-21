@@ -1,0 +1,5 @@
+﻿@page "/subjects/create"
+@using ECampus.Shared.DataTransferObjects
+@inherits CreatePageBase<ECampus.Shared.DataTransferObjects.SubjectDto>
+<SubjectEditForm Model="new SubjectDto()" OnSubmit="Save" />
+<a role="button" class="btn-link" href="/subjects">Back</a>

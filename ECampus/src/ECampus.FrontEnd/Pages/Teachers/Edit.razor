@@ -1,0 +1,12 @@
+﻿@page "/teachers/edit/{Id:int}"
+@inherits EditPageBase<ECampus.Shared.DataTransferObjects.TeacherDto>
+@if(Model is null)
+{
+    <p><em>Loading...</em></p>
+    return;
+}
+<TeacherEditForm Model="@Model" OnSubmit="Save" />
+
+@code{
+    protected override string PageAfterSave => $"teachers/{Model?.DepartmentId}";
+}

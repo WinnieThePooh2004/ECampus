@@ -1,0 +1,20 @@
+﻿@inherits ModelEditForm<ECampus.Shared.DataTransferObjects.StudentDto>
+<div class="row">
+    <div class="col-md-4">
+        <EditForm Model="Model" OnValidSubmit="Submit">
+            <FluentValidationValidator Validator="Validator"/>
+            <ValidationSummary/>
+            <p>
+                <label class="form-label" for="@Model.FirstName">First name</label>
+                <InputText class="form-control" @bind-Value="Model.FirstName"/>
+                <ValidationMessage For="@(() => Model.FirstName)"/>
+            </p>
+            <p>
+                <label class="form-label" for="@Model.LastName">Last name</label>
+                <InputText class="form-control" @bind-Value="Model.LastName"/>
+                <ValidationMessage For="@(() => Model.LastName)"/>
+            </p>
+            <button type="submit">Save</button>
+        </EditForm>
+    </div>
+</div>

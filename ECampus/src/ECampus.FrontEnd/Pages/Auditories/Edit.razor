@@ -1,0 +1,14 @@
+﻿@page "/auditories/edit/{Id:int}"
+@inherits EditPageBase<ECampus.Shared.DataTransferObjects.AuditoryDto>
+
+@if(Model is null)
+{
+    <p><em>Loading...</em></p>
+    return;
+}
+
+<AuditoryEditForm Model="Model" OnSubmit="Save"/>
+
+@code {
+    protected override string PageAfterSave => "/auditories";
+}
