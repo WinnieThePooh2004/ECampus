@@ -9,7 +9,6 @@ public class ApplicationDbContext : DbContext
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
     {
-        
     }
 
     public ApplicationDbContext()
@@ -30,6 +29,12 @@ public class ApplicationDbContext : DbContext
     public DbSet<UserTeacher> UserTeachers { get; set; } = default!;
 
     public DbSet<Student> Students { get; set; } = default!;
+
+    public DbSet<Course> Courses { get; set; } = default!;
+    public DbSet<CourseTask> CourseTasks { get; set; } = default!;
+    public DbSet<TaskSubmission> TaskSubmissions { get; set; } = default!;
+    public DbSet<CourseGroup> CourseGroups { get; set; } = default!;
+    public DbSet<CourseTeacher> CourseTeachers { get; set; } = default!;
 
     public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
     {

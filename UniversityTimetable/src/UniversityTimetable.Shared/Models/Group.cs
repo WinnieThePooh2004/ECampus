@@ -16,5 +16,7 @@ public class Group : IIsDeleted, IModel
     public List<User>? Users { get; set; }
     public List<UserGroup>? UsersIds { get; set; }
     
+    public List<Course>? Courses { get; set; }
+    public List<CourseGroup>? CourseGroups { get; set; }
     public List<Student>? Students { get; set; }
 }

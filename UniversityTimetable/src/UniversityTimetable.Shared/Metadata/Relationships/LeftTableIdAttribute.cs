@@ -4,11 +4,9 @@
 public class LeftTableIdAttribute : Attribute
 {
     public Type LeftTableType { get; }
-    public Type RightTableType { get; }
 
-    public LeftTableIdAttribute(Type leftTableType, Type rightTableType)
+    public LeftTableIdAttribute(Type leftTableType)
     {
         LeftTableType = leftTableType;
-        RightTableType = rightTableType;
     }
 }

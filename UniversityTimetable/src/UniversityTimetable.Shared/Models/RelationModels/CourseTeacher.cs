@@ -3,18 +3,16 @@ using UniversityTimetable.Shared.Metadata.Relationships;
 
 namespace UniversityTimetable.Shared.Models.RelationModels;
 
-public class SubjectTeacher
+public class CourseTeacher
 {
     [Key]
-    [LeftTableId(typeof(Teacher))]
     [RightTableId(typeof(Teacher))]
     public int TeacherId { get; set; }
     
     [Key]
-    [LeftTableId(typeof(Subject))]
-    [RightTableId(typeof(Subject))]
-    public int SubjectId { get; set; }
-
+    [LeftTableId(typeof(Course))]
+    public int CourseId { get; set; }
+    
     public Teacher? Teacher { get; set; }
-    public Subject? Subject { get; set; }
+    public Course? Course { get; set; }
 }

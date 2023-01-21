@@ -19,4 +19,8 @@
     <ProjectReference Include="..\UniversityTimetable.Shared\UniversityTimetable.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Include="Shared\NavMenu.razor.css" />
+  </ItemGroup>
+
 </Project>

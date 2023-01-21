@@ -3,20 +3,20 @@ using Microsoft.AspNetCore.Mvc;
 using UniversityTimetable.Domain.Auth;
 using UniversityTimetable.Shared.DataTransferObjects;
 using UniversityTimetable.Shared.Enums;
-using UniversityTimetable.Shared.QueryParameters;
 using UniversityTimetable.Shared.Interfaces.Domain;
+using UniversityTimetable.Shared.QueryParameters;
 
 namespace UniversityTimetable.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class AuditoriesController : ControllerBase
+public class CourseTasksController : ControllerBase
 {
-    private readonly IParametersService<AuditoryDto, AuditoryParameters> _parametersService;
-    private readonly IBaseService<AuditoryDto> _baseService;
+    private readonly IParametersService<CourseTaskDto, CourseTaskParameters> _parametersService;
+    private readonly IBaseService<CourseTaskDto> _baseService;
 
-    public AuditoriesController(IParametersService<AuditoryDto, AuditoryParameters> parametersService,
-        IBaseService<AuditoryDto> baseService)
+    public CourseTasksController(IParametersService<CourseTaskDto, CourseTaskParameters> parametersService,
+        IBaseService<CourseTaskDto> baseService)
     {
         _parametersService = parametersService;
         _baseService = baseService;
@@ -24,7 +24,7 @@ public class AuditoriesController : ControllerBase
 
     [HttpGet]
     [AllowAnonymous]
-    public async Task<IActionResult> Get([FromQuery] AuditoryParameters parameters)
+    public async Task<IActionResult> Get([FromQuery] CourseTaskParameters parameters)
     {
         return Ok(await _parametersService.GetByParametersAsync(parameters));
     }
@@ -38,18 +38,18 @@ public class AuditoriesController : ControllerBase
 
     [HttpPost]
     [Authorized(UserRole.Admin)]
-    public async Task<IActionResult> Post(AuditoryDto auditory)
+    public async Task<IActionResult> Post(CourseTaskDto task)
     {
-        await _baseService.CreateAsync(auditory);
-        return Ok(auditory);
+        await _baseService.CreateAsync(task);
+        return Ok(task);
     }
 
     [HttpPut]
     [Authorized(UserRole.Admin)]
-    public async Task<IActionResult> Put(AuditoryDto auditory)
+    public async Task<IActionResult> Put(CourseTaskDto task)
     {
-        await _baseService.UpdateAsync(auditory);
-        return Ok(auditory);
+        await _baseService.UpdateAsync(task);
+        return Ok(task);
     }
 
     [HttpDelete("{id:int?}")]

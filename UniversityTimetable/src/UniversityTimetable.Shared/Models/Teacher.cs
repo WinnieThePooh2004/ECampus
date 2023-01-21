@@ -24,4 +24,6 @@ public class Teacher : IIsDeleted, IModel
     public List<Class>? Classes { get; set; }
     public List<User>? Users { get; set; }
     public List<UserTeacher>? UsersIds { get; set; }
+    public List<CourseTeacher>? CourseTeachers { get; set; }
+    public List<Course>? Courses { get; set; }
 }

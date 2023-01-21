@@ -6,6 +6,6 @@ public static class TestDatabaseFactory
 {
     public static DbContextOptionsBuilder UseInMemoryDb(this DbContextOptionsBuilder optionsBuilder)
     {
-        return optionsBuilder.UseInMemoryDatabase("DataBase");
+        return optionsBuilder.UseSqlite("Data Source=:memory:");
     }
 }

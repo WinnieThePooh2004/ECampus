@@ -13,4 +13,6 @@ public class Subject : IIsDeleted, IModel
     public List<Class>? Classes { get; set; }
     public List<SubjectTeacher>? TeacherIds { get; set; }
     public List<Teacher>? Teachers { get; set; }
+    
+    public List<Course>? Courses { get; set; }
 }
