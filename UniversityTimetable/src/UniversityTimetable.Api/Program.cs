@@ -62,8 +62,7 @@ builder.Services.Decorate<ICreateValidator<ClassDto>, ClassDtoUniversalValidator
 builder.Services.AddScoped<IUpdateValidator<PasswordChangeDto>, FluentValidatorWrapper<PasswordChangeDto>>();
 builder.Services.Decorate<IUpdateValidator<PasswordChangeDto>, PasswordChangeDtoUpdateValidator>();
 
-builder.Services.AddSingleton(typeof(IRelationshipsUpdateHandler<,,>),typeof(RelationshipsHandler<,,>));
-builder.Services.AddSingleton(typeof(IRelationshipsCreateHandler<,,>),typeof(RelationshipsHandler<,,>));
+builder.Services.AddSingleton(typeof(IRelationshipsHandler<,,>),typeof(RelationshipsHandler<,,>));
 
 builder.Services.AddSingleton(typeof(IRelationsDataAccess<,,>), typeof(RelationsDataAccess<,,>));
 

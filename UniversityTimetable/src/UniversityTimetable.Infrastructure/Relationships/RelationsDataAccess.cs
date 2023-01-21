@@ -14,10 +14,10 @@ public class RelationsDataAccess<TLeftTable, TRightTable, TRelations> :
     where TRelations : class, new()
 {
     private readonly ILogger<RelationsDataAccess<TLeftTable, TRightTable, TRelations>> _logger;
-    private readonly IRelationshipsUpdateHandler<TLeftTable, TRightTable, TRelations> _relationshipsHandler;
+    private readonly IRelationshipsHandler<TLeftTable, TRightTable, TRelations> _relationshipsHandler;
 
     public RelationsDataAccess(ILogger<RelationsDataAccess<TLeftTable, TRightTable, TRelations>> logger,
-        IRelationshipsUpdateHandler<TLeftTable, TRightTable, TRelations> relationshipsHandler)
+        IRelationshipsHandler<TLeftTable, TRightTable, TRelations> relationshipsHandler)
     {
         _logger = logger;
         _relationshipsHandler = relationshipsHandler;

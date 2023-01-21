@@ -9,25 +9,22 @@
 
 <div class="row">
     <div class="col-md-4">
-        <EditForm Model="_model" OnValidSubmit="@Save">
-            <button type="submit" class="btn btn-success">Save</button>
+        <EditForm Model="_model" OnSubmit="@Save">
             <FluentValidationValidator Validator="_validator"/>
+            <button class="btn btn-success" type="submit">Save</button>
             <p>
                 <label for="@_model.Username">Username</label>
                 <InputText @bind-Value="@_model.Username"/>
                 <ValidationMessage For="@(() => _model.Username)"/>
             </p>
             <MultipleItemsSelect TData="AuditoryDto" TParameters="AuditoryParameters" SelectTo="_model.SavedAuditories"
-                                 Title="Auditories" PropertyNames="@(new List<string> { "Building", "Name" })"
-                                 PropertiesToShow="@(new List<Func<AuditoryDto, object>> { a => a.Building, a => a.Name })"/>
+                                 Title="Auditories"/>
             <br/>
             <MultipleItemsSelect TData="GroupDto" TParameters="GroupParameters" SelectTo="_model.SavedGroups"
-                                 Title="Auditories" PropertyNames="@(new List<string> { "Name" })"
-                                 PropertiesToShow="@(new List<Func<GroupDto, object>> { g => g.Name })"/>
+                                 Title="Groups"/>
             <br/>
             <MultipleItemsSelect TData="TeacherDto" TParameters="TeacherParameters" SelectTo="_model.SavedTeachers"
-                                 Title="Auditories" PropertyNames="@(new List<string> { "First name", "Last name" })"
-                                 PropertiesToShow="@(new List<Func<TeacherDto, object>> { t => t.FirstName, t => t.LastName })"/>
+                                 Title="Teachers"/>
             <br/>
         </EditForm>
     </div>
