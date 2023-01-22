@@ -21,6 +21,17 @@ namespace ECampus.Api.Extensions;
 // ReSharper disable once InconsistentNaming
 internal static class IServiceCollectionExtensions
 {
+    public static void AddLoggingServices(this IServiceCollection services, Assembly dataObjectsAssembly)
+    {
+        var dataTransferObjects = GetDataTransferObjects(dataObjectsAssembly);
+
+        foreach (var dto in dataTransferObjects)
+        {
+            services.Decorate(typeof(IBaseService<>).MakeGenericType(dto),
+                typeof(LoggingService<>).MakeGenericType(dto));
+        }
+    }
+
     public static void AddUniqueServices(this IServiceCollection services, params Assembly[] assemblies)
     {
         services.AddRange(assemblies.SelectMany(assembly => assembly.GetTypes().Where(type =>
@@ -53,10 +64,11 @@ internal static class IServiceCollectionExtensions
             foreach (var attribute in relationAttributes)
             {
                 services.Decorate(typeof(IDataUpdateService<>).MakeGenericType(relationModel),
-                    typeof(DataUpdateServiceWithRelationships<,,>).MakeGenericType(relationModel, attribute.RelatedModel,
+                    typeof(DataUpdateServiceWithRelationships<,,>).MakeGenericType(relationModel,
+                        attribute.RelatedModel,
                         attribute.RelationModel));
                 services.Decorate(typeof(IDataCreateService<>).MakeGenericType(relationModel),
-                    typeof(DataCreateWithRelationships<,,>).MakeGenericType(relationModel,  attribute.RelatedModel,
+                    typeof(DataCreateWithRelationships<,,>).MakeGenericType(relationModel, attribute.RelatedModel,
                         attribute.RelationModel));
             }
         }
@@ -157,6 +169,7 @@ internal static class IServiceCollectionExtensions
         {
             return;
         }
+
         services.Decorate<IBaseService<TDto>, ServiceWithCreateValidation<TDto>>();
         services.Decorate<IBaseService<TDto>, ServiceWithUpdateValidation<TDto>>();
     }
@@ -183,7 +196,8 @@ internal static class IServiceCollectionExtensions
         => assembly.GetTypes().Where(type => type.BaseType == typeof(QueryParameters)).ToList();
 
     private static List<Type> GetModelsWithManyToManyRelationships(Assembly assembly)
-        => assembly.GetTypes().Where(type => type.GetCustomAttributes(false).OfType<ManyToManyAttribute>().Any()).ToList();
+        => assembly.GetTypes().Where(type => type.GetCustomAttributes(false).OfType<ManyToManyAttribute>().Any())
+            .ToList();
 
     private static bool IsGenericOfType(this Type type, Type genericType)
         => type.IsGenericType && type.GetGenericTypeDefinition() == genericType;

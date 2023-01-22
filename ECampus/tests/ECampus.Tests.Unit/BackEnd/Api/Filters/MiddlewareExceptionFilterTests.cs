@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Routing;
-using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace ECampus.Tests.Unit.BackEnd.Api.Filters;
 
@@ -16,7 +16,7 @@ public class MiddlewareExceptionFilterTests
 
     public MiddlewareExceptionFilterTests()
     {
-        _sut = new MiddlewareExceptionFilter(Substitute.For<ILogger<MiddlewareExceptionFilter>>());
+        _sut = new MiddlewareExceptionFilter(Substitute.For<ILogger>());
     }
 
     [Fact]

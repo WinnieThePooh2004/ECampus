@@ -5,7 +5,6 @@ using ECampus.Shared.Exceptions.DomainExceptions;
 using ECampus.Shared.Interfaces.DataAccess;
 using ECampus.Shared.Models;
 using ECampus.Tests.Shared.DataFactories;
-using Microsoft.Extensions.Logging;
 
 namespace ECampus.Tests.Unit.BackEnd.Domain.Services;
 
@@ -19,9 +18,7 @@ public sealed class BaseServiceTests
     public BaseServiceTests()
     {
         _dataAccessFacade = Substitute.For<IBaseDataAccessFacade<Auditory>>();
-        _service = new BaseService<AuditoryDto, Auditory>(_dataAccessFacade,
-            Substitute.For<ILogger<BaseService<AuditoryDto, Auditory>>>(),
-            _mapper);
+        _service = new BaseService<AuditoryDto, Auditory>(_dataAccessFacade, _mapper);
         _fixture = new Fixture();
         _fixture.Behaviors.Add(new OmitOnRecursionBehavior());
     }

@@ -3,7 +3,6 @@ using ECampus.Infrastructure.Relationships;
 using ECampus.Shared.Exceptions.InfrastructureExceptions;
 using ECampus.Shared.Models;
 using ECampus.Shared.Models.RelationModels;
-using Microsoft.Extensions.Logging;
 
 namespace ECampus.Tests.Unit.BackEnd.Infrastructure.DataServices.Relationships;
 
@@ -15,9 +14,7 @@ public class RelationsDataAccessTests
     public RelationsDataAccessTests()
     {
         _context = Substitute.For<ApplicationDbContext>();
-        _sut = new RelationsDataAccess<User, Group, UserGroup>(
-            Substitute.For<ILogger<RelationsDataAccess<User, Group, UserGroup>>>(),
-            new RelationshipsHandler<User, Group, UserGroup>());
+        _sut = new RelationsDataAccess<User, Group, UserGroup>(new RelationshipsHandler<User, Group, UserGroup>());
     }
 
     [Fact]
