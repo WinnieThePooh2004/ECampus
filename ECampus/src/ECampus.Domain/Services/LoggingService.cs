@@ -16,35 +16,35 @@ public class LoggingService<T> : IBaseService<T>
         _logger = logger;
     }
 
-    public Task<T> GetByIdAsync(int? id)
+    public async Task<T> GetByIdAsync(int? id)
     {
         _logger.Information("Retrieving object of type {Type}, with id = {Id}", typeof(T), id);
-        var result = _baseService.GetByIdAsync(id);
+        var result = await _baseService.GetByIdAsync(id);
         _logger.Information("Successfully retrieved object of type {Type} by id = {Id}", typeof(T), id);
         return result;
     }
 
-    public Task<T> CreateAsync(T entity)
+    public async Task<T> CreateAsync(T entity)
     {
         _logger.Information("Creating new object of type {Type}", typeof(T));
-        var createdEntity = _baseService.CreateAsync(entity);
+        var createdEntity = await _baseService.CreateAsync(entity);
         _logger.Information("Successfully created object of type {Type}.\n Id of new object is {Id}", typeof(T),
             entity.Id);
         return createdEntity;
     }
 
-    public Task<T> UpdateAsync(T entity)
+    public async Task<T> UpdateAsync(T entity)
     {
         _logger.Information("Updating object of type {Type} with id = {Id}", typeof(T), entity.Id);
-        var updatedEntity = _baseService.CreateAsync(entity);
+        var updatedEntity = await _baseService.CreateAsync(entity);
         _logger.Information("Successfully updated object of type {Type} with id = {Id}", typeof(T), entity.Id);
         return updatedEntity;
     }
 
-    public Task<T> DeleteAsync(int? id)
+    public async Task<T> DeleteAsync(int? id)
     {
         _logger.Information("Deleting object of type {Type}, with id = {Id}", typeof(T), id);
-        var deletedObject = _baseService.GetByIdAsync(id);
+        var deletedObject = await _baseService.GetByIdAsync(id);
         _logger.Information("Successfully deleted object of type {Type} by id = {Id}", typeof(T), id);
         return deletedObject;
     }
