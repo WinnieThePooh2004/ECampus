@@ -15,6 +15,7 @@ public class RelationshipsHandler<TLeftTable, TRightTable, TRelationModel>
     public PropertyInfo RightTableId { get; }
     public PropertyInfo LeftTableId { get; }
     public PropertyInfo RelatedModels { get; }
+    public PropertyInfo RelationModels { get; }
 
     public RelationshipsHandler()
     {
@@ -28,5 +29,8 @@ public class RelationshipsHandler<TLeftTable, TRightTable, TRelationModel>
 
         RelatedModels = typeof(TLeftTable).GetProperties().Single(p =>
             p.PropertyType.GetInterfaces().Any(i => i == typeof(IEnumerable<TRightTable>)));
+        
+        RelationModels = typeof(TLeftTable).GetProperties().Single(p =>
+            p.PropertyType.GetInterfaces().Any(i => i == typeof(IEnumerable<TRelationModel>)));
     }
 }

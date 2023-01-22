@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using ECampus.Shared.Exceptions.InfrastructureExceptions;
+using ECampus.Shared.Extensions;
 using ECampus.Shared.Interfaces.Data.DataServices;
 using ECampus.Shared.Interfaces.Data.Models;
 using Microsoft.EntityFrameworkCore;
