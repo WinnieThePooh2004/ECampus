@@ -1,0 +1,15 @@
+﻿@page "/courses/edit/{Id:int}"
+
+@inherits EditPageBase<CourseDto>
+
+@if (Model is null)
+{
+    <p><em>Loading...</em></p>
+    return;
+}
+
+<CourseEditForm Model="Model" OnSubmit="Save"/>
+
+@code{
+    protected override string PageAfterSave => "/courses";
+}

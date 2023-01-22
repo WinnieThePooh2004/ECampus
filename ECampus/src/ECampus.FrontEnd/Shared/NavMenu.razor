@@ -24,17 +24,26 @@
             <NavLink class="nav-link" href="/subjects" Match="NavLinkMatch.All">
                 <span class="oi oi-home" aria-hidden="true"></span> Edit subjects
             </NavLink>
-            @if (Context.HttpContext?.User.IsAuthenticated() ?? false)
+            @if (Context.HttpContext!.User.IsAuthenticated())
             {
                 <NavLink class="nav-link" href="/profile" Match="NavLinkMatch.All">
                     <span class="oi oi-home" aria-hidden="true"></span> My profile
                 </NavLink>
-            }
-            @if (_role == UserRole.Admin)
-            {
-                <NavLink class="nav-link" href="/users" Match="NavLinkMatch.All">
-                    <span class="oi oi-home" aria-hidden="true"></span> Users
-                </NavLink>
+                @if (_role is UserRole.Student or UserRole.Teacher)
+                {
+                    <NavLink class="nav-link" href="/MyCourses" Match="NavLinkMatch.All">
+                        <span class="oi oi-home" aria-hidden="true"></span> My courses
+                    </NavLink>
+                }
+                else if (_role == UserRole.Admin)
+                {
+                    <NavLink class="nav-link" href="/courses" Match="NavLinkMatch.All">
+                        <span class="oi oi-home" aria-hidden="true"></span> Edit courses
+                    </NavLink>
+                    <NavLink class="nav-link" href="/users" Match="NavLinkMatch.All">
+                        <span class="oi oi-home" aria-hidden="true"></span> Edit users
+                    </NavLink>
+                }
             }
         </div>
     </nav>
