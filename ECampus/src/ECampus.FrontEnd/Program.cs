@@ -33,6 +33,7 @@ builder.Services.AddRequests<SubjectDto, SubjectParameters>();
 builder.Services.AddRequests<AuditoryDto, AuditoryParameters>();
 builder.Services.AddRequests<StudentDto, StudentParameters>();
 builder.Services.AddRequests<UserDto, UserParameters>();
+builder.Services.AddRequests<CourseDto, CourseParameters>();
 builder.Services.AddScoped<IUserRolesRequests, UserRolesRequests>();
 
 builder.Services.AddValidatorsFromAssembly(Assembly.Load("ECampus.Domain"));
@@ -55,10 +56,13 @@ builder.Services.AddScoped<ICreateValidationRequests<UserDto>, UserCreateValidat
 builder.Services.Decorate<IValidator<UserDto>, ValidatorWithAnotherTypesIgnore<UserDto>>();
 
 builder.Services.Decorate<IValidator<SubjectDto>, ValidatorWithAnotherTypesIgnore<SubjectDto>>();
+builder.Services.Decorate<IValidator<TeacherDto>, ValidatorWithAnotherTypesIgnore<TeacherDto>>();
 
 builder.Services.AddScoped<IValidator<PasswordChangeDto>, PasswordChangeDtoValidator>();
 builder.Services.AddScoped<IValidationRequests<PasswordChangeDto>, PasswordChangeValidationRequests>();
 builder.Services.Decorate<IValidator<PasswordChangeDto>, HttpCallingValidator<PasswordChangeDto>>();
+
+builder.Services.Decorate<IValidator<CourseDto>, ValidatorWithAnotherTypesIgnore<CourseDto>>();
 
 builder.Services.AddSingleton<IRequestOptions>(new RequestOptions(builder.Configuration));
 

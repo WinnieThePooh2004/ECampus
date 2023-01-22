@@ -1,0 +1,12 @@
+﻿@page "/MyCourses"
+@using Microsoft.AspNetCore.Authentication.Cookies
+@attribute [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
+@if (_teacherId == 0 && _groupId == 0)
+{
+    <h3>Your profile is not registered as teacher or student, please contact admins</h3>
+    return;
+}
+
+<h3>My courses:</h3>
+
+<IndexPageModel TData="CourseDto" TParameters="CourseParameters" ParameterOptions="SetParameters"/>

@@ -28,8 +28,11 @@ public class DataCreateWithRelationships<TModel, TRelatedModel, TRelations> : ID
             return await _baseCreateService.CreateAsync(model, context);
         }
 
-        context.AddRange(relatedModels.Select(m => 
-            _relationshipsHandler.CreateRelationModel(model.Id, m.Id)));
+        var relationModels = relatedModels.Select(m =>
+            _relationshipsHandler.CreateRelationModel(model.Id, m.Id)).ToList();
+        
+        _relationshipsHandler.RelationModels.SetFromProperty(model, relationModels);
+        _relationshipsHandler.RelatedModels.SetPropertyAsNull(model);
         return await _baseCreateService.CreateAsync(model, context);
     }
 }
