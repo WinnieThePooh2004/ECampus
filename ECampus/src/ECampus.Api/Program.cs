@@ -80,6 +80,8 @@ builder.Services.AddSingleton(typeof(IRelationshipsHandler<,,>), typeof(Relation
 
 builder.Services.AddSingleton(typeof(IRelationsDataAccess<,,>), typeof(RelationsDataAccess<,,>));
 
+builder.Services.AddLoggingServices(Assembly.Load("ECampus.Shared"));
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
