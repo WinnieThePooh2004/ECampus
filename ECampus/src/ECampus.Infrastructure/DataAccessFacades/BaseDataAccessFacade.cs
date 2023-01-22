@@ -1,10 +1,8 @@
-﻿using System.Net;
-using ECampus.Shared.Exceptions.InfrastructureExceptions;
+﻿using ECampus.Shared.Exceptions.InfrastructureExceptions;
 using ECampus.Shared.Interfaces.Data.DataServices;
 using ECampus.Shared.Interfaces.Data.Models;
 using ECampus.Shared.Interfaces.DataAccess;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 
 namespace ECampus.Infrastructure.DataAccessFacades;
 
@@ -12,18 +10,16 @@ public class BaseDataAccessFacade<TModel> : IBaseDataAccessFacade<TModel>
     where TModel : class, IModel, new()
 {
     private readonly ApplicationDbContext _context;
-    private readonly ILogger<BaseDataAccessFacade<TModel>> _logger;
     private readonly ISingleItemSelector<TModel> _singleItemSelector;
     private readonly IDataUpdateService<TModel> _updateService;
     private readonly IDataCreateService<TModel> _createService;
     private readonly IDataDeleteService<TModel> _deleteService;
 
-    public BaseDataAccessFacade(ApplicationDbContext context, ILogger<BaseDataAccessFacade<TModel>> logger, 
+    public BaseDataAccessFacade(ApplicationDbContext context, 
         ISingleItemSelector<TModel> singleItemSelector, IDataDeleteService<TModel> deleteService,
         IDataUpdateService<TModel> updateService, IDataCreateService<TModel> createService)
     {
         _context = context;
-        _logger = logger;
         _singleItemSelector = singleItemSelector;
         _deleteService = deleteService;
         _updateService = updateService;
@@ -44,10 +40,13 @@ public class BaseDataAccessFacade<TModel> : IBaseDataAccessFacade<TModel>
         {
             await _context.SaveChangesAsync();
         }
-        catch (DbUpdateConcurrencyException e)
+        catch (DbUpdateConcurrencyException)
         {
-            _logger.LogError(e, "Db update to successful");
             throw new ObjectNotFoundByIdException(typeof(TModel), id);
+        }
+        catch(Exception e)
+        {
+            throw new UnhandledInfrastructureException(e);
         }
         return deletedModel;
     }
@@ -66,15 +65,13 @@ public class BaseDataAccessFacade<TModel> : IBaseDataAccessFacade<TModel>
         {
             await _context.SaveChangesAsync();
         }
-        catch (DbUpdateConcurrencyException e)
+        catch (DbUpdateConcurrencyException)
         {
-            _logger.LogError(e, "Db update was not successful");
             throw new ObjectNotFoundByIdException(typeof(TModel), entity.Id);
         }
-        catch (Exception e)
+        catch(Exception e)
         {
-            _logger.LogError(e, "Db update was not successful");
-            throw new InfrastructureExceptions(HttpStatusCode.InternalServerError, e.ToString());
+            throw new UnhandledInfrastructureException(e);
         }
 
         return entity;

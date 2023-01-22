@@ -5,7 +5,6 @@ using ECampus.Shared.Interfaces.Data.DataServices;
 using ECampus.Shared.Models;
 using ECampus.Tests.Shared.DataFactories;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 
 namespace ECampus.Tests.Unit.BackEnd.Infrastructure.DataAccessFacadesTests;
 
@@ -27,8 +26,7 @@ public class BaseDataAccessFacadeTests
         _fixture.Behaviors.Add(new OmitOnRecursionBehavior());
         _context = Substitute.For<ApplicationDbContext>();
         _selector = Substitute.For<ISingleItemSelector<Auditory>>();
-        _sut = new BaseDataAccessFacade<Auditory>(_context,
-            Substitute.For<ILogger<BaseDataAccessFacade<Auditory>>>(), _selector, _deleteService, _updateService,
+        _sut = new BaseDataAccessFacade<Auditory>(_context, _selector, _deleteService, _updateService,
             _createService);
     }
 

@@ -8,18 +8,15 @@ using Microsoft.Extensions.Logging;
 namespace ECampus.Infrastructure.Relationships;
 
 public class RelationsDataAccess<TLeftTable, TRightTable, TRelations> :
-    IRelationsDataAccess<TLeftTable, TRightTable, TRelations> 
-    where TLeftTable : IModel 
+    IRelationsDataAccess<TLeftTable, TRightTable, TRelations>
+    where TLeftTable : IModel
     where TRightTable : IModel
     where TRelations : class, new()
 {
-    private readonly ILogger<RelationsDataAccess<TLeftTable, TRightTable, TRelations>> _logger;
     private readonly IRelationshipsHandler<TLeftTable, TRightTable, TRelations> _relationshipsHandler;
 
-    public RelationsDataAccess(ILogger<RelationsDataAccess<TLeftTable, TRightTable, TRelations>> logger,
-        IRelationshipsHandler<TLeftTable, TRightTable, TRelations> relationshipsHandler)
+    public RelationsDataAccess(IRelationshipsHandler<TLeftTable, TRightTable, TRelations> relationshipsHandler)
     {
-        _logger = logger;
         _relationshipsHandler = relationshipsHandler;
     }
 
@@ -31,12 +28,15 @@ public class RelationsDataAccess<TLeftTable, TRightTable, TRelations> :
         {
             await context.SaveChangesAsync();
         }
+        catch (DbUpdateConcurrencyException)
+        {
+            throw new InfrastructureExceptions(HttpStatusCode.NotFound,
+                $"cannot add relation between object of type {typeof(TLeftTable)} with id={rightTableId} " +
+                $"on between object of type {typeof(TRightTable)} with id={rightTableId} ");
+        }
         catch (Exception e)
         {
-            _logger.LogError(e, "cannot add relation between object of type {LeftTable} with id={RightTableId} " +
-                                "on between object of type {RightTable} with id={LeftTableId} ", typeof(TRightTable),
-                rightTableId, typeof(TLeftTable), leftTableId);
-            throw new InfrastructureExceptions(HttpStatusCode.NotFound, e.Message);
+            throw new UnhandledInfrastructureException(e);
         }
     }
 
@@ -48,12 +48,15 @@ public class RelationsDataAccess<TLeftTable, TRightTable, TRelations> :
         {
             await context.SaveChangesAsync();
         }
+        catch (DbUpdateConcurrencyException e)
+        {
+            throw new InfrastructureExceptions(HttpStatusCode.NotFound,
+                $"cannot delete relation between object of type {typeof(TLeftTable)} with id={leftTableId} " +
+                $"on between object of type {typeof(TRightTable)} with id={rightTableId} ", innerException: e);
+        }
         catch (Exception e)
         {
-            _logger.LogError(e, "cannot delete relation between object of type {LeftTable} with id={RightTableId} " +
-                                "on between object of type {RightTable} with id={LeftTableId} ", typeof(TRightTable),
-                rightTableId, typeof(TLeftTable), leftTableId);
-            throw new InfrastructureExceptions(HttpStatusCode.NotFound, e.Message);
+            throw new UnhandledInfrastructureException(e);
         }
     }
 }
