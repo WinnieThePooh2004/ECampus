@@ -16,65 +16,7 @@
       <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.4.0" />
       <PackageReference Include="IdentityServer4" Version="4.1.2" />
       <PackageReference Include="Scrutor" Version="4.2.0" />
+      <PackageReference Include="Serilog" Version="2.12.1-dev-01635" />
+      <PackageReference Include="Serilog.AspNetCore" Version="6.1.1-dev-00293" />
     </ItemGroup>
-
-    <ItemGroup>
-      <AdditionalFiles Include="Components\DataSelectors\MultipleItemsSelect.razor" />
-      <AdditionalFiles Include="Components\DataSelectors\SingleItemSelect.razor" />
-      <AdditionalFiles Include="Components\EditForms\AuditoryEditForm.razor" />
-      <AdditionalFiles Include="Components\EditForms\ClassEditForm.razor" />
-      <AdditionalFiles Include="Components\EditForms\DepartmentEditForm.razor" />
-      <AdditionalFiles Include="Components\EditForms\FacultyEditForm.razor" />
-      <AdditionalFiles Include="Components\EditForms\GroupEditForm.razor" />
-      <AdditionalFiles Include="Components\EditForms\PasswordEditForm.razor" />
-      <AdditionalFiles Include="Components\EditForms\RegistrationsForm.razor" />
-      <AdditionalFiles Include="Components\EditForms\StudentEditForm.razor" />
-      <AdditionalFiles Include="Components\EditForms\SubjectEditForm.razor" />
-      <AdditionalFiles Include="Components\EditForms\TeacherEditForm.razor" />
-      <AdditionalFiles Include="Components\EditForms\UserRoleEditForm.razor" />
-      <AdditionalFiles Include="Components\Input\Checkbox.razor" />
-      <AdditionalFiles Include="Components\PageModels\DetailsPageModel.razor" />
-      <AdditionalFiles Include="Components\PageModels\IndexPageModel.razor" />
-      <AdditionalFiles Include="Components\PageModels\TimetableModel.razor" />
-      <AdditionalFiles Include="Components\PageOptions\DataPageSelect.razor" />
-      <AdditionalFiles Include="Components\PageOptions\DataPageSizeSelect.razor" />
-      <AdditionalFiles Include="Components\PageOptions\SearchTermsGroup.razor" />
-      <AdditionalFiles Include="Pages\AdminPages\AllUsers.razor" />
-      <AdditionalFiles Include="Pages\AdminPages\CreateNewUser.razor" />
-      <AdditionalFiles Include="Pages\AdminPages\EditUserRole.razor" />
-      <AdditionalFiles Include="Pages\Auditories\Create.razor" />
-      <AdditionalFiles Include="Pages\Auditories\Edit.razor" />
-      <AdditionalFiles Include="Pages\Auditories\Index.razor" />
-      <AdditionalFiles Include="Pages\Auth\Login.cshtml" />
-      <AdditionalFiles Include="Pages\Auth\LoginControl.razor" />
-      <AdditionalFiles Include="Pages\Auth\Logout.cshtml" />
-      <AdditionalFiles Include="Pages\Auth\SignUp.razor" />
-      <AdditionalFiles Include="Pages\Departments\Create.razor" />
-      <AdditionalFiles Include="Pages\Departments\Edit.razor" />
-      <AdditionalFiles Include="Pages\Departments\Index.razor" />
-      <AdditionalFiles Include="Pages\Faculties\Create.razor" />
-      <AdditionalFiles Include="Pages\Faculties\Edit.razor" />
-      <AdditionalFiles Include="Pages\Faculties\Index.razor" />
-      <AdditionalFiles Include="Pages\Groups\Create.razor" />
-      <AdditionalFiles Include="Pages\Groups\Edit.razor" />
-      <AdditionalFiles Include="Pages\Groups\Index.razor" />
-      <AdditionalFiles Include="Pages\Students\Create.razor" />
-      <AdditionalFiles Include="Pages\Students\Edit.razor" />
-      <AdditionalFiles Include="Pages\Students\Index.razor" />
-      <AdditionalFiles Include="Pages\Subjects\Create.razor" />
-      <AdditionalFiles Include="Pages\Subjects\Edit.razor" />
-      <AdditionalFiles Include="Pages\Subjects\Index.razor" />
-      <AdditionalFiles Include="Pages\Teachers\Create.razor" />
-      <AdditionalFiles Include="Pages\Teachers\Edit.razor" />
-      <AdditionalFiles Include="Pages\Teachers\Index.razor" />
-      <AdditionalFiles Include="Pages\Timetable\Auditory.razor" />
-      <AdditionalFiles Include="Pages\Timetable\Create.razor" />
-      <AdditionalFiles Include="Pages\Timetable\Edit.razor" />
-      <AdditionalFiles Include="Pages\Timetable\Group.razor" />
-      <AdditionalFiles Include="Pages\Timetable\Teacher.razor" />
-      <AdditionalFiles Include="Pages\User\EditProfile.razor" />
-      <AdditionalFiles Include="Pages\User\PasswordChange.razor" />
-      <AdditionalFiles Include="Pages\User\UserPage.razor" />
-    </ItemGroup>
-
 </Project>
