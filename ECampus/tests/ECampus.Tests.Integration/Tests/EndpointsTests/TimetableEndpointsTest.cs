@@ -12,6 +12,8 @@ namespace ECampus.Tests.Integration.Tests.EndpointsTests;
 
 public class TimetableEndpointsTest : IClassFixture<ApplicationFactory>, IAsyncLifetime
 {
+    private static bool _dbCreated;
+    
     private readonly HttpClient _client;
     private readonly JsonSerializerOptions _serializerOptions = HttpClientFactory.Options;
 
@@ -23,12 +25,18 @@ public class TimetableEndpointsTest : IClassFixture<ApplicationFactory>, IAsyncL
 
     public async Task InitializeAsync()
     {
+        if (_dbCreated)
+        {
+            return;
+        }
+
+        _dbCreated = true;
         await CreateTestsData();
     }
 
-    public async Task DisposeAsync()
+    public Task DisposeAsync()
     {
-        await ApplicationFactory.Context.Database.EnsureDeletedAsync();
+        return Task.CompletedTask;
     }
 
     [Fact]
@@ -45,10 +53,11 @@ public class TimetableEndpointsTest : IClassFixture<ApplicationFactory>, IAsyncL
     private static async Task CreateTestsData()
     {
         await using var context = ApplicationFactory.Context;
-        await context.Database.EnsureCreatedAsync();
-        context.Add(new Teacher { Id = 20 });
+        context.Add(new Faculty { Id = 20, Name = "" });
+        context.Add(new Department { Id = 20, Name = "", FacultyId = 20 });
+        context.Add(new Teacher { Id = 20, DepartmentId = 20 });
         context.Add(new Subject { Id = 20 });
-        context.Add(new Group { Id = 20 });
+        context.Add(new Group { Id = 20, DepartmentId = 20 });
         context.Add(new Auditory { Id = 20 });
         context.Add(new Class { Id = 1, AuditoryId = 20, GroupId = 20, TeacherId = 20, SubjectId = 20 });
         await context.SaveChangesAsync();

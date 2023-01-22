@@ -15,6 +15,7 @@ namespace ECampus.Tests.Integration.Tests.EndpointsTests;
 
 public class AuditoriesEndpointsTests : IClassFixture<ApplicationFactory>, IAsyncLifetime
 {
+    private static bool _databaseCreated;
     private readonly HttpClient _client;
     private readonly JsonSerializerOptions _serializerOptions = HttpClientFactory.Options;
 
@@ -26,35 +27,18 @@ public class AuditoriesEndpointsTests : IClassFixture<ApplicationFactory>, IAsyn
 
     public async Task InitializeAsync()
     {
-        var context = ApplicationFactory.Context;
-        await context.Database.EnsureCreatedAsync();
-        context.AddRange
-        (
-            new Auditory
-            {
-                Id = 1,
-                Name = "name1",
-                Building = "building1"
-            },
-            new Auditory
-            {
-                Id = 2,
-                Name = "name2",
-                Building = "building2"
-            },
-            new Auditory
-            {
-                Id = 3,
-                Name = "name3",
-                Building = "building3"
-            }
-        );
-        await context.SaveChangesAsync();
+        if (_databaseCreated)
+        {
+            return;
+        }
+
+        _databaseCreated = true;
+        await CreateTestData();
     }
 
-    public async Task DisposeAsync()
+    public Task DisposeAsync()
     {
-        await ApplicationFactory.Context.Database.EnsureDeletedAsync();
+        return Task.CompletedTask;
     }
 
     [Fact]
@@ -142,7 +126,8 @@ public class AuditoriesEndpointsTests : IClassFixture<ApplicationFactory>, IAsyn
     {
         var response = await _client.DeleteAsync("/api/Auditories/3");
         response.EnsureSuccessStatusCode();
-        (await ApplicationFactory.Context.Auditories.CountAsync()).Should().Be(2);
+        (await ApplicationFactory.Context
+            .Auditories.SingleOrDefaultAsync(t => t.Id == 3)).Should().BeNull();
     }
 
     [Fact]
@@ -154,5 +139,32 @@ public class AuditoriesEndpointsTests : IClassFixture<ApplicationFactory>, IAsyn
             .Deserialize<BadResponseObject>(await response.Content.ReadAsStringAsync(), _serializerOptions);
         result.Should().NotBeNull();
         result?.Message.Should().Be(new ObjectNotFoundByIdException(typeof(Auditory), 10).Message);
+    }
+    
+    private static async Task CreateTestData()
+    {
+        await using var context = ApplicationFactory.Context;
+        context.AddRange
+        (
+            new Auditory
+            {
+                Id = 1,
+                Name = "name1",
+                Building = "building1"
+            },
+            new Auditory
+            {
+                Id = 2,
+                Name = "name2",
+                Building = "building2"
+            },
+            new Auditory
+            {
+                Id = 3,
+                Name = "name3",
+                Building = "building3"
+            }
+        );
+        await context.SaveChangesAsync();
     }
 }

@@ -3,6 +3,7 @@ using ECampus.Infrastructure.Relationships;
 using ECampus.Shared.Exceptions.InfrastructureExceptions;
 using ECampus.Shared.Models;
 using ECampus.Shared.Models.RelationModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace ECampus.Tests.Unit.BackEnd.Infrastructure.DataServices.Relationships;
 
@@ -32,11 +33,24 @@ public class RelationsDataAccessTests
     [Fact]
     public async Task AddRelation_ShouldThrowException_IfErrorOccuredWhileSaveChanges()
     {
-        _context.SaveChangesAsync().Returns(0).AndDoes(_ => throw new Exception("Some message"));
+        _context.SaveChangesAsync().Returns(0).AndDoes(_ => throw new DbUpdateException("Some message"));
 
         await new Func<Task>(() => _sut.CreateRelation(0, 0, _context)).Should()
             .ThrowAsync<InfrastructureExceptions>()
-            .WithMessage("Some message\nError code: 404");
+            .WithMessage("unhandled exception occured on data access level," +
+                         " view inner exception to see details\nError code: 500");
+    }
+    
+    [Fact]
+    public async Task AddRelation_ShouldThrowUnhandledException_IfExceptionWasThrown()
+    {
+        _context.SaveChangesAsync().Returns(1).AndDoes(_ => throw new DbUpdateException("DbUpdate message"));
+
+        await new Func<Task>(() => _sut.CreateRelation(0, 0, _context)).Should()
+            .ThrowAsync<UnhandledInfrastructureException>()
+            .WithMessage(new UnhandledInfrastructureException(new Exception()).Message)
+            .WithInnerException<UnhandledInfrastructureException, DbUpdateException>()
+            .WithMessage("DbUpdate message");
     }
 
     [Fact]
@@ -53,12 +67,26 @@ public class RelationsDataAccessTests
     }
 
     [Fact]
-    public async Task DeleteRelation_ShouldThrowException_IfErrorOccuredWhileSaveChanges()
+    public async Task DeleteRelation_ShouldThrowException_IfDbUpdateConcurrencyExceptionWasThrown()
     {
-        _context.SaveChangesAsync().Returns(1).AndDoes(_ => throw new Exception("Some message"));
+        _context.SaveChangesAsync().Returns(1).AndDoes(_ => throw new DbUpdateConcurrencyException());
 
         await new Func<Task>(() => _sut.DeleteRelation(0, 0, _context)).Should()
             .ThrowAsync<InfrastructureExceptions>()
-            .WithMessage("Some message\nError code: 404");
+            .WithMessage("cannot delete relation between object of type" +
+                         " ECampus.Shared.Models.User with id=0 on between object of type" +
+                         " ECampus.Shared.Models.Group with id=0 Error code: 404");
+    }
+    
+    [Fact]
+    public async Task DeleteRelation_ShouldThrowUnhandledException_IfExceptionWasThrown()
+    {
+        _context.SaveChangesAsync().Returns(1).AndDoes(_ => throw new DbUpdateException("DbUpdate message"));
+
+        await new Func<Task>(() => _sut.DeleteRelation(0, 0, _context)).Should()
+            .ThrowAsync<UnhandledInfrastructureException>()
+            .WithMessage(new UnhandledInfrastructureException(new Exception()).Message)
+            .WithInnerException<UnhandledInfrastructureException, DbUpdateException>()
+            .WithMessage("DbUpdate message");
     }
 }

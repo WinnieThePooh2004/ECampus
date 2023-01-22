@@ -44,7 +44,7 @@ public class LoggingService<T> : IBaseService<T>
     public async Task<T> DeleteAsync(int? id)
     {
         _logger.Information("Deleting object of type {Type}, with id = {Id}", typeof(T), id);
-        var deletedObject = await _baseService.GetByIdAsync(id);
+        var deletedObject = await _baseService.DeleteAsync(id);
         _logger.Information("Successfully deleted object of type {Type} by id = {Id}", typeof(T), id);
         return deletedObject;
     }

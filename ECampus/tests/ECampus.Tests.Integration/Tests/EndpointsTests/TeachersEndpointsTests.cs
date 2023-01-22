@@ -16,6 +16,8 @@ namespace ECampus.Tests.Integration.Tests.EndpointsTests;
 
 public class TeachersEndpointsTests : IClassFixture<ApplicationFactory>, IAsyncLifetime
 {
+    private static bool _databaseCreated;
+
     private readonly HttpClient _client;
     private readonly JsonSerializerOptions _serializerOptions = HttpClientFactory.Options;
 
@@ -27,12 +29,18 @@ public class TeachersEndpointsTests : IClassFixture<ApplicationFactory>, IAsyncL
 
     public async Task InitializeAsync()
     {
+        if (_databaseCreated)
+        {
+            return;
+        }
+
+        _databaseCreated = true;
         await CreateTestsData();
     }
-    
-    public async Task DisposeAsync()
+
+    public Task DisposeAsync()
     {
-        await ApplicationFactory.Context.Database.EnsureDeletedAsync();
+        return Task.CompletedTask;
     }
 
     [Fact]
@@ -66,11 +74,12 @@ public class TeachersEndpointsTests : IClassFixture<ApplicationFactory>, IAsyncL
             Id = 1,
             LastName = "ln1",
             FirstName = "fn1",
+            DepartmentId = 1,
             Subjects = new List<SubjectDto> { new() { Id = 1 }, new() { Id = 3 } }
         };
         var response = await _client.PutAsJsonAsync("/api/Teachers", teacher);
         response.EnsureSuccessStatusCode();
-        
+
         var context = ApplicationFactory.Context;
         var subjectTeachers = await context.SubjectTeachers.ToListAsync();
         subjectTeachers.Should().ContainEquivalentOf(new SubjectTeacher { TeacherId = 1, SubjectId = 3 });
@@ -99,6 +108,7 @@ public class TeachersEndpointsTests : IClassFixture<ApplicationFactory>, IAsyncL
             Id = 40,
             LastName = "lastname",
             FirstName = "firstName",
+            DepartmentId = 1,
             Subjects = new List<SubjectDto>()
         };
         var response = await _client.PostAsJsonAsync("/api/Teachers", teacher);
@@ -124,7 +134,8 @@ public class TeachersEndpointsTests : IClassFixture<ApplicationFactory>, IAsyncL
     {
         var response = await _client.DeleteAsync("/api/Teachers/3");
         response.EnsureSuccessStatusCode();
-        (await ApplicationFactory.Context.Teachers.CountAsync()).Should().Be(2);
+        (await ApplicationFactory.Context
+            .Teachers.SingleOrDefaultAsync(t => t.Id == 3)).Should().BeNull();
     }
 
     [Fact]
@@ -140,54 +151,53 @@ public class TeachersEndpointsTests : IClassFixture<ApplicationFactory>, IAsyncL
 
     private static async Task CreateTestsData()
     {
-        var context = ApplicationFactory.Context;
+        await using var context = ApplicationFactory.Context;
+        context.Add(new Faculty { Id = 1, Name = "F1" });
+        context.Add(new Department { FacultyId = 1, Id = 1, Name = "D1" });
         context.AddRange(
             new Teacher
             {
                 Id = 1,
                 LastName = "ln1",
-                FirstName = "fn1"
+                FirstName = "fn1",
+                DepartmentId = 1
             },
             new Teacher
             {
                 Id = 2,
                 LastName = "ln2",
-                FirstName = "fn2"
+                FirstName = "fn2",
+                DepartmentId = 1
             },
             new Teacher
             {
                 Id = 3,
                 LastName = "ln3",
-                FirstName = "fn3"
+                FirstName = "fn3",
+                DepartmentId = 1
             },
             new Subject
             {
                 Id = 1,
-                Name = "subject1",
-                TeacherIds = new List<SubjectTeacher>
-                {
-                    new() { TeacherId = 1 }
-                }
+                Name = "subject1"
             },
             new Subject
             {
                 Id = 2,
-                Name = "subject2",
-                TeacherIds = new List<SubjectTeacher>
-                {
-                    new() { TeacherId = 1 },
-                    new() { TeacherId = 2 }
-                }
+                Name = "subject2"
             },
             new Subject
             {
                 Id = 3,
-                Name = "subject3",
-                TeacherIds = new List<SubjectTeacher>
-                {
-                    new() { TeacherId = 3 }
-                }
+                Name = "subject3"
             });
+        context.AddRange(new List<SubjectTeacher>
+        {
+            new() { TeacherId = 1, SubjectId = 1 },
+            new() { TeacherId = 1, SubjectId = 2 },
+            new() { TeacherId = 2, SubjectId = 2 },
+            new() { TeacherId = 3, SubjectId = 3 }
+        });
         await context.SaveChangesAsync();
     }
 }
