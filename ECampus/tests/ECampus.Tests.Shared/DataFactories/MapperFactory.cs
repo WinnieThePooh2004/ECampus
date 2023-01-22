@@ -17,7 +17,10 @@ public static class MapperFactory
             new StudentProfile(),
             new SubjectProfile(),
             new TeacherProfile(),
-            new UserProfile()
+            new UserProfile(),
+            new CourseProfile(),
+            new CourseTaskProfile(),
+            new TaskSubmissionProfile()
         })).CreateMapper();
     
 }

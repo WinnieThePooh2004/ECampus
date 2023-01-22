@@ -3,7 +3,6 @@ using ECampus.Shared.Exceptions.InfrastructureExceptions;
 using ECampus.Shared.Interfaces.Data.DataServices;
 using ECampus.Shared.Interfaces.Data.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 
 namespace ECampus.Infrastructure.Relationships;
 
