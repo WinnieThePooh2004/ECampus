@@ -33,28 +33,25 @@ public class DataCreateWithRelationshipsTests
                 new() { Id = 2 }
             }
         };
-        IEnumerable<object>? addedObjects = null;
-        _context.AddRange(Arg.Do<IEnumerable<object>>(objects => addedObjects = objects));
 
         await _sut.CreateAsync(model, _context);
 
-        addedObjects.Should().BeEquivalentTo(new List<UserAuditory>
+        model.SavedAuditoriesIds.Should().BeEquivalentTo(new List<UserAuditory>
         {
             new() { UserId = 3, AuditoryId = 1 },
             new() { UserId = 3, AuditoryId = 2 }
         }, opt => opt.ComparingByMembers<UserAuditory>());
-        await _baseCreateService.Received().CreateAsync(model, _context);
+        model.SavedAuditories.Should().BeNull();
+        await _baseCreateService.Received(1).CreateAsync(model, _context);
     }
 
     [Fact]
     public async Task CreateRelationModels_ShouldAddEmptyArray_WhenRelatedModelsIsnull()
     {
-        var model = new User { SavedAuditories = new List<Auditory>()};
-        IEnumerable<object>? addedModels = null;
-        _context.AddRange(Arg.Do<IEnumerable<object>>(entities => addedModels = entities));
+        var model = new User { SavedAuditories = null };
 
         await _sut.CreateAsync(model, _context);
 
-        addedModels.Should().BeEmpty();
+        model.SavedAuditoriesIds.Should().BeNull();
     }
 }
