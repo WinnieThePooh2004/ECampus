@@ -7,8 +7,8 @@ public class HttpResponseException : Exception
     public int StatusCode{ get; }
     public object? Object { get; }
 
-    public HttpResponseException(HttpStatusCode statusCode, string message = "", object? @object = null)
-        :base(message)
+    public HttpResponseException(HttpStatusCode statusCode, string message = "", object? @object = null, Exception? innerException = null)
+        :base(message, innerException)
     {
         StatusCode = (int)statusCode;
         Object = @object;

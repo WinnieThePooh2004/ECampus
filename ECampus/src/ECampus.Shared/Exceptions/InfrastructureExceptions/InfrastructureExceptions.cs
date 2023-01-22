@@ -1,11 +1,12 @@
 ﻿using System.Net;
 
-namespace ECampus.Shared.Exceptions.InfrastructureExceptions
+namespace ECampus.Shared.Exceptions.InfrastructureExceptions;
+
+public class InfrastructureExceptions : HttpResponseException
 {
-	public class InfrastructureExceptions : HttpResponseException
-	{
-		public InfrastructureExceptions(HttpStatusCode statusCode, string message = "", object? @object = null) : base(statusCode, message, @object)
-		{
-		}
-	}
+    public InfrastructureExceptions(HttpStatusCode statusCode, string message = "", object? @object = null,
+        Exception? innerException = null)
+        : base(statusCode, message, @object, innerException)
+    {
+    }
 }
