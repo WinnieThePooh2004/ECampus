@@ -13,6 +13,11 @@ public class ApplicationFactory : WebApplicationFactory<Program>
         new((DbContextOptions<ApplicationDbContext>)
             new DbContextOptionsBuilder<ApplicationDbContext>().UseInMemoryDb().Options);
 
+    static ApplicationFactory()
+    {
+        Context.Database.EnsureCreated();
+    }
+
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         builder.ConfigureServices(services =>
