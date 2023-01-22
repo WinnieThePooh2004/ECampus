@@ -31,7 +31,7 @@ public class DataUpdateServiceWithRelationships<TModel, TRelatedModel, TRelation
         await RemoveLostRelations(model, context);
         await AddNewRelations(model, context);
 
-        _relationshipsHandler.RelatedModels.SetFromProperty<object>(model, null);
+        _relationshipsHandler.RelatedModels.SetPropertyAsNull(model);
 
         return await _baseUpdateService.UpdateAsync(model, context);
     }

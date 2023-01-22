@@ -22,8 +22,13 @@ public static class PropertyInfoExtensions
         return (TProperty?)property.GetMethod?.Invoke(item, null);
     }
 
-    public static void SetFromProperty<TProperty>(this PropertyInfo property, object item, TProperty? value)
+    public static void SetFromProperty<TProperty, TItem>(this PropertyInfo property, TItem item, TProperty? value)
     {
         property.SetMethod!.Invoke(item, new object?[] { value });
+    }
+
+    public static void SetPropertyAsNull<TItem>(this PropertyInfo property, TItem item)
+    {
+        property.SetFromProperty<object, TItem>(item, null);
     }
 }
