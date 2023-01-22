@@ -13,6 +13,8 @@ public class Course : IModel, IIsDeleted
 
     public string Name { get; set; } = default!;
     
+    public int SubjectId { get; set; }
+    
     public List<Teacher>? Teachers { get; set; }
     public Subject? Subject { get; set; }
     public List<Group>? Groups { get; set; }
