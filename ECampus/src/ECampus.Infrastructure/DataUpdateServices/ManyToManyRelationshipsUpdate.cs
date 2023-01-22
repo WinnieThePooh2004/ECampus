@@ -66,11 +66,11 @@ public class ManyToManyRelationshipsUpdate<TModel, TRelatedModel, TRelations> : 
         string leftTableIdName, string? relationTableName, string rightTableIdName)
     {
         var sqlQuery = $"""
-            SELECT * FROM { rightTableName}   AS RightTable
-            WHERE RightTable.Id IN ({ relatedModelsIds} )
-            AND { model.Id}  NOT IN (SELECT Relations.{ leftTableIdName}  FROM { relationTableName}  
-            AS Relations WHERE Relations.{ rightTableIdName}  = RightTable.Id)
-        """ ;
+                        SELECT * FROM [{rightTableName}] AS [RightTable]
+                        WHERE [RightTable].[Id] IN ({relatedModelsIds})
+                        AND {model.Id} NOT IN (SELECT [Relations].[{leftTableIdName}] FROM [{relationTableName}]
+                        AS [Relations] WHERE [Relations].[{rightTableIdName}]  = [RightTable].[Id])
+                        """;
         return sqlQuery;
     }
 
