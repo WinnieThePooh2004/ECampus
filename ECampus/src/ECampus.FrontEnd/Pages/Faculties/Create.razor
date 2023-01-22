@@ -1,5 +1,4 @@
 ﻿@page "/faculties/Create"
-@using ECampus.Shared.DataTransferObjects
 @inherits CreatePageBase<ECampus.Shared.DataTransferObjects.FacultyDto>
 <h3>Create</h3>
 <FacultyEditForm Model="new FacultyDto()" OnSubmit="@(async model => await Save(model))" />

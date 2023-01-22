@@ -1,6 +1,4 @@
 ﻿@page "/timetable/auditory/{AuditoryId:int}"
-@using ECampus.Shared.DataTransferObjects
-@using ECampus.Shared.Enums
 @inherits TimetablePageBase
 
 <TimetableModel CreateLink="@($"timetable/Create/{(int)TimetableMode.Auditory}/{AuditoryId}")"

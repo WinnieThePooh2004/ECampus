@@ -1,6 +1,4 @@
 ﻿@page "/timetable/group/{GroupId:int}"
-@using ECampus.Shared.DataTransferObjects
-@using ECampus.Shared.Enums
 @inherits TimetablePageBase
 <h1>Timetable</h1>
 <TimetableModel CreateLink="@($"timetable/Create/{(int)TimetableMode.Group}/{GroupId}")"

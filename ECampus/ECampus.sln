@@ -21,7 +21,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECampus.Tests.Unit", "tests
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECampus.Tests.Integration", "tests\ECampus.Tests.Integration\ECampus.Tests.Integration.csproj", "{99301C1C-C5CE-4B13-97D5-706250C6506C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECampus.FrontEnd", "src\ECampus.FrontEnd\ECampus.FrontEnd.csproj", "{BAC7EA6A-260C-48E8-A1E9-ADE84BCBF67F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECampus.FrontEnd", "src\ECampus.FrontEnd\ECampus.FrontEnd.csproj", "{3145D277-D931-47AE-9A09-51B8D63544DB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,10 +61,10 @@ Global
 		{99301C1C-C5CE-4B13-97D5-706250C6506C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{99301C1C-C5CE-4B13-97D5-706250C6506C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{99301C1C-C5CE-4B13-97D5-706250C6506C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BAC7EA6A-260C-48E8-A1E9-ADE84BCBF67F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BAC7EA6A-260C-48E8-A1E9-ADE84BCBF67F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BAC7EA6A-260C-48E8-A1E9-ADE84BCBF67F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BAC7EA6A-260C-48E8-A1E9-ADE84BCBF67F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3145D277-D931-47AE-9A09-51B8D63544DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3145D277-D931-47AE-9A09-51B8D63544DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3145D277-D931-47AE-9A09-51B8D63544DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3145D277-D931-47AE-9A09-51B8D63544DB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
