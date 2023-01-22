@@ -1,6 +1,4 @@
 ﻿@page "/timetable/teacher/{TeacherId:int}"
-@using ECampus.Shared.DataTransferObjects
-@using ECampus.Shared.Enums
 @inherits TimetablePageBase
 <TimetableModel CreateLink="@($"timetable/Create/{(int)TimetableMode.Teacher}/{TeacherId}")"
                 EditLink="@($"timetable/edit/{(int)TimetableMode.Teacher}")"

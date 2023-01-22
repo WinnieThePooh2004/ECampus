@@ -1,6 +1,4 @@
 ﻿@page "/groups/{DepartmentId:int}"
-@using ECampus.Shared.DataTransferObjects
-@using ECampus.Shared.QueryParameters
 <IndexPageModel TData="GroupDto" TParameters="GroupParameters"
            ParameterOptions="@(p => { p.DepartmentId = DepartmentId; p.OrderBy = "Name"; })"
            CreateLink="@($"/groups/Create/{DepartmentId}")"

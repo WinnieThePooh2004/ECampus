@@ -21,7 +21,6 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-
 builder.Services.AddScoped<IAuthService, AuthService>();
 
 builder.Services.Configure<RequestOptions>(builder.Configuration.GetSection("Requests"));
@@ -104,12 +103,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-app.UseAuthentication();
-app.UseAuthorization();
-app.UseCookiePolicy();
 
-app.MapFallbackToPage("/_Host");
 app.MapBlazorHub();
-app.MapRazorPages();
+app.MapFallbackToPage("/_Host");
 
 app.Run();

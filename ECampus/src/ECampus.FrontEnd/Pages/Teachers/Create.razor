@@ -1,6 +1,5 @@
 ﻿@page "/teachers/create/{DepartmentId:int}"
-@using ECampus.Shared.DataTransferObjects
-@inherits CreatePageBase<ECampus.Shared.DataTransferObjects.TeacherDto>
+@inherits CreatePageBase<TeacherDto>
 
 <TeacherEditForm Model="new TeacherDto{ DepartmentId = DepartmentId }" OnSubmit="Save" />
 
