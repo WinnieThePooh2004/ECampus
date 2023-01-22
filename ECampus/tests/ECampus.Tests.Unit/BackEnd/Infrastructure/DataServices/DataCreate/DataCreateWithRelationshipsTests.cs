@@ -9,7 +9,7 @@ namespace ECampus.Tests.Unit.BackEnd.Infrastructure.DataServices.DataCreate;
 
 public class DataCreateWithRelationshipsTests
 {
-    private readonly DataCreateWithRelationships<User, Auditory, UserAuditory> _sut;
+    private readonly ManyToManyRelationshipsCreate<User, Auditory, UserAuditory> _sut;
     private readonly ApplicationDbContext _context;
     private readonly IDataCreateService<User> _baseCreateService;
     private readonly RelationshipsHandler<User, Auditory, UserAuditory> _relationshipsHandler = new();
@@ -18,7 +18,7 @@ public class DataCreateWithRelationshipsTests
     {
         _context = Substitute.For<ApplicationDbContext>();
         _baseCreateService = Substitute.For<IDataCreateService<User>>();
-        _sut = new DataCreateWithRelationships<User, Auditory, UserAuditory>(_baseCreateService, _relationshipsHandler);
+        _sut = new ManyToManyRelationshipsCreate<User, Auditory, UserAuditory>(_baseCreateService, _relationshipsHandler);
     }
 
     [Fact]

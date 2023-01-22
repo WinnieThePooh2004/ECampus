@@ -64,11 +64,11 @@ internal static class IServiceCollectionExtensions
             foreach (var attribute in relationAttributes)
             {
                 services.Decorate(typeof(IDataUpdateService<>).MakeGenericType(relationModel),
-                    typeof(DataUpdateServiceWithRelationships<,,>).MakeGenericType(relationModel,
+                    typeof(ManyToManyRelationshipsUpdate<,,>).MakeGenericType(relationModel,
                         attribute.RelatedModel,
                         attribute.RelationModel));
                 services.Decorate(typeof(IDataCreateService<>).MakeGenericType(relationModel),
-                    typeof(DataCreateWithRelationships<,,>).MakeGenericType(relationModel, attribute.RelatedModel,
+                    typeof(ManyToManyRelationshipsCreate<,,>).MakeGenericType(relationModel, attribute.RelatedModel,
                         attribute.RelationModel));
             }
         }

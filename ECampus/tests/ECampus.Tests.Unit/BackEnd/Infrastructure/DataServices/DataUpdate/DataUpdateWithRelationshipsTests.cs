@@ -9,7 +9,7 @@ namespace ECampus.Tests.Unit.BackEnd.Infrastructure.DataServices.DataUpdate;
 
 public class DataUpdateWithRelationshipsTests
 {
-    private readonly DataUpdateServiceWithRelationships<User, Auditory, UserAuditory> _sut;
+    private readonly ManyToManyRelationshipsUpdate<User, Auditory, UserAuditory> _sut;
     private readonly ApplicationDbContext _context;
     private readonly IDataUpdateService<User> _baseUpdate;
 
@@ -19,7 +19,7 @@ public class DataUpdateWithRelationshipsTests
     {
         _context = Substitute.For<ApplicationDbContext>();
         _baseUpdate = Substitute.For<IDataUpdateService<User>>();
-        _sut = new DataUpdateServiceWithRelationships<User, Auditory, UserAuditory>(_baseUpdate, _handler);
+        _sut = new ManyToManyRelationshipsUpdate<User, Auditory, UserAuditory>(_baseUpdate, _handler);
     }
 
     [Fact]

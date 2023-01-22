@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ECampus.Infrastructure.DataUpdateServices;
 
-public class DataUpdateServiceWithRelationships<TModel, TRelatedModel, TRelations> : IDataUpdateService<TModel>
+public class ManyToManyRelationshipsUpdate<TModel, TRelatedModel, TRelations> : IDataUpdateService<TModel>
     where TModel : class, IModel
     where TRelatedModel : class, IModel
     where TRelations : class, new()
@@ -14,7 +14,7 @@ public class DataUpdateServiceWithRelationships<TModel, TRelatedModel, TRelation
     private readonly IDataUpdateService<TModel> _baseUpdateService;
     private readonly IRelationshipsHandler<TModel, TRelatedModel, TRelations> _relationshipsHandler;
 
-    public DataUpdateServiceWithRelationships(IDataUpdateService<TModel> baseUpdateService,
+    public ManyToManyRelationshipsUpdate(IDataUpdateService<TModel> baseUpdateService,
         IRelationshipsHandler<TModel, TRelatedModel, TRelations> relationshipsHandler)
     {
         _baseUpdateService = baseUpdateService;

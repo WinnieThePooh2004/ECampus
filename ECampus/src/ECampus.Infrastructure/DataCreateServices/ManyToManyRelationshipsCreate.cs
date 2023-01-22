@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ECampus.Infrastructure.DataCreateServices;
 
-public class DataCreateWithRelationships<TModel, TRelatedModel, TRelations> : IDataCreateService<TModel>
+public class ManyToManyRelationshipsCreate<TModel, TRelatedModel, TRelations> : IDataCreateService<TModel>
     where TModel : class, IModel
     where TRelatedModel : class, IModel
     where TRelations : class, new()
@@ -13,7 +13,7 @@ public class DataCreateWithRelationships<TModel, TRelatedModel, TRelations> : ID
     private readonly IDataCreateService<TModel> _baseCreateService;
     private readonly IRelationshipsHandler<TModel, TRelatedModel, TRelations> _relationshipsHandler;
 
-    public DataCreateWithRelationships(IDataCreateService<TModel> baseCreateService,
+    public ManyToManyRelationshipsCreate(IDataCreateService<TModel> baseCreateService,
         IRelationshipsHandler<TModel, TRelatedModel, TRelations> relationshipsHandler)
     {
         _baseCreateService = baseCreateService;
