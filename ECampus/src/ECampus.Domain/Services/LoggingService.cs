@@ -36,7 +36,7 @@ public class LoggingService<T> : IBaseService<T>
     public async Task<T> UpdateAsync(T entity)
     {
         _logger.Information("Updating object of type {Type} with id = {Id}", typeof(T), entity.Id);
-        var updatedEntity = await _baseService.CreateAsync(entity);
+        var updatedEntity = await _baseService.UpdateAsync(entity);
         _logger.Information("Successfully updated object of type {Type} with id = {Id}", typeof(T), entity.Id);
         return updatedEntity;
     }

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ECampus.Infrastructure.DataUpdateServices;
 
-public class DataUpdateServiceWithRelationships<TModel, TRelatedModel, TRelations> : IDataUpdateService<TModel>
+public class ManyToManyRelationshipsUpdate<TModel, TRelatedModel, TRelations> : IDataUpdateService<TModel>
     where TModel : class, IModel
     where TRelatedModel : class, IModel
     where TRelations : class, new()
@@ -14,7 +14,7 @@ public class DataUpdateServiceWithRelationships<TModel, TRelatedModel, TRelation
     private readonly IDataUpdateService<TModel> _baseUpdateService;
     private readonly IRelationshipsHandler<TModel, TRelatedModel, TRelations> _relationshipsHandler;
 
-    public DataUpdateServiceWithRelationships(IDataUpdateService<TModel> baseUpdateService,
+    public ManyToManyRelationshipsUpdate(IDataUpdateService<TModel> baseUpdateService,
         IRelationshipsHandler<TModel, TRelatedModel, TRelations> relationshipsHandler)
     {
         _baseUpdateService = baseUpdateService;
@@ -46,12 +46,8 @@ public class DataUpdateServiceWithRelationships<TModel, TRelatedModel, TRelation
         var rightTableIdName = _relationshipsHandler.RightTableId.Name;
         var leftTableIdName = _relationshipsHandler.LeftTableId.Name;
         var relatedModelsIds = relatedModels.Any() ? string.Join(", ", relatedModels) : "-1";
-        var sqlQuery = $"""
-            SELECT * FROM {rightTableName}  AS RightTable
-            WHERE RightTable.Id IN ({relatedModelsIds})
-            AND {model.Id} NOT IN (SELECT Relations.{leftTableIdName} FROM {relationTableName} 
-            AS Relations WHERE Relations.{rightTableIdName} = RightTable.Id)
-        """;
+        
+        var sqlQuery = CreateSqlQuery(model, rightTableName, relatedModelsIds, leftTableIdName, relationTableName, rightTableIdName);
         
         var rightTableIds =
             await context.Set<TRelatedModel>()
@@ -64,6 +60,18 @@ public class DataUpdateServiceWithRelationships<TModel, TRelatedModel, TRelation
             return;
         }
         context.AddRange(modelsToAdd);
+    }
+
+    private static string CreateSqlQuery(TModel model, string? rightTableName, string relatedModelsIds,
+        string leftTableIdName, string? relationTableName, string rightTableIdName)
+    {
+        var sqlQuery = $"""
+            SELECT * FROM { rightTableName}   AS RightTable
+            WHERE RightTable.Id IN ({ relatedModelsIds} )
+            AND { model.Id}  NOT IN (SELECT Relations.{ leftTableIdName}  FROM { relationTableName}  
+            AS Relations WHERE Relations.{ rightTableIdName}  = RightTable.Id)
+        """ ;
+        return sqlQuery;
     }
 
     private async Task RemoveLostRelations(TModel model, DbContext context)
