@@ -3,6 +3,7 @@ using ECampus.Shared;
 using ECampus.Shared.Extensions;
 using ECampus.Shared.Installers;
 using ECampus.Shared.Interfaces.DataAccess;
+using ECampus.Shared.Metadata;
 using ECampus.Shared.QueryParameters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,7 +30,8 @@ public class DataFacadesInstaller : IInstaller
     private static void InjectParametersFacadeIfExists(IServiceCollection services, Type model)
     {
         var modelParameters = typeof(SharedAssemblyMarker).Assembly.GetTypes().SingleOrDefault(type =>
-            type.IsAssignableTo(typeof(IQueryParameters<>).MakeGenericType(model)));
+            type.IsAssignableTo(typeof(IQueryParameters<>).MakeGenericType(model)) &&
+            !type.GetCustomAttributes(typeof(InstallerIgnoreAttribute), false).Any());
 
         if (modelParameters is null)
         {

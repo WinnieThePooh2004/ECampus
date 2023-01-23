@@ -17,7 +17,8 @@ public class FluentValidationWrapperInstaller : IInstaller
     public void Install(IServiceCollection services, IConfiguration configuration)
     {
         var fluentValidators = typeof(DomainAssemblyMarker).Assembly.GetTypes()
-            .Where(type => type.BaseType is not null && type.BaseType.IsGenericOfType(typeof(AbstractValidator<>)));
+            .Where(type => type.BaseType is not null && type.BaseType.IsGenericOfType(typeof(AbstractValidator<>)) &&
+                           !type.GetCustomAttributes(typeof(InstallerIgnoreAttribute), false).Any());
 
         foreach (var fluentValidator in fluentValidators)
         {
@@ -29,7 +30,11 @@ public class FluentValidationWrapperInstaller : IInstaller
     {
         var validatingType = fluentValidator.BaseType!.GenericTypeArguments[0];
         var typeValidation = validatingType.GetCustomAttributes(typeof(ValidationAttribute), false)
-            .OfType<ValidationAttribute>().Single();
+            .OfType<ValidationAttribute>().SingleOrDefault();
+        if (typeValidation is null)
+        {
+            return;
+        }
         services.AddScoped(typeof(IValidator<>).MakeGenericType(validatingType), fluentValidator);
 
         if (typeValidation.ValidateCreate)

@@ -1,6 +1,7 @@
 ﻿using ECampus.Shared.Extensions;
 using ECampus.Shared.Installers;
 using ECampus.Shared.Interfaces.Domain.Validation;
+using ECampus.Shared.Metadata;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -8,7 +9,7 @@ namespace ECampus.Domain.Installers;
 
 public class UniqueValidatorsInstaller : IInstaller
 {
-    public int InstallOrder => 0;
+    public int InstallOrder => 4;
 
     public void Install(IServiceCollection services, IConfiguration configuration)
     {
@@ -20,7 +21,8 @@ public class UniqueValidatorsInstaller : IInstaller
     {
         var createValidators = typeof(DomainAssemblyMarker).Assembly.GetTypes()
             .Where(type => type.GetInterfaces().Any(i => i.IsGenericOfType(typeof(ICreateValidator<>))) &&
-                           type is { IsAbstract: false, IsClass: true, IsGenericType: false });
+                           type is { IsAbstract: false, IsClass: true, IsGenericType: false } &&
+                           !type.GetCustomAttributes(typeof(InstallerIgnoreAttribute), false).Any());
 
         foreach (var createValidator in createValidators)
         {

@@ -15,7 +15,8 @@ public class ValidationServicesInstaller : IInstaller
     public void Install(IServiceCollection services, IConfiguration configuration)
     {
         var typesWithValidation = typeof(SharedAssemblyMarker).Assembly.GetTypes()
-            .Where(type => type.GetCustomAttributes(typeof(ValidationAttribute), false).Any());
+            .Where(type => type.GetCustomAttributes(typeof(ValidationAttribute), false).Any() &&
+                           !type.GetCustomAttributes(typeof(InstallerIgnoreAttribute), false).Any());
 
         foreach (var type in typesWithValidation)
         {
