@@ -36,7 +36,7 @@ builder.Services.AddControllers(options => { options.Filters.Add<MiddlewareExcep
 
 builder.Services.AddAutoMapper(typeof(DomainAssemblyMarker));
 
-builder.Services.InstallServices(builder.Configuration, typeof(DomainAssemblyMarker), typeof(ApiAssemblyMarker),
+builder.Services.UserInstallersFromAssemblyContaining(builder.Configuration, typeof(DomainAssemblyMarker), typeof(ApiAssemblyMarker),
     typeof(InfrastructureAssemblyMarker));
 
 builder.Services.AddUniqueServices(typeof(DomainAssemblyMarker), typeof(InfrastructureAssemblyMarker));

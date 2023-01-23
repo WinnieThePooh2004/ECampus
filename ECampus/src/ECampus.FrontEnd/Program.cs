@@ -29,7 +29,7 @@ builder.Services.AddServerSideBlazor();
 builder.Services.Configure<RequestOptions>(builder.Configuration.GetSection("Requests"));
 
 builder.Services.AddUniqueServices(typeof(FrontEndAssemblyMarker));
-builder.Services.InstallServices<FrontEndAssemblyMarker>(builder.Configuration);
+builder.Services.UserInstallersFromAssemblyContaining<FrontEndAssemblyMarker>(builder.Configuration);
 
 builder.Services.AddValidatorsFromAssemblyContaining<DomainAssemblyMarker>();
 
@@ -45,8 +45,6 @@ builder.Services.Decorate<IValidator<TeacherDto>, ValidatorWithAnotherTypesIgnor
 builder.Services.Decorate<IValidator<PasswordChangeDto>, HttpCallingValidator<PasswordChangeDto>>();
 
 builder.Services.Decorate<IValidator<CourseDto>, ValidatorWithAnotherTypesIgnore<CourseDto>>();
-
-builder.Services.AddSingleton<IRequestOptions>(new RequestOptions(builder.Configuration));
 
 builder.Services.AddSingleton(typeof(IPropertySelector<>), typeof(PropertySelector<>));
 builder.Services.AddSingleton(typeof(ISearchTermsSelector<>), typeof(SearchTermsSelector<>));
