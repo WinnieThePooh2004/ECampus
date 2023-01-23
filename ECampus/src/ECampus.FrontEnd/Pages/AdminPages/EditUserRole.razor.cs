@@ -1,4 +1,4 @@
-﻿using ECampus.FrontEnd.Requests;
+﻿using ECampus.FrontEnd.Requests.Interfaces;
 using ECampus.Shared.DataTransferObjects;
 using Microsoft.AspNetCore.Components;
 
