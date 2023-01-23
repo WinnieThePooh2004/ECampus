@@ -1,0 +1,36 @@
+﻿@inherits ModelEditForm<CourseTaskDto>
+
+<EditForm Model="Model" OnValidSubmit="Submit">
+    <FluentValidationValidator Validator="Validator"/>
+    <div class="col-md-3">
+        <label class="form-label">Name</label>
+        <ValidationMessage For="@(() => Model.Name)"/>
+        <InputText class="form-control" @bind-Value="Model.Name"/>
+    </div>
+    <div class="col-md-3">
+        <label class="form-label">Valid after dealine?</label>
+        <ValidationMessage For="@(() => Model.ValidAfterDeadline)"/>
+        <InputCheckbox class="form-check-input" @bind-Value="Model.ValidAfterDeadline"/>
+    </div>
+    <div class="col-md-3">
+        <label class="form-label">Deadline</label>
+        <ValidationMessage For="@(() => Model.Deadline)"/>
+        <InputDate class="form-control" TValue="DateTime" @bind-Value="Model.Deadline"/>
+    </div>
+    <div class="col-md-3">
+        <label class="form-label">Max points</label>
+        <ValidationMessage For="@(() => Model.MaxPoints)"/>
+        <InputNumber TValue="int" class="form-control" @bind-Value="Model.MaxPoints"/>
+    </div>
+    <div class="col-md-3">
+        <label class="form-label">Type</label>
+        <ValidationMessage For="@(() => Model.Type)"/>
+        <InputSelect TValue="TaskType" @bind-Value="Model.Type" class="form-select">
+            @foreach (var type in Enum.GetValues<TaskType>())
+            {
+                <option value="@type">@type</option>
+            }
+        </InputSelect>
+    </div>
+    <button type="submit" class="btn btn-success">Save</button>
+</EditForm>
