@@ -1,14 +1,13 @@
-﻿using ECampus.Shared.Interfaces.Domain.Validation;
-using ECampus.Shared.Validation;
+﻿using ECampus.Shared.Validation;
 using FluentValidation;
 
 namespace ECampus.Domain.Validation.UniversalValidators;
 
-public class FluentValidatorWrapper<TDto> : ICreateValidator<TDto>, IUpdateValidator<TDto>
+public abstract class FluentValidatorWrapper<TDto>
 {
     private readonly IValidator<TDto> _fluentValidationValidator;
 
-    public FluentValidatorWrapper(IValidator<TDto> fluentValidationValidator)
+    protected FluentValidatorWrapper(IValidator<TDto> fluentValidationValidator)
     {
         _fluentValidationValidator = fluentValidationValidator;
     }

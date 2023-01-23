@@ -4,7 +4,8 @@ using ECampus.Shared.Models;
 
 namespace ECampus.Shared.DataTransferObjects;
 
-[Dto<Group>]
+[Dto(typeof(Group))]
+[Validation]
 public class GroupDto : IDataTransferObject
 {
     public int Id { get; set; }

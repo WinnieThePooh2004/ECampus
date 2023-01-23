@@ -3,11 +3,13 @@ using ECampus.FrontEnd.Requests.Interfaces;
 using ECampus.Shared.DataTransferObjects;
 using ECampus.Shared.Exceptions.DomainExceptions;
 using ECampus.Shared.Extensions;
+using ECampus.Shared.Metadata;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace ECampus.FrontEnd.Auth;
 
+[Inject(typeof(IAuthRequests))]
 public class AuthService : IAuthService
 {
     private readonly IHttpContextAccessor _httpContextAccessor;

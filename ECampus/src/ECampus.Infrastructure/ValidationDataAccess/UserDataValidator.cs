@@ -1,11 +1,14 @@
 ﻿using ECampus.Shared.Exceptions.InfrastructureExceptions;
 using ECampus.Shared.Interfaces.Domain.Validation;
+using ECampus.Shared.Metadata;
 using ECampus.Shared.Models;
 using ECampus.Shared.Validation;
 using Microsoft.EntityFrameworkCore;
 
 namespace ECampus.Infrastructure.ValidationDataAccess;
 
+[Inject(typeof(IDataValidator<User>))]
+[Inject(typeof(IValidationDataAccess<User>))]
 public class UserDataValidator : IDataValidator<User>, IValidationDataAccess<User>
 {
     private readonly ApplicationDbContext _context;

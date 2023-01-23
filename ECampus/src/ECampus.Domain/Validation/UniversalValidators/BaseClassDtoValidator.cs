@@ -11,43 +11,18 @@ using ECampus.Shared.Validation;
 
 namespace ECampus.Domain.Validation.UniversalValidators;
 
-public class ClassDtoUniversalValidator : IUpdateValidator<ClassDto>, ICreateValidator<ClassDto>
+public class BaseClassDtoValidator
 {
     private readonly IMapper _mapper;
     private readonly IValidationDataAccess<Class> _dataAccess;
-    private readonly IUpdateValidator<ClassDto> _baseUpdateValidator;
 
-    public ClassDtoUniversalValidator(IMapper mapper, IValidationDataAccess<Class> dataAccess,
-        IUpdateValidator<ClassDto> baseUpdateValidator)
+    protected BaseClassDtoValidator(IMapper mapper, IValidationDataAccess<Class> dataAccess)
     {
         _mapper = mapper;
         _dataAccess = dataAccess;
-        _baseUpdateValidator = baseUpdateValidator;
     }
 
-    async Task<ValidationResult> IUpdateValidator<ClassDto>.ValidateAsync(ClassDto dataTransferObject)
-    {
-        var baseErrors = await _baseUpdateValidator.ValidateAsync(dataTransferObject);
-        if (!baseErrors.IsValid)
-        {
-            return baseErrors;
-        }
-
-        return await ValidateAsync(dataTransferObject);
-    }
-
-    async Task<ValidationResult> ICreateValidator<ClassDto>.ValidateAsync(ClassDto dataTransferObject)
-    {
-        var baseErrors = await _baseUpdateValidator.ValidateAsync(dataTransferObject);
-        if (!baseErrors.IsValid)
-        {
-            return baseErrors;
-        }
-
-        return await ValidateAsync(dataTransferObject);
-    }
-
-    private async Task<ValidationResult> ValidateAsync(ClassDto dataTransferObject)
+    protected async Task<ValidationResult> ValidateAsync(ClassDto dataTransferObject)
     {
         var model = await _dataAccess.LoadRequiredDataForCreateAsync(_mapper.Map<Class>(dataTransferObject));
         var errors = ValidateReferencedValues(model);
