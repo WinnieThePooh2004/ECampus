@@ -1,10 +1,8 @@
 ﻿using ECampus.FrontEnd.Requests.Interfaces;
 using ECampus.Shared.Extensions;
-using ECampus.Shared.Metadata;
 
 namespace ECampus.FrontEnd.Requests;
 
-[Inject(typeof(IUserRelationshipsRequests))]
 public class UserRelationshipsRequests : IUserRelationshipsRequests
 {
     private readonly IHttpClientFactory _client;

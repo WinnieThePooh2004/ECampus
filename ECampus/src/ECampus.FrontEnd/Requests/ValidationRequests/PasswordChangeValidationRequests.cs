@@ -1,13 +1,11 @@
 ﻿using System.Diagnostics;
 using ECampus.FrontEnd.Requests.Interfaces.Validation;
 using ECampus.Shared.DataTransferObjects;
-using ECampus.Shared.Metadata;
 using ECampus.Shared.Validation;
 using Newtonsoft.Json;
 
 namespace ECampus.FrontEnd.Requests.ValidationRequests;
 
-[Inject(typeof(IValidationRequests<PasswordChangeDto>))]
 public class PasswordChangeValidationRequests : IValidationRequests<PasswordChangeDto>
 {
     private readonly IHttpClientFactory _client;

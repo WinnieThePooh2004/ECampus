@@ -2,12 +2,10 @@
 using ECampus.FrontEnd.Requests.Interfaces;
 using ECampus.Shared.DataContainers;
 using ECampus.Shared.DataTransferObjects;
-using ECampus.Shared.Metadata;
 using Newtonsoft.Json;
 
 namespace ECampus.FrontEnd.Requests;
 
-[Inject(typeof(IClassRequests))]
 public class ClassRequests : IClassRequests
 {
     private readonly IHttpClientFactory _client;
