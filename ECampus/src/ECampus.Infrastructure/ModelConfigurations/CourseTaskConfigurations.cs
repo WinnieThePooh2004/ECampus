@@ -10,6 +10,8 @@ public class CourseTaskConfigurations : IEntityTypeConfiguration<CourseTask>
     {
         builder.HasQueryFilter(c => !c.IsDeleted);
 
+        builder.Property(c => c.Name).HasMaxLength(40);
+
         builder.HasOne(c => c.Course)
             .WithMany(c => c.Tasks)
             .HasForeignKey(c => c.CourseId)

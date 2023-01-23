@@ -1,6 +1,6 @@
 ﻿using ECampus.Shared.DataTransferObjects;
 
-namespace ECampus.FrontEnd.Requests;
+namespace ECampus.FrontEnd.Requests.Interfaces;
 
 public interface IUserRolesRequests
 {

@@ -1,11 +1,15 @@
 using ECampus.Domain;
 using ECampus.FrontEnd;
+using ECampus.FrontEnd.Auth;
 using ECampus.FrontEnd.HttpHandlers;
 using ECampus.FrontEnd.PropertySelectors;
+using ECampus.FrontEnd.Requests;
+using ECampus.FrontEnd.Requests.Interfaces;
 using ECampus.FrontEnd.Requests.Interfaces.Validation;
 using ECampus.FrontEnd.Requests.Options;
 using ECampus.FrontEnd.Requests.ValidationRequests;
 using ECampus.FrontEnd.Validation;
+using ECampus.FrontEnd.Validation.Interfaces;
 using ECampus.Shared.DataTransferObjects;
 using ECampus.Shared.Extensions;
 using FluentValidation;
@@ -28,12 +32,23 @@ builder.Services.AddServerSideBlazor();
 
 builder.Services.Configure<RequestOptions>(builder.Configuration.GetSection("Requests"));
 
-builder.Services.AddUniqueServices(typeof(FrontEndAssemblyMarker));
-builder.Services.InstallServices<FrontEndAssemblyMarker>(builder.Configuration);
+builder.Services.UserInstallersFromAssemblyContaining<FrontEndAssemblyMarker>(builder.Configuration);
 
 builder.Services.AddValidatorsFromAssemblyContaining<DomainAssemblyMarker>();
 
 builder.Services.Decorate<IValidator<ClassDto>, HttpCallingValidator<ClassDto>>();
+builder.Services.AddScoped<IClassRequests, ClassRequests>();
+builder.Services.AddScoped<IValidationRequests<ClassDto>, ClassValidationRequests>();
+
+builder.Services.AddScoped<IValidationRequests<PasswordChangeDto>, PasswordChangeValidationRequests>();
+
+builder.Services.AddScoped<IUserRelationshipsRequests, UserRelationshipsRequests>();
+
+builder.Services.AddScoped<IAuthRequests, AuthRequests>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IUserValidatorFactory, UserValidatorFactory>();
+builder.Services.AddScoped<IUserRolesRequests, UserRolesRequests>();
+builder.Services.AddScoped<IPasswordChangeRequests, PasswordChangeRequests>();
 
 builder.Services.AddScoped<IUpdateValidationRequests<UserDto>, UserUpdateValidationRequests>();
 builder.Services.AddScoped<ICreateValidationRequests<UserDto>, UserCreateValidationRequests>();
@@ -45,8 +60,6 @@ builder.Services.Decorate<IValidator<TeacherDto>, ValidatorWithAnotherTypesIgnor
 builder.Services.Decorate<IValidator<PasswordChangeDto>, HttpCallingValidator<PasswordChangeDto>>();
 
 builder.Services.Decorate<IValidator<CourseDto>, ValidatorWithAnotherTypesIgnore<CourseDto>>();
-
-builder.Services.AddSingleton<IRequestOptions>(new RequestOptions(builder.Configuration));
 
 builder.Services.AddSingleton(typeof(IPropertySelector<>), typeof(PropertySelector<>));
 builder.Services.AddSingleton(typeof(ISearchTermsSelector<>), typeof(SearchTermsSelector<>));

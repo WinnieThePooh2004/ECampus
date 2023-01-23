@@ -1,10 +1,9 @@
-﻿using ECampus.Shared.DataTransferObjects;
-using ECampus.Shared.Metadata;
+﻿using ECampus.FrontEnd.Requests.Interfaces;
+using ECampus.Shared.DataTransferObjects;
 using Newtonsoft.Json;
 
 namespace ECampus.FrontEnd.Requests;
 
-[Inject(typeof(IUserRolesRequests))]
 public class UserRolesRequests : IUserRolesRequests
 {
     private readonly IHttpClientFactory _client;

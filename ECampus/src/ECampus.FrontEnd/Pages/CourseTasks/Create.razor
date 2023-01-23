@@ -1,0 +1,12 @@
+﻿@page "/tasks/create/{CourseId:int}"
+@inherits CreatePageBase<CourseTaskDto>
+
+<CourseTaskEditForm Model="new CourseTaskDto { CourseId = CourseId }" OnSubmit="Save"/>
+
+@code {
+
+    [Parameter]
+    public int CourseId { get; set; }
+
+    protected override string PageAfterSave => $"/tasks/{CourseId}";
+}

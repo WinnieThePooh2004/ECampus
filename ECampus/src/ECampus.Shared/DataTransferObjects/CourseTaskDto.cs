@@ -1,4 +1,5 @@
-﻿using ECampus.Shared.Interfaces.Data.Models;
+﻿using ECampus.Shared.Enums;
+using ECampus.Shared.Interfaces.Data.Models;
 using ECampus.Shared.Metadata;
 using ECampus.Shared.Models;
 
@@ -9,10 +10,11 @@ namespace ECampus.Shared.DataTransferObjects;
 public class CourseTaskDto : IDataTransferObject
 {
     public int Id { get; set; }
-
-    [DisplayName("Max points")]
+    public string Name { get; set; } = default!;
+    public DateTime Deadline { get; set; }
+    public bool ValidAfterDeadline { get; set; }
     public int MaxPoints { get; set; }
-
-    public int CourseTaskId { get; set; }
-    public int StudentId { get; set; }
+    public TaskType Type { get; set; }
+    
+    public int CourseId { get; set; }
 }

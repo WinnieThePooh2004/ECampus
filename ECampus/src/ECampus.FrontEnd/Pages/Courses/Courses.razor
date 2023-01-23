@@ -1,8 +1,0 @@
-﻿@page "/courses"
-
-<h3>Courses</h3>
-
-<IndexPageModel TData="CourseDto" TParameters="CourseParameters"
-                CreateLink="/courses/create"
-                EditLink="/courses/edit" 
-                ParameterOptions="parameters => parameters.OrderBy = nameof(CourseDto.Name)" />

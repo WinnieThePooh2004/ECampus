@@ -8,18 +8,18 @@ namespace ECampus.Shared.Extensions;
 
 public static class ServiceCollectionExtensions
 {
-    public static void InstallServices<TAssemblyMarker>(this IServiceCollection services, IConfiguration configuration)
+    public static void UserInstallersFromAssemblyContaining<TAssemblyMarker>(this IServiceCollection services, IConfiguration configuration)
         where TAssemblyMarker : IAssemblyMarker
     {
-        services.InstallServices(configuration, typeof(TAssemblyMarker));
+        services.UserInstallersFromAssemblyContaining(configuration, typeof(TAssemblyMarker));
     }
     
-    public static void InstallServices(this IServiceCollection services, IConfiguration configuration, params Type[] assemblyMarkers)
+    public static void UserInstallersFromAssemblyContaining(this IServiceCollection services, IConfiguration configuration, params Type[] assemblyMarkers)
     {
-        services.InstallServices(configuration, assemblyMarkers.Select(marker => marker.Assembly).ToArray());
+        services.UserInstallersFromAssemblies(configuration, assemblyMarkers.Select(marker => marker.Assembly).ToArray());
     }
 
-    private static void InstallServices(this IServiceCollection services, IConfiguration configuration, params Assembly[] assemblies)
+    private static void UserInstallersFromAssemblies(this IServiceCollection services, IConfiguration configuration, params Assembly[] assemblies)
     {
         var installers = assemblies.SelectMany(a => a.GetTypes())
             .Where(type => type.IsAssignableTo(typeof(IInstaller)) && type is { IsClass: true, IsAbstract: false })

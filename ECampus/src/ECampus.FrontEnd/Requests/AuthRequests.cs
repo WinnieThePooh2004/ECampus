@@ -2,12 +2,10 @@
 using ECampus.FrontEnd.Requests.Interfaces;
 using ECampus.Shared.Auth;
 using ECampus.Shared.DataTransferObjects;
-using ECampus.Shared.Metadata;
 using Newtonsoft.Json;
 
 namespace ECampus.FrontEnd.Requests;
 
-[Inject(typeof(IAuthRequests))]
 public class AuthRequests : IAuthRequests
 {
     private readonly IHttpClientFactory _client;

@@ -7,8 +7,16 @@ public class CourseTaskDtoValidator : AbstractValidator<CourseTaskDto>
 {
     public CourseTaskDtoValidator()
     {
-        RuleFor(c => c.StudentId)
+        RuleFor(c => c.CourseId)
             .NotEqual(0)
             .WithMessage("Student id cannot be 0");
+
+        RuleFor(c => c.Name)
+            .NotEmpty()
+            .WithMessage("Task name cannot be empty");
+
+        RuleFor(c => c.Name)
+            .MaximumLength(40)
+            .WithMessage("Task name cannot be longer than 40 symbols");
     }
 }
