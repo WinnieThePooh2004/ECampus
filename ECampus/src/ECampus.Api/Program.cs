@@ -1,15 +1,9 @@
-using System.Reflection;
-using ECampus.Api.Extensions;
+using ECampus.Api;
 using ECampus.Api.MiddlewareFilters;
-using ECampus.Domain.Validation.CreateValidators;
-using ECampus.Domain.Validation.UpdateValidators;
+using ECampus.Domain;
 using ECampus.Infrastructure;
-using ECampus.Infrastructure.Relationships;
 using ECampus.Shared.Auth;
-using ECampus.Shared.DataTransferObjects;
-using ECampus.Shared.Interfaces.Data.DataServices;
-using ECampus.Shared.Interfaces.Domain.Validation;
-using FluentValidation;
+using ECampus.Shared.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -40,46 +34,12 @@ builder.Services.AddScoped<DbContext, ApplicationDbContext>();
 builder.Services.AddControllers(options => { options.Filters.Add<MiddlewareExceptionFilter>(); })
     .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 
-builder.Services.AddValidatorsFromAssembly(Assembly.Load("ECampus.Domain"));
+builder.Services.AddAutoMapper(typeof(DomainAssemblyMarker));
 
-builder.Services.AddAutoMapper(Assembly.Load("ECampus.Domain"));
+builder.Services.InstallServices(builder.Configuration, typeof(DomainAssemblyMarker), typeof(ApiAssemblyMarker),
+    typeof(InfrastructureAssemblyMarker));
 
-builder.Services.AddDefaultFacades(Assembly.Load("ECampus.Shared"));
-builder.Services.AddDefaultDataServices(Assembly.Load("ECampus.Shared"));
-builder.Services.AddSingleItemSelectors(Assembly.Load("ECampus.Shared"),
-    Assembly.Load("ECampus.Infrastructure"));
-builder.Services.AddMultipleDataSelectors(Assembly.Load("ECampus.Infrastructure"));
-builder.Services.DecorateDataServicesWithRelationshipsServices(Assembly.Load("ECampus.Shared"));
-builder.Services.AddDataValidator(Assembly.Load("ECampus.Infrastructure"));
-builder.Services.AddUniqueServices(Assembly.Load("ECampus.Infrastructure"),
-    Assembly.Load("ECampus.Domain"));
-
-builder.Services.AddFluentValidationWrappers<AuditoryDto>();
-builder.Services.AddFluentValidationWrappers<ClassDto>();
-builder.Services.AddFluentValidationWrappers<GroupDto>();
-builder.Services.AddFluentValidationWrappers<FacultyDto>();
-builder.Services.AddFluentValidationWrappers<DepartmentDto>();
-builder.Services.AddFluentValidationWrappers<SubjectDto>();
-builder.Services.AddFluentValidationWrappers<StudentDto>();
-builder.Services.AddFluentValidationWrappers<TeacherDto>();
-builder.Services.AddFluentValidationWrappers<UserDto>();
-builder.Services.AddFluentValidationWrappers<CourseDto>();
-builder.Services.AddFluentValidationWrappers<CourseTaskDto>();
-
-builder.Services.Decorate<IUpdateValidator<UserDto>, UserUpdateValidator>();
-builder.Services.Decorate<ICreateValidator<UserDto>, UserCreateValidator>();
-
-builder.Services.Decorate<IUpdateValidator<ClassDto>, ClassDtoUpdateValidator>();
-builder.Services.Decorate<ICreateValidator<ClassDto>, ClassDtoCreateValidator>();
-
-builder.Services.AddScoped<IUpdateValidator<PasswordChangeDto>, UpdateFluentValidatorWrapper<PasswordChangeDto>>();
-builder.Services.Decorate<IUpdateValidator<PasswordChangeDto>, PasswordChangeDtoUpdateValidator>();
-
-builder.Services.AddSingleton(typeof(IRelationshipsHandler<,,>), typeof(RelationshipsHandler<,,>));
-
-builder.Services.AddSingleton(typeof(IRelationsDataAccess<,,>), typeof(RelationsDataAccess<,,>));
-
-builder.Services.AddLoggingServices(Assembly.Load("ECampus.Shared"));
+builder.Services.AddUniqueServices(typeof(DomainAssemblyMarker), typeof(InfrastructureAssemblyMarker));
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -125,6 +85,6 @@ app.MapControllers();
 
 app.Run();
 
-public partial class Program
+public abstract partial class Program
 {
 }

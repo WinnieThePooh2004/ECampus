@@ -1,10 +1,12 @@
 ﻿using ECampus.FrontEnd.Requests.Interfaces.Validation;
 using ECampus.FrontEnd.Validation.Interfaces;
 using ECampus.Shared.DataTransferObjects;
+using ECampus.Shared.Metadata;
 using FluentValidation;
 
 namespace ECampus.FrontEnd.Validation;
 
+[Inject(typeof(IUserValidatorFactory))]
 public class UserValidatorFactory : IUserValidatorFactory
 {
     private readonly IUpdateValidationRequests<UserDto> _updateValidationRequests;

@@ -1,5 +1,8 @@
-﻿namespace ECampus.Shared.DataTransferObjects;
+﻿using ECampus.Shared.Metadata;
 
+namespace ECampus.Shared.DataTransferObjects;
+
+[Validation(decorateServices: false)]
 public class PasswordChangeDto
 {
     public int UserId { get; set; }

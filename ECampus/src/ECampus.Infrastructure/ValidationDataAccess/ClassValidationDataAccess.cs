@@ -1,9 +1,11 @@
 ﻿using ECampus.Shared.Interfaces.Domain.Validation;
+using ECampus.Shared.Metadata;
 using ECampus.Shared.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace ECampus.Infrastructure.ValidationDataAccess;
 
+[Inject(typeof(IValidationDataAccess<Class>))]
 public class ClassValidationDataAccess : IValidationDataAccess<Class>
 {
     private readonly ApplicationDbContext _context;
