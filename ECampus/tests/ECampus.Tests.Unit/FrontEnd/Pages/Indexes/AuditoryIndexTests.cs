@@ -184,12 +184,7 @@ public class AuditoryIndexTests
 
     private void SetRole(UserRole role)
     {
-        if (_httpContextAccessor.HttpContext is null)
-        {
-            throw new NullReferenceException();
-        }
-
-        _httpContextAccessor.HttpContext.User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
+        _httpContextAccessor.HttpContext!.User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
         {
             new(ClaimTypes.Role, role.ToString())
         }));
