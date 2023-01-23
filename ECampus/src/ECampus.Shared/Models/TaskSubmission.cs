@@ -8,7 +8,7 @@ public class TaskSubmission : IModel, IIsDeleted
 
     public int TotalPoints { get; set; }
 
-    public string SubmissionContent { get; set; } = default!;
+    public string SubmissionContent { get; set; } = string.Empty;
     
     public int CourseTaskId { get; set; }
     public int StudentId { get; set; }

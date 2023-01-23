@@ -2,8 +2,11 @@ using ECampus.Api;
 using ECampus.Api.MiddlewareFilters;
 using ECampus.Domain;
 using ECampus.Infrastructure;
+using ECampus.Infrastructure.DataCreateServices;
 using ECampus.Shared.Auth;
 using ECampus.Shared.Extensions;
+using ECampus.Shared.Interfaces.Data.DataServices;
+using ECampus.Shared.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -40,6 +43,8 @@ builder.Services.UserInstallersFromAssemblyContaining(builder.Configuration, typ
     typeof(InfrastructureAssemblyMarker));
 
 builder.Services.AddUniqueServices(typeof(DomainAssemblyMarker), typeof(InfrastructureAssemblyMarker));
+
+builder.Services.Decorate<IDataCreateService<CourseTask>, CourseTaskCreateService>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

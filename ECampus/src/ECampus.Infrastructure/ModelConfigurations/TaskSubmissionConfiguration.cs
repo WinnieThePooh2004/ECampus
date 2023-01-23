@@ -10,8 +10,11 @@ public class TaskSubmissionConfiguration : IEntityTypeConfiguration<TaskSubmissi
     {
         builder.HasQueryFilter(t => !t.IsDeleted);
 
+        builder.HasIndex(t => new { t.StudentId, t.CourseTaskId })
+            .IsUnique();
+
         builder.Property(t => t.SubmissionContent).HasMaxLength(450);
-        
+
         builder.HasOne(t => t.Student)
             .WithMany(s => s.Submissions)
             .HasForeignKey(t => t.StudentId)

@@ -33,6 +33,7 @@ public class ServicesInstaller : IInstaller
     private static void InjectParametersFacadeIfExists(IServiceCollection services, Type dataTransferObject, Type model)
     {
         var modelParameters = typeof(SharedAssemblyMarker).Assembly.GetTypes().SingleOrDefault(type =>
+            !type.GetCustomAttributes(typeof(InstallerIgnoreAttribute), false).Any() &&
             type.IsAssignableTo(typeof(IQueryParameters<>).MakeGenericType(model)));
 
         if (modelParameters is null)

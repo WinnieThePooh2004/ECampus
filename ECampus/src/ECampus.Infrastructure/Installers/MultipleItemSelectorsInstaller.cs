@@ -1,6 +1,7 @@
 ﻿using ECampus.Shared.Extensions;
 using ECampus.Shared.Installers;
 using ECampus.Shared.Interfaces.Data.DataServices;
+using ECampus.Shared.Metadata;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -13,7 +14,8 @@ public class MultipleItemSelectorsInstaller : IInstaller
     public void Install(IServiceCollection services, IConfiguration configuration)
     {
         var selectors = typeof(InfrastructureAssemblyMarker).Assembly.GetTypes()
-            .Where(type => type.GetInterfaces().Any(i => i.IsGenericOfType(typeof(IMultipleItemSelector<,>))));
+            .Where(type => type.GetInterfaces().Any(i => i.IsGenericOfType(typeof(IMultipleItemSelector<,>))) &&
+                           !type.GetCustomAttributes(typeof(InstallerIgnoreAttribute), false).Any());
         foreach (var selector in selectors)
         {
             var selectorParameters = selector.GetInterfaces()

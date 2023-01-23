@@ -12,16 +12,16 @@ using ECampus.Tests.Shared.Mocks.HttpRequests;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 
-namespace ECampus.Tests.Integration.Tests.EndpointsTests;
+namespace ECampus.Tests.Integration.Tests.TeachersEndpoints;
 
-public class TeachersEndpointsTests : IClassFixture<ApplicationFactory>, IAsyncLifetime
+public class SuccessfulTeachersEndpointsTests : IClassFixture<ApplicationFactory>, IAsyncLifetime
 {
     private static bool _databaseCreated;
 
     private readonly HttpClient _client;
     private readonly JsonSerializerOptions _serializerOptions = HttpClientFactory.Options;
 
-    public TeachersEndpointsTests(ApplicationFactory factory)
+    public SuccessfulTeachersEndpointsTests(ApplicationFactory factory)
     {
         _client = factory.CreateClient();
         _client.Login(DefaultUsers.Admin);

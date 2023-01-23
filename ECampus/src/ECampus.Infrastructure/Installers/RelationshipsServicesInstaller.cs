@@ -4,6 +4,7 @@ using ECampus.Infrastructure.Relationships;
 using ECampus.Shared;
 using ECampus.Shared.Installers;
 using ECampus.Shared.Interfaces.Data.DataServices;
+using ECampus.Shared.Metadata;
 using ECampus.Shared.Metadata.Relationships;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,7 +18,8 @@ public class RelationshipsServicesInstaller : IInstaller
     public void Install(IServiceCollection services, IConfiguration configuration)
     {
         var relationModels = typeof(SharedAssemblyMarker).Assembly.GetTypes()
-            .Where(type => type.GetCustomAttributes(typeof(ManyToManyAttribute), false).Any()).ToList();
+            .Where(type => type.GetCustomAttributes(typeof(ManyToManyAttribute), false).Any() &&
+                           !type.GetCustomAttributes(typeof(InstallerIgnoreAttribute), false).Any()).ToList();
 
         foreach (var modelWithRelations in relationModels)
         {
