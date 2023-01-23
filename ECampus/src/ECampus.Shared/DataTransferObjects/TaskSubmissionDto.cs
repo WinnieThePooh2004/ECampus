@@ -5,7 +5,6 @@ using ECampus.Shared.Models;
 namespace ECampus.Shared.DataTransferObjects;
 
 [Dto(typeof(TaskSubmission))]
-[Validation]
 public class TaskSubmissionDto : IDataTransferObject
 {
     public int Id { get; set; }
