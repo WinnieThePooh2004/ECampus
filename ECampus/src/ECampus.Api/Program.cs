@@ -2,7 +2,6 @@ using System.Reflection;
 using ECampus.Api.Extensions;
 using ECampus.Api.MiddlewareFilters;
 using ECampus.Domain.Validation.CreateValidators;
-using ECampus.Domain.Validation.UniversalValidators;
 using ECampus.Domain.Validation.UpdateValidators;
 using ECampus.Infrastructure;
 using ECampus.Infrastructure.Relationships;
@@ -70,10 +69,10 @@ builder.Services.AddFluentValidationWrappers<CourseTaskDto>();
 builder.Services.Decorate<IUpdateValidator<UserDto>, UserUpdateValidator>();
 builder.Services.Decorate<ICreateValidator<UserDto>, UserCreateValidator>();
 
-builder.Services.Decorate<IUpdateValidator<ClassDto>, ClassDtoUniversalValidator>();
-builder.Services.Decorate<ICreateValidator<ClassDto>, ClassDtoUniversalValidator>();
+builder.Services.Decorate<IUpdateValidator<ClassDto>, ClassDtoUpdateValidator>();
+builder.Services.Decorate<ICreateValidator<ClassDto>, ClassDtoCreateValidator>();
 
-builder.Services.AddScoped<IUpdateValidator<PasswordChangeDto>, FluentValidatorWrapper<PasswordChangeDto>>();
+builder.Services.AddScoped<IUpdateValidator<PasswordChangeDto>, UpdateFluentValidatorWrapper<PasswordChangeDto>>();
 builder.Services.Decorate<IUpdateValidator<PasswordChangeDto>, PasswordChangeDtoUpdateValidator>();
 
 builder.Services.AddSingleton(typeof(IRelationshipsHandler<,,>), typeof(RelationshipsHandler<,,>));

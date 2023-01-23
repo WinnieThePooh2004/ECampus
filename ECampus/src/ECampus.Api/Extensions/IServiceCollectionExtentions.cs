@@ -1,7 +1,8 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
 using ECampus.Domain.Services;
-using ECampus.Domain.Validation.UniversalValidators;
+using ECampus.Domain.Validation.CreateValidators;
+using ECampus.Domain.Validation.UpdateValidators;
 using ECampus.Infrastructure.DataAccessFacades;
 using ECampus.Infrastructure.DataCreateServices;
 using ECampus.Infrastructure.DataDeleteServices;
@@ -163,8 +164,8 @@ internal static class IServiceCollectionExtensions
     public static void AddFluentValidationWrappers<TDto>(this IServiceCollection services, bool addServices = true)
         where TDto : class, IDataTransferObject
     {
-        services.AddScoped<IUpdateValidator<TDto>, FluentValidatorWrapper<TDto>>();
-        services.AddScoped<ICreateValidator<TDto>, FluentValidatorWrapper<TDto>>();
+        services.AddScoped<IUpdateValidator<TDto>, UpdateFluentValidatorWrapper<TDto>>();
+        services.AddScoped<ICreateValidator<TDto>, CreateFluentValidatorWrapper<TDto>>();
         if (!addServices)
         {
             return;

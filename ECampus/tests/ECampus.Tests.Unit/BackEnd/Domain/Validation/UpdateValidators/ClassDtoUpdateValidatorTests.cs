@@ -1,4 +1,4 @@
-﻿using ECampus.Domain.Validation.UniversalValidators;
+﻿using ECampus.Domain.Validation.UpdateValidators;
 using ECampus.Shared.DataTransferObjects;
 using ECampus.Shared.Interfaces.Domain.Validation;
 using ECampus.Shared.Models;
@@ -6,68 +6,21 @@ using ECampus.Shared.Models.RelationModels;
 using ECampus.Shared.Validation;
 using ECampus.Tests.Shared.DataFactories;
 
-namespace ECampus.Tests.Unit.BackEnd.Domain.Validation.UniversalValidators;
+namespace ECampus.Tests.Unit.BackEnd.Domain.Validation.UpdateValidators;
 
-public class ClassUniversalValidatorTests
+public class ClassDtoUpdateValidatorTests
 {
-    private readonly ClassDtoUniversalValidator _sut;
+    private readonly ClassDtoUpdateValidator _sut;
     private readonly IValidationDataAccess<Class> _dataValidator;
     private readonly IUpdateValidator<ClassDto> _baseUpdateValidator = Substitute.For<IUpdateValidator<ClassDto>>();
     private readonly Fixture _fixture = new();
 
-    public ClassUniversalValidatorTests()
+    public ClassDtoUpdateValidatorTests()
     {
         _dataValidator = Substitute.For<IValidationDataAccess<Class>>();
-        _sut = new ClassDtoUniversalValidator(MapperFactory.Mapper, _dataValidator, _baseUpdateValidator);
+        _sut = new ClassDtoUpdateValidator(MapperFactory.Mapper, _dataValidator, _baseUpdateValidator);
     }
-
-    [Fact]
-    public async Task ValidateAsCreateValidator_ReturnsValidationFailures()
-    {
-        var @class = new ClassDto();
-        var classFromDb = CreateTestModel();
-        _baseUpdateValidator.ValidateAsync(Arg.Any<ClassDto>()).Returns(new ValidationResult());
-        _dataValidator.LoadRequiredDataForCreateAsync(Arg.Any<Class>()).Returns(classFromDb);
-        var expectedErrors = CreateExpectedErrors(classFromDb);
-
-        var actual = await ((ICreateValidator<ClassDto>)_sut).ValidateAsync(@class);
-
-        actual.GetAllErrors().Should().Contain(expectedErrors.GetAllErrors());
-    }
-
-    [Fact]
-    public async Task ValidateAsCreateValidator_AddedMessages_WhenPropertiesIsnull()
-    {
-        var classFromDb = new Class();
-        _baseUpdateValidator.ValidateAsync(Arg.Any<ClassDto>()).Returns(new ValidationResult());
-        _dataValidator.LoadRequiredDataForCreateAsync(Arg.Any<Class>()).Returns(classFromDb);
-        var expected = new ValidationResult
-        (
-            new ValidationError("GroupId", "Group does not exist"),
-            new ValidationError("AuditoryId", "Auditory does not exist"),
-            new ValidationError("SubjectId", "Subject does not exist"),
-            new ValidationError("TeacherId", "Teacher does not exist")
-        );
-
-        var actual = await ((ICreateValidator<ClassDto>)_sut).ValidateAsync(new ClassDto());
-
-        actual.GetAllErrors().Should().Contain(expected.GetAllErrors());
-    }
-
-    [Fact]
-    public async Task ValidateAsCreateValidator_ShouldNotAddMoreErrors_WhenBaseValidatorFoundErrors()
-    {
-        var errors = new ValidationResult(_fixture.CreateMany<ValidationError>(10).ToList());
-        var classFromDb = CreateTestModel();
-        _baseUpdateValidator.ValidateAsync(Arg.Any<ClassDto>()).Returns(errors);
-        _dataValidator.LoadRequiredDataForCreateAsync(Arg.Any<Class>()).Returns(classFromDb);
-
-        var actualErrors = await ((ICreateValidator<ClassDto>)_sut).ValidateAsync(new ClassDto());
-
-        actualErrors.GetAllErrors().Should().Contain(errors.GetAllErrors());
-        actualErrors.GetAllErrors().Count().Should().Be(10);
-    }
-
+    
     [Fact]
     public async Task ValidateAsUpdateValidator_ReturnsValidationFailures()
     {

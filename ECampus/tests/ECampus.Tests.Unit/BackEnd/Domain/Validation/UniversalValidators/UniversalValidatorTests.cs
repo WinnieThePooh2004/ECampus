@@ -1,4 +1,5 @@
 ﻿using ECampus.Domain.Validation.UniversalValidators;
+using ECampus.Domain.Validation.UpdateValidators;
 using ECampus.Shared.DataTransferObjects;
 using ECampus.Shared.Validation;
 using FluentValidation;
@@ -15,7 +16,7 @@ public class UniversalValidatorTests
     public UniversalValidatorTests()
     {
         _fluentValidator = Substitute.For<IValidator<FacultyDto>>();
-        _sut = new FluentValidatorWrapper<FacultyDto>(_fluentValidator);
+        _sut = new UpdateFluentValidatorWrapper<FacultyDto>(_fluentValidator);
     }
 
     [Fact]
