@@ -8,16 +8,16 @@ using ECampus.Tests.Integration.AuthHelpers;
 using ECampus.Tests.Shared.Mocks.HttpRequests;
 using FluentAssertions;
 
-namespace ECampus.Tests.Integration.Tests.EndpointsTests;
+namespace ECampus.Tests.Integration.Tests.TimetableEndpoints;
 
-public class TimetableEndpointsTest : IClassFixture<ApplicationFactory>, IAsyncLifetime
+public class SuccessfulTimetableEndpointsTest : IClassFixture<ApplicationFactory>, IAsyncLifetime
 {
     private static bool _dbCreated;
     
     private readonly HttpClient _client;
     private readonly JsonSerializerOptions _serializerOptions = HttpClientFactory.Options;
 
-    public TimetableEndpointsTest(ApplicationFactory factory)
+    public SuccessfulTimetableEndpointsTest(ApplicationFactory factory)
     {
         _client = factory.CreateClient();
         _client.Login(DefaultUsers.Admin);
@@ -42,12 +42,23 @@ public class TimetableEndpointsTest : IClassFixture<ApplicationFactory>, IAsyncL
     [Fact]
     public async Task GetById_ShouldReturn404_IfClassNotExist()
     {
-        var response = await _client.GetAsync($"/api/Timetable/{10}");
+        var response = await _client.GetAsync($"/api/Timetable/{1000}");
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
         var result = JsonSerializer
             .Deserialize<BadResponseObject>(await response.Content.ReadAsStringAsync(), _serializerOptions);
         result.Should().NotBeNull();
-        result?.Message.Should().Be(new ObjectNotFoundByIdException(typeof(Class), 10).Message);
+        result?.Message.Should().Be(new ObjectNotFoundByIdException(typeof(Class), 1000).Message);
+    }
+
+    [Fact]
+    public async Task DeleteShouldReturn404_WhenClassNotExist()
+    {
+        var response = await _client.DeleteAsync($"/api/Timetable/{1000}");
+        response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+        var result = JsonSerializer
+            .Deserialize<BadResponseObject>(await response.Content.ReadAsStringAsync(), _serializerOptions);
+        result.Should().NotBeNull();
+        result?.Message.Should().Be(new ObjectNotFoundByIdException(typeof(Class), 1000).Message);
     }
 
     private static async Task CreateTestsData()

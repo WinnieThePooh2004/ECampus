@@ -11,15 +11,15 @@ using ECampus.Tests.Shared.Mocks.HttpRequests;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 
-namespace ECampus.Tests.Integration.Tests.EndpointsTests;
+namespace ECampus.Tests.Integration.Tests.AuditoriesEndpoints;
 
-public class AuditoriesEndpointsTests : IClassFixture<ApplicationFactory>, IAsyncLifetime
+public class AuditoriesSuccessfulEndpointsTests : IClassFixture<ApplicationFactory>, IAsyncLifetime
 {
     private static bool _databaseCreated;
     private readonly HttpClient _client;
     private readonly JsonSerializerOptions _serializerOptions = HttpClientFactory.Options;
 
-    public AuditoriesEndpointsTests(ApplicationFactory factory)
+    public AuditoriesSuccessfulEndpointsTests(ApplicationFactory factory)
     {
         _client = factory.CreateClient();
         _client.Login(DefaultUsers.Admin);
@@ -39,17 +39,6 @@ public class AuditoriesEndpointsTests : IClassFixture<ApplicationFactory>, IAsyn
     public Task DisposeAsync()
     {
         return Task.CompletedTask;
-    }
-
-    [Fact]
-    public async Task GetById_ShouldReturn404_IfNotExist()
-    {
-        var response = await _client.GetAsync("/api/Auditories/10");
-        response.StatusCode.Should().Be(HttpStatusCode.NotFound);
-        var result = JsonSerializer
-            .Deserialize<BadResponseObject>(await response.Content.ReadAsStringAsync(), _serializerOptions);
-        result.Should().NotBeNull();
-        result?.Message.Should().Be(new ObjectNotFoundByIdException(typeof(Auditory), 10).Message);
     }
 
     [Fact]
@@ -82,19 +71,6 @@ public class AuditoriesEndpointsTests : IClassFixture<ApplicationFactory>, IAsyn
     }
 
     [Fact]
-    public async Task Update_ShouldReturn400_WhenValidationErrorOccured()
-    {
-        var teacher = new AuditoryDto { Id = 1 };
-        var response = await _client.PutAsJsonAsync("/api/Auditories", teacher);
-        response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-        var result = JsonSerializer
-            .Deserialize<BadResponseObject>(await response.Content.ReadAsStreamAsync(), _serializerOptions);
-        response.Should().NotBeNull();
-        result?.Message.Should()
-            .Be($"2 errors occured while validating entity of type {typeof(AuditoryDto)}\nError code: 400");
-    }
-
-    [Fact]
     public async Task Create_ShouldAddToDataBase_WhenNoValidationErrorOccured()
     {
         var teacher = new AuditoryDto
@@ -106,19 +82,6 @@ public class AuditoriesEndpointsTests : IClassFixture<ApplicationFactory>, IAsyn
         var response = await _client.PostAsJsonAsync("/api/Auditories", teacher);
         response.EnsureSuccessStatusCode();
         (await ApplicationFactory.Context.Auditories.FindAsync(40)).Should().NotBeNull();
-    }
-
-    [Fact]
-    public async Task Create_ShouldReturn400_WhenValidationErrorOccured()
-    {
-        var teacher = new AuditoryDto { Id = 100 };
-        var response = await _client.PostAsJsonAsync("/api/Auditories", teacher);
-        response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-        var result = JsonSerializer
-            .Deserialize<BadResponseObject>(await response.Content.ReadAsStreamAsync(), _serializerOptions);
-        response.Should().NotBeNull();
-        result?.Message.Should()
-            .Be($"2 errors occured while validating entity of type {typeof(AuditoryDto)}\nError code: 400");
     }
 
     [Fact]
