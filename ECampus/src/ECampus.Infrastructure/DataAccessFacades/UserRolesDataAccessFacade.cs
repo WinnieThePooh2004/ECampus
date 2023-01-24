@@ -45,7 +45,7 @@ public class UserRolesDataAccessFacade : IUserRolesDataAccessFacade
 
     private async Task<User> SetStudentId(User user, Student student)
     {
-        student.UserId = user.Id;
+        student.UserEmail = user.Email;
         _context.Update(student);
         await _context.SaveChangesAsync();
         return user;
@@ -53,7 +53,7 @@ public class UserRolesDataAccessFacade : IUserRolesDataAccessFacade
 
     private async Task<User> SetTeacherId(User user, Teacher teacher)
     {
-        teacher.UserId = user.Id;
+        teacher.UserEmail = user.Email;
         _context.Update(teacher);
         await _context.SaveChangesAsync();
         return user;
@@ -82,7 +82,7 @@ public class UserRolesDataAccessFacade : IUserRolesDataAccessFacade
             return;
         }
 
-        model.Teacher.UserId = null;
+        model.Teacher.UserEmail = null;
         _context.Update(model.Teacher);
         model.Teacher = null;
     }
@@ -95,7 +95,7 @@ public class UserRolesDataAccessFacade : IUserRolesDataAccessFacade
             return;
         }
 
-        model.Student.UserId = null;
+        model.Student.UserEmail = null;
         _context.Update(model.Student);
         model.Student = null;
     }
@@ -108,7 +108,7 @@ public class UserRolesDataAccessFacade : IUserRolesDataAccessFacade
             return;
         }
 
-        model.Student.UserId = model.Id;
+        model.Student.UserEmail = model.Email;
         model.StudentId = model.Student.Id;
         _context.Update(model);
     }
@@ -121,7 +121,7 @@ public class UserRolesDataAccessFacade : IUserRolesDataAccessFacade
             return;
         }
 
-        model.Teacher.UserId = model.Id;
+        model.Teacher.UserEmail = model.Email;
         model.TeacherId = model.Teacher.Id;
         _context.Update(model);
     }
