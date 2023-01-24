@@ -68,12 +68,12 @@ public class UserUpdateValidator : IUpdateValidator<UserDto>
             return;
         }
 
-        if (user.Role != userFromDb.Role || currentUserRole == nameof(UserRole.Admin))
+        if (user.Role == userFromDb.Role || currentUserRole == nameof(UserRole.Admin))
         {
             return;
         }
 
         currentErrors.AddError(new ValidationError(nameof(user.Role),
-            $"Only admin can create user with roles different from {nameof(UserRole.Guest)}"));
+            $"Only admins can change user`s role"));
     }
 }
