@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Security.Claims;
+using AutoMapper;
 using ECampus.Shared.DataTransferObjects;
 using ECampus.Shared.Enums;
 using ECampus.Shared.Exceptions.DomainExceptions;
@@ -32,8 +33,8 @@ public class UserUpdateValidator : IUpdateValidator<UserDto>
     public async Task<ValidationResult> ValidateAsync(UserDto dataTransferObject)
     {
         var errors = await _updateValidator.ValidateAsync(dataTransferObject);
-        ValidateRole(dataTransferObject, errors);
         var model = _mapper.Map<User>(dataTransferObject);
+        ValidateRole(dataTransferObject, model, errors);
         errors.MergeResults(await _dataAccess.ValidateUpdate(model));
         var userFromDb = await _validationDataAccess.LoadRequiredDataForUpdateAsync(model);
 
@@ -50,15 +51,24 @@ public class UserUpdateValidator : IUpdateValidator<UserDto>
 
         return errors;
     }
-    
-    private void ValidateRole(UserDto user, ValidationResult currentErrors)
+
+    private void ValidateRole(UserDto user, User userFromDb, ValidationResult currentErrors)
     {
         if (_httpContextAccessor.HttpContext is null)
         {
             throw new HttpContextNotFoundExceptions();
         }
 
-        if (user.Role == UserRole.Guest || _httpContextAccessor.HttpContext.User.IsInRole(nameof(UserRole.Admin)))
+        var currentUserRole = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Role)!.Value;
+
+        if (userFromDb.Role == UserRole.Admin && user.Role != UserRole.Admin &&
+            _httpContextAccessor.HttpContext.User.GetId() == user.Id)
+        {
+            currentErrors.AddError(new ValidationError(nameof(user.Role), "Admin cannon change role for him/herself"));
+            return;
+        }
+
+        if (user.Role != userFromDb.Role || currentUserRole == nameof(UserRole.Admin))
         {
             return;
         }
