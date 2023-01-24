@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace ECampus.Messaging.Messaging;
+namespace ECampus.Messaging.Messages;
 
 public interface ISqsMessage: IRequest
 {

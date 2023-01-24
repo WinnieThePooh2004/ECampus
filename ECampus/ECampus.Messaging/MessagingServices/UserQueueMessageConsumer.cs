@@ -1,6 +1,6 @@
 ﻿using Amazon.SQS;
 using Amazon.SQS.Model;
-using ECampus.Messaging.Messaging;
+using ECampus.Messaging.Messages;
 using ECampus.Messaging.Options;
 using MediatR;
 using Microsoft.Extensions.Options;

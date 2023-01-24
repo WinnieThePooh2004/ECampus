@@ -1,4 +1,4 @@
-﻿using ECampus.Messaging.Messaging.Users;
+﻿using ECampus.Messaging.Messages;
 using MediatR;
 using ILogger = Serilog.ILogger;
 

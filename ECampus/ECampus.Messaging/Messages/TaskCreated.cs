@@ -1,4 +1,4 @@
-﻿namespace ECampus.Messaging.Messaging.TaskSubmissions;
+﻿namespace ECampus.Messaging.Messages;
 
 public class TaskCreated : ISqsMessage
 {
