@@ -9,10 +9,15 @@
         <InputText @bind-Value="@_model.Email"/>
     </div>
     <div class="col-md-3">
+        <label for="@(() => _model.Username)">Username</label>
+        <ValidationMessage For="@(() => _model.Username)"/>
+        <InputText @bind-Value="@_model.Username"/>
+    </div>
+    <div class="col-md-3">
         <label for="@(() => _model.Password)">Password</label>
         <ValidationMessage For="@(() => _model.Password)"/>
         <InputText Value="@_model.Password" ValueExpression="@(() => _model.Password)" ValueChanged="@(OnPasswordChanges)"/>
     </div>
-    <br />
+    <br/>
     <UserRoleEditForm Model="_model"/>
 </EditForm>

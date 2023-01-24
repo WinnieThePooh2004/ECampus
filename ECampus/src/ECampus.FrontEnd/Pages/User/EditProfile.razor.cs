@@ -9,12 +9,12 @@ namespace ECampus.FrontEnd.Pages.User;
 
 public sealed partial class EditProfile
 {
-    private IValidator<UserDto> _validator = default!;
     [Inject] private IBaseRequests<UserDto> UserRequests { get; set; } = default!;
     [Inject] private NavigationManager NavigationManager { get; set; } = default!;
     [Inject] private IUserValidatorFactory UserValidatorFactory { get; set; } = default!;
 
     [Inject] private IHttpContextAccessor HttpContextAccessor { get; set; } = default!;
+    private IValidator<UserDto> _validator = default!;
     private UserDto? _model;
 
     protected override async Task OnInitializedAsync()
@@ -26,6 +26,11 @@ public sealed partial class EditProfile
 
     private async Task Save()
     {
+        var errors = await _validator.ValidateAsync(_model!);
+        if (!errors.IsValid)
+        {
+            return;
+        }
         await UserRequests.UpdateAsync(_model ?? throw new NullReferenceException());
         NavigationManager.NavigateTo("/profile");
     }
