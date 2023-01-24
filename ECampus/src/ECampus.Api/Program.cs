@@ -28,9 +28,7 @@ builder.Services.AddSingleton<ILogger>(logger);
 
 // Add services to the container.
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("ApplicationDbContext")
-                         ?? throw new InvalidOperationException(
-                             "Connection string 'ApplicationDbContext' not found.")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("ApplicationDbContext")!));
 
 builder.Services.AddScoped<DbContext, ApplicationDbContext>();
 
@@ -38,11 +36,10 @@ builder.Services.AddControllers(options => { options.Filters.Add<MiddlewareExcep
     .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 
 builder.Services.AddAutoMapper(typeof(DomainAssemblyMarker));
+builder.Services.AddUniqueServices(typeof(DomainAssemblyMarker), typeof(InfrastructureAssemblyMarker));
 
 builder.Services.UserInstallersFromAssemblyContaining(builder.Configuration, typeof(DomainAssemblyMarker), typeof(ApiAssemblyMarker),
     typeof(InfrastructureAssemblyMarker));
-
-builder.Services.AddUniqueServices(typeof(DomainAssemblyMarker), typeof(InfrastructureAssemblyMarker));
 
 builder.Services.Decorate<IDataCreateService<CourseTask>, CourseTaskCreateService>();
 
