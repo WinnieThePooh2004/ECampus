@@ -18,12 +18,14 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
         builder.HasOne(u => u.Teacher)
             .WithOne(t => t.User)
-            .HasForeignKey<Teacher>(t => t.UserId)
+            .HasPrincipalKey<User>(u => u.Email)
+            .HasForeignKey<Teacher>(t => t.UserEmail)
             .OnDelete(DeleteBehavior.SetNull);
         
         builder.HasOne(u => u.Student)
             .WithOne(s => s.User)
-            .HasForeignKey<Student>(s => s.UserId)
+            .HasPrincipalKey<User>(u => u.Email)
+            .HasForeignKey<Student>(s => s.UserEmail)
             .OnDelete(DeleteBehavior.SetNull);
 
         builder.HasMany(u => u.SavedAuditories)
