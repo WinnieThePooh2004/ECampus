@@ -13,30 +13,39 @@ public class TaskSubmissionPropertySelector : IPropertySelector<TaskSubmissionDt
 
     public List<(string displayName, string propertyName)> GetAllPropertiesNames()
     {
-        var result = _baseSelector.GetAllPropertiesNames();
-        result.Add(("Max points", "CourseTaskDto.MaxPoints"));
-        result.Add(("Student email", "Student.UserEmail"));
-        result.Add(("Student Name", "Student.LastName"));
+        var result = new List<(string displayName, string propertyName)>
+        {
+            ("Max points", "CourseTaskDto.MaxPoints"),
+            ("Student email", "Student.UserEmail"),
+            ("Student Name", "Student.LastName")
+        };
+        result.AddRange(_baseSelector.GetAllPropertiesNames());
         return result;
     }
 
     public List<(string displayName, string value)> GetAllProperties(TaskSubmissionDto item)
     {
-        var result = _baseSelector.GetAllProperties(item);
-        result.Add(("Max points", item.CourseTask!.MaxPoints.ToString()));
         var studentEmail = item.Student.UserEmail;
-        result.Add(studentEmail is not null ? ("Email", studentEmail) : ("Email", "-"));
-        result.Add(("Student Name", $"{item.Student.LastName} {item.Student.FirstName}"));
+        var result = new List<(string displayName, string value)>
+        {
+            ("Max points", item.CourseTask!.MaxPoints.ToString()),
+            studentEmail is not null ? ("Email", studentEmail) : ("Email", "-"),
+            ("Student Name", $"{item.Student.LastName} {item.Student.FirstName}")
+        };
+        result.AddRange(_baseSelector.GetAllProperties(item));
         return result;
     }
 
     public List<string> GetAllPropertiesValues(TaskSubmissionDto item)
     {
-        var result = _baseSelector.GetAllPropertiesValues(item);
-        result.Add(item.CourseTask!.MaxPoints.ToString());
         var studentEmail = item.Student.UserEmail;
-        result.Add(studentEmail ?? "-");
-        result.Add( $"{item.Student.LastName} {item.Student.FirstName}");
+        var result = new List<string>
+        {
+            item.CourseTask!.MaxPoints.ToString(),
+            studentEmail ?? "-",
+            $"{item.Student.LastName} {item.Student.FirstName}"
+        };
+        result.AddRange(_baseSelector.GetAllPropertiesValues(item));
         return result;
     }
 }
