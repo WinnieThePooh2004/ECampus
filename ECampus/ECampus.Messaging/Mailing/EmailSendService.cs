@@ -15,9 +15,10 @@ public class EmailSendService : IEmailSendService
         _options = options;
         _smtpClient = new SmtpClient(options.Value.HostName)
         {
-            Port = 578,
+            Port = 587,
             Credentials = new NetworkCredential { Password = options.Value.Password, UserName = options.Value.Email },
-            EnableSsl = true
+            EnableSsl = true,
+            DeliveryMethod = SmtpDeliveryMethod.Network
         };
     }
 
