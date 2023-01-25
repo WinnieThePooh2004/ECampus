@@ -16,4 +16,6 @@ public class TaskSubmissionDto : IDataTransferObject
     public int TotalPoints { get; set; }
     
     public CourseTaskDto? CourseTask { get; set; }
+
+    public StudentDto Student { get; set; } = default!;
 }

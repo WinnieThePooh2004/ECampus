@@ -2,7 +2,7 @@
 using ECampus.Shared.DataTransferObjects;
 using ECampus.Shared.Enums;
 using ECampus.Shared.Interfaces.Domain;
-using Microsoft.AspNetCore.Authorization;
+using ECampus.Shared.QueryParameters;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECampus.Api.Controllers;
@@ -12,14 +12,24 @@ namespace ECampus.Api.Controllers;
 public class TaskSubmissionsController : ControllerBase
 {
     private readonly IBaseService<TaskSubmissionDto> _baseService;
+    private readonly IParametersService<TaskSubmissionDto, TaskSubmissionParameters> _parametersService;
 
-    public TaskSubmissionsController(IBaseService<TaskSubmissionDto> baseService)
+    public TaskSubmissionsController(IBaseService<TaskSubmissionDto> baseService,
+        IParametersService<TaskSubmissionDto, TaskSubmissionParameters> parametersService)
     {
         _baseService = baseService;
+        _parametersService = parametersService;
+    }
+
+    [HttpGet]
+    [Authorized(UserRole.Student)]
+    public async Task<IActionResult> Get([FromQuery] TaskSubmissionParameters parameters)
+    {
+        return Ok(await _parametersService.GetByParametersAsync(parameters));
     }
 
     [HttpGet("{id:int}")]
-    [AllowAnonymous]
+    [Authorized(UserRole.Student)]
     public async Task<IActionResult> Get(int? id)
     {
         return Ok(await _baseService.GetByIdAsync(id));

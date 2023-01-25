@@ -24,4 +24,10 @@
         <DependentUpon>appsettings.json</DependentUpon>
       </Content>
     </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Pages\TaskSubmissions\TeacherView.razor.cs">
+        <DependentUpon>TeacherView.razor</DependentUpon>
+      </Compile>
+    </ItemGroup>
 </Project>

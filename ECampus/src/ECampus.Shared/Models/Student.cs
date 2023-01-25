@@ -11,7 +11,7 @@ public class Student : IModel, IIsDeleted
     public string LastName { get; set; } = string.Empty;
     public bool IsDeleted { get; set; }
     public int GroupId { get; set; }
-    public int? UserId { get; set; }
+    public string? UserEmail { get; set; }
     
     public Group? Group { get; set; }
     public User? User { get; set; }

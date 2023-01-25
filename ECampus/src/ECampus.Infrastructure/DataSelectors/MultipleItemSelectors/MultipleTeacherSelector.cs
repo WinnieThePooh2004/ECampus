@@ -19,7 +19,7 @@ public class MultipleTeacherSelector : IMultipleItemSelector<Teacher, TeacherPar
 
         if (!parameters.UserIdCanBeNull)
         {
-            result = result.Where(t => t.UserId == null);
+            result = result.Where(t => t.UserEmail == null);
         }
 
         return result;

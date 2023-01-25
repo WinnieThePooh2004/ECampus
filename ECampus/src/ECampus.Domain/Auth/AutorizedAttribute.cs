@@ -13,9 +13,14 @@ public class AuthorizedAttribute : AuthorizeAttribute
         Roles = string.Join(",", roles);
     }
 
+    public AuthorizedAttribute(UserRole minimalRole)
+        : this(Enum.GetValues<UserRole>().Where(role => role >= minimalRole).ToArray())
+    {
+        
+    }
+
     public AuthorizedAttribute()
     {
         AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme;
     }
 }
-

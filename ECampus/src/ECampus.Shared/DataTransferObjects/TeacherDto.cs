@@ -17,7 +17,8 @@ public class TeacherDto : IDataTransferObject
     [DisplayName("Science degree", 2)]
     public ScienceDegree ScienceDegree { get; set; }
     
-    public int? UserId { get; set; }
+    [DisplayName("Email", 3)]
+    public string? UserEmail { get; set; }
 
     public int DepartmentId { get; set; }
     public List<SubjectDto>? Subjects { get; set; }

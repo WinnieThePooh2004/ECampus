@@ -2,7 +2,7 @@
 
 <h3>My tastks</h3>
 
-@if (_enableEdit is null)
+@if (_enableEdit is null || _actionLinks is null)
 {
     <p><em>Loading course data...</em></p>
     return;
@@ -12,5 +12,6 @@
                 EditLink="/tasks/edit"
                 CreateLink="@($"/tasks/create/{CourseId}")"
                 ParameterOptions="parameters => parameters.CourseId = CourseId"
-                EditEnabled="_enableEdit"/>
+                EditEnabled="_enableEdit"
+                ActionLinks="_actionLinks"/>
                 

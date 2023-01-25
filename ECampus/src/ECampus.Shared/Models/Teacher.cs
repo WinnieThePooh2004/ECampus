@@ -12,7 +12,7 @@ public class Teacher : IIsDeleted, IModel
     public string FirstName { get; set; } = string.Empty;
     public string LastName { get; set; } = string.Empty;
     public ScienceDegree ScienceDegree { get; set; }
-    public int? UserId { get; set; }
+    public string? UserEmail { get; set; }
 
     public bool IsDeleted { get; set; }
     public int DepartmentId { get; set; }

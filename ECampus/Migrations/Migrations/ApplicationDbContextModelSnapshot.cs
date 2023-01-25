@@ -339,16 +339,16 @@ namespace Migrations.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("UserEmail")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("GroupId");
 
-                    b.HasIndex("UserId")
+                    b.HasIndex("UserEmail")
                         .IsUnique()
-                        .HasFilter("[UserId] IS NOT NULL");
+                        .HasFilter("[UserEmail] IS NOT NULL");
 
                     b.ToTable("Students");
                 });
@@ -433,16 +433,16 @@ namespace Migrations.Migrations
                     b.Property<int>("ScienceDegree")
                         .HasColumnType("int");
 
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("UserEmail")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("DepartmentId");
 
-                    b.HasIndex("UserId")
+                    b.HasIndex("UserEmail")
                         .IsUnique()
-                        .HasFilter("[UserId] IS NOT NULL");
+                        .HasFilter("[UserEmail] IS NOT NULL");
 
                     b.ToTable("Teachers");
                 });
@@ -693,7 +693,8 @@ namespace Migrations.Migrations
 
                     b.HasOne("ECampus.Shared.Models.User", "User")
                         .WithOne("Student")
-                        .HasForeignKey("ECampus.Shared.Models.Student", "UserId")
+                        .HasForeignKey("ECampus.Shared.Models.Student", "UserEmail")
+                        .HasPrincipalKey("ECampus.Shared.Models.User", "Email")
                         .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Group");
@@ -730,7 +731,8 @@ namespace Migrations.Migrations
 
                     b.HasOne("ECampus.Shared.Models.User", "User")
                         .WithOne("Teacher")
-                        .HasForeignKey("ECampus.Shared.Models.Teacher", "UserId")
+                        .HasForeignKey("ECampus.Shared.Models.Teacher", "UserEmail")
+                        .HasPrincipalKey("ECampus.Shared.Models.User", "Email")
                         .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Department");

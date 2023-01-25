@@ -61,6 +61,9 @@ builder.Services.Decorate<IValidator<PasswordChangeDto>, HttpCallingValidator<Pa
 
 builder.Services.Decorate<IValidator<CourseDto>, ValidatorWithAnotherTypesIgnore<CourseDto>>();
 
+builder.Services.AddScoped<IPropertySelector<TaskSubmissionDto>, PropertySelector<TaskSubmissionDto>>();
+builder.Services.Decorate<IPropertySelector<TaskSubmissionDto>, TaskSubmissionPropertySelector>();
+
 builder.Services.AddSingleton(typeof(IPropertySelector<>), typeof(PropertySelector<>));
 builder.Services.AddSingleton(typeof(ISearchTermsSelector<>), typeof(SearchTermsSelector<>));
 
