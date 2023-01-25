@@ -10,13 +10,13 @@ public class CourseTaskMessagingService : IBaseService<CourseTaskDto>
 {
     private readonly IBaseService<CourseTaskDto> _baseService;
     private readonly ICourseTaskMessageDataAccess _courseTaskMessageDataAccess;
-    private readonly ISqsMessenger _sqsMessenger;
+    private readonly ISnsMessenger _snsMessenger;
 
-    public CourseTaskMessagingService(IBaseService<CourseTaskDto> baseService, ISqsMessenger sqsMessenger,
+    public CourseTaskMessagingService(IBaseService<CourseTaskDto> baseService, ISnsMessenger snsMessenger,
         ICourseTaskMessageDataAccess courseTaskMessageDataAccess)
     {
         _baseService = baseService;
-        _sqsMessenger = sqsMessenger;
+        _snsMessenger = snsMessenger;
         _courseTaskMessageDataAccess = courseTaskMessageDataAccess;
     }
 
@@ -40,7 +40,7 @@ public class CourseTaskMessagingService : IBaseService<CourseTaskDto>
             TaskType = createdTask.Type.ToString(),
             CourseName = requiredData.courseName
         };
-        await _sqsMessenger.SendMessageAsync(message);
+        await _snsMessenger.SendMessageAsync(message);
         return createdTask;
     }
 

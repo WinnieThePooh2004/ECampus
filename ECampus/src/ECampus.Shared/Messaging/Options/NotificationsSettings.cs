@@ -1,7 +1,7 @@
 ﻿namespace ECampus.Shared.Messaging.Options;
 
-public class QueueSettings
+public class NotificationsSettings
 {
-    public const string Key = "Queue";
+    public const string Key = "Notifications";
     public required string Name { get; init; }
 }
