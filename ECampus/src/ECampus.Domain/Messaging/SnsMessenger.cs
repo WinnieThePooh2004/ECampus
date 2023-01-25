@@ -21,7 +21,7 @@ public class SnsMessenger : ISnsMessenger
         _options = options;
     }
 
-    public async Task<PublishResponse> SendMessageAsync<TMessage>(TMessage message)
+    public async Task<PublishResponse> PublishMessageAsync<TMessage>(TMessage message)
         where TMessage : IMessage
     {
         var url = await GetQueueUrl();

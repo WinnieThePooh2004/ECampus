@@ -40,7 +40,7 @@ public class CourseTaskMessagingService : IBaseService<CourseTaskDto>
             TaskType = createdTask.Type.ToString(),
             CourseName = requiredData.courseName
         };
-        await _snsMessenger.SendMessageAsync(message);
+        await _snsMessenger.PublishMessageAsync(message);
         return createdTask;
     }
 

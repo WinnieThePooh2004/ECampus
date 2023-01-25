@@ -21,21 +21,21 @@ public class UserMessagingService : IBaseService<UserDto>
     public async Task<UserDto> CreateAsync(UserDto entity)
     {
         var createdUser = await _baseService.CreateAsync(entity);
-        await _snsMessenger.SendMessageAsync(createdUser.ToCreatedUserMessage());
+        await _snsMessenger.PublishMessageAsync(createdUser.ToCreatedUserMessage());
         return createdUser;
     }
 
     public async Task<UserDto> UpdateAsync(UserDto entity)
     {
         var createdUser = await _baseService.UpdateAsync(entity);
-        await _snsMessenger.SendMessageAsync(createdUser.ToUserUpdatedMessage());
+        await _snsMessenger.PublishMessageAsync(createdUser.ToUserUpdatedMessage());
         return createdUser;
     }
 
     public async Task<UserDto> DeleteAsync(int? id)
     {
         var deletedUser = await _baseService.DeleteAsync(id);
-        await _snsMessenger.SendMessageAsync(deletedUser.ToUserDeletedMessage());
+        await _snsMessenger.PublishMessageAsync(deletedUser.ToUserDeletedMessage());
         return deletedUser;
     }
 }

@@ -21,14 +21,14 @@ public class UserRolesMessagingService : IUserRolesService
     public async Task<UserDto> UpdateAsync(UserDto user)
     {
         var updatedUser = await _baseUserRolesService.UpdateAsync(user);
-        await _snsMessenger.SendMessageAsync(updatedUser.ToUserUpdatedMessage());
+        await _snsMessenger.PublishMessageAsync(updatedUser.ToUserUpdatedMessage());
         return updatedUser;
     }
 
     public async Task<UserDto> CreateAsync(UserDto user)
     {
         var createdUser = await _baseUserRolesService.CreateAsync(user);
-        await _snsMessenger.SendMessageAsync(createdUser.ToCreatedUserMessage());
+        await _snsMessenger.PublishMessageAsync(createdUser.ToCreatedUserMessage());
         return createdUser;
     }
 }
