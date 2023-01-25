@@ -11,6 +11,7 @@ public class MultipleTaskSubmissionSelector : IMultipleItemSelector<TaskSubmissi
         parameters.StudentId switch
         {
             0 => data.Include(submission => submission.Student)
+                .Include(t => t.CourseTask)
                 .Where(t => t.CourseTaskId == parameters.CourseTaskId),
             _ => data.Include(submission => submission.CourseTask)
                 .Where(t => t.CourseTaskId == parameters.CourseTaskId && t.StudentId == parameters.StudentId)
