@@ -19,8 +19,8 @@ builder.Logging.AddSerilog(logger);
 
 builder.Services.AddSingleton<ILogger>(logger);
 
-builder.Services.Configure<QueueSettings>(builder.Configuration.GetSection("Queue"));
-builder.Services.Configure<EmailSetting>(builder.Configuration.GetSection("EmailSetting"));
+builder.Services.Configure<QueueSettings>(builder.Configuration.GetSection(QueueSettings.Key));
+builder.Services.Configure<EmailSetting>(builder.Configuration.GetSection(EmailSetting.Key));
 
 builder.Services.AddSingleton<IAmazonSQS, AmazonSQSClient>();
 builder.Services.AddSingleton<IEmailSendService, EmailSendService>();
