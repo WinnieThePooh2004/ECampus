@@ -27,7 +27,7 @@ builder.Services.AddSingleton<IEmailSendService, EmailSendService>();
 
 builder.Services.AddMediatR(typeof(MessagingAssemblyMarker));
 
-builder.Services.AddHostedService<UserQueueMessageConsumer>();
+builder.Services.AddHostedService<ECampusQueueMessageConsumer>();
 
 var app = builder.Build();
 
