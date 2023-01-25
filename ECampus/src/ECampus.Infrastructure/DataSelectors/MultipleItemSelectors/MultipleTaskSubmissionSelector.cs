@@ -10,7 +10,9 @@ public class MultipleTaskSubmissionSelector : IMultipleItemSelector<TaskSubmissi
     public IQueryable<TaskSubmission> SelectData(DbSet<TaskSubmission> data, TaskSubmissionParameters parameters) =>
         parameters.StudentId switch
         {
-            0 => data.Where(t => t.CourseTaskId == parameters.CourseTaskId),
-            _ => data.Where(t => t.CourseTaskId == parameters.CourseTaskId && t.StudentId == parameters.StudentId)
+            0 => data.Include(submission => submission.Student)
+                .Where(t => t.CourseTaskId == parameters.CourseTaskId),
+            _ => data.Include(submission => submission.CourseTask)
+                .Where(t => t.CourseTaskId == parameters.CourseTaskId && t.StudentId == parameters.StudentId)
         };
 }
