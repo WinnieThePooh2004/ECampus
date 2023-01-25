@@ -9,7 +9,7 @@ using ILogger = Serilog.ILogger;
 
 namespace ECampus.Messaging.MessagingServices;
 
-public class UserQueueMessageConsumer : BackgroundService
+public class ECampusQueueMessageConsumer : BackgroundService
 {
     private readonly IAmazonSQS _amazonSqs;
     private readonly IOptions<QueueSettings> _options;
@@ -17,7 +17,7 @@ public class UserQueueMessageConsumer : BackgroundService
     private readonly IMediator _mediator;
     private readonly ILogger _logger;
 
-    public UserQueueMessageConsumer(IAmazonSQS amazonSqs, IOptions<QueueSettings> options, IMediator mediator, ILogger logger)
+    public ECampusQueueMessageConsumer(IAmazonSQS amazonSqs, IOptions<QueueSettings> options, IMediator mediator, ILogger logger)
     {
         _amazonSqs = amazonSqs;
         _options = options;
@@ -43,6 +43,12 @@ public class UserQueueMessageConsumer : BackgroundService
     private async Task HandleResponse(ReceiveMessageRequest receiveMessageRequest, CancellationToken stoppingToken)
     {
         var response = await _amazonSqs.ReceiveMessageAsync(receiveMessageRequest, stoppingToken);
+        if (response.Messages.Count == 0)
+        {
+            _logger.Information("No messages found in queue {Name}", _options.Value.Name);
+            await Task.Delay(30000, stoppingToken);
+            return;
+        }
         foreach (var message in response.Messages)
         {
             await HandleMessage(message, stoppingToken);

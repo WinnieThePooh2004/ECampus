@@ -1,4 +1,4 @@
-﻿using Amazon.SQS;
+﻿using Amazon.SimpleNotificationService;
 using ECampus.Domain.Messaging;
 using ECampus.Shared.Installers;
 using ECampus.Shared.Interfaces.Messaging;
@@ -14,8 +14,8 @@ public class MessengersInstaller : IInstaller
 
     public void Install(IServiceCollection services, IConfiguration configuration)
     {
-        services.AddSingleton<ISqsMessenger, SqsMessenger>();
-        services.Configure<QueueSettings>(configuration.GetSection("Queue"));
-        services.AddSingleton<IAmazonSQS, AmazonSQSClient>();
+        services.AddSingleton<ISnsMessenger, SnsMessenger>();
+        services.Configure<NotificationsSettings>(configuration.GetSection(NotificationsSettings.Key));
+        services.AddSingleton<IAmazonSimpleNotificationService, AmazonSimpleNotificationServiceClient>();
     }
 }

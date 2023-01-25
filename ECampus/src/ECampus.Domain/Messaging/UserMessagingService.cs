@@ -8,12 +8,12 @@ namespace ECampus.Domain.Messaging;
 public class UserMessagingService : IBaseService<UserDto>
 {
     private readonly IBaseService<UserDto> _baseService;
-    private readonly ISqsMessenger _sqsMessenger;
+    private readonly ISnsMessenger _snsMessenger;
 
-    public UserMessagingService(IBaseService<UserDto> baseService, ISqsMessenger sqsMessenger)
+    public UserMessagingService(IBaseService<UserDto> baseService, ISnsMessenger snsMessenger)
     {
         _baseService = baseService;
-        _sqsMessenger = sqsMessenger;
+        _snsMessenger = snsMessenger;
     }
 
     public Task<UserDto> GetByIdAsync(int? id) => _baseService.GetByIdAsync(id);
@@ -21,21 +21,21 @@ public class UserMessagingService : IBaseService<UserDto>
     public async Task<UserDto> CreateAsync(UserDto entity)
     {
         var createdUser = await _baseService.CreateAsync(entity);
-        await _sqsMessenger.SendMessageAsync(createdUser.ToCreatedUserMessage());
+        await _snsMessenger.SendMessageAsync(createdUser.ToCreatedUserMessage());
         return createdUser;
     }
 
     public async Task<UserDto> UpdateAsync(UserDto entity)
     {
         var createdUser = await _baseService.UpdateAsync(entity);
-        await _sqsMessenger.SendMessageAsync(createdUser.ToUserUpdatedMessage());
+        await _snsMessenger.SendMessageAsync(createdUser.ToUserUpdatedMessage());
         return createdUser;
     }
 
     public async Task<UserDto> DeleteAsync(int? id)
     {
         var deletedUser = await _baseService.DeleteAsync(id);
-        await _sqsMessenger.SendMessageAsync(deletedUser.ToUserDeletedMessage());
+        await _snsMessenger.SendMessageAsync(deletedUser.ToUserDeletedMessage());
         return deletedUser;
     }
 }
