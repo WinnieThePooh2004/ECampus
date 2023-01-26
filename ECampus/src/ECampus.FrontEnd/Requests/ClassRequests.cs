@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using ECampus.FrontEnd.Requests.Interfaces;
+using ECampus.FrontEnd.Requests.Options;
 using ECampus.Shared.DataContainers;
 using ECampus.Shared.DataTransferObjects;
 using Newtonsoft.Json;
@@ -17,7 +18,7 @@ public class ClassRequests : IClassRequests
 
     public async Task<Timetable> AuditoryTimetable(int auditoryId)
     {
-        var response = await _client.CreateClient("UTApi").GetAsync($"/api/Timetable/Auditory/{auditoryId}");
+        var response = await _client.CreateClient(RequestOptions.ClientName).GetAsync($"/api/Timetable/Auditory/{auditoryId}");
         response.EnsureSuccessStatusCode();
         return JsonConvert.DeserializeObject<Timetable>(await response.Content.ReadAsStringAsync())
                ?? throw new UnreachableException($"cannot deserialize object of type {typeof(UserDto)}");
@@ -25,7 +26,7 @@ public class ClassRequests : IClassRequests
 
     public async Task<Timetable> GroupTimetable(int groupId)
     {
-        var response = await _client.CreateClient("UTApi").GetAsync($"/api/Timetable/Group/{groupId}");
+        var response = await _client.CreateClient(RequestOptions.ClientName).GetAsync($"/api/Timetable/Group/{groupId}");
         response.EnsureSuccessStatusCode();
         return JsonConvert.DeserializeObject<Timetable>(await response.Content.ReadAsStringAsync())
                ?? throw new UnreachableException($"cannot deserialize object of type {typeof(UserDto)}");
@@ -33,7 +34,7 @@ public class ClassRequests : IClassRequests
 
     public async Task<Timetable> TeacherTimetable(int teacherId)
     {
-        var response = await _client.CreateClient("UTApi").GetAsync($"/api/Timetable/Teacher/{teacherId}");
+        var response = await _client.CreateClient(RequestOptions.ClientName).GetAsync($"/api/Timetable/Teacher/{teacherId}");
         response.EnsureSuccessStatusCode();
         return JsonConvert.DeserializeObject<Timetable>(await response.Content.ReadAsStringAsync())
                ?? throw new UnreachableException($"cannot deserialize object of type {typeof(UserDto)}");

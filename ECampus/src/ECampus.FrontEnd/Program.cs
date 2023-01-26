@@ -67,6 +67,8 @@ builder.Services.Decorate<IPropertySelector<TaskSubmissionDto>, TaskSubmissionPr
 builder.Services.AddSingleton(typeof(IPropertySelector<>), typeof(PropertySelector<>));
 builder.Services.AddSingleton(typeof(ISearchTermsSelector<>), typeof(SearchTermsSelector<>));
 
+builder.Services.AddScoped<ITaskSubmissionRequests, TaskSubmissionRequests>();
+
 builder.Services.Configure<CookiePolicyOptions>(options =>
 {
     options.CheckConsentNeeded = _ => true;
@@ -82,10 +84,9 @@ builder.Services.AddAuthentication(opt =>
 
 builder.Services.AddScoped<TokenHandler>();
 
-builder.Services.AddHttpClient("UTApi", client =>
+builder.Services.AddHttpClient(RequestOptions.ClientName, client =>
 {
-    client.BaseAddress =
-        new Uri(builder.Configuration["Api"] ?? throw new Exception("Cannot find section 'Api'"));
+    client.BaseAddress = new Uri(builder.Configuration["Api"]!);
 }).AddHttpMessageHandler<TokenHandler>();
 
 builder.Services.AddHttpContextAccessor();
