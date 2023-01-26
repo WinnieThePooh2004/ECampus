@@ -5,14 +5,14 @@ using ECampus.Shared.Metadata;
 using ECampus.Shared.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace ECampus.Infrastructure.DataAccessFacades;
+namespace ECampus.Infrastructure.Repositories;
 
-[Inject(typeof(IUserRolesDataAccessFacade))]
-public class UserRolesDataAccessFacade : IUserRolesDataAccessFacade
+[Inject(typeof(IUserRolesRepository))]
+public class UserRolesRepository : IUserRolesRepository
 {
     private readonly ApplicationDbContext _context;
 
-    public UserRolesDataAccessFacade(ApplicationDbContext context)
+    public UserRolesRepository(ApplicationDbContext context)
     {
         _context = context;
     }

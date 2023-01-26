@@ -11,50 +11,36 @@ namespace ECampus.Api.Controllers;
 [Route("api/[controller]")]
 public class TaskSubmissionsController : ControllerBase
 {
-    private readonly IBaseService<TaskSubmissionDto> _baseService;
     private readonly IParametersService<TaskSubmissionDto, TaskSubmissionParameters> _parametersService;
+    private readonly ITaskSubmissionService _taskSubmissionService;
 
-    public TaskSubmissionsController(IBaseService<TaskSubmissionDto> baseService,
-        IParametersService<TaskSubmissionDto, TaskSubmissionParameters> parametersService)
+    public TaskSubmissionsController(IParametersService<TaskSubmissionDto, TaskSubmissionParameters> parametersService,
+        ITaskSubmissionService taskSubmissionService)
     {
-        _baseService = baseService;
         _parametersService = parametersService;
+        _taskSubmissionService = taskSubmissionService;
     }
 
     [HttpGet]
-    [Authorized(UserRole.Student)]
+    [Authorized(UserRole.Teacher)]
     public async Task<IActionResult> Get([FromQuery] TaskSubmissionParameters parameters)
     {
         return Ok(await _parametersService.GetByParametersAsync(parameters));
     }
 
-    [HttpGet("{id:int}")]
+    [HttpPut("{taskSubmissionId:int}")]
     [Authorized(UserRole.Student)]
-    public async Task<IActionResult> Get(int? id)
+    public async Task<IActionResult> UpdateContent([FromRoute] int taskSubmissionId, [FromBody] string content)
     {
-        return Ok(await _baseService.GetByIdAsync(id));
+        await _taskSubmissionService.UpdateContent(taskSubmissionId, content);
+        return NoContent();
     }
-
-    [HttpPost]
-    [Authorized(UserRole.Admin)]
-    public async Task<IActionResult> Post(TaskSubmissionDto course)
+    
+    [HttpPut("{taskSubmissionId:int}")]
+    [Authorized(UserRole.Student)]
+    public async Task<IActionResult> UpdateMark([FromRoute] int taskSubmissionId, [FromBody] int content)
     {
-        await _baseService.CreateAsync(course);
-        return Ok(course);
-    }
-
-    [HttpPut]
-    [Authorized(UserRole.Admin)]
-    public async Task<IActionResult> Put(TaskSubmissionDto course)
-    {
-        await _baseService.UpdateAsync(course);
-        return Ok(course);
-    }
-
-    [HttpDelete("{id:int?}")]
-    [Authorized(UserRole.Admin)]
-    public async Task<IActionResult> Delete(int? id)
-    {
-        return Ok(await _baseService.DeleteAsync(id));
+        await _taskSubmissionService.UpdateMark(taskSubmissionId, content);
+        return NoContent();
     }
 }
