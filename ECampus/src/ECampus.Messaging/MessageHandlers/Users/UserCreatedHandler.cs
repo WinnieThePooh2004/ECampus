@@ -26,7 +26,7 @@ public class UserCreatedHandler : IRequestHandler<UserCreated>
                    "<p>Contact us to get a role or just search for timetable as a guest</p>",
             IsBodyHtml = true
         };
-        await _emailSendService.SendEmailAsync(email, request.Email);
+        await _emailSendService.SendEmailAsync(email, new List<string> { request.Email });
         _logger.Information("Created new user {Username}", request.Username);
         return Unit.Value;
     }

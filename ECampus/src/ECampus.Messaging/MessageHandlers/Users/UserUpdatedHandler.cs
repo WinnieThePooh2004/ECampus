@@ -27,7 +27,7 @@ public class UserUpdatedHandler : IRequestHandler<UserUpdated>
                    "<p>If you know about it, just ignore this message</p>",
             IsBodyHtml = true
         };
-        await _emailSendService.SendEmailAsync(email, request.Email);
+        await _emailSendService.SendEmailAsync(email, new List<string> { request.Email });
         return Unit.Value;
     }
 }

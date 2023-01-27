@@ -4,5 +4,5 @@ namespace ECampus.Messaging.Mailing;
 
 public interface IEmailSendService
 {
-    Task SendEmailAsync(MailMessage email, params string[] receivers);
+    Task SendEmailAsync(MailMessage email, List<string> receivers);
 }

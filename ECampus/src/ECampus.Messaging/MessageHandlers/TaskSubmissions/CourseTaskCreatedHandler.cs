@@ -30,7 +30,7 @@ public class CourseTaskCreatedHandler : IRequestHandler<TaskCreated>
                    $"Task is valid until {request.Deadline:dd/MMMM/y h:m}</p>",
             IsBodyHtml = true
         };
-        await _emailSendService.SendEmailAsync(email, request.StudentEmails.ToArray());
+        await _emailSendService.SendEmailAsync(email, request.StudentEmails);
         return Unit.Value;
     }
 

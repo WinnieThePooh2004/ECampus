@@ -22,7 +22,7 @@ public class EmailSendService : IEmailSendService
         };
     }
 
-    public async Task SendEmailAsync(MailMessage email, params string[] receivers)
+    public async Task SendEmailAsync(MailMessage email, List<string> receivers)
     {
         email.From = new MailAddress(_options.Value.Email);
         foreach (var receiver in receivers)
