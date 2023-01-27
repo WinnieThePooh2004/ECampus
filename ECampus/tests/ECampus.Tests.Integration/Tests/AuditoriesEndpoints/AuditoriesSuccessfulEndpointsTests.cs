@@ -3,6 +3,7 @@ using System.Net.Http.Json;
 using System.Text.Json;
 using ECampus.Api.MiddlewareFilters;
 using ECampus.Shared.DataTransferObjects;
+using ECampus.Shared.Enums;
 using ECampus.Shared.Exceptions.InfrastructureExceptions;
 using ECampus.Shared.Models;
 using ECampus.Tests.Integration.AppFactories;
@@ -22,7 +23,7 @@ public class AuditoriesSuccessfulEndpointsTests : IClassFixture<ApplicationFacto
     public AuditoriesSuccessfulEndpointsTests(ApplicationFactory factory)
     {
         _client = factory.CreateClient();
-        _client.Login(DefaultUsers.Admin);
+        _client.Login(DefaultUsers.GetUserByRole(UserRole.Admin));
     }
 
     public async Task InitializeAsync()

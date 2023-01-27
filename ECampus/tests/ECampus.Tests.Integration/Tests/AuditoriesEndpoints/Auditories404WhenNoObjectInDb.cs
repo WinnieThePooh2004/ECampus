@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.Text.Json;
 using ECampus.Api.MiddlewareFilters;
+using ECampus.Shared.Enums;
 using ECampus.Shared.Exceptions.InfrastructureExceptions;
 using ECampus.Shared.Models;
 using ECampus.Tests.Integration.AppFactories;
@@ -18,7 +19,7 @@ public class Auditories404WhenNoObjectInDb : IClassFixture<ApplicationFactory>
     public Auditories404WhenNoObjectInDb(ApplicationFactory app)
     {
         _client = app.CreateClient();
-        _client.Login(DefaultUsers.Admin);
+        _client.Login(DefaultUsers.GetUserByRole(UserRole.Admin));
     }
 
     [Fact]

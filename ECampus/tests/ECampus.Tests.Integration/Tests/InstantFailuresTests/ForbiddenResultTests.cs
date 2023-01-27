@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
 using ECampus.Shared.DataTransferObjects;
+using ECampus.Shared.Enums;
 using ECampus.Shared.Models;
 using ECampus.Tests.Integration.AppFactories;
 using ECampus.Tests.Integration.AuthHelpers;
@@ -16,7 +17,7 @@ public class ForbiddenResultTests : IClassFixture<ApplicationWithoutDatabase>
     public ForbiddenResultTests(ApplicationWithoutDatabase applicationFactory)
     {
         _client = applicationFactory.CreateClient();
-        var user = DefaultUsers.Guest;
+        var user = DefaultUsers.GetUserByRole(UserRole.Guest);
         applicationFactory.Context.Users = new DbSetMock<User>(user);
         _client.Login(user);
     }

@@ -5,21 +5,51 @@ namespace ECampus.Tests.Integration.AuthHelpers;
 
 public static class DefaultUsers
 {
-    public static User Guest => new()
+    public static User GetUserByRole(UserRole role)
+        => role switch
+        {
+            UserRole.Admin => Admin,
+            UserRole.Guest => Guest,
+            UserRole.Student => Student,
+            UserRole.Teacher => Teacher,
+            _ => throw new ArgumentOutOfRangeException(nameof(role))
+        };
+    
+    private static User Guest => new()
     {
-        Username = "username",
+        Username = "guest",
         Id = 10,
         Password = "password",
-        Email = "email@example.com",
+        Email = "guest@guest.com",
         Role = UserRole.Guest
     };
-    
-    public static User Admin => new()
+
+    private static User Student => new()
     {
-        Username = "username",
+        Username = "student",
         Id = 11,
         Password = "password",
-        Email = "email@example.com",
+        Email = "student@student.com",
+        Role = UserRole.Student,
+        StudentId = 1
+    };
+    
+    private static User Teacher => new()
+    {
+        Username = "teacher",
+        Id = 11,
+        Password = "password",
+        Email = "teacher@teacher.com",
+        Role = UserRole.Teacher,
+        StudentId = 1
+    };
+    
+    private static User Admin => new()
+    {
+        Username = "admin",
+        Id = 13,
+        Password = "password",
+        Email = "admin@admin.com",
         Role = UserRole.Admin
     };
 }

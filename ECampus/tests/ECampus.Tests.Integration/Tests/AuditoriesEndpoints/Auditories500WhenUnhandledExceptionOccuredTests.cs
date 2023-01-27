@@ -3,6 +3,7 @@ using System.Net.Http.Json;
 using System.Text.Json;
 using ECampus.Api.MiddlewareFilters;
 using ECampus.Shared.DataTransferObjects;
+using ECampus.Shared.Enums;
 using ECampus.Tests.Integration.AppFactories;
 using ECampus.Tests.Integration.AuthHelpers;
 using ECampus.Tests.Shared.Mocks.HttpRequests;
@@ -20,7 +21,7 @@ public class Auditories500WhenUnhandledExceptionOccuredTests : IClassFixture<App
     {
         _client = app.CreateClient();
         app.Context.SaveChangesAsync().Returns(0).AndDoes(_ => throw new Exception());
-        _client.Login(DefaultUsers.Admin);
+        _client.Login(DefaultUsers.GetUserByRole(UserRole.Admin));
     }
 
     [Fact]

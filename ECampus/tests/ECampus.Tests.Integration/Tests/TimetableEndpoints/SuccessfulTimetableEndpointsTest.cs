@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.Text.Json;
 using ECampus.Api.MiddlewareFilters;
+using ECampus.Shared.Enums;
 using ECampus.Shared.Exceptions.InfrastructureExceptions;
 using ECampus.Shared.Models;
 using ECampus.Tests.Integration.AppFactories;
@@ -20,7 +21,7 @@ public class SuccessfulTimetableEndpointsTest : IClassFixture<ApplicationFactory
     public SuccessfulTimetableEndpointsTest(ApplicationFactory factory)
     {
         _client = factory.CreateClient();
-        _client.Login(DefaultUsers.Admin);
+        _client.Login(DefaultUsers.GetUserByRole(UserRole.Admin));
     }
 
     public async Task InitializeAsync()
