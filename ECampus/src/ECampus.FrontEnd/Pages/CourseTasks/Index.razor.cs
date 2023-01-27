@@ -58,7 +58,7 @@ public partial class Index
             },
             UserRole.Student => new List<(string, Func<CourseTaskDto, string>)>
             {
-                ("Edit my submission", c => $"/submission/Edit/{c.Id}")
+                ("Edit my submission", c => $"/editSubmission/{c.Id}")
             },
             _ => new List<(string, Func<CourseTaskDto, string>)>()
         };
