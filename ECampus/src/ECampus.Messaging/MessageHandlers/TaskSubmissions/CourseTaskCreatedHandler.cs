@@ -6,12 +6,12 @@ using ILogger = Serilog.ILogger;
 
 namespace ECampus.Messaging.MessageHandlers.TaskSubmissions;
 
-public class TaskSubmissionCreatedHandler : IRequestHandler<TaskCreated>
+public class CourseTaskCreatedHandler : IRequestHandler<TaskCreated>
 {
     private readonly IEmailSendService _emailSendService;
     private readonly ILogger _logger;
 
-    public TaskSubmissionCreatedHandler(IEmailSendService emailSendService, ILogger logger)
+    public CourseTaskCreatedHandler(IEmailSendService emailSendService, ILogger logger)
     {
         _emailSendService = emailSendService;
         _logger = logger;
