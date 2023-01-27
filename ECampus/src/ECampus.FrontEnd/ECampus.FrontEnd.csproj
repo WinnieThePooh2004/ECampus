@@ -30,7 +30,7 @@
       <Compile Update="Pages\TaskSubmissions\TeacherView.razor.cs">
         <DependentUpon>TeacherView.razor</DependentUpon>
       </Compile>
-      <Compile Update="Pages\TaskSubmissions\EditSubmissionContext.razor.cs">
+      <Compile Update="Pages\TaskSubmissions\EditSubmissionContent.razor.cs">
         <DependentUpon>EditSubmissionContext.razor</DependentUpon>
       </Compile>
     </ItemGroup>
