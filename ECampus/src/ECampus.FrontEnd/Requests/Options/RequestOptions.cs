@@ -4,6 +4,7 @@ namespace ECampus.FrontEnd.Requests.Options;
 
 public class RequestOptions : IRequestOptions
 {
+    public const string ClientName = "UTApi";
     private readonly Dictionary<Type, string> _controllerNames;
 
     public RequestOptions(IConfiguration configuration)

@@ -13,17 +13,18 @@ public class ParametersRequests<TData, TParameters> : IParametersRequests<TData,
     where TParameters : IQueryParameters
 {
     private readonly string _controllerName;
-    private readonly HttpClient _client;
+    private readonly IHttpClientFactory _client;
 
     public ParametersRequests(IHttpClientFactory clientFactory, IRequestOptions options)
     {
-        _client = clientFactory.CreateClient("UTApi");
+        _client = clientFactory;
         _controllerName = options.GetControllerName(typeof(TData));
     }
 
     public async Task<ListWithPaginationData<TData>> GetByParametersAsync(TParameters parameters)
     {
-        var response = await _client.GetAsync($"/api/{_controllerName}?{parameters.ToQueryString()}");
+        var response = await _client.CreateClient(RequestOptions.ClientName)
+            .GetAsync($"/api/{_controllerName}?{parameters.ToQueryString()}");
         response.EnsureSuccessStatusCode();
         return JsonConvert.DeserializeObject<ListWithPaginationData<TData>>(await response.Content.ReadAsStringAsync())
                ?? throw new UnreachableException($"cannot get list with objects of type {typeof(TData)}");

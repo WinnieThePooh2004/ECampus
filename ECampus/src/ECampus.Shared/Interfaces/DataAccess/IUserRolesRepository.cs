@@ -2,7 +2,7 @@
 
 namespace ECampus.Shared.Interfaces.DataAccess;
 
-public interface IUserRolesDataAccessFacade
+public interface IUserRolesRepository
 {
     Task<User> GetByIdAsync(int id);
     Task<User> CreateAsync(User user);

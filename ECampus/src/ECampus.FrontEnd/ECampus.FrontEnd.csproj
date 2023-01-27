@@ -4,6 +4,7 @@
         <TargetFramework>net7.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     </PropertyGroup>
 
     <ItemGroup>
@@ -28,6 +29,9 @@
     <ItemGroup>
       <Compile Update="Pages\TaskSubmissions\TeacherView.razor.cs">
         <DependentUpon>TeacherView.razor</DependentUpon>
+      </Compile>
+      <Compile Update="Pages\TaskSubmissions\EditSubmissionContent.razor.cs">
+        <DependentUpon>EditSubmissionContext.razor</DependentUpon>
       </Compile>
     </ItemGroup>
 </Project>

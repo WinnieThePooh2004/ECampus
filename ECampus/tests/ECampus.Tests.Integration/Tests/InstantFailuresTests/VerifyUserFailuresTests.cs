@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using ECampus.Shared.Enums;
 using ECampus.Shared.Models;
 using ECampus.Tests.Integration.AppFactories;
 using ECampus.Tests.Integration.AuthHelpers;
@@ -14,7 +15,7 @@ public class VerifyUserFailuresTests : IClassFixture<ApplicationWithoutDatabase>
     public VerifyUserFailuresTests(ApplicationWithoutDatabase factory)
     {
         _client = factory.CreateClient();
-        var user = DefaultUsers.Guest;
+        var user = DefaultUsers.GetUserByRole(UserRole.Guest);
         factory.Context.Users = new DbSetMock<User>(user);
         _client.Login(user);
     }

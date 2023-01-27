@@ -1,6 +1,5 @@
 ﻿using System.Net;
 using System.Security.Claims;
-using ECampus.Shared.Auth;
 using ECampus.Shared.Enums;
 using ECampus.Shared.Exceptions.DomainExceptions;
 using ECampus.Shared.Interfaces.Domain.Validation;
@@ -32,22 +31,9 @@ public class TaskSubmissionParametersValidator : IParametersValidator<TaskSubmis
             UserRole.Guest => throw new DomainException(HttpStatusCode.Forbidden,
                 "You must be at least student to perform this action"),
             UserRole.Admin or UserRole.Teacher => Task.FromResult(new ValidationResult()),
-            _ => Task.FromResult(ValidateAsStudent(parameters, currentUserRole))
+            _ => Task.FromResult(ValidateAsStudent())
         };
     }
 
-    private ValidationResult ValidateAsStudent(TaskSubmissionParameters parameters, UserRole currentUserRole)
-    {
-        var currentStudentId = _user.FindFirst(CustomClaimTypes.StudentId)?.Value ??
-                               throw new DomainException(HttpStatusCode.Forbidden, "If you are logged in as" +
-                                   " student you must have StudentId claim");
-
-        if (currentUserRole == UserRole.Student && parameters.StudentId.ToString() != currentStudentId)
-        {
-            return new ValidationResult(new ValidationError(nameof(parameters.StudentId),
-                $"You cannot request for submissions with student id than is not equal to yours"));
-        }
-
-        return new ValidationResult();
-    }
+    private static ValidationResult ValidateAsStudent() => new();
 }

@@ -3,6 +3,7 @@ using System.Net.Http.Json;
 using System.Text.Json;
 using ECampus.Api.MiddlewareFilters;
 using ECampus.Shared.DataTransferObjects;
+using ECampus.Shared.Enums;
 using ECampus.Shared.Exceptions.InfrastructureExceptions;
 using ECampus.Shared.Models;
 using ECampus.Shared.Models.RelationModels;
@@ -24,7 +25,7 @@ public class SuccessfulTeachersEndpointsTests : IClassFixture<ApplicationFactory
     public SuccessfulTeachersEndpointsTests(ApplicationFactory factory)
     {
         _client = factory.CreateClient();
-        _client.Login(DefaultUsers.Admin);
+        _client.Login(DefaultUsers.GetUserByRole(UserRole.Admin));
     }
 
     public async Task InitializeAsync()

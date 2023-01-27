@@ -5,6 +5,6 @@ namespace ECampus.Shared.Interfaces.Messaging;
 
 public interface ISnsMessenger
 {
-    Task<PublishResponse> SendMessageAsync<TMessage>(TMessage message)
+    Task<PublishResponse> PublishMessageAsync<TMessage>(TMessage message)
         where TMessage : IMessage;
 }

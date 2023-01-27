@@ -3,6 +3,7 @@ using System.Net.Http.Json;
 using System.Text.Json;
 using ECampus.Api.MiddlewareFilters;
 using ECampus.Shared.DataTransferObjects;
+using ECampus.Shared.Enums;
 using ECampus.Tests.Integration.AppFactories;
 using ECampus.Tests.Integration.AuthHelpers;
 using ECampus.Tests.Shared.Mocks.HttpRequests;
@@ -18,7 +19,7 @@ public class AuditoriesValidationFailuresTests : IClassFixture<ApplicationWithou
     public AuditoriesValidationFailuresTests(ApplicationWithoutDatabase app)
     {
         _client = app.CreateClient();
-        _client.Login(DefaultUsers.Admin);
+        _client.Login(DefaultUsers.GetUserByRole(UserRole.Admin));
     }
     
     [Fact]

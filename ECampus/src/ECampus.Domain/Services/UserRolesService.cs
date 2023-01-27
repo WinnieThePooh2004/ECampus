@@ -12,12 +12,12 @@ namespace ECampus.Domain.Services;
 [Inject(typeof(IUserRolesService))]
 public class UserRolesService : IUserRolesService
 {
-    private readonly IUserRolesDataAccessFacade _dataAccess;
+    private readonly IUserRolesRepository _dataAccess;
     private readonly IMapper _mapper;
     private readonly IUpdateValidator<UserDto> _updateValidator;
     private readonly ICreateValidator<UserDto> _createValidator;
 
-    public UserRolesService(IUserRolesDataAccessFacade dataAccess, IMapper mapper,
+    public UserRolesService(IUserRolesRepository dataAccess, IMapper mapper,
         IUpdateValidator<UserDto> updateValidator, ICreateValidator<UserDto> createValidator)
     {
         _dataAccess = dataAccess;
