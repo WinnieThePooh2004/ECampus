@@ -7,6 +7,8 @@ using ECampus.Shared.Exceptions.DomainExceptions;
 using ECampus.Shared.Interfaces.DataAccess;
 using ECampus.Shared.Interfaces.Domain;
 using ECampus.Shared.Interfaces.Domain.Validation;
+using ECampus.Shared.Interfaces.Messaging;
+using ECampus.Shared.Messaging.TaskSubmissions;
 using ECampus.Shared.Metadata;
 using Microsoft.AspNetCore.Http;
 
@@ -17,15 +19,19 @@ public class TaskSubmissionService : ITaskSubmissionService
 {
     private readonly ITaskSubmissionRepository _taskSubmissionRepository;
     private readonly ITaskSubmissionValidator _taskSubmissionValidator;
+    private readonly ISnsMessenger _snsMessenger;
     private readonly ClaimsPrincipal _user;
     private readonly IMapper _mapper;
 
     public TaskSubmissionService(ITaskSubmissionRepository taskSubmissionRepository,
-        ITaskSubmissionValidator taskSubmissionValidator, IMapper mapper, IHttpContextAccessor httpContextAccessor)
+        ITaskSubmissionValidator taskSubmissionValidator,
+        IHttpContextAccessor httpContextAccessor,
+        ISnsMessenger snsMessenger, IMapper mapper)
     {
         _taskSubmissionRepository = taskSubmissionRepository;
         _taskSubmissionValidator = taskSubmissionValidator;
         _mapper = mapper;
+        _snsMessenger = snsMessenger;
         _user = httpContextAccessor.HttpContext?.User ?? throw new HttpContextNotFoundExceptions();
     }
 
@@ -37,7 +43,12 @@ public class TaskSubmissionService : ITaskSubmissionService
             throw new ValidationException(typeof(TaskSubmissionDto), validationResult);
         }
 
-        await _taskSubmissionRepository.UpdateContent(submissionId, content);
+        var submission = await _taskSubmissionRepository.UpdateContent(submissionId, content);
+        await _snsMessenger.PublishMessageAsync(new SubmissionEdited
+        {
+            UserEmail = submission.Student?.UserEmail,
+            TaskName = submission.CourseTask!.Name
+        });
     }
 
     public async Task UpdateMark(int submissionId, int mark)
@@ -48,7 +59,14 @@ public class TaskSubmissionService : ITaskSubmissionService
             throw new ValidationException(typeof(TaskSubmissionDto), validationResult);
         }
 
-        await _taskSubmissionRepository.UpdateMark(submissionId, mark);
+        var submission = await _taskSubmissionRepository.UpdateMark(submissionId, mark);
+        await _snsMessenger.PublishMessageAsync(new SubmissionMarked
+        {
+            TaskName = submission.CourseTask!.Name,
+            UserEmail = submission.Student?.UserEmail,
+            MaxPoints = submission.CourseTask.MaxPoints,
+            ScoredPoints = submission.TotalPoints
+        });
     }
 
     public async Task<TaskSubmissionDto> GetByIdAsync(int id)

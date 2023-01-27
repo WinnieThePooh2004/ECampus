@@ -17,22 +17,31 @@ public class TaskSubmissionRepository : ITaskSubmissionRepository
         _context = context;
     }
 
-    public async Task UpdateContent(int submissionId, string content)
+    public async Task<TaskSubmission> UpdateContent(int submissionId, string content)
     {
-        var submission = await _context.TaskSubmissions.FindAsync(submissionId) ??
-                         throw new ObjectNotFoundByIdException(typeof(TaskSubmission), submissionId);
+        var submission = await _context.TaskSubmissions
+            .Include(t => t.Student)
+            .Include(t => t.CourseTask)
+            .SingleOrDefaultAsync(t => t.Id == submissionId) ?? throw new ObjectNotFoundByIdException(
+            typeof(TaskSubmission), submissionId);
 
         submission.SubmissionContent = content;
         await _context.SaveChangesAsync();
+        return submission;
     }
 
-    public async Task UpdateMark(int submissionId, int mark)
+    public async Task<TaskSubmission> UpdateMark(int submissionId, int mark)
     {
-        var submission = await _context.TaskSubmissions.FindAsync(submissionId) ??
-                         throw new ObjectNotFoundByIdException(typeof(TaskSubmission), submissionId);
+        var submission = await _context.TaskSubmissions
+            .Include(t => t.Student)
+            .Include(t => t.CourseTask)
+            .SingleOrDefaultAsync(t => t.Id == submissionId) ?? throw new ObjectNotFoundByIdException(
+            typeof(TaskSubmission), submissionId);
+        
         submission.IsMarked = true;
         submission.TotalPoints = mark;
         await _context.SaveChangesAsync();
+        return submission;
     }
 
     public async Task<TaskSubmission> GetByIdAsync(int id)
