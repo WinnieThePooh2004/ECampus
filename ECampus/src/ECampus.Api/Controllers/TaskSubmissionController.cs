@@ -28,7 +28,21 @@ public class TaskSubmissionsController : ControllerBase
         return Ok(await _parametersService.GetByParametersAsync(parameters));
     }
 
-    [HttpPut("{taskSubmissionId:int}")]
+    [HttpGet("{id:int}")]
+    [Authorized(UserRole.Teacher, UserRole.Admin)]
+    public async Task<IActionResult> Get(int id)
+    {
+        return Ok(await _taskSubmissionService.GetByIdAsync(id));
+    }
+
+    [HttpGet("byCourseTask/{courseTaskId:int}")]
+    [Authorized(UserRole.Student)]
+    public async Task<IActionResult> GetByCourse(int courseTaskId)
+    {
+        return Ok(await _taskSubmissionService.GetByCourse(courseTaskId));
+    }
+
+    [HttpPut("content/{taskSubmissionId:int}")]
     [Authorized(UserRole.Student)]
     public async Task<IActionResult> UpdateContent([FromRoute] int taskSubmissionId, [FromBody] string content)
     {
@@ -36,11 +50,11 @@ public class TaskSubmissionsController : ControllerBase
         return NoContent();
     }
     
-    [HttpPut("{taskSubmissionId:int}")]
-    [Authorized(UserRole.Student)]
-    public async Task<IActionResult> UpdateMark([FromRoute] int taskSubmissionId, [FromBody] int content)
+    [HttpPut("mark/{taskSubmissionId:int}")]
+    [Authorized(UserRole.Teacher)]
+    public async Task<IActionResult> UpdateMark([FromRoute] int taskSubmissionId, [FromBody] int mark)
     {
-        await _taskSubmissionService.UpdateMark(taskSubmissionId, content);
+        await _taskSubmissionService.UpdateMark(taskSubmissionId, mark);
         return NoContent();
     }
 }

@@ -16,24 +16,24 @@ public class TaskSubmissionRequests : ITaskSubmissionRequests
         _controllerName = options.GetControllerName(typeof(TaskSubmissionDto));
     }
 
-    public async Task UpdateMark(int taskSubmissionId, int mark)
+    public async Task UpdateMarkAsync(int taskSubmissionId, int mark)
     {
         var response = await _client.CreateClient(RequestOptions.ClientName)
             .PutAsJsonAsync($"/api/{_controllerName}/mark/{taskSubmissionId}", mark);
         response.EnsureSuccessStatusCode();
     }
 
-    public async Task UpdateContext(int taskSubmissionId, string content)
+    public async Task UpdateContextAsync(int taskSubmissionId, string content)
     {
         var response = await _client.CreateClient(RequestOptions.ClientName)
             .PutAsJsonAsync($"/api/{_controllerName}/content/{taskSubmissionId}", content);
         response.EnsureSuccessStatusCode();
     }
 
-    public async Task<TaskSubmissionDto> GetByIdAsync(int id)
+    public async Task<TaskSubmissionDto> GetByCourseTaskAsync(int courseTaskId)
     {
         var response = await _client.CreateClient(RequestOptions.ClientName)
-            .GetAsync($"/api/TaskSubmissions/{id}");
+            .GetAsync($"api/TaskSubmissions/byCourseTask/{courseTaskId}");
         response.EnsureSuccessStatusCode();
         return JsonConvert.DeserializeObject<TaskSubmissionDto>(await response.Content.ReadAsStringAsync())!;
     }
