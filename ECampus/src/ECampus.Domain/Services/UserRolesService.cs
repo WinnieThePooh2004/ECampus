@@ -52,4 +52,9 @@ public class UserRolesService : IUserRolesService
 
         return _mapper.Map<UserDto>(await _dataAccess.CreateAsync(_mapper.Map<User>(user)));
     }
+
+    public async Task<UserDto> DeleteAsync(int id)
+    {
+        return _mapper.Map<UserDto>(await _dataAccess.DeleteAsync(id));
+    }
 }
