@@ -17,7 +17,7 @@ public class TaskSubmissionRepository : ITaskSubmissionRepository
         _context = context;
     }
 
-    public async Task<TaskSubmission> UpdateContent(int submissionId, string content)
+    public async Task<TaskSubmission> UpdateContentAsync(int submissionId, string content)
     {
         var submission = await _context.TaskSubmissions
             .Include(t => t.Student)
@@ -30,7 +30,7 @@ public class TaskSubmissionRepository : ITaskSubmissionRepository
         return submission;
     }
 
-    public async Task<TaskSubmission> UpdateMark(int submissionId, int mark)
+    public async Task<TaskSubmission> UpdateMarkAsync(int submissionId, int mark)
     {
         var submission = await _context.TaskSubmissions
             .Include(t => t.Student)

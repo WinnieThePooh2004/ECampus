@@ -18,6 +18,8 @@ public class UserRolesMessagingService : IUserRolesService
 
     public Task<UserDto> GetByIdAsync(int id) => _baseUserRolesService.GetByIdAsync(id);
 
+    public Task<UserDto> DeleteAsync(int id) => _baseUserRolesService.DeleteAsync(id);
+
     public async Task<UserDto> UpdateAsync(UserDto user)
     {
         var updatedUser = await _baseUserRolesService.UpdateAsync(user);
