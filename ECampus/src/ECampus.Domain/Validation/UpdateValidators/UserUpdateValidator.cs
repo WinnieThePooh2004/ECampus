@@ -59,7 +59,7 @@ public class UserUpdateValidator : IUpdateValidator<UserDto>
             throw new HttpContextNotFoundExceptions();
         }
 
-        var currentUserRole = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Role)!.Value;
+        var currentUserRole = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Role)?.Value;
 
         if (userFromDb.Role == UserRole.Admin && user.Role != UserRole.Admin &&
             _httpContextAccessor.HttpContext.User.GetId() == user.Id)
