@@ -25,7 +25,7 @@ public class TaskSubmissionValidator : ITaskSubmissionValidator
         _validator = validator;
     }
 
-    public async Task<ValidationResult> ValidateUpdateContent(int submissionId, string content)
+    public async Task<ValidationResult> ValidateUpdateContentAsync(int submissionId, string content)
     {
         var errorsFromFluentValidator =
             await _validator.ValidateAsync(new TaskSubmissionDto { SubmissionContent = content });

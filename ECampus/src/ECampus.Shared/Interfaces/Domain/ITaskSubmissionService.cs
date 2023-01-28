@@ -4,8 +4,8 @@ namespace ECampus.Shared.Interfaces.Domain;
 
 public interface ITaskSubmissionService
 {
-    public Task UpdateContent(int submissionId, string content);
-    public Task UpdateMark(int submissionId, int mark);
+    public Task UpdateContentAsync(int submissionId, string content);
+    public Task UpdateMarkAsync(int submissionId, int mark);
     Task<TaskSubmissionDto> GetByIdAsync(int id);
     Task<TaskSubmissionDto> GetByCourse(int courseTaskId);
 }

@@ -32,12 +32,12 @@ public class TaskSubmissionService : ITaskSubmissionService
         _taskSubmissionValidator = taskSubmissionValidator;
         _mapper = mapper;
         _snsMessenger = snsMessenger;
-        _user = httpContextAccessor.HttpContext?.User ?? throw new HttpContextNotFoundExceptions();
+        _user = httpContextAccessor.HttpContext!.User;
     }
 
-    public async Task UpdateContent(int submissionId, string content)
+    public async Task UpdateContentAsync(int submissionId, string content)
     {
-        var validationResult = await _taskSubmissionValidator.ValidateUpdateContent(submissionId, content);
+        var validationResult = await _taskSubmissionValidator.ValidateUpdateContentAsync(submissionId, content);
         if (!validationResult.IsValid)
         {
             throw new ValidationException(typeof(TaskSubmissionDto), validationResult);
@@ -51,7 +51,7 @@ public class TaskSubmissionService : ITaskSubmissionService
         });
     }
 
-    public async Task UpdateMark(int submissionId, int mark)
+    public async Task UpdateMarkAsync(int submissionId, int mark)
     {
         var validationResult = await _taskSubmissionValidator.ValidateUpdateMark(submissionId, mark);
         if (!validationResult.IsValid)
@@ -59,7 +59,7 @@ public class TaskSubmissionService : ITaskSubmissionService
             throw new ValidationException(typeof(TaskSubmissionDto), validationResult);
         }
 
-        var submission = await _taskSubmissionRepository.UpdateMark(submissionId, mark);
+        var submission = await _taskSubmissionRepository.UpdateMarkAsync(submissionId, mark);
         await _snsMessenger.PublishMessageAsync(new SubmissionMarked
         {
             TaskName = submission.CourseTask!.Name,
