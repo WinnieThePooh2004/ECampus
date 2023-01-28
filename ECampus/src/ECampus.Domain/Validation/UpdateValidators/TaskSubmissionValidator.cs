@@ -38,7 +38,7 @@ public class TaskSubmissionValidator : ITaskSubmissionValidator
         return await ValidateStudentId(submissionId);
     }
 
-    public async Task<ValidationResult> ValidateUpdateMark(int submissionId, int mark)
+    public async Task<ValidationResult> ValidateUpdateMarkAsync(int submissionId, int mark)
     {
         var teacherIdClaim = _user.FindFirst(CustomClaimTypes.TeacherId)?.Value;
         if (teacherIdClaim is null)

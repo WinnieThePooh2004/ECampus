@@ -43,7 +43,7 @@ public class TaskSubmissionService : ITaskSubmissionService
             throw new ValidationException(typeof(TaskSubmissionDto), validationResult);
         }
 
-        var submission = await _taskSubmissionRepository.UpdateContent(submissionId, content);
+        var submission = await _taskSubmissionRepository.UpdateContentAsync(submissionId, content);
         await _snsMessenger.PublishMessageAsync(new SubmissionEdited
         {
             UserEmail = submission.Student?.UserEmail,
@@ -53,7 +53,7 @@ public class TaskSubmissionService : ITaskSubmissionService
 
     public async Task UpdateMarkAsync(int submissionId, int mark)
     {
-        var validationResult = await _taskSubmissionValidator.ValidateUpdateMark(submissionId, mark);
+        var validationResult = await _taskSubmissionValidator.ValidateUpdateMarkAsync(submissionId, mark);
         if (!validationResult.IsValid)
         {
             throw new ValidationException(typeof(TaskSubmissionDto), validationResult);
