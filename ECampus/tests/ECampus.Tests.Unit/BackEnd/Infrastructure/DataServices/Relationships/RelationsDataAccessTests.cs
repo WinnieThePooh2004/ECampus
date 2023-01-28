@@ -33,12 +33,12 @@ public class RelationsDataAccessTests
     [Fact]
     public async Task AddRelation_ShouldThrowException_IfErrorOccuredWhileSaveChanges()
     {
-        _context.SaveChangesAsync().Returns(0).AndDoes(_ => throw new DbUpdateException("Some message"));
+        _context.SaveChangesAsync().Returns(0).AndDoes(_ => throw new DbUpdateConcurrencyException("Some message"));
 
         await new Func<Task>(() => _sut.CreateRelation(0, 0, _context)).Should()
             .ThrowAsync<InfrastructureExceptions>()
-            .WithMessage("unhandled exception occured on data access level," +
-                         " view inner exception to see details\nError code: 500");
+            .WithMessage($"cannot add relation between object of type {typeof(User)} with id=0 " +
+                         $"on between object of type {typeof(Group)} with id=0\nError code: 404");
     }
     
     [Fact]

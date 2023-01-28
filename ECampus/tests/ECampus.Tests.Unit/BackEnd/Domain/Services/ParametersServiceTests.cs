@@ -44,6 +44,7 @@ public sealed class ParametersServiceTests
         _dataAccessFacade.GetByParameters(parameters).Returns(expected);
         
         var result = await _service.GetByParametersAsync(parameters);
+        
         result.Metadata.Should().BeEquivalentTo(expected.Metadata);
         result.Data.Should().BeEquivalentTo(_mapper.Map<ListWithPaginationData<AuditoryDto>>(expected).Data);
     }
