@@ -4,6 +4,6 @@ namespace ECampus.Shared.Interfaces.Domain.Validation;
 
 public interface ITaskSubmissionValidator
 {
-    Task<ValidationResult> ValidateUpdateContent(int submissionId, string content);
-    Task<ValidationResult> ValidateUpdateMark(int submissionId, int mark);
+    Task<ValidationResult> ValidateUpdateContentAsync(int submissionId, string content);
+    Task<ValidationResult> ValidateUpdateMarkAsync(int submissionId, int mark);
 }

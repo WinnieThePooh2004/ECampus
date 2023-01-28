@@ -25,7 +25,7 @@ public class TaskSubmissionValidator : ITaskSubmissionValidator
         _validator = validator;
     }
 
-    public async Task<ValidationResult> ValidateUpdateContent(int submissionId, string content)
+    public async Task<ValidationResult> ValidateUpdateContentAsync(int submissionId, string content)
     {
         var errorsFromFluentValidator =
             await _validator.ValidateAsync(new TaskSubmissionDto { SubmissionContent = content });
@@ -38,7 +38,7 @@ public class TaskSubmissionValidator : ITaskSubmissionValidator
         return await ValidateStudentId(submissionId);
     }
 
-    public async Task<ValidationResult> ValidateUpdateMark(int submissionId, int mark)
+    public async Task<ValidationResult> ValidateUpdateMarkAsync(int submissionId, int mark)
     {
         var teacherIdClaim = _user.FindFirst(CustomClaimTypes.TeacherId)?.Value;
         if (teacherIdClaim is null)

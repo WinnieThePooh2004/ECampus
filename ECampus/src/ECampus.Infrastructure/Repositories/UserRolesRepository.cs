@@ -66,6 +66,26 @@ public class UserRolesRepository : IUserRolesRepository
         return user;
     }
 
+    public async Task<User> DeleteAsync(int id)
+    {
+        var user = new User { Id = id };
+        _context.Remove(user);
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            throw new ObjectNotFoundByIdException(typeof(User), id);
+        }
+        catch (Exception e)
+        {
+            throw new UnhandledInfrastructureException(e);
+        }
+
+        return user;
+    }
+
     private Action ChangeUserRelationships(User user) => user.Role switch
     {
         UserRole.Student => () => UpdateAsStudent(user),

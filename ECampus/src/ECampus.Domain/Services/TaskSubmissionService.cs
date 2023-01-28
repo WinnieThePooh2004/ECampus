@@ -32,18 +32,18 @@ public class TaskSubmissionService : ITaskSubmissionService
         _taskSubmissionValidator = taskSubmissionValidator;
         _mapper = mapper;
         _snsMessenger = snsMessenger;
-        _user = httpContextAccessor.HttpContext?.User ?? throw new HttpContextNotFoundExceptions();
+        _user = httpContextAccessor.HttpContext!.User;
     }
 
-    public async Task UpdateContent(int submissionId, string content)
+    public async Task UpdateContentAsync(int submissionId, string content)
     {
-        var validationResult = await _taskSubmissionValidator.ValidateUpdateContent(submissionId, content);
+        var validationResult = await _taskSubmissionValidator.ValidateUpdateContentAsync(submissionId, content);
         if (!validationResult.IsValid)
         {
             throw new ValidationException(typeof(TaskSubmissionDto), validationResult);
         }
 
-        var submission = await _taskSubmissionRepository.UpdateContent(submissionId, content);
+        var submission = await _taskSubmissionRepository.UpdateContentAsync(submissionId, content);
         await _snsMessenger.PublishMessageAsync(new SubmissionEdited
         {
             UserEmail = submission.Student?.UserEmail,
@@ -51,15 +51,15 @@ public class TaskSubmissionService : ITaskSubmissionService
         });
     }
 
-    public async Task UpdateMark(int submissionId, int mark)
+    public async Task UpdateMarkAsync(int submissionId, int mark)
     {
-        var validationResult = await _taskSubmissionValidator.ValidateUpdateMark(submissionId, mark);
+        var validationResult = await _taskSubmissionValidator.ValidateUpdateMarkAsync(submissionId, mark);
         if (!validationResult.IsValid)
         {
             throw new ValidationException(typeof(TaskSubmissionDto), validationResult);
         }
 
-        var submission = await _taskSubmissionRepository.UpdateMark(submissionId, mark);
+        var submission = await _taskSubmissionRepository.UpdateMarkAsync(submissionId, mark);
         await _snsMessenger.PublishMessageAsync(new SubmissionMarked
         {
             TaskName = submission.CourseTask!.Name,

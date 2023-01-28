@@ -69,7 +69,7 @@ public class ManyToManyRelationshipsUpdate<TModel, TRelatedModel, TRelations> : 
                         SELECT * FROM [{rightTableName}] AS [RightTable]
                         WHERE [RightTable].[Id] IN ({relatedModelsIds})
                         AND {model.Id} NOT IN (SELECT [Relations].[{leftTableIdName}] FROM [{relationTableName}]
-                        AS [Relations] WHERE [Relations].[{rightTableIdName}]  = [RightTable].[Id])
+                        AS [Relations] WHERE [Relations].[{rightTableIdName}] = [RightTable].[Id])
                         """;
         return sqlQuery;
     }
@@ -92,7 +92,7 @@ public class ManyToManyRelationshipsUpdate<TModel, TRelatedModel, TRelations> : 
 
     private Expression<Func<TRelations, bool>> DeletedFromModelExpression(TModel model)
     {
-        var relatedModels = _relationshipsHandler.RelatedModels.GetFromProperty<List<TRelatedModel>>(model);
+        var relatedModels = _relationshipsHandler.RelatedModels.GetFromProperty<ICollection<TRelatedModel>>(model);
         var parameter = Expression.Parameter(typeof(TRelations), "relationModel");
         var rightIdExpression = Expression.MakeMemberAccess(parameter, _relationshipsHandler.RightTableId);
         var isRelated = IsRelated(model.Id, parameter);
