@@ -11,8 +11,6 @@ public class TaskSubmission : IModel
 
     public int CourseTaskId { get; set; }
     public int StudentId { get; set; }
-    
-    public bool IsDeleted { get; set; }
     public CourseTask? CourseTask { get; set; }
     public Student? Student { get; set; }
 }
