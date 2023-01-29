@@ -32,7 +32,7 @@ public class ParametersValidatorsInstaller : IInstaller
                 dto.GetCustomAttributes(typeof(DtoAttribute), false).OfType<DtoAttribute>().Single().ModelType ==
                 parametersModel);
 
-            services.AddSingleton(typeof(IParametersValidator<>).MakeGenericType(parametersType),
+            services.AddScoped(typeof(IParametersValidator<>).MakeGenericType(parametersType),
                 parametersValidator);
             services.Decorate(typeof(IParametersService<,>).MakeGenericType(validatorDto, parametersType),
                 typeof(ServiceWithParametersValidation<,>).MakeGenericType(validatorDto, parametersType));
