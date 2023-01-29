@@ -2,7 +2,7 @@
 
 namespace ECampus.Shared.Models;
 
-public class TaskSubmission : IModel, IIsDeleted
+public class TaskSubmission : IModel
 {
     public int Id { get; set; }
     public int TotalPoints { get; set; }
