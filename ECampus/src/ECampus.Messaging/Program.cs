@@ -1,9 +1,12 @@
+using System.Net;
+using System.Net.Mail;
 using Amazon.SQS;
 using ECampus.Messaging;
 using ECampus.Messaging.Mailing;
 using ECampus.Messaging.MessagingServices;
 using ECampus.Messaging.Options;
 using MediatR;
+using Microsoft.Extensions.Options;
 using Serilog;
 using ILogger = Serilog.ILogger;
 
@@ -24,6 +27,18 @@ builder.Services.Configure<EmailSetting>(builder.Configuration.GetSection(EmailS
 
 builder.Services.AddSingleton<IAmazonSQS, AmazonSQSClient>();
 builder.Services.AddSingleton<IEmailSendService, EmailSendService>();
+builder.Services.AddSingleton<SmtpClient>(provider =>
+{
+    var options = provider.GetService<IOptions<EmailSetting>>();
+    return new SmtpClient
+    {
+        Port = 587,
+        Credentials = new NetworkCredential { Password = options!.Value.Password, UserName = options.Value.Email },
+        EnableSsl = true,
+        DeliveryMethod = SmtpDeliveryMethod.Network,
+        Host = options.Value.HostName
+    };
+});
 
 builder.Services.AddMediatR(typeof(MessagingAssemblyMarker));
 
