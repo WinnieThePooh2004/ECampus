@@ -12,7 +12,7 @@ namespace ECampus.Infrastructure.Installers;
 
 public class DataServicesInstaller : IInstaller
 {
-    public int InstallOrder => 0;
+    public int InstallOrder => -1;
     
     public void Install(IServiceCollection services, IConfiguration configuration)
     {
