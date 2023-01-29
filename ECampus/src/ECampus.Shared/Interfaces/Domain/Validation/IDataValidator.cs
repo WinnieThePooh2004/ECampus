@@ -1,10 +1,8 @@
-﻿using ECampus.Shared.Interfaces.Data.Models;
-using ECampus.Shared.Validation;
+﻿using ECampus.Shared.Validation;
 
 namespace ECampus.Shared.Interfaces.Domain.Validation;
 
 public interface IDataValidator<in TModel>
-    where TModel : class, IModel
 {
     /// <summary>
     /// implement this method ONLY if it cannot be validated on domain level, e. g. username must be unique

@@ -1,7 +1,9 @@
 ﻿using System.Net;
 using System.Security.Claims;
+using ECampus.Shared.Auth;
 using ECampus.Shared.Enums;
 using ECampus.Shared.Exceptions.DomainExceptions;
+using ECampus.Shared.Interfaces.DataAccess.Validation;
 using ECampus.Shared.Interfaces.Domain.Validation;
 using ECampus.Shared.QueryParameters;
 using ECampus.Shared.Validation;
@@ -12,15 +14,20 @@ namespace ECampus.Domain.Validation.ParametersValidators;
 public class TaskSubmissionParametersValidator : IParametersValidator<TaskSubmissionParameters>
 {
     private readonly ClaimsPrincipal _user;
+    private readonly IParametersDataValidator<TaskSubmissionParameters> _parametersDataValidator;
 
-    public TaskSubmissionParametersValidator(IHttpContextAccessor httpContextAccessor)
+    public TaskSubmissionParametersValidator(IHttpContextAccessor httpContextAccessor,
+        IParametersDataValidator<TaskSubmissionParameters> parametersDataValidator)
     {
+        _parametersDataValidator = parametersDataValidator;
         _user = httpContextAccessor.HttpContext?.User ?? throw new HttpContextNotFoundExceptions();
     }
 
-    public Task<ValidationResult> Validate(TaskSubmissionParameters parameters)
+    public async Task<ValidationResult> Validate(TaskSubmissionParameters parameters)
     {
-        var roleAsString = _user.FindFirst(ClaimTypes.Role)?.Value ?? throw new DomainException((HttpStatusCode)401);
+        var roleAsString = _user.FindFirst(ClaimTypes.Role)?.Value ??
+                           throw new DomainException(HttpStatusCode.Forbidden,
+                               "You must be at least student to perform this action");
         if (!Enum.TryParse<UserRole>(roleAsString, out var currentUserRole))
         {
             throw new DomainException(HttpStatusCode.Forbidden, $"No such role '{roleAsString}'");
@@ -28,12 +35,22 @@ public class TaskSubmissionParametersValidator : IParametersValidator<TaskSubmis
 
         return currentUserRole switch
         {
-            UserRole.Guest => throw new DomainException(HttpStatusCode.Forbidden,
+            UserRole.Admin => new ValidationResult(),
+            UserRole.Teacher => await ValidateAsTeacher(parameters),
+            UserRole.Student or UserRole.Guest => throw new DomainException(HttpStatusCode.Forbidden,
                 "You must be at least student to perform this action"),
-            UserRole.Admin or UserRole.Teacher => Task.FromResult(new ValidationResult()),
-            _ => Task.FromResult(ValidateAsStudent())
+            _ => throw new ArgumentOutOfRangeException(nameof(parameters))
         };
     }
 
-    private static ValidationResult ValidateAsStudent() => new();
+    private async Task<ValidationResult> ValidateAsTeacher(TaskSubmissionParameters parameters)
+    {
+        var teacherIdClaim = _user.FindFirst(CustomClaimTypes.TeacherId);
+        if (teacherIdClaim is null || !int.TryParse(teacherIdClaim.Value, out _))
+        {
+            return new ValidationResult(new ValidationError(nameof(teacherIdClaim), 
+                "Yor are now registered as teacher or your TeacherId claim is not a number"));
+        }
+        return await _parametersDataValidator.ValidateAsync(parameters);
+    }
 }
