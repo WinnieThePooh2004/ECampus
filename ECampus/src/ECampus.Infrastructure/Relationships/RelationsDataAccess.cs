@@ -32,7 +32,7 @@ public class RelationsDataAccess<TLeftTable, TRightTable, TRelations> :
         {
             throw new InfrastructureExceptions(HttpStatusCode.NotFound,
                 $"cannot add relation between object of type {typeof(TLeftTable)} with id={rightTableId} " +
-                $"on between object of type {typeof(TRightTable)} with id={rightTableId} ");
+                $"on between object of type {typeof(TRightTable)} with id={rightTableId}");
         }
         catch (Exception e)
         {

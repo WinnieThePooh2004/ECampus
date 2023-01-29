@@ -2,7 +2,7 @@
 
 namespace ECampus.Shared.Models;
 
-public class TaskSubmission : IModel, IIsDeleted
+public class TaskSubmission : IModel
 {
     public int Id { get; set; }
     public int TotalPoints { get; set; }
@@ -11,8 +11,6 @@ public class TaskSubmission : IModel, IIsDeleted
 
     public int CourseTaskId { get; set; }
     public int StudentId { get; set; }
-    
-    public bool IsDeleted { get; set; }
     public CourseTask? CourseTask { get; set; }
     public Student? Student { get; set; }
 }

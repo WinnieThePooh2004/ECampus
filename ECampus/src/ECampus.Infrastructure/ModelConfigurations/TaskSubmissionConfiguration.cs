@@ -8,8 +8,6 @@ public class TaskSubmissionConfiguration : IEntityTypeConfiguration<TaskSubmissi
 {
     public void Configure(EntityTypeBuilder<TaskSubmission> builder)
     {
-        builder.HasQueryFilter(t => !t.IsDeleted);
-
         builder.HasIndex(t => new { t.StudentId, t.CourseTaskId })
             .IsUnique();
 
