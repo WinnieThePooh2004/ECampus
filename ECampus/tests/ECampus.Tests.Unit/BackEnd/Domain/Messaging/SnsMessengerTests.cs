@@ -18,7 +18,7 @@ public class SnsMessengerTests
 
     public SnsMessengerTests()
     {
-        _options = new Options<NotificationsSettings> { Value = new NotificationsSettings { Name = "name" } };
+        _options = new Options<NotificationsSettings>(new NotificationsSettings { Name = "name" });
         _sut = new SnsMessenger(_amazonSns, _options);
     }
 

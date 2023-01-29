@@ -117,6 +117,23 @@ public class SingleItemSelectTests
             select.Should().Be(data.Data[i].Id);
         }
     }
+    
+    [Fact]
+    public async Task ClickOnTableHeader_ShouldChangeOrderBy()
+    {
+        var items = Enumerable.Range(0, 10).Select(i => _fixture
+            .Build<GroupDto>().With(f => f.Id, i).Create()).ToList();
+        _parametersRequests.GetByParametersAsync(Arg.Any<GroupParameters>())
+            .Returns(new ListWithPaginationData<GroupDto>
+                { Data = items, Metadata = new PaginationData { TotalCount = 10, PageNumber = 1, PageSize = 5 } });
+        var selector = RenderSelector(1, _ => { });
+        var th = selector.Find("th");
+        _parametersRequests.ClearReceivedCalls();
+
+        th.Click();
+
+        await _parametersRequests.Received(1).GetByParametersAsync(Arg.Any<GroupParameters>());
+    }
 
     private IRenderedComponent<SingleItemSelect<GroupDto, GroupParameters>> RenderSelector(int selectedId,
         Action<int> selectChanged, string title = "")
