@@ -171,28 +171,4 @@ public class UserRequestsTests
             .ThrowAsync<HttpRequestException>()
             .WithMessage("Response status code does not indicate success: 502 (Bad Gateway).");
     }
-
-    // [Fact]
-    // public async Task ChangePassword_ShouldThrowException_WhenStatusCodeNotSuccessful()
-    // {
-    //     var response = new HttpResponseMessage { StatusCode = HttpStatusCode.BadGateway };
-    //     _clientFactory.MessageHandler.Responses.Add(
-    //         new HttpRequestMessage(HttpMethod.Put, "https://google.com/api/Users/changePassword"),
-    //         response);
-    //
-    //     await new Func<Task>(() => _sut.ChangePassword(new PasswordChangeDto())).Should()
-    //         .ThrowAsync<HttpRequestException>()
-    //         .WithMessage("Response status code does not indicate success: 502 (Bad Gateway).");
-    // }
-    //
-    // [Fact]
-    // public async Task ChangePassword_ShouldCallHttpClient_WhenResultIsNoContent()
-    // {
-    //     var response = new HttpResponseMessage { StatusCode = HttpStatusCode.NoContent };
-    //     _clientFactory.MessageHandler.Responses.Add(
-    //         new HttpRequestMessage(HttpMethod.Put, "https://google.com/api/Users/changePassword"),
-    //         response);
-    //
-    //     await new Func<Task>(() => _sut.ChangePassword(new PasswordChangeDto())).Should().NotThrowAsync();
-    // }
 }

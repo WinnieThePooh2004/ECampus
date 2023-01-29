@@ -33,7 +33,7 @@ public class TaskSubmissionRequests : ITaskSubmissionRequests
     public async Task<TaskSubmissionDto> GetByCourseTaskAsync(int courseTaskId)
     {
         var response = await _client.CreateClient(RequestOptions.ClientName)
-            .GetAsync($"api/TaskSubmissions/byCourseTask/{courseTaskId}");
+            .GetAsync($"api/{_controllerName}/byCourseTask/{courseTaskId}");
         response.EnsureSuccessStatusCode();
         return JsonConvert.DeserializeObject<TaskSubmissionDto>(await response.Content.ReadAsStringAsync())!;
     }

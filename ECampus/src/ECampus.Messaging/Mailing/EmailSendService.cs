@@ -1,5 +1,4 @@
-﻿using System.Net;
-using System.Net.Mail;
+﻿using System.Net.Mail;
 using ECampus.Messaging.Options;
 using Microsoft.Extensions.Options;
 
@@ -10,16 +9,10 @@ public class EmailSendService : IEmailSendService
     private readonly SmtpClient _smtpClient;
     private readonly IOptions<EmailSetting> _options;
 
-    public EmailSendService(IOptions<EmailSetting> options)
+    public EmailSendService(IOptions<EmailSetting> options, SmtpClient smtpClient)
     {
         _options = options;
-        _smtpClient = new SmtpClient(options.Value.HostName)
-        {
-            Port = 587,
-            Credentials = new NetworkCredential { Password = options.Value.Password, UserName = options.Value.Email },
-            EnableSsl = true,
-            DeliveryMethod = SmtpDeliveryMethod.Network
-        };
+        _smtpClient = smtpClient;
     }
 
     public async Task SendEmailAsync(MailMessage email, List<string> receivers)

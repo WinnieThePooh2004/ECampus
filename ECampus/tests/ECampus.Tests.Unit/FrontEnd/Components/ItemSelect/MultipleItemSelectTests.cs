@@ -19,7 +19,7 @@ public class MultipleItemSelectTests
 
     private readonly Fixture _fixture = new();
     private bool _onChangedInvoked;
-    
+
     private static readonly IPropertySelector<FacultyDto> PropertySelector = new PropertySelector<FacultyDto>();
 
     private static readonly ISearchTermsSelector<FacultyParameters> SearchTermsSelector =
@@ -98,12 +98,30 @@ public class MultipleItemSelectTests
     }
 
     [Fact]
+    public async Task ClickOnTableHeader_ShouldChangeOrderBy()
+    {
+        var items = Enumerable.Range(0, 10).Select(i => _fixture
+            .Build<FacultyDto>().With(f => f.Id, i).Create()).ToList();
+        var selectTo = new List<FacultyDto> { new() { Id = 0 } };
+        _parametersRequests.GetByParametersAsync(Arg.Any<FacultyParameters>())
+            .Returns(new ListWithPaginationData<FacultyDto>
+                { Data = items, Metadata = new PaginationData { TotalCount = 10, PageNumber = 1, PageSize = 5 } });
+        var selector = RenderSelector(selectTo);
+        var th = selector.Find("th");
+        _parametersRequests.ClearReceivedCalls();
+
+        th.Click();
+
+        await _parametersRequests.Received(1).GetByParametersAsync(Arg.Any<FacultyParameters>());
+    }
+
+    [Fact]
     public void Build_ShouldNotBuildTable_WhenRequestsReturnsNull()
     {
         RenderSelector(new List<FacultyDto>()).Markup.Should().Be("<p><em>Loading...</em></p>");
     }
-    
-    
+
+
     private IRenderedComponent<MultipleItemsSelect<FacultyDto, FacultyParameters>> RenderSelector(
         List<FacultyDto> selectTo, string title = "")
     {
@@ -111,7 +129,7 @@ public class MultipleItemSelectTests
             parameters => parameters
                 .Add(s => s.SelectTo, selectTo)
                 .Add(s => s.Title, title)
-                .Add(s => s.OnChanged, 
+                .Add(s => s.OnChanged,
                     () => _onChangedInvoked = true));
     }
 }

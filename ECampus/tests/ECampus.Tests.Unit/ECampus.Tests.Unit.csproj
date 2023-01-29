@@ -26,10 +26,6 @@
   </ItemGroup>
   
   <ItemGroup>
-    <Folder Include="FrontEnd\Pages" />
-  </ItemGroup>
-  
-  <ItemGroup>
     <ProjectReference Include="..\..\src\ECampus.Api\ECampus.Api.csproj" />
     <ProjectReference Include="..\..\src\ECampus.FrontEnd\ECampus.FrontEnd.csproj" />
     <ProjectReference Include="..\..\src\ECampus.Shared\ECampus.Shared.csproj" />
