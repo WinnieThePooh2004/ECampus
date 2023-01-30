@@ -52,7 +52,7 @@ public class TaskSubmissionRepository : ITaskSubmissionRepository
             .SingleOrDefaultAsync(t => t.Id == id) ?? throw new ObjectNotFoundByIdException(typeof(TaskSubmission), id);
     }
 
-    public async Task<TaskSubmission> GetByStudentAndCourse(int studentId, int courseTaskId)
+    public async Task<TaskSubmission> GetByStudentAndCourseAsync(int studentId, int courseTaskId)
     {
         return await _context.TaskSubmissions
                    .Include(t => t.Student)

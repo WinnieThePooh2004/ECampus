@@ -19,7 +19,7 @@ public class TaskSubmissionDataValidator : ITaskSubmissionDataValidator
 
     public async Task<TaskSubmission> LoadSubmissionData(int taskSubmissionId)
     {
-        return await _context.TaskSubmissions.FindAsync(taskSubmissionId) ??
+        return await _context.FindAsync<TaskSubmission>(taskSubmissionId) ??
                throw new ObjectNotFoundByIdException(typeof(TaskSubmission), taskSubmissionId);
     }
 
@@ -31,7 +31,7 @@ public class TaskSubmissionDataValidator : ITaskSubmissionDataValidator
         if (submissionAuthorGroup is null)
         {
             result.AddError(new ValidationError(nameof(taskSubmissionId),
-                $"Cannot find submission with id = {taskSubmissionId}"));
+                "Cannot group of submission author with id"));
             return result;
         }
 

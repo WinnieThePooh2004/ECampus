@@ -24,7 +24,8 @@ public class TaskSubmissionParametersDataValidator : IParametersDataValidator<Ta
 
     public async Task<ValidationResult> ValidateAsync(TaskSubmissionParameters parameters)
     {
-        var teacherId = int.Parse(_user.FindFirst(CustomClaimTypes.TeacherId)!.Value);
+        var teacherIdClaim = _user.FindFirst(CustomClaimTypes.TeacherId);
+        var teacherId = int.Parse(teacherIdClaim!.Value);
         if (!await _context.Set<Teacher>().Include(t => t.CourseTeachers).AnyAsync(t =>
                 t.Id == teacherId && t.CourseTeachers!.Any(ct => ct.CourseId == parameters.CourseTaskId)))
         {
