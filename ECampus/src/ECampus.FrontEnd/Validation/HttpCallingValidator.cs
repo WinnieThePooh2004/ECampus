@@ -47,7 +47,7 @@ public class HttpCallingValidator<T> : IValidator<T>
         }
 
         var serverErrors = await _validationRequests.ValidateAsync(instance);
-        baseResult.Errors.AddRange(serverErrors.GetAllErrors()
+        baseResult.Errors.AddRange(serverErrors.ToList()
             .Select(e => new ValidationFailure(e.PropertyName, e.ErrorMessage)));
         return baseResult;
     }

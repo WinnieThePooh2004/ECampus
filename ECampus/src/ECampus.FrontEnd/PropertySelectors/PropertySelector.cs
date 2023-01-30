@@ -6,7 +6,7 @@ namespace ECampus.FrontEnd.PropertySelectors;
 
 public class PropertySelector<T> : IPropertySelector<T>
 {
-    private readonly List<(PropertyInfo property, string displayName)> _typeProperties;
+    private readonly List<(PropertyInfo Property, string DisplayName)> _typeProperties;
 
     public PropertySelector()
     {
@@ -21,21 +21,21 @@ public class PropertySelector<T> : IPropertySelector<T>
             .Select(property => (property, property.DisplayName())).ToList();
     }
 
-    public List<(string displayName, string propertyName)> GetAllPropertiesNames()
+    public List<(string DisplayName, string PropertyName)> GetAllPropertiesNames()
     {
-        return _typeProperties.Select(property => (property.displayName, property.property.Name)).ToList();
+        return _typeProperties.Select(property => (property.DisplayName, property.Property.Name)).ToList();
     }
 
-    public List<(string displayName, string value)> GetAllProperties(T item)
+    public List<(string DisplayName, string Value)> GetAllProperties(T item)
     {
         return _typeProperties.Select(property =>
-            (property.displayName, GetPropertyValue(property.property, item))).ToList();
+            (displayName: property.DisplayName, GetPropertyValue(property.Property, item))).ToList();
     }
 
     public List<string> GetAllPropertiesValues(T item)
     {
         return _typeProperties.Select(property =>
-            GetPropertyValue(property.property, item)).ToList();
+            GetPropertyValue(property.Property, item)).ToList();
     }
 
     private static string GetPropertyValue(PropertyInfo property, T item)

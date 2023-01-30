@@ -11,9 +11,9 @@ public class TaskSubmissionPropertySelector : IPropertySelector<TaskSubmissionDt
         _baseSelector = baseSelector;
     }
 
-    public List<(string displayName, string propertyName)> GetAllPropertiesNames()
+    public List<(string DisplayName, string PropertyName)> GetAllPropertiesNames()
     {
-        var result = new List<(string displayName, string propertyName)>
+        var result = new List<(string DisplayName, string PropertyName)>
         {
             ("Max points", "CourseTaskDto.MaxPoints"),
             ("Student email", "Student.UserEmail"),
@@ -23,10 +23,10 @@ public class TaskSubmissionPropertySelector : IPropertySelector<TaskSubmissionDt
         return result;
     }
 
-    public List<(string displayName, string value)> GetAllProperties(TaskSubmissionDto item)
+    public List<(string DisplayName, string Value)> GetAllProperties(TaskSubmissionDto item)
     {
         var studentEmail = item.Student?.UserEmail;
-        var result = new List<(string displayName, string value)>
+        var result = new List<(string DisplayName, string Value)>
         {
             ("Max points", item.CourseTask?.MaxPoints.ToString() ?? "-"),
             studentEmail is not null ? ("Email", studentEmail) : ("Email", "-"),
