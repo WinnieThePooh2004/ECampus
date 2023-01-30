@@ -2,5 +2,5 @@
 
 public interface ICourseTaskMessageDataAccess
 {
-    Task<(string courseName, List<string> studentEmails)> LoadDataForSendMessage(int courseId);
+    Task<(string CourseName, List<string> StudentEmails)> LoadDataForSendMessage(int courseId);
 }

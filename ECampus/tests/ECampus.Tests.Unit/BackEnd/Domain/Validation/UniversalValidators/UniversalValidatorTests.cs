@@ -31,7 +31,7 @@ public class UniversalValidatorTests
 
         var actualResult = await _sut.ValidateAsync(faculty);
 
-        actualResult.GetAllErrors().Should().Contain(errors.Select(e 
+        actualResult.ToList().Should().Contain(errors.Select(e 
             => new ValidationError(e.Key, e.Value)));
     }
 }

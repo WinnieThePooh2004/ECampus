@@ -34,18 +34,27 @@ public class UserRolesRepository : IUserRolesRepository
         user.Teacher = null;
         user.Student = null;
         _context.Add(user);
-        await _context.SaveChangesAsync();
-        return user.Role switch
+        var result = user.Role switch
         {
             UserRole.Teacher when teacher is not null => await SetTeacherId(user, teacher),
             UserRole.Student when student is not null => await SetStudentId(user, student),
             _ => user
         };
+        await _context.SaveChangesAsync();
+        return result;
+    }
+    
+    public async Task<User> UpdateAsync(User user)
+    {
+        ChangeUserRelationships(user)();
+        await _context.SaveChangesAsync();
+        return user;
     }
 
     private async Task<User> SetStudentId(User user, Student student)
     {
         student.UserEmail = user.Email;
+        user.StudentId = student.Id;
         _context.Update(student);
         await _context.SaveChangesAsync();
         return user;
@@ -54,14 +63,8 @@ public class UserRolesRepository : IUserRolesRepository
     private async Task<User> SetTeacherId(User user, Teacher teacher)
     {
         teacher.UserEmail = user.Email;
+        user.TeacherId = teacher.Id;
         _context.Update(teacher);
-        await _context.SaveChangesAsync();
-        return user;
-    }
-
-    public async Task<User> UpdateAsync(User user)
-    {
-        ChangeUserRelationships(user)();
         await _context.SaveChangesAsync();
         return user;
     }

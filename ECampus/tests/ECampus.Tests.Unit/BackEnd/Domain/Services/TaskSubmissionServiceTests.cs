@@ -98,7 +98,7 @@ public class TaskSubmissionServiceTests
             .ThrowAsync<DomainException>()
             .WithMessage("Current user is not logged in as student or claim " +
                          $"'{CustomClaimTypes.StudentId}' is not a number\nError code: 403");
-        await _repository.DidNotReceive().GetByStudentAndCourse(Arg.Any<int>(), Arg.Any<int>());
+        await _repository.DidNotReceive().GetByStudentAndCourseAsync(Arg.Any<int>(), Arg.Any<int>());
     }
 
     [Fact]
@@ -110,7 +110,7 @@ public class TaskSubmissionServiceTests
             .ThrowAsync<DomainException>()
             .WithMessage("Current user is not logged in as student or claim " +
                          $"'{CustomClaimTypes.StudentId}' is not a number\nError code: 403");
-        await _repository.DidNotReceive().GetByStudentAndCourse(Arg.Any<int>(), Arg.Any<int>());
+        await _repository.DidNotReceive().GetByStudentAndCourseAsync(Arg.Any<int>(), Arg.Any<int>());
     }
 
     [Fact]
@@ -118,7 +118,7 @@ public class TaskSubmissionServiceTests
     {
         _user.FindFirst(CustomClaimTypes.StudentId).Returns(new Claim("", "1"));
         var submission = new TaskSubmission { Id = 10 };
-        _repository.GetByStudentAndCourse(1, 10).Returns(submission);
+        _repository.GetByStudentAndCourseAsync(1, 10).Returns(submission);
 
         var result = await _sut.GetByCourse(10);
 

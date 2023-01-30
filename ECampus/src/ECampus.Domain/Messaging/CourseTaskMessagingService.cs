@@ -26,19 +26,19 @@ public class CourseTaskMessagingService : IBaseService<CourseTaskDto>
     {
         var createdTask = await _baseService.CreateAsync(entity);
         var requiredData = await _courseTaskMessageDataAccess.LoadDataForSendMessage(createdTask.CourseId);
-        if (!requiredData.studentEmails.Any())
+        if (!requiredData.StudentEmails.Any())
         {
             return createdTask;
         }
 
         var message = new TaskCreated
         {
-            StudentEmails = requiredData.studentEmails,
+            StudentEmails = requiredData.StudentEmails,
             MaxPoints = createdTask.MaxPoints,
             TaskName = createdTask.Name,
             Deadline = createdTask.Deadline,
             TaskType = createdTask.Type.ToString(),
-            CourseName = requiredData.courseName
+            CourseName = requiredData.CourseName
         };
         await _snsMessenger.PublishMessageAsync(message);
         return createdTask;

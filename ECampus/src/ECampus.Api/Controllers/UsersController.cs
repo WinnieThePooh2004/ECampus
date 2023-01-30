@@ -68,15 +68,17 @@ public class UsersController : ControllerBase
     }
 
     [HttpPut("changePassword")]
-    public async Task<IActionResult> ChangePassword(PasswordChangeDto passwordChange)
+    public async Task<IActionResult> ChangePassword([FromServices] IPasswordChangeService passwordChangeService,
+        PasswordChangeDto passwordChange)
     {
-        return Ok(await _service.ChangePassword(passwordChange));
+        return Ok(await passwordChangeService.ChangePassword(passwordChange));
     }
 
     [HttpPut("changePassword/validate")]
-    public async Task<IActionResult> ValidatePasswordChange(PasswordChangeDto passwordChange)
+    public async Task<IActionResult> ValidatePasswordChange([FromServices] IPasswordChangeService passwordChangeService,
+        PasswordChangeDto passwordChange)
     {
-        return Ok(await _service.ValidatePasswordChange(passwordChange));
+        return Ok(await passwordChangeService.ValidatePasswordChange(passwordChange));
     }
 
     [HttpPut("Validate/Update")]

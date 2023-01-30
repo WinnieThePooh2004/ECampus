@@ -14,6 +14,6 @@ public static class ValidationResultExtensions
 
     public static void MergeResults(this ValidationResult result, ValidationResult addFrom)
     {
-        result.AddRange(addFrom.GetAllErrors());
+        result.AddRange(addFrom);
     }
 }

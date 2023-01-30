@@ -39,7 +39,7 @@ public class UserUpdateValidatorTests
         _dataValidator.ValidateUpdate(Arg.Any<User>()).Returns(new ValidationResult(dataErrors));
         _baseValidator.ValidateAsync(user).Returns(new ValidationResult(baseErrors));
 
-        var actualErrors = (await _sut.ValidateAsync(user)).GetAllErrors().ToList();
+        var actualErrors = (await _sut.ValidateAsync(user)).ToList().ToList();
 
         actualErrors.Should().Contain(baseErrors);
         actualErrors.Should().Contain(dataErrors);

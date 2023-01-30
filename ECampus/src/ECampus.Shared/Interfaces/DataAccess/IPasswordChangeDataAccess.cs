@@ -3,7 +3,7 @@ using ECampus.Shared.Models;
 
 namespace ECampus.Shared.Interfaces.DataAccess;
 
-public interface IUserDataAccessFacade
+public interface IPasswordChangeDataAccess
 {
     Task<User> ChangePassword(PasswordChangeDto passwordChange);
 }

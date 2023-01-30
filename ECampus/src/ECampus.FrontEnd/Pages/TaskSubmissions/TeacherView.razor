@@ -1,5 +1,5 @@
 ﻿@page "/submissions/{CourseTaskId:int}"
 
 <IndexPageModel TData="TaskSubmissionDto" TParameters="TaskSubmissionParameters" EditEnabled="false"
-                ParameterOptions="parameters => { parameters.CourseTaskId = CourseTaskId; }"
+                ParameterOptions="parameters => parameters.CourseTaskId = CourseTaskId"
                 ActionLinks="@(new List<(string, Func<TaskSubmissionDto, string>)> { ("Mark submission", t => $"/markSubmission/{t.Id}") })"/>

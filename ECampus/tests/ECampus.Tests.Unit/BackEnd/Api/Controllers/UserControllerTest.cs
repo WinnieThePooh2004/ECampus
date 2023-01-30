@@ -18,10 +18,11 @@ public class UserControllerTest
         Substitute.For<IParametersService<UserDto, UserParameters>>();
 
     private readonly IUserRelationsService _userRelationsService = Substitute.For<IUserRelationsService>();
+    private readonly IPasswordChangeService _passwordChangeService = Substitute.For<IPasswordChangeService>();
 
     private readonly UsersController _sut;
     private readonly Fixture _fixture = new();
-
+    
     public UserControllerTest()
     {
         _service = Substitute.For<IUserService>();
@@ -130,13 +131,13 @@ public class UserControllerTest
     public async Task ChangePassword_ReturnsFromService_ServiceCalled()
     {
         var passwordChange = _fixture.Create<PasswordChangeDto>();
-        _service.ChangePassword(passwordChange).Returns(passwordChange);
+        _passwordChangeService.ChangePassword(passwordChange).Returns(passwordChange);
 
-        var actionResult = await _sut.ChangePassword(passwordChange);
+        var actionResult = await _sut.ChangePassword(_passwordChangeService, passwordChange);
 
         actionResult.Should().BeOfType<OkObjectResult>();
         actionResult.As<OkObjectResult>().Value.Should().Be(passwordChange);
-        await _service.Received().ChangePassword(passwordChange);
+        await _passwordChangeService.Received().ChangePassword(passwordChange);
     }
 
     [Fact]
@@ -144,26 +145,13 @@ public class UserControllerTest
     {
         var passwordChange = _fixture.Create<PasswordChangeDto>();
         var errors = new ValidationResult(_fixture.CreateMany<ValidationError>(10));
-        _service.ValidatePasswordChange(passwordChange).Returns(errors);
+        _passwordChangeService.ValidatePasswordChange(passwordChange).Returns(errors);
 
-        var actionResult = await _sut.ValidatePasswordChange(passwordChange);
+        var actionResult = await _sut.ValidatePasswordChange(_passwordChangeService, passwordChange);
 
         actionResult.Should().BeOfType<OkObjectResult>();
         actionResult.As<OkObjectResult>().Value.Should().Be(errors);
-        await _service.Received(1).ValidatePasswordChange(passwordChange);
-    }
-
-    [Fact]
-    public async Task ChangePassword_ShouldReturnFromPasswordService()
-    {
-        var passwordChange = _fixture.Create<PasswordChangeDto>();
-        _service.ChangePassword(passwordChange).Returns(passwordChange);
-
-        var actionResult = await _sut.ChangePassword(passwordChange);
-
-        actionResult.Should().BeOfType<OkObjectResult>();
-        actionResult.As<OkObjectResult>().Value.Should().Be(passwordChange);
-        await _service.Received(1).ChangePassword(passwordChange);
+        await _passwordChangeService.Received(1).ValidatePasswordChange(passwordChange);
     }
 
     [Fact]

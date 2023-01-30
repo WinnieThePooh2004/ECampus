@@ -29,6 +29,6 @@ public class PasswordChangeDtoUpdateValidatorTests
 
         var errors = await _sut.ValidateAsync(passwordChange);
 
-        errors.GetAllErrors().Should().Contain(new ValidationError("OldPassword", "Invalid old password"));
+        errors.ToList().Should().Contain(new ValidationError("OldPassword", "Invalid old password"));
     }
 }

@@ -84,6 +84,6 @@ public class TaskSubmissionService : ITaskSubmissionService
         }
 
         return _mapper.Map<TaskSubmissionDto>(
-            await _taskSubmissionRepository.GetByStudentAndCourse(currentStudentId, courseTaskId));
+            await _taskSubmissionRepository.GetByStudentAndCourseAsync(currentStudentId, courseTaskId));
     }
 }

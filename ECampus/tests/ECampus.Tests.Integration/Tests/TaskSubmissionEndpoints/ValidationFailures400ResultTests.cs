@@ -38,7 +38,7 @@ public class ValidationFailures400ResultTests : IClassFixture<ApplicationWithout
         responseObject!.Message.Should().BeEquivalentTo(new ValidationException(typeof(TaskSubmissionDto),
             new ValidationResult(expectedErrors)).Message);
         var actualErrors = JsonConvert.DeserializeObject<ValidationResult>(responseObject.ResponseObject!.ToString()!);
-        actualErrors!.GetAllErrors().Should().BeEquivalentTo(expectedErrors);
+        actualErrors!.ToList().Should().BeEquivalentTo(expectedErrors);
     }
 
     [Fact]

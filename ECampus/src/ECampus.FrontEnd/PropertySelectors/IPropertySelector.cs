@@ -2,9 +2,9 @@
 
 public interface IPropertySelector<in T>
 {
-    List<(string displayName, string propertyName)> GetAllPropertiesNames();
+    List<(string DisplayName, string PropertyName)> GetAllPropertiesNames();
 
-    List<(string displayName, string value)> GetAllProperties(T item);
+    List<(string DisplayName, string Value)> GetAllProperties(T item);
 
     List<string> GetAllPropertiesValues(T item);
 }
