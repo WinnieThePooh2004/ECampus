@@ -16,7 +16,7 @@ public class CourseTaskMessageDataAccess : ICourseTaskMessageDataAccess
         _context = context;
     }
 
-    public async Task<(string courseName, List<string> studentEmails)> LoadDataForSendMessage(int courseId)
+    public async Task<(string CourseName, List<string> StudentEmails)> LoadDataForSendMessage(int courseId)
     {
         var course = await _context.Set<Course>()
                          .AsNoTracking()

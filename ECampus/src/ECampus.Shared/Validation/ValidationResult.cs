@@ -6,7 +6,7 @@ namespace ECampus.Shared.Validation;
 public class ValidationResult
 {
     [JsonProperty]
-    private Dictionary<string, List<string>> Errors { get; set; } = new();
+    private Dictionary<string, List<string>> Errors { get; } = new();
 
     public ValidationResult()
     {
