@@ -32,7 +32,7 @@ public class ClassDtoUpdateValidatorTests
 
         var actual = await ((IUpdateValidator<ClassDto>)_sut).ValidateAsync(@class);
 
-        actual.GetAllErrors().Should().Contain(expectedErrors.GetAllErrors());
+        actual.ToList().Should().Contain(expectedErrors.ToList());
     }
 
     [Fact]
@@ -51,7 +51,7 @@ public class ClassDtoUpdateValidatorTests
 
         var actual = await ((IUpdateValidator<ClassDto>)_sut).ValidateAsync(new ClassDto());
 
-        actual.GetAllErrors().Should().Contain(expected);
+        actual.ToList().Should().Contain(expected);
     }
 
     [Fact]
@@ -64,8 +64,8 @@ public class ClassDtoUpdateValidatorTests
 
         var actualErrors = await ((IUpdateValidator<ClassDto>)_sut).ValidateAsync(new ClassDto());
 
-        actualErrors.GetAllErrors().Should().Contain(errors.GetAllErrors());
-        actualErrors.GetAllErrors().Count().Should().Be(10);
+        actualErrors.ToList().Should().Contain(errors.ToList());
+        actualErrors.ToList().Count().Should().Be(10);
     }
 
     private static ValidationResult CreateExpectedErrors(Class @class)

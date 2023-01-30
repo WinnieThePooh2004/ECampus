@@ -1,9 +1,9 @@
 ﻿using ECampus.Infrastructure;
+using ECampus.Tests.Integration.TestDatabase;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using ECampus.Tests.Integration.TestDatabase;
 
 namespace ECampus.Tests.Integration.AppFactories;
 

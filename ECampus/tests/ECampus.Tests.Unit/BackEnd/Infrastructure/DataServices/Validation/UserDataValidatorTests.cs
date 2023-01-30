@@ -52,7 +52,7 @@ public class UserDataValidatorTests
         _context.Users = new DbSetMock<User>(_testModel,
             new User { Email = _testModel.Email, Username = _testModel.Username });
 
-        var errors = (await _sut.ValidateCreate(_testModel)).GetAllErrors().ToList();
+        var errors = (await _sut.ValidateCreate(_testModel)).ToList().ToList();
 
         errors.Should().Contain(new ValidationError(nameof(_testModel.Email), "This email is already user"));
         errors.Should().Contain(new ValidationError(nameof(_testModel.Username), "This username is already user"));
@@ -63,7 +63,7 @@ public class UserDataValidatorTests
     {
         _context.Users = new DbSetMock<User>(_testModel, new User { Username = _testModel.Username });
 
-        var errors = (await _sut.ValidateUpdate(_testModel)).GetAllErrors().ToList();
+        var errors = (await _sut.ValidateUpdate(_testModel)).ToList().ToList();
 
         errors.Should().Contain(new ValidationError(nameof(_testModel.Username), "This username is already used"));
     }

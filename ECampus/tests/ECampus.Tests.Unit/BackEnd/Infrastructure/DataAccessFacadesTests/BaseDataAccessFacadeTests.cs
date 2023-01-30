@@ -99,12 +99,24 @@ public class BaseDataAccessFacadeTests
     }
 
     [Fact]
-    public async Task Delete_ShouldThrowException_WhenSaveChangeThrow()
+    public async Task Delete_ShouldThrowNoFoundByIdException_WhenDbUpdateConcurrencyExceptionThrown()
     {
         _context.SaveChangesAsync().Returns(1).AndDoes(_ => throw new DbUpdateConcurrencyException());
 
         await new Func<Task>(() => _sut.DeleteAsync(10)).Should()
             .ThrowAsync<ObjectNotFoundByIdException>();
+    }
+
+    [Fact]
+    public async Task Delete_ShouldThrowUnhandledException_WhenNotDbUpdateConcurrencyExceptionThrown()
+    {
+        var innerException = new DbUpdateException();
+        _context.SaveChangesAsync().Returns(1).AndDoes(_ => throw innerException);
+
+        await new Func<Task>(() => _sut.DeleteAsync(10)).Should()
+            .ThrowAsync<UnhandledInfrastructureException>()
+            .WithMessage(new UnhandledInfrastructureException(innerException).Message)
+            .WithInnerExceptionExactly<UnhandledInfrastructureException, DbUpdateException>();
     }
 
     private Auditory CreateModel()

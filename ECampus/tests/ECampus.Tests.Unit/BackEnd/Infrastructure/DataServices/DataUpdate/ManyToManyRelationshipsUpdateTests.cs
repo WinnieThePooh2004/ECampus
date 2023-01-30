@@ -7,7 +7,7 @@ using ECampus.Shared.Models.RelationModels;
 
 namespace ECampus.Tests.Unit.BackEnd.Infrastructure.DataServices.DataUpdate;
 
-public class DataUpdateWithRelationshipsTests
+public class ManyToManyRelationshipsUpdateTests
 {
     private readonly ManyToManyRelationshipsUpdate<User, Auditory, UserAuditory> _sut;
     private readonly ApplicationDbContext _context;
@@ -15,7 +15,7 @@ public class DataUpdateWithRelationshipsTests
 
     private readonly RelationshipsHandler<User, Auditory, UserAuditory> _handler = new();
 
-    public DataUpdateWithRelationshipsTests()
+    public ManyToManyRelationshipsUpdateTests()
     {
         _context = Substitute.For<ApplicationDbContext>();
         _baseUpdate = Substitute.For<IDataUpdateService<User>>();

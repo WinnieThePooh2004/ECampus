@@ -41,8 +41,8 @@ public class UserCreateValidatorTests
 
         var actualErrors = await _sut.ValidateAsync(user);
 
-        actualErrors.GetAllErrors().Should().Contain(baseErrors.GetAllErrors());
-        actualErrors.GetAllErrors().Should().Contain(dataErrors.GetAllErrors());
+        actualErrors.ToList().Should().Contain(baseErrors.ToList());
+        actualErrors.ToList().Should().Contain(dataErrors.ToList());
     }
 
     [Fact]
@@ -70,7 +70,7 @@ public class UserCreateValidatorTests
 
         var errors = await _sut.ValidateAsync(user);
 
-        errors.GetAllErrors().Should().Contain(new ValidationError(nameof(User.Role),
+        errors.ToList().Should().Contain(new ValidationError(nameof(User.Role),
             $"Only admin can create user with roles different from {nameof(UserRole.Guest)}"));
     }
 }
