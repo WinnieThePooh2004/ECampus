@@ -1,12 +1,12 @@
-﻿using ECampus.Shared.Extensions;
+﻿using System.Collections;
+using ECampus.Shared.Extensions;
 using Newtonsoft.Json;
 
 namespace ECampus.Shared.Validation;
 
-public class ValidationResult
+public class ValidationResult : IEnumerable<ValidationError>
 {
-    [JsonProperty]
-    private Dictionary<string, List<string>> Errors { get; } = new();
+    [JsonProperty] private Dictionary<string, List<string>> Errors { get; } = new();
 
     public ValidationResult()
     {
@@ -33,9 +33,14 @@ public class ValidationResult
         Errors[error.PropertyName].Add(error.ErrorMessage);
     }
 
-    public IEnumerable<ValidationError> GetAllErrors() =>
-        Errors.SelectMany(e =>
-            e.Value.Select(message => new ValidationError(e.Key, message)));
-
     public bool IsValid => !Errors.Any();
+
+    public IEnumerator<ValidationError> GetEnumerator()
+        => Errors.SelectMany(e =>
+            e.Value.Select(message => new ValidationError(e.Key, message))).GetEnumerator();
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
+    }
 }

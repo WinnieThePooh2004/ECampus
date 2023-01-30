@@ -15,6 +15,6 @@ public class StudentDto : IDataTransferObject
     public string FirstName { get; set; } = string.Empty;
     public int GroupId { get; set; }
     
-    [DisplayName("User id", 2)]
+    [DisplayName("Email", 2)]
     public string? UserEmail { get; set; }
 }
