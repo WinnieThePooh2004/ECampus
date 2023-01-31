@@ -10,7 +10,6 @@ public partial class CreateNewUser
 {
     [Inject] private IUserRolesRequests UserRolesRequests { get; set; } = default!;
     [Inject] private IUserValidatorFactory UserValidatorFactory { get; set; } = default!;
-
     [Inject] private NavigationManager NavigationManager { get; set; } = default!;
     
     private readonly UserDto _model = new();

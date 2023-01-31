@@ -38,14 +38,16 @@ public class StudentsIndexTests
     }
 
     [Fact]
-    public void Build_ShouldCreateTableHeader_ReadFromAttribute()
+    public async Task Build_ShouldCreateTableHeader_ReadFromAttribute()
     {
         _parametersRequests.GetByParametersAsync(Arg.Any<StudentParameters>()).Returns(TestData(5));
 
-        var page = _context.RenderComponent<Index>();
+        var page = _context.RenderComponent<Index>(opt => opt
+            .Add(i => i.GroupId, 10));
         
         page.Markup.Should().Contain(">First name</th>");
         page.Markup.Should().NotContain(">FirstName</th>");
+        await _parametersRequests.Received(1).GetByParametersAsync(Arg.Is<StudentParameters>(s => s.GroupId == 10));
     }
     
     private ListWithPaginationData<StudentDto> TestData(int pageSize) =>

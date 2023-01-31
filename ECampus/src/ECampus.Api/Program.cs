@@ -49,7 +49,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var authOptions = builder.Configuration.GetSection("jwtAuthOptions")
-    .Get<JwtAuthOptions>() ?? throw new Exception("Cannot find section 'jwtAuthOptions'");
+    .Get<JwtAuthOptions>()!;
 
 builder.Services.AddSingleton(authOptions);
 

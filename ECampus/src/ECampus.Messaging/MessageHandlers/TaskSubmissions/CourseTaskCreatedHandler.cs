@@ -22,7 +22,7 @@ public class CourseTaskCreatedHandler : IRequestHandler<TaskCreated>
         Log(request);
         var email = new MailMessage
         {
-            Subject = $"New {request.TaskType} added",
+            Subject = $"You have new {request.TaskType}",
             Body = $"<h1>You have a new {request.TaskType}</h1>" +
                    $"<p>A new {request.TaskType} '{request.TaskName}'" +
                    $" was recently added to course {request.CourseName}</p>" +

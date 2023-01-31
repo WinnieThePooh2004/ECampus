@@ -33,7 +33,6 @@ public class AuditoryEditFormTests
         button.Click();
         
         onSubmittedInvoked.Should().BeFalse();
-        _validator.ValidateAsync(model).Returns(new ValidationResult());
     }
     
     [Fact]

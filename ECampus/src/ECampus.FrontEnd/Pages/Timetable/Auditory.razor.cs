@@ -8,17 +8,7 @@ public sealed partial class Auditory
     [Parameter] public int AuditoryId { get; set; }
     
     private bool _isSaved;
-
-    protected override async Task OnInitializedAsync()
-    {
-        if (HttpContextAccessor.HttpContext!.User.IsAuthenticated())
-        {
-            return;
-        }
-
-        await RefreshData();
-    }
-
+    
     protected override async Task RefreshData()
     {
         await base.RefreshData();

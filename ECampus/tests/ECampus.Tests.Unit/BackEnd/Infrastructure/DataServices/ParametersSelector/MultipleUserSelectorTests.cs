@@ -27,7 +27,8 @@ public class MultipleUserSelectorTests
     [Fact]
     public async Task SelectData_ShouldReturnSuitedData()
     {
-        var result = await _sut.SelectData(_dataSource, new UserParameters { Username = "a", Email = "a" })
+        var result = await _sut
+            .SelectData(_dataSource, new UserParameters { Username = "a", Email = "a", OrderBy = "Username" })
             .ToListAsync();
 
         result.Count.Should().Be(1);

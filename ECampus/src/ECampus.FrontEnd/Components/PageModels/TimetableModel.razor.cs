@@ -26,13 +26,9 @@ public partial class TimetableModel
         return Refresh();
     }
 
-    private async Task Delete(int? id)
+    private async Task Delete(int id)
     {
-        if(id is null)
-        {
-            return;
-        }
-        await BaseRequests.DeleteAsync((int)id);
+        await BaseRequests.DeleteAsync(id);
         await Refresh();
     }
 
