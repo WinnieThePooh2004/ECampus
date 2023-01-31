@@ -13,7 +13,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Serilog;
-using Services;
 using ILogger = Serilog.ILogger;
 
 var builder = WebApplication.CreateBuilder(args);
