@@ -1,4 +1,5 @@
-﻿using ECampus.Shared.Exceptions.InfrastructureExceptions;
+﻿using System.Net;
+using ECampus.Shared.Exceptions.InfrastructureExceptions;
 using ECampus.Shared.Interfaces.Data.DataServices;
 using ECampus.Shared.Interfaces.Data.Models;
 using ECampus.Shared.Interfaces.DataAccess;
@@ -15,7 +16,7 @@ public class BaseDataAccessFacade<TModel> : IBaseDataAccessFacade<TModel>
     private readonly IDataCreateService<TModel> _createService;
     private readonly IDataDeleteService<TModel> _deleteService;
 
-    public BaseDataAccessFacade(ApplicationDbContext context, 
+    public BaseDataAccessFacade(ApplicationDbContext context,
         ISingleItemSelector<TModel> singleItemSelector, IDataDeleteService<TModel> deleteService,
         IDataUpdateService<TModel> updateService, IDataCreateService<TModel> createService)
     {
@@ -29,7 +30,20 @@ public class BaseDataAccessFacade<TModel> : IBaseDataAccessFacade<TModel>
     public async Task<TModel> CreateAsync(TModel entity)
     {
         await _createService.CreateAsync(entity, _context);
-        await _context.SaveChangesAsync();
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateException e)
+        {
+            throw new InfrastructureExceptions(HttpStatusCode.BadRequest,
+                $"Error occured while saving entity of type{typeof(TModel)} details", innerException: e);
+        }
+        catch (Exception e)
+        {
+            throw new UnhandledInfrastructureException(e, entity);
+        }
+
         return entity;
     }
 
@@ -44,17 +58,18 @@ public class BaseDataAccessFacade<TModel> : IBaseDataAccessFacade<TModel>
         {
             throw new ObjectNotFoundByIdException(typeof(TModel), id);
         }
-        catch(Exception e)
+        catch (Exception e)
         {
-            throw new UnhandledInfrastructureException(e);
+            throw new UnhandledInfrastructureException(e, deletedModel);
         }
+
         return deletedModel;
     }
 
     public async Task<TModel> GetByIdAsync(int id)
     {
         var model = await _singleItemSelector.SelectModel(id, _context.Set<TModel>())
-            ?? throw new ObjectNotFoundByIdException(typeof(TModel), id);
+                    ?? throw new ObjectNotFoundByIdException(typeof(TModel), id);
         return model;
     }
 
@@ -69,9 +84,9 @@ public class BaseDataAccessFacade<TModel> : IBaseDataAccessFacade<TModel>
         {
             throw new ObjectNotFoundByIdException(typeof(TModel), entity.Id);
         }
-        catch(Exception e)
+        catch (Exception e)
         {
-            throw new UnhandledInfrastructureException(e);
+            throw new UnhandledInfrastructureException(e, entity);
         }
 
         return entity;

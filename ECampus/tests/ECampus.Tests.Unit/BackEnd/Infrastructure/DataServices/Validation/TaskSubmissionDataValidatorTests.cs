@@ -21,7 +21,7 @@ public class TaskSubmissionDataValidatorTests
     public async Task LoadSubmissionData_ShouldReturnFromDb_IfExistInDb()
     {
         var submissions = new TaskSubmission { Id = 1 };
-        _context.FindAsync<TaskSubmission>(1).Returns(submissions);
+        _context.TaskSubmissions = new DbSetMock<TaskSubmission>(submissions);
 
         var result = await _sut.LoadSubmissionData(1);
 
@@ -31,6 +31,8 @@ public class TaskSubmissionDataValidatorTests
     [Fact]
     public async Task LoadSubmissionData_ShouldThrowException_WhenNoFoundInDb()
     {
+        _context.TaskSubmissions = new DbSetMock<TaskSubmission>();
+
         await new Func<Task>(() => _sut.LoadSubmissionData(1)).Should()
             .ThrowAsync<ObjectNotFoundByIdException>()
             .WithMessage(new ObjectNotFoundByIdException(typeof(TaskSubmission), 1).Message);

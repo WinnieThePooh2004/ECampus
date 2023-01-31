@@ -1,6 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http.Headers;
 using ECampus.Shared.Auth;
+using ECampus.Shared.Enums;
 using ECampus.Shared.Extensions;
 using ECampus.Shared.Models;
 using ECampus.Tests.Shared;
@@ -33,4 +34,6 @@ public static class HttpClientExtensions
         client.DefaultRequestHeaders.Authorization =
             new AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme, loginResult.Token);
     }
+
+    public static void Login(this HttpClient client, UserRole role) => client.Login(DefaultUsers.GetUserByRole(role));
 }

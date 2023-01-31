@@ -21,13 +21,9 @@ public class RelationsDataAccessTests
     [Fact]
     public async Task AddRelation_ShouldAddToDb_IfDbNotThrowExceptions()
     {
-        UserGroup? deletedObject = null;
-        _context.Add(Arg.Do<object>(o => deletedObject = (UserGroup)o));
-        
         await _sut.CreateRelation(1, 2, _context);
-        
-        deletedObject?.UserId.Should().Be(1);
-        deletedObject?.GroupId.Should().Be(2);
+
+        _context.Received().Add(Arg.Is<UserGroup>(u => u.UserId == 1 && u.GroupId == 2));
     }
 
     [Fact]
@@ -40,7 +36,7 @@ public class RelationsDataAccessTests
             .WithMessage($"cannot add relation between object of type {typeof(User)} with id=0 " +
                          $"on between object of type {typeof(Group)} with id=0\nError code: 404");
     }
-    
+
     [Fact]
     public async Task AddRelation_ShouldThrowUnhandledException_IfExceptionWasThrown()
     {
@@ -58,7 +54,7 @@ public class RelationsDataAccessTests
     {
         UserGroup? deletedObject = null;
         _context.Remove(Arg.Do<UserGroup>(o => deletedObject = o));
-        
+
         await _sut.DeleteRelation(1, 2, _context);
 
         deletedObject.Should().NotBeNull();
@@ -77,7 +73,7 @@ public class RelationsDataAccessTests
                          " ECampus.Shared.Models.User with id=0 on between object of type" +
                          " ECampus.Shared.Models.Group with id=0 Error code: 404");
     }
-    
+
     [Fact]
     public async Task DeleteRelation_ShouldThrowUnhandledException_IfExceptionWasThrown()
     {

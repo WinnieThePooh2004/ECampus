@@ -33,6 +33,12 @@ public class AuditoryEditFormTests
         button.Click();
         
         onSubmittedInvoked.Should().BeFalse();
+        _validator.ValidateAsync(model).Returns(new ValidationResult());
+        button = form.Find("button");
+        button.Click();
+        button.Click();
+        button.Click();
+        onSubmittedInvoked.Should().BeTrue();
     }
     
     [Fact]

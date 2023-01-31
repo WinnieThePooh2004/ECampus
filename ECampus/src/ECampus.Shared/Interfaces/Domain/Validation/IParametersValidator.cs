@@ -6,5 +6,5 @@ namespace ECampus.Shared.Interfaces.Domain.Validation;
 public interface IParametersValidator<in TParameters> 
     where TParameters : IQueryParameters
 {
-    Task<ValidationResult> Validate(TParameters parameters);
+    Task<ValidationResult> ValidateAsync(TParameters parameters);
 }

@@ -1,5 +1,5 @@
 ﻿using ECampus.Infrastructure;
-using ECampus.Tests.Integration.TestDatabase;
+using ECampus.Tests.Shared.TestDatabase;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;

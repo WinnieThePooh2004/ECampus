@@ -19,7 +19,9 @@ public class TaskSubmissionDataValidator : ITaskSubmissionDataValidator
 
     public async Task<TaskSubmission> LoadSubmissionData(int taskSubmissionId)
     {
-        return await _context.FindAsync<TaskSubmission>(taskSubmissionId) ??
+        return await _context.TaskSubmissions
+                   .Include(t => t.CourseTask)
+                   .FirstOrDefaultAsync(t => t.Id == taskSubmissionId) ??
                throw new ObjectNotFoundByIdException(typeof(TaskSubmission), taskSubmissionId);
     }
 

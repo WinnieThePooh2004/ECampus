@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\ECampus.Domain\ECampus.Domain.csproj" />
+      <ProjectReference Include="..\ECampus.Shared\ECampus.Shared.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Serilog" Version="3.0.0-dev-01842" />
+    </ItemGroup>
+
+</Project>

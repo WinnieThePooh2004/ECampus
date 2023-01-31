@@ -53,12 +53,18 @@ public class TaskSubmissionValidator : ITaskSubmissionValidator
                 $"Current user`s claim of type {nameof(CustomClaimTypes.TeacherId)} must be number, not {teacherIdClaim}"));
         }
 
+        var submissionFromDb = await _taskSubmissionDataValidator.LoadSubmissionData(submissionId);
+        if (submissionFromDb.CourseTask!.MaxPoints < mark)
+        {
+            return new ValidationResult(new ValidationError(nameof(mark),
+                $"Max mark for this task is {submissionFromDb.CourseTask.MaxPoints}, but you are passed {mark}"));
+        }
+
         return await _taskSubmissionDataValidator.ValidateTeacherId(submissionId, teacherId);
     }
-    
+
     private async Task<ValidationResult> ValidateStudentId(int submissionId)
     {
-        var submissionFromDb = await _taskSubmissionDataValidator.LoadSubmissionData(submissionId);
         var studentIdClaim = _user.FindFirst(CustomClaimTypes.StudentId)?.Value;
         if (studentIdClaim is null)
         {
@@ -72,6 +78,7 @@ public class TaskSubmissionValidator : ITaskSubmissionValidator
                 $"Current user`s claim of type {nameof(CustomClaimTypes.StudentId)} must be number, not {studentIdClaim}"));
         }
 
+        var submissionFromDb = await _taskSubmissionDataValidator.LoadSubmissionData(submissionId);
         if (studentId != submissionFromDb.StudentId)
         {
             return new ValidationResult(new ValidationError(nameof(studentId),

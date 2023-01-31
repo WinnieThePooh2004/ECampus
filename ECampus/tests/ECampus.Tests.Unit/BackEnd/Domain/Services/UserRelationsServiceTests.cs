@@ -1,6 +1,6 @@
-﻿using ECampus.Domain.Services;
-using ECampus.Shared.Interfaces.Auth;
+﻿using ECampus.Shared.Interfaces.Auth;
 using ECampus.Shared.Interfaces.DataAccess;
+using Services.Services;
 
 namespace ECampus.Tests.Unit.BackEnd.Domain.Services;
 

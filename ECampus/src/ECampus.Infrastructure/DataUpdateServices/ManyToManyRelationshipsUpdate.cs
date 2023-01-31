@@ -23,42 +23,39 @@ public class ManyToManyRelationshipsUpdate<TModel, TRelatedModel, TRelations> : 
 
     public async Task<TModel> UpdateAsync(TModel model, DbContext context)
     {
-        if (_relationshipsHandler.RelatedModels.GetFromProperty<object>(model) is null)
+        var relatedModels = _relationshipsHandler.RelatedModels.GetFromProperty<ICollection<TRelatedModel>>(model);
+        if (relatedModels is null)
         {
             return await _baseUpdateService.UpdateAsync(model, context);
         }
 
-        await RemoveLostRelations(model, context);
-        await AddNewRelations(model, context);
+        await RemoveLostRelations(model, context, relatedModels);
+        await AddNewRelations(model, context, relatedModels);
 
         _relationshipsHandler.RelatedModels.SetPropertyAsNull(model);
 
         return await _baseUpdateService.UpdateAsync(model, context);
     }
 
-    private async Task AddNewRelations(TModel model, DbContext context)
+    private async Task AddNewRelations(TModel model, DbContext context, ICollection<TRelatedModel> relatedModels)
     {
-        var relatedModels =
-            _relationshipsHandler.RelatedModels.GetFromProperty<IEnumerable<TRelatedModel>>(model)!.Select(m =>
-                m.Id.ToString()).ToList();
+        var relatedModelsIdsList = relatedModels.Select(m => m.Id.ToString()).ToList();
         var rightTableName = context.Model.FindEntityType(typeof(TRelatedModel))!.GetTableName();
         var relationTableName = context.Model.FindEntityType(typeof(TRelations))!.GetTableName();
         var rightTableIdName = _relationshipsHandler.RightTableId.Name;
         var leftTableIdName = _relationshipsHandler.LeftTableId.Name;
-        var relatedModelsIds = relatedModels.Any() ? string.Join(", ", relatedModels) : "-1";
-        
-        var sqlQuery = CreateSqlQuery(model, rightTableName, relatedModelsIds, leftTableIdName, relationTableName, rightTableIdName);
-        
+        var relatedModelsIds = relatedModels.Any() ? string.Join(", ", relatedModelsIdsList) : "-1";
+
+        var sqlQuery = CreateSqlQuery(model, rightTableName, relatedModelsIds, leftTableIdName, relationTableName,
+            rightTableIdName);
+
         var rightTableIds =
             await context.Set<TRelatedModel>()
                 .FromSqlRaw(sqlQuery).ToListAsync();
 
         var modelsToAdd = rightTableIds.Select(relatedModel =>
             _relationshipsHandler.CreateRelationModel(model.Id, relatedModel.Id)).ToList();
-        if (!modelsToAdd.Any())
-        {
-            return;
-        }
+        
         context.AddRange(modelsToAdd);
     }
 
@@ -74,34 +71,28 @@ public class ManyToManyRelationshipsUpdate<TModel, TRelatedModel, TRelations> : 
         return sqlQuery;
     }
 
-    private async Task RemoveLostRelations(TModel model, DbContext context)
+    private async Task RemoveLostRelations(TModel model, DbContext context, ICollection<TRelatedModel> relatedModels)
     {
         var relationsToDelete = await context
             .Set<TRelations>()
             .AsNoTracking()
-            .Where(DeletedFromModelExpression(model))
+            .Where(DeletedFromModelExpression(model, relatedModels))
             .ToListAsync();
-
-        if (!relationsToDelete.Any())
-        {
-            return;
-        }
-
+        
         context.RemoveRange(relationsToDelete);
     }
 
-    private Expression<Func<TRelations, bool>> DeletedFromModelExpression(TModel model)
+    private Expression<Func<TRelations, bool>> DeletedFromModelExpression(TModel model, ICollection<TRelatedModel> relatedModels)
     {
-        var relatedModels = _relationshipsHandler.RelatedModels.GetFromProperty<ICollection<TRelatedModel>>(model);
         var parameter = Expression.Parameter(typeof(TRelations), "relationModel");
         var rightIdExpression = Expression.MakeMemberAccess(parameter, _relationshipsHandler.RightTableId);
         var isRelated = IsRelated(model.Id, parameter);
 
-        if (relatedModels is null || !relatedModels.Any())
+        if (!relatedModels.Any())
         {
             return Expression.Lambda<Func<TRelations, bool>>(isRelated, parameter);
         }
-        
+
         var hasOneOfRelatedObjectsId = relatedModels
             .Select(relatedModel => Expression.Equal(rightIdExpression, Expression.Constant(relatedModel.Id)))
             .Aggregate(Expression.Or);

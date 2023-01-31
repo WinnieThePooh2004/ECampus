@@ -20,9 +20,9 @@ public class ClassDtoUpdateValidatorTests
         _dataValidator = Substitute.For<IValidationDataAccess<Class>>();
         _sut = new ClassDtoUpdateValidator(MapperFactory.Mapper, _dataValidator, _baseUpdateValidator);
     }
-    
+
     [Fact]
-    public async Task ValidateAsUpdateValidator_ReturnsValidationFailures()
+    public async Task Validate_ReturnsValidationFailures()
     {
         var @class = new ClassDto();
         var classFromDb = CreateTestModel();
@@ -36,7 +36,7 @@ public class ClassDtoUpdateValidatorTests
     }
 
     [Fact]
-    public async Task ValidateAsUpdateValidator_AddedMessages_WhenPropertiesIsnull()
+    public async Task Validate_AddedMessages_WhenPropertiesIsnull()
     {
         var classFromDb = new Class();
         _baseUpdateValidator.ValidateAsync(Arg.Any<ClassDto>()).Returns(new ValidationResult());
@@ -55,7 +55,7 @@ public class ClassDtoUpdateValidatorTests
     }
 
     [Fact]
-    public async Task ValidateAsUpdateValidator_ShouldNotAddMoreErrors_WhenBaseValidatorFoundErrors()
+    public async Task Validate_ShouldNotAddMoreErrors_WhenBaseValidatorFoundErrors()
     {
         var errors = new ValidationResult(_fixture.CreateMany<ValidationError>(10).ToList());
         var classFromDb = CreateTestModel();
@@ -65,7 +65,7 @@ public class ClassDtoUpdateValidatorTests
         var actualErrors = await ((IUpdateValidator<ClassDto>)_sut).ValidateAsync(new ClassDto());
 
         actualErrors.ToList().Should().Contain(errors.ToList());
-        actualErrors.ToList().Count().Should().Be(10);
+        actualErrors.ToList().Count.Should().Be(10);
     }
 
     private static ValidationResult CreateExpectedErrors(Class @class)

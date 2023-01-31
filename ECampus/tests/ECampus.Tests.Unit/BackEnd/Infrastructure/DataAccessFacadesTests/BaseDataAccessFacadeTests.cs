@@ -40,6 +40,25 @@ public class BaseDataAccessFacadeTests
 
         await _createService.Received(1).CreateAsync(model, _context);
     }
+    
+    [Fact]
+    public async Task Create_ShouldThrowInfrastructureException_WhenSaveChangesThrowsException()
+    {
+        _context.SaveChangesAsync().Returns(1).AndDoes(_ => throw new Exception());
+
+        await new Func<Task>(() => _sut.CreateAsync(new Auditory())).Should()
+            .ThrowAsync<UnhandledInfrastructureException>();
+    }
+
+    [Fact]
+    public async Task Create_ShouldThrowException_WhenSaveChangeThrowsException()
+    {
+        _context.SaveChangesAsync().Returns(1).AndDoes(_ => throw new DbUpdateException());
+
+        await new Func<Task>(() => _sut.CreateAsync(new Auditory())).Should()
+            .ThrowExactlyAsync<InfrastructureExceptions>()
+            .WithMessage($"Error occured while saving entity of type{typeof(Auditory)} details\nError code: 400");
+    }
 
     [Fact]
     public async Task Update_UpdatedInDb_IfExistsInDb()
@@ -57,7 +76,7 @@ public class BaseDataAccessFacadeTests
         _context.SaveChangesAsync().Returns(1).AndDoes(_ => throw new Exception());
 
         await new Func<Task>(() => _sut.UpdateAsync(new Auditory())).Should()
-            .ThrowAsync<InfrastructureExceptions>();
+            .ThrowAsync<UnhandledInfrastructureException>();
     }
 
     [Fact]

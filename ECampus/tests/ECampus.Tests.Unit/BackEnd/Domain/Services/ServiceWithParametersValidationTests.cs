@@ -1,11 +1,11 @@
-﻿using ECampus.Domain.Services;
-using ECampus.Shared.DataContainers;
+﻿using ECampus.Shared.DataContainers;
 using ECampus.Shared.DataTransferObjects;
 using ECampus.Shared.Exceptions.DomainExceptions;
 using ECampus.Shared.Interfaces.Domain;
 using ECampus.Shared.Interfaces.Domain.Validation;
 using ECampus.Shared.QueryParameters;
 using ECampus.Shared.Validation;
+using Services.Services;
 
 namespace ECampus.Tests.Unit.BackEnd.Domain.Services;
 
@@ -31,7 +31,7 @@ public class ServiceWithParametersValidationTests
     public async Task GetByParameters_ShouldReturnFromBaseService_WhenParametersAreValid()
     {
         var parameters = _fixture.Create<TaskSubmissionParameters>();
-        _parametersValidator.Validate(parameters).Returns(new ValidationResult());
+        _parametersValidator.ValidateAsync(parameters).Returns(new ValidationResult());
         var expected = new ListWithPaginationData<TaskSubmissionDto>();
         _baseService.GetByParametersAsync(parameters).Returns(expected);
 
@@ -45,7 +45,7 @@ public class ServiceWithParametersValidationTests
     {
         var parameters = _fixture.Create<TaskSubmissionParameters>();
         var validationResult = new ValidationResult(new ValidationError("property", "message"));
-        _parametersValidator.Validate(parameters).Returns(validationResult);
+        _parametersValidator.ValidateAsync(parameters).Returns(validationResult);
 
         await new Func<Task>(() => _sut.GetByParametersAsync(parameters)).Should()
             .ThrowAsync<ValidationException>()
