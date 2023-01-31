@@ -1,11 +1,11 @@
-﻿using ECampus.Shared.DataContainers;
+﻿using ECampus.Services.Services;
+using ECampus.Shared.DataContainers;
 using ECampus.Shared.DataTransferObjects;
 using ECampus.Shared.Exceptions.DomainExceptions;
 using ECampus.Shared.Interfaces.Domain;
 using ECampus.Shared.Interfaces.Domain.Validation;
 using ECampus.Shared.QueryParameters;
 using ECampus.Shared.Validation;
-using Services.Services;
 
 namespace ECampus.Tests.Unit.BackEnd.Domain.Services;
 

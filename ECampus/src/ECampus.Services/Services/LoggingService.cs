@@ -2,7 +2,7 @@
 using ECampus.Shared.Interfaces.Domain;
 using Serilog;
 
-namespace Services.Services;
+namespace ECampus.Services.Services;
 
 public class LoggingService<T> : IBaseService<T>
     where T : class, IDataTransferObject

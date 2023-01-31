@@ -1,6 +1,6 @@
 ﻿using ECampus.Shared.Installers;
 
-namespace Services;
+namespace ECampus.Services;
 
 public abstract class ServicesAssemblyMarker : IAssemblyMarker
 {

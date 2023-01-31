@@ -1,5 +1,6 @@
-﻿using ECampus.Infrastructure.DataAccessFacades;
-using ECampus.Shared.Interfaces.Data.DataServices;
+﻿using ECampus.Infrastructure;
+using ECampus.Infrastructure.DataAccessFacades;
+using ECampus.Infrastructure.Interfaces;
 using ECampus.Shared.Models;
 using ECampus.Shared.Models.RelationModels;
 using Microsoft.EntityFrameworkCore;
@@ -19,7 +20,7 @@ public class UserRelationsDataAccessFacadeTests
     private readonly IRelationsDataAccess<User, Teacher, UserTeacher> _userTeacherRelationships =
         Substitute.For<IRelationsDataAccess<User, Teacher, UserTeacher>>();
 
-    private readonly DbContext _context = Substitute.For<DbContext>();
+    private readonly ApplicationDbContext _context = Substitute.For<ApplicationDbContext>();
 
     public UserRelationsDataAccessFacadeTests()
     {

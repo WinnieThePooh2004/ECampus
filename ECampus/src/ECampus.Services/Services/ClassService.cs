@@ -9,7 +9,7 @@ using ECampus.Shared.Metadata;
 using ECampus.Shared.Validation;
 using Microsoft.Extensions.Logging;
 
-namespace Services.Services;
+namespace ECampus.Services.Services;
 
 [Inject(typeof(IClassService))]
 public class ClassService : IClassService

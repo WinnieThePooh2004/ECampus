@@ -3,7 +3,7 @@ using ECampus.Shared.Interfaces.DataAccess;
 using ECampus.Shared.Interfaces.Domain;
 using ECampus.Shared.Metadata;
 
-namespace Services.Services;
+namespace ECampus.Services.Services;
 
 [Inject(typeof(IUserRelationsService))]
 public class UserRelationsService : IUserRelationsService

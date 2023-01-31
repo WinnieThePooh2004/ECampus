@@ -4,7 +4,7 @@ using ECampus.Shared.Interfaces.Domain.Validation;
 using ECampus.Shared.Metadata;
 using ECampus.Shared.Validation;
 
-namespace Services.Services;
+namespace ECampus.Services.Services;
 
 [Inject(typeof(IUserService))]
 public class UserService : IUserService
