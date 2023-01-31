@@ -11,8 +11,7 @@ public static class DefaultUsers
             UserRole.Admin => Admin,
             UserRole.Guest => Guest,
             UserRole.Student => Student,
-            UserRole.Teacher => Teacher,
-            _ => throw new ArgumentOutOfRangeException(nameof(role))
+            _ => Teacher
         };
     
     private static User Guest => new()

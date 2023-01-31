@@ -31,7 +31,7 @@ public class ServiceWithParametersValidationTests
     public async Task GetByParameters_ShouldReturnFromBaseService_WhenParametersAreValid()
     {
         var parameters = _fixture.Create<TaskSubmissionParameters>();
-        _parametersValidator.Validate(parameters).Returns(new ValidationResult());
+        _parametersValidator.ValidateAsync(parameters).Returns(new ValidationResult());
         var expected = new ListWithPaginationData<TaskSubmissionDto>();
         _baseService.GetByParametersAsync(parameters).Returns(expected);
 
@@ -45,7 +45,7 @@ public class ServiceWithParametersValidationTests
     {
         var parameters = _fixture.Create<TaskSubmissionParameters>();
         var validationResult = new ValidationResult(new ValidationError("property", "message"));
-        _parametersValidator.Validate(parameters).Returns(validationResult);
+        _parametersValidator.ValidateAsync(parameters).Returns(validationResult);
 
         await new Func<Task>(() => _sut.GetByParametersAsync(parameters)).Should()
             .ThrowAsync<ValidationException>()

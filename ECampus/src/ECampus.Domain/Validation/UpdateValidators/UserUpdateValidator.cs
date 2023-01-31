@@ -2,7 +2,6 @@
 using AutoMapper;
 using ECampus.Shared.DataTransferObjects;
 using ECampus.Shared.Enums;
-using ECampus.Shared.Exceptions.DomainExceptions;
 using ECampus.Shared.Extensions;
 using ECampus.Shared.Interfaces.Domain.Validation;
 using ECampus.Shared.Models;
@@ -34,9 +33,9 @@ public class UserUpdateValidator : IUpdateValidator<UserDto>
     {
         var errors = await _updateValidator.ValidateAsync(dataTransferObject);
         var model = _mapper.Map<User>(dataTransferObject);
-        ValidateRole(dataTransferObject, model, errors);
         errors.MergeResults(await _dataAccess.ValidateUpdate(model));
         var userFromDb = await _validationDataAccess.LoadRequiredDataForUpdateAsync(model);
+        ValidateRole(dataTransferObject, userFromDb, errors);
 
         if (model.Email != userFromDb.Email)
         {
@@ -54,19 +53,14 @@ public class UserUpdateValidator : IUpdateValidator<UserDto>
 
     private void ValidateRole(UserDto user, User userFromDb, ValidationResult currentErrors)
     {
-        if (_httpContextAccessor.HttpContext is null)
-        {
-            throw new HttpContextNotFoundExceptions();
-        }
-
-        var currentUserRole = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Role)?.Value;
-
         if (userFromDb.Role == UserRole.Admin && user.Role != UserRole.Admin &&
-            _httpContextAccessor.HttpContext.User.GetId() == user.Id)
+            _httpContextAccessor.HttpContext!.User.GetId() == user.Id)
         {
             currentErrors.AddError(new ValidationError(nameof(user.Role), "Admin cannon change role for him/herself"));
             return;
         }
+        
+        var currentUserRole = _httpContextAccessor.HttpContext!.User.FindFirst(ClaimTypes.Role)?.Value;
 
         if (user.Role == userFromDb.Role || currentUserRole == nameof(UserRole.Admin))
         {
@@ -74,6 +68,6 @@ public class UserUpdateValidator : IUpdateValidator<UserDto>
         }
 
         currentErrors.AddError(new ValidationError(nameof(user.Role),
-            $"Only admins can change user`s role"));
+            "Only admins can change user`s role"));
     }
 }

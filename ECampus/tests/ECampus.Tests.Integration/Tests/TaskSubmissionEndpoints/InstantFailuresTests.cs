@@ -12,11 +12,11 @@ using Newtonsoft.Json;
 
 namespace ECampus.Tests.Integration.Tests.TaskSubmissionEndpoints;
 
-public class ValidationFailures400ResultTests : IClassFixture<ApplicationWithoutDatabase>
+public class InstantFailuresTests : IClassFixture<ApplicationWithoutDatabase>
 {
     private readonly HttpClient _client;
 
-    public ValidationFailures400ResultTests(ApplicationWithoutDatabase app)
+    public InstantFailuresTests(ApplicationWithoutDatabase app)
     {
         _client = app.CreateClient();
     }
@@ -50,11 +50,8 @@ public class ValidationFailures400ResultTests : IClassFixture<ApplicationWithout
         response.StatusCode.Should().Be(HttpStatusCode.Forbidden);
     }
 
-    private string CreateLargeString()
+    private static string CreateLargeString()
     {
-        var result = new char[500];
-        result[0] = 'a';
-        result[499] = 'a';
-        return new string(result);
+        return new string(new char[500]);
     }
 }

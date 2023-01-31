@@ -1,4 +1,4 @@
-﻿using ECampus.Domain.Validation.UpdateValidators;
+﻿using ECampus.Domain.Validation.CreateValidators;
 using ECampus.Shared.DataTransferObjects;
 using ECampus.Shared.Interfaces.Domain.Validation;
 using ECampus.Shared.Models;
@@ -6,19 +6,19 @@ using ECampus.Shared.Models.RelationModels;
 using ECampus.Shared.Validation;
 using ECampus.Tests.Shared.DataFactories;
 
-namespace ECampus.Tests.Unit.BackEnd.Domain.Validation.UpdateValidators;
+namespace ECampus.Tests.Unit.BackEnd.Domain.Validation.CreateValidators;
 
-public class ClassDtoUpdateValidatorTests
+public class ClassDtoCreateValidatorTests
 {
-    private readonly ClassDtoUpdateValidator _sut;
+    private readonly ClassDtoCreateValidator _sut;
     private readonly IValidationDataAccess<Class> _dataValidator;
-    private readonly IUpdateValidator<ClassDto> _baseUpdateValidator = Substitute.For<IUpdateValidator<ClassDto>>();
+    private readonly ICreateValidator<ClassDto> _baseUpdateValidator = Substitute.For<ICreateValidator<ClassDto>>();
     private readonly Fixture _fixture = new();
 
-    public ClassDtoUpdateValidatorTests()
+    public ClassDtoCreateValidatorTests()
     {
         _dataValidator = Substitute.For<IValidationDataAccess<Class>>();
-        _sut = new ClassDtoUpdateValidator(MapperFactory.Mapper, _dataValidator, _baseUpdateValidator);
+        _sut = new ClassDtoCreateValidator(MapperFactory.Mapper, _dataValidator, _baseUpdateValidator);
     }
 
     [Fact]
@@ -30,7 +30,7 @@ public class ClassDtoUpdateValidatorTests
         _dataValidator.LoadRequiredDataForCreateAsync(Arg.Any<Class>()).Returns(classFromDb);
         var expectedErrors = CreateExpectedErrors(classFromDb);
 
-        var actual = await ((IUpdateValidator<ClassDto>)_sut).ValidateAsync(@class);
+        var actual = await ((ICreateValidator<ClassDto>)_sut).ValidateAsync(@class);
 
         actual.ToList().Should().Contain(expectedErrors.ToList());
     }
@@ -49,7 +49,7 @@ public class ClassDtoUpdateValidatorTests
             new("TeacherId", "Teacher does not exist")
         };
 
-        var actual = await ((IUpdateValidator<ClassDto>)_sut).ValidateAsync(new ClassDto());
+        var actual = await ((ICreateValidator<ClassDto>)_sut).ValidateAsync(new ClassDto());
 
         actual.ToList().Should().Contain(expected);
     }
@@ -62,10 +62,21 @@ public class ClassDtoUpdateValidatorTests
         _baseUpdateValidator.ValidateAsync(Arg.Any<ClassDto>()).Returns(errors);
         _dataValidator.LoadRequiredDataForCreateAsync(Arg.Any<Class>()).Returns(classFromDb);
 
-        var actualErrors = await ((IUpdateValidator<ClassDto>)_sut).ValidateAsync(new ClassDto());
+        var actualErrors = await ((ICreateValidator<ClassDto>)_sut).ValidateAsync(new ClassDto());
 
         actualErrors.ToList().Should().Contain(errors.ToList());
         actualErrors.ToList().Count.Should().Be(10);
+    }
+
+    [Fact]
+    public async Task Validate_ShouldNotReturnErrors_WhenAllIsOk()
+    {
+        _baseUpdateValidator.ValidateAsync(Arg.Any<ClassDto>()).Returns(new ValidationResult());
+        _dataValidator.LoadRequiredDataForCreateAsync(Arg.Is<Class>(c => c.Id == 10)).Returns(ValidModel());
+
+        var result = await ((ICreateValidator<ClassDto>)_sut).ValidateAsync(new ClassDto { Id = 10 });
+
+        result.Should().BeEmpty();
     }
 
     private static ValidationResult CreateExpectedErrors(Class @class)
@@ -117,5 +128,19 @@ public class ClassDtoUpdateValidatorTests
         auditory.Classes = new List<Class> { existingClass };
 
         return @class;
+    }
+
+    private Class ValidModel()
+    {
+        return new Class
+        {
+            Id = 10,
+            SubjectId = 10,
+            Auditory = new Auditory { Classes = new List<Class>() },
+            Teacher = new Teacher
+                { Classes = new List<Class>(), SubjectIds = new List<SubjectTeacher> { new() { SubjectId = 10 } } },
+            Subject = new Subject { Id = 10 },
+            Group = new Group { Classes = new List<Class>() }
+        };
     }
 }

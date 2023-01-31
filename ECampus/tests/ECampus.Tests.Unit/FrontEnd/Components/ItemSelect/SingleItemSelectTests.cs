@@ -37,7 +37,7 @@ public class SingleItemSelectTests
     {
         _parametersRequests.GetByParametersAsync(Arg.Any<GroupParameters>())
             .Returns(new ListWithPaginationData<GroupDto>());
-        var component = RenderSelector(0, _ => { }, "title");
+        var component = RenderSelector(0, "title");
 
         var title = component.Find("h3");
         title.ToMarkup().Should().Contain("title");
@@ -51,13 +51,13 @@ public class SingleItemSelectTests
         _parametersRequests.GetByParametersAsync(Arg.Any<GroupParameters>())
             .Returns(new ListWithPaginationData<GroupDto>());
 
-        RenderSelector(0, _ => { }, title).FindAll("h3").Should().BeEmpty();
+        RenderSelector(0, title).FindAll("h3").Should().BeEmpty();
     }
 
     [Fact]
     public void Build_ShouldNowBuildTable_WhenRequestsReturnsNull()
     {
-        RenderSelector(0, _ => { }).Markup.Should().Be("<p><em>Loading...</em></p>");
+        RenderSelector(0).Markup.Should().Be("<p><em>Loading...</em></p>");
     }
 
     [Fact]
@@ -94,6 +94,10 @@ public class SingleItemSelectTests
         checkbox.Change(new ChangeEventArgs { Value = false });
 
         select.Should().BeNull();
+        checkbox = selector.Find("input");
+        
+        checkbox.Change(new ChangeEventArgs { Value = true });
+        select.Should().NotBeNull();
     }
 
     [Fact]
@@ -126,7 +130,7 @@ public class SingleItemSelectTests
         _parametersRequests.GetByParametersAsync(Arg.Any<GroupParameters>())
             .Returns(new ListWithPaginationData<GroupDto>
                 { Data = items, Metadata = new PaginationData { TotalCount = 10, PageNumber = 1, PageSize = 5 } });
-        var selector = RenderSelector(1, _ => { });
+        var selector = RenderSelector(1);
         var th = selector.Find("th");
         _parametersRequests.ClearReceivedCalls();
 
@@ -142,5 +146,12 @@ public class SingleItemSelectTests
             options.Add(s => s.SelectedId, selectedId)
                 .Add(s => s.Title, title)
                 .Add(s => s.SelectedIdChanged, selectChanged));
+    }
+    
+    private IRenderedComponent<SingleItemSelect<GroupDto, GroupParameters>> RenderSelector(int selectedId, string title = "")
+    {
+        return _context.RenderComponent<SingleItemSelect<GroupDto, GroupParameters>>(options =>
+            options.Add(s => s.SelectedId, selectedId)
+                .Add(s => s.Title, title));
     }
 }

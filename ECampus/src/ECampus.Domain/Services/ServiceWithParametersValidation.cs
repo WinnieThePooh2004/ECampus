@@ -23,7 +23,7 @@ public class ServiceWithParametersValidation<TDto, TParameters> : IParametersSer
 
     public async Task<ListWithPaginationData<TDto>> GetByParametersAsync(TParameters parameters)
     {
-        var errors = await _parametersValidator.Validate(parameters);
+        var errors = await _parametersValidator.ValidateAsync(parameters);
         if (!errors.IsValid)
         {
             throw new ValidationException(typeof(TParameters), errors);

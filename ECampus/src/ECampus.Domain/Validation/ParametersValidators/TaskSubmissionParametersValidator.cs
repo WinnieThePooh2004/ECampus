@@ -23,11 +23,11 @@ public class TaskSubmissionParametersValidator : IParametersValidator<TaskSubmis
         _user = httpContextAccessor.HttpContext?.User ?? throw new HttpContextNotFoundExceptions();
     }
 
-    public async Task<ValidationResult> Validate(TaskSubmissionParameters parameters)
+    public async Task<ValidationResult> ValidateAsync(TaskSubmissionParameters parameters)
     {
         var roleAsString = _user.FindFirst(ClaimTypes.Role)?.Value ??
-                           throw new DomainException(HttpStatusCode.Forbidden,
-                               "You must be at least student to perform this action");
+                           throw new DomainException(HttpStatusCode.Unauthorized,
+                               "Role claim not found");
         if (!Enum.TryParse<UserRole>(roleAsString, out var currentUserRole))
         {
             throw new DomainException(HttpStatusCode.Forbidden, $"No such role '{roleAsString}'");
@@ -37,9 +37,8 @@ public class TaskSubmissionParametersValidator : IParametersValidator<TaskSubmis
         {
             UserRole.Admin => new ValidationResult(),
             UserRole.Teacher => await ValidateAsTeacher(parameters),
-            UserRole.Student or UserRole.Guest => throw new DomainException(HttpStatusCode.Forbidden,
-                "You must be at least student to perform this action"),
-            _ => throw new ArgumentOutOfRangeException(nameof(parameters))
+            _ => throw new DomainException(HttpStatusCode.Forbidden,
+                "You must be at least teacher to perform this action"),
         };
     }
 
@@ -48,9 +47,10 @@ public class TaskSubmissionParametersValidator : IParametersValidator<TaskSubmis
         var teacherIdClaim = _user.FindFirst(CustomClaimTypes.TeacherId);
         if (teacherIdClaim is null || !int.TryParse(teacherIdClaim.Value, out _))
         {
-            return new ValidationResult(new ValidationError(nameof(teacherIdClaim), 
+            return new ValidationResult(new ValidationError(nameof(teacherIdClaim),
                 "Yor are now registered as teacher or your TeacherId claim is not a number"));
         }
+
         return await _parametersDataValidator.ValidateAsync(parameters);
     }
 }
