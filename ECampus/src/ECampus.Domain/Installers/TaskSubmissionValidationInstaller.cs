@@ -1,7 +1,7 @@
-﻿using ECampus.Domain.Validation.FluentValidators;
+﻿using ECampus.Core.Installers;
+using ECampus.Domain.Validation.FluentValidators;
 using ECampus.Domain.Validation.UpdateValidators;
 using ECampus.Shared.DataTransferObjects;
-using ECampus.Shared.Installers;
 using ECampus.Shared.Interfaces.Domain.Validation;
 using FluentValidation;
 using Microsoft.Extensions.Configuration;

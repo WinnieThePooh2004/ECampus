@@ -1,7 +1,8 @@
-﻿using ECampus.Services.Services;
+﻿using ECampus.Core.Extensions;
+using ECampus.Core.Installers;
+using ECampus.Services.Services;
 using ECampus.Shared;
 using ECampus.Shared.Extensions;
-using ECampus.Shared.Installers;
 using ECampus.Shared.Interfaces.Domain;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

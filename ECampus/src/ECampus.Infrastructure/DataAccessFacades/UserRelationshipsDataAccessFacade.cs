@@ -1,4 +1,5 @@
-﻿using ECampus.Infrastructure.Interfaces;
+﻿using ECampus.Core.Metadata;
+using ECampus.Infrastructure.Interfaces;
 using ECampus.Shared.Interfaces.DataAccess;
 using ECampus.Shared.Metadata;
 using ECampus.Shared.Models;

@@ -1,8 +1,9 @@
-﻿using ECampus.Domain;
+﻿using ECampus.Core.Extensions;
+using ECampus.Core.Installers;
+using ECampus.Domain;
 using ECampus.Services.Services;
 using ECampus.Shared;
 using ECampus.Shared.Extensions;
-using ECampus.Shared.Installers;
 using ECampus.Shared.Interfaces.Domain;
 using ECampus.Shared.Interfaces.Domain.Validation;
 using ECampus.Shared.Metadata;

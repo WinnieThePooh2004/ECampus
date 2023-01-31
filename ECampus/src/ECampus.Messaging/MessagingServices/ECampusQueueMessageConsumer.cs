@@ -1,6 +1,6 @@
 ﻿using Amazon.SQS;
 using Amazon.SQS.Model;
-using ECampus.Messaging.Messages;
+using ECampus.Core.Messages;
 using ECampus.Messaging.Options;
 using MediatR;
 using Microsoft.Extensions.Options;
@@ -60,7 +60,8 @@ public class ECampusQueueMessageConsumer : BackgroundService
     private async Task HandleMessage(Message message, CancellationToken stoppingToken)
     {
         var messageType = message.MessageAttributes["MessageType"].StringValue;
-        var type = Type.GetType($"{_options.Value.MessagesNamespace}.{messageType}");
+        var typeName = $"{_options.Value.MessagesNamespace}.{messageType}, ECampus.Core";
+        var type = Type.GetType(typeName);
         if (type is null)
         {
             _logger.Warning("Unknown message type: {MessageType}", messageType);

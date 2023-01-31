@@ -1,10 +1,10 @@
 ﻿using System.Reflection;
-using ECampus.Shared.Installers;
-using ECampus.Shared.Metadata;
+using ECampus.Core.Installers;
+using ECampus.Core.Metadata;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace ECampus.Shared.Extensions;
+namespace ECampus.Core.Extensions;
 
 public static class ServiceCollectionExtensions
 {

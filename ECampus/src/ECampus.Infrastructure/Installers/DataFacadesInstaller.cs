@@ -1,7 +1,9 @@
-﻿using ECampus.Infrastructure.DataAccessFacades;
+﻿using ECampus.Core.Extensions;
+using ECampus.Core.Installers;
+using ECampus.Core.Metadata;
+using ECampus.Infrastructure.DataAccessFacades;
 using ECampus.Shared;
 using ECampus.Shared.Extensions;
-using ECampus.Shared.Installers;
 using ECampus.Shared.Interfaces.DataAccess;
 using ECampus.Shared.Metadata;
 using ECampus.Shared.QueryParameters;

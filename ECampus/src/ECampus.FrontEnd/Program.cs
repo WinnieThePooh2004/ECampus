@@ -1,3 +1,4 @@
+using ECampus.Core.Extensions;
 using ECampus.Domain;
 using ECampus.FrontEnd;
 using ECampus.FrontEnd.Auth;

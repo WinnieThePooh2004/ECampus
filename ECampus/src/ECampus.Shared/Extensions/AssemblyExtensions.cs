@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using ECampus.Core.Metadata;
 using ECampus.Shared.Interfaces.Data.Models;
 using ECampus.Shared.Metadata;
 

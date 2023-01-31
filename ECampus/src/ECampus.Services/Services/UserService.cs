@@ -1,4 +1,5 @@
-﻿using ECampus.Shared.DataTransferObjects;
+﻿using ECampus.Core.Metadata;
+using ECampus.Shared.DataTransferObjects;
 using ECampus.Shared.Interfaces.Domain;
 using ECampus.Shared.Interfaces.Domain.Validation;
 using ECampus.Shared.Metadata;

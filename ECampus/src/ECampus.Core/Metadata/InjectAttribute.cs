@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace ECampus.Shared.Metadata;
+namespace ECampus.Core.Metadata;
 
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
 public class InjectAttribute : Attribute

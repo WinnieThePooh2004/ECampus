@@ -1,4 +1,4 @@
-﻿using ECampus.Shared.Installers;
+﻿using ECampus.Core.Installers;
 
 namespace ECampus.Services;
 

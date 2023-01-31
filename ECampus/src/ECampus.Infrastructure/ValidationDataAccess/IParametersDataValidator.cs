@@ -1,4 +1,5 @@
 ﻿using System.Security.Claims;
+using ECampus.Core.Metadata;
 using ECampus.Shared.Auth;
 using ECampus.Shared.Interfaces.DataAccess.Validation;
 using ECampus.Shared.Metadata;

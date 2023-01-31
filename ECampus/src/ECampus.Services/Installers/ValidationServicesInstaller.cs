@@ -1,6 +1,7 @@
-﻿using ECampus.Services.Services;
+﻿using ECampus.Core.Installers;
+using ECampus.Core.Metadata;
+using ECampus.Services.Services;
 using ECampus.Shared;
-using ECampus.Shared.Installers;
 using ECampus.Shared.Interfaces.Domain;
 using ECampus.Shared.Metadata;
 using Microsoft.Extensions.Configuration;

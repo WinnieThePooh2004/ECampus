@@ -1,8 +1,8 @@
-﻿using ECampus.Shared.DataTransferObjects;
+﻿using ECampus.Core.Messages;
+using ECampus.Shared.DataTransferObjects;
 using ECampus.Shared.Interfaces.DataAccess;
 using ECampus.Shared.Interfaces.Domain;
 using ECampus.Shared.Interfaces.Messaging;
-using ECampus.Shared.Messaging.TaskSubmissions;
 
 namespace ECampus.Domain.Messaging;
 

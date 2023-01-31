@@ -1,4 +1,5 @@
-﻿using ECampus.Shared.DataTransferObjects;
+﻿using ECampus.Core.Metadata;
+using ECampus.Shared.DataTransferObjects;
 using ECampus.Shared.Exceptions.InfrastructureExceptions;
 using ECampus.Shared.Interfaces.DataAccess;
 using ECampus.Shared.Metadata;

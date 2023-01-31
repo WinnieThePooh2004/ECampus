@@ -1,6 +1,8 @@
 ﻿using System.Net;
 using System.Security.Claims;
 using AutoMapper;
+using ECampus.Core.Messages;
+using ECampus.Core.Metadata;
 using ECampus.Shared.Auth;
 using ECampus.Shared.DataTransferObjects;
 using ECampus.Shared.Exceptions.DomainExceptions;
@@ -8,7 +10,6 @@ using ECampus.Shared.Interfaces.DataAccess;
 using ECampus.Shared.Interfaces.Domain;
 using ECampus.Shared.Interfaces.Domain.Validation;
 using ECampus.Shared.Interfaces.Messaging;
-using ECampus.Shared.Messaging.TaskSubmissions;
 using ECampus.Shared.Metadata;
 using Microsoft.AspNetCore.Http;
 

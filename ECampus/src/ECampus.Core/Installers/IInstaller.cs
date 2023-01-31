@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace ECampus.Shared.Installers;
+namespace ECampus.Core.Installers;
 
 public interface IInstaller
 {

@@ -1,6 +1,6 @@
-﻿using ECampus.Domain.Messaging;
+﻿using ECampus.Core.Installers;
+using ECampus.Domain.Messaging;
 using ECampus.Shared.DataTransferObjects;
-using ECampus.Shared.Installers;
 using ECampus.Shared.Interfaces.Domain;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

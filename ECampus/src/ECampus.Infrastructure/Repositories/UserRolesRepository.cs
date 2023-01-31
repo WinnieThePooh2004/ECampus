@@ -1,4 +1,5 @@
-﻿using ECampus.Shared.Enums;
+﻿using ECampus.Core.Metadata;
+using ECampus.Shared.Enums;
 using ECampus.Shared.Exceptions.InfrastructureExceptions;
 using ECampus.Shared.Interfaces.DataAccess;
 using ECampus.Shared.Metadata;

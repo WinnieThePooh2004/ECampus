@@ -1,6 +1,8 @@
-﻿namespace ECampus.Messaging;
+﻿using ECampus.Core.Installers;
 
-public class MessagingAssemblyMarker
+namespace ECampus.Messaging;
+
+public class MessagingAssemblyMarker : IAssemblyMarker
 {
     
 }

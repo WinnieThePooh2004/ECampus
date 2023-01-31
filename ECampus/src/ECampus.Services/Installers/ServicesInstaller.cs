@@ -1,7 +1,9 @@
-﻿using ECampus.Services.Services;
+﻿using ECampus.Core.Extensions;
+using ECampus.Core.Installers;
+using ECampus.Core.Metadata;
+using ECampus.Services.Services;
 using ECampus.Shared;
 using ECampus.Shared.Extensions;
-using ECampus.Shared.Installers;
 using ECampus.Shared.Interfaces.Domain;
 using ECampus.Shared.Metadata;
 using ECampus.Shared.QueryParameters;

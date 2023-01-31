@@ -1,5 +1,5 @@
-﻿using ECampus.FrontEnd.Requests.Options;
-using ECampus.Shared.Installers;
+﻿using ECampus.Core.Installers;
+using ECampus.FrontEnd.Requests.Options;
 
 namespace ECampus.FrontEnd.Installers;
 
