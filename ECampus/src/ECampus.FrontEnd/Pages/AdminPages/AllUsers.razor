@@ -2,6 +2,5 @@
 @attribute [Authorize]
 
 <IndexPageModel TData="UserDto" TParameters="UserParameters"
-           ParameterOptions="@(p => p.OrderBy = "Username")"
-           EditLink="/users/edit" CreateLink="/users/create"
+                EditLink="/users/edit" CreateLink="/users/create"
            />

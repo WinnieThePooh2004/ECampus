@@ -51,13 +51,13 @@
             @if (TimetableMode != TimetableMode.Auditory)
             {
                 <ValidationMessage For="@(() => Model.AuditoryId)"/>
-                <SingleItemSelect TData="AuditoryDto" TParameters="AuditoryParameters"@bind-SelectedId="Model.AuditoryId" Title="Select auditory"/>
+                <SingleItemSelect TData="AuditoryDto" TParameters="AuditoryParameters" @bind-SelectedId="Model.AuditoryId" Title="Select auditory"/>
                 <br/>
             }
             @if (TimetableMode != TimetableMode.Group)
             {
                 <ValidationMessage For="@(() => Model.GroupId)"/>
-                <SingleItemSelect TData="GroupDto" TParameters="GroupParameters" @bind-SelectedId="Model.GroupId"Title="Select group"/>
+                <SingleItemSelect TData="GroupDto" TParameters="GroupParameters" @bind-SelectedId="Model.GroupId" Title="Select group"/>
                 <br/>
             }
 

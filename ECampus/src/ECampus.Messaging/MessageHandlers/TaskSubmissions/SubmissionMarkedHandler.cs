@@ -19,12 +19,6 @@ public class SubmissionMarkedHandler : IRequestHandler<SubmissionMarked>
 
     public async Task<Unit> Handle(SubmissionMarked request, CancellationToken cancellationToken)
     {
-        if (string.IsNullOrEmpty(request.UserEmail))
-        {
-            _logger.Warning("User email is null or empty, cannot send email");
-            return Unit.Value;
-        }
-
         Log(request);
         var email = new MailMessage
         {
@@ -33,7 +27,7 @@ public class SubmissionMarkedHandler : IRequestHandler<SubmissionMarked>
             Subject = "Your submission was marked",
             IsBodyHtml = true
         };
-        await _emailSendService.SendEmailAsync(email, new List<string> { request.UserEmail });
+        await _emailSendService.SendEmailAsync(email, new List<string?> { request.UserEmail });
         return Unit.Value;
     }
 

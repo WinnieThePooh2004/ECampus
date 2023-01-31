@@ -1,14 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Migrations;
 
-namespace Migrations
-{
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            var dbBuilder = new ApplicationContextFactory();
-            using var context = dbBuilder.CreateDbContext(args);
-            context.Database.Migrate();
-        }
-    }
-}
+var dbBuilder = new ApplicationContextFactory();
+using var context = dbBuilder.CreateDbContext(args);
+context.Database.Migrate();

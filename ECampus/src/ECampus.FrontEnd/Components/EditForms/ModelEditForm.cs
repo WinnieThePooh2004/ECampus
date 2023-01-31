@@ -8,6 +8,7 @@ public class ModelEditForm<TModel> : ComponentBase where TModel : class
 {
     [Parameter] public TModel Model { get; set; } = default!;
     [Parameter] public EventCallback<TModel> OnSubmit { get; set; }
+    [Inject] protected IValidator<TModel> Validator { get; set; } = default!;
 
     [CascadingParameter] protected EditContext EditContext { get; set; } = default!;
 
@@ -15,9 +16,7 @@ public class ModelEditForm<TModel> : ComponentBase where TModel : class
     {
         EditContext = new EditContext(Model);
     }
-
-    [Inject] protected IValidator<TModel>? Validator { get; set; }
-
+    
     protected async Task Submit()
     {
         if(!await ValidateAsync())
@@ -30,6 +29,7 @@ public class ModelEditForm<TModel> : ComponentBase where TModel : class
 
     private async Task<bool> ValidateAsync()
     {
-        return !(await Validator?.ValidateAsync(Model)!).Errors.Any();
+        var errors = await Validator.ValidateAsync(Model)!;
+        return !errors.Errors.Any();
     }
 }

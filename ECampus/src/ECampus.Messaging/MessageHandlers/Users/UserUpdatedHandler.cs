@@ -22,7 +22,7 @@ public class UserUpdatedHandler : IRequestHandler<UserUpdated>
         _logger.Information("Updated user {Username}", request.Username);
         var email = new MailMessage
         {
-            Subject = "Welcome to ECampus",
+            Subject = "Your account details were changed",
             Body = "<h1>Your account was updated</h1>" +
                    "<p>If you know about it, just ignore this message</p>",
             IsBodyHtml = true

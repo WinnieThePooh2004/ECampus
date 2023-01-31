@@ -10,18 +10,13 @@ public partial class RegistrationsForm
 {
     [Parameter] public EventCallback<UserDto> OnSubmit { get; set; }
     [Inject] private IUserValidatorFactory ValidatorFactory { get; set; } = default!;
-    [Inject] private IBaseRequests<UserDto> Requests { get; set; } = default!;
 
-    [Inject] private NavigationManager NavigationManager { get; set; } = default!;
-
-    [Inject] private IHttpContextAccessor HttpContextAccessor { get; set; } = default!;
-
-    private IValidator<UserDto>? _validator;
+    private IValidator<UserDto> _validator = default!;
     private readonly UserDto _model = new();
 
     protected override void OnInitialized()
     {
-        _validator = ValidatorFactory.CreateValidator() ?? throw new NullReferenceException("ValidatorFactory is null");
+        _validator = ValidatorFactory.CreateValidator();
     }
 
     private async Task Submit()
@@ -31,12 +26,12 @@ public partial class RegistrationsForm
             return;
         }
 
-        await Requests.CreateAsync(_model);
         await OnSubmit.InvokeAsync(_model);
     }
 
     private async Task<bool> IsValid()
     {
-        return (await _validator?.ValidateAsync(_model)!)?.IsValid ?? false;
+        var errors = await _validator.ValidateAsync(_model);
+        return errors.IsValid;
     }
 }

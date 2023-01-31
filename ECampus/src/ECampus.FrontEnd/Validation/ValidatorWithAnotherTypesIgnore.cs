@@ -21,11 +21,9 @@ public class ValidatorWithAnotherTypesIgnore<T> : IValidator<T>
 
     public Task<ValidationResult> ValidateAsync(IValidationContext context, CancellationToken cancellation = new())
     {
-        if (context.InstanceToValidate is not T)
-        {
-            return Task.FromResult(new ValidationResult());
-        }
-        return _validator.ValidateAsync(context, cancellation);
+        return context.InstanceToValidate is not T
+            ? Task.FromResult(new ValidationResult())
+            : _validator.ValidateAsync(context, cancellation);
     }
 
     public IValidatorDescriptor CreateDescriptor() => _validator.CreateDescriptor();
@@ -34,6 +32,6 @@ public class ValidatorWithAnotherTypesIgnore<T> : IValidator<T>
 
     public ValidationResult Validate(T instance) => _validator.Validate(instance);
 
-    public Task<ValidationResult> ValidateAsync(T instance, CancellationToken cancellation = new()) 
+    public Task<ValidationResult> ValidateAsync(T instance, CancellationToken cancellation = new())
         => _validator.ValidateAsync(instance, cancellation);
 }
