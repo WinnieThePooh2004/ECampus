@@ -1,6 +1,6 @@
-﻿namespace ECampus.Shared.Messaging.Users;
+﻿namespace ECampus.Core.Messages;
 
-public class UserDeleted : IMessage
+public class PasswordChanged : ISqsMessage
 {
     public required int UserId { get; init; }
     public required string Email { get; init; }

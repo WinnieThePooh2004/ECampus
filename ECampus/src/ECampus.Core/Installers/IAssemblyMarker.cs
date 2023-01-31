@@ -1,4 +1,4 @@
-﻿namespace ECampus.Shared.Installers;
+﻿namespace ECampus.Core.Installers;
 
 public interface IAssemblyMarker
 {

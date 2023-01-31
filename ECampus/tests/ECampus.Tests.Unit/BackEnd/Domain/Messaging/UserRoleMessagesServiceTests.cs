@@ -1,9 +1,9 @@
-﻿using ECampus.Domain.Messaging;
+﻿using ECampus.Core.Messages;
+using ECampus.Domain.Messaging;
 using ECampus.Shared.DataTransferObjects;
 using ECampus.Shared.Enums;
 using ECampus.Shared.Interfaces.Domain;
 using ECampus.Shared.Interfaces.Messaging;
-using ECampus.Shared.Messaging.Users;
 
 namespace ECampus.Tests.Unit.BackEnd.Domain.Messaging;
 
@@ -29,8 +29,7 @@ public class UserRoleMessagesServiceTests
         result.Should().Be(user);
         await _snsMessenger.Received()
             .PublishMessageAsync(Arg.Is<UserUpdated>(t =>
-                t.UserId == 10 && t.Email == user.Email && t.Username == user.Username &&
-                t.Role == nameof(UserRole.Admin)));
+                t.Email == user.Email && t.Username == user.Username));
     }
     
     [Fact]
@@ -44,8 +43,7 @@ public class UserRoleMessagesServiceTests
         result.Should().Be(user);
         await _snsMessenger.Received()
             .PublishMessageAsync(Arg.Is<UserCreated>(t =>
-                t.UserId == 10 && t.Email == user.Email && t.Username == user.Username &&
-                t.Role == nameof(UserRole.Admin)));
+                t.Email == user.Email && t.Username == user.Username));
     }
     
     [Fact]

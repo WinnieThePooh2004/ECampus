@@ -1,4 +1,4 @@
-﻿namespace ECampus.Shared.Extensions;
+﻿namespace ECampus.Core.Extensions;
 
 public static class TypeExtensions
 {

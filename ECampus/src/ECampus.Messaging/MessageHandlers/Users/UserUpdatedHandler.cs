@@ -1,6 +1,6 @@
 ﻿using System.Net.Mail;
+using ECampus.Core.Messages;
 using ECampus.Messaging.Mailing;
-using ECampus.Messaging.Messages;
 using ILogger = Serilog.ILogger;
 using MediatR;
 

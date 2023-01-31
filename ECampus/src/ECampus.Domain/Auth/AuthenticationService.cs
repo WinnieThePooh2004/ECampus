@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using ECampus.Core.Metadata;
 using ECampus.Shared.Enums;
 using ECampus.Shared.Exceptions.DomainExceptions;
 using ECampus.Shared.Extensions;

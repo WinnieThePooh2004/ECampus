@@ -1,11 +1,10 @@
-﻿using ECampus.Domain.Messaging;
+﻿using ECampus.Core.Messages;
+using ECampus.Domain.Messaging;
 using ECampus.Shared.DataTransferObjects;
 using ECampus.Shared.Enums;
 using ECampus.Shared.Interfaces.DataAccess;
 using ECampus.Shared.Interfaces.Domain;
 using ECampus.Shared.Interfaces.Messaging;
-using ECampus.Shared.Messaging;
-using ECampus.Shared.Messaging.TaskSubmissions;
 
 namespace ECampus.Tests.Unit.BackEnd.Domain.Messaging;
 

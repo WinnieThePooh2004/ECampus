@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using ECampus.Core.Extensions;
 using ECampus.Infrastructure.Extensions;
 using ECampus.Infrastructure.Interfaces;
 using ECampus.Shared.Extensions;

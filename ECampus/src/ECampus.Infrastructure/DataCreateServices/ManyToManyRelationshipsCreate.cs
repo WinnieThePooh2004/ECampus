@@ -1,4 +1,5 @@
-﻿using ECampus.Infrastructure.Extensions;
+﻿using ECampus.Core.Extensions;
+using ECampus.Infrastructure.Extensions;
 using ECampus.Infrastructure.Interfaces;
 using ECampus.Shared.Extensions;
 using ECampus.Shared.Interfaces.Data.Models;

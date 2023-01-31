@@ -1,4 +1,4 @@
-﻿namespace ECampus.Messaging.Messages;
+﻿namespace ECampus.Core.Messages;
 
 public class UserUpdated : ISqsMessage
 {

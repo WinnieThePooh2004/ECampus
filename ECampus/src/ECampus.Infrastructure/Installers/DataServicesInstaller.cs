@@ -1,10 +1,11 @@
-﻿using ECampus.Infrastructure.DataCreateServices;
+﻿using ECampus.Core.Extensions;
+using ECampus.Core.Installers;
+using ECampus.Infrastructure.DataCreateServices;
 using ECampus.Infrastructure.DataDeleteServices;
 using ECampus.Infrastructure.DataUpdateServices;
 using ECampus.Infrastructure.Interfaces;
 using ECampus.Shared;
 using ECampus.Shared.Extensions;
-using ECampus.Shared.Installers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

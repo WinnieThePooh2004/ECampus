@@ -1,10 +1,10 @@
 ﻿using Amazon.SimpleNotificationService;
 using Amazon.SimpleNotificationService.Model;
+using ECampus.Core.Messages;
 using ECampus.Domain.Mapping.Messages;
 using ECampus.Domain.Messaging;
 using ECampus.Shared.DataTransferObjects;
 using ECampus.Shared.Messaging.Options;
-using ECampus.Shared.Messaging.Users;
 using ECampus.Tests.Shared.Mocks;
 using Newtonsoft.Json;
 
@@ -28,7 +28,7 @@ public class SnsMessengerTests
         _amazonSns.FindTopicAsync(_options.Value.Name).Returns(new Topic { TopicArn = "topicArn" });
         PublishRequest? request = null;
         await _amazonSns.PublishAsync(Arg.Do<PublishRequest>(r => request = r));
-        var userDeleted = new UserDeleted { Email = "Email", UserId = 10, Username = "username" };
+        var userDeleted = new UserDeleted { Email = "Email", Username = "username" };
         var response = new PublishResponse();
         _amazonSns.PublishAsync(Arg.Any<PublishRequest>()).Returns(response);
 

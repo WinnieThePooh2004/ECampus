@@ -1,5 +1,6 @@
 using ECampus.Api;
 using ECampus.Api.MiddlewareFilters;
+using ECampus.Core.Extensions;
 using ECampus.Domain;
 using ECampus.Infrastructure;
 using ECampus.Infrastructure.DataCreateServices;

@@ -1,5 +1,6 @@
 ﻿using Amazon.SimpleNotificationService;
 using Amazon.SimpleNotificationService.Model;
+using ECampus.Core.Messages;
 using ECampus.Shared.Interfaces.Messaging;
 using ECampus.Shared.Messaging;
 using ECampus.Shared.Messaging.Options;

@@ -1,5 +1,7 @@
-﻿using ECampus.Shared.Extensions;
-using ECampus.Shared.Installers;
+﻿using ECampus.Core.Extensions;
+using ECampus.Core.Installers;
+using ECampus.Core.Metadata;
+using ECampus.Shared.Extensions;
 using ECampus.Shared.Interfaces.Domain.Validation;
 using ECampus.Shared.Metadata;
 using Microsoft.Extensions.Configuration;

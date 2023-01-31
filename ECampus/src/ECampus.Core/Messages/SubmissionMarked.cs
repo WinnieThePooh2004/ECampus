@@ -1,6 +1,6 @@
-﻿namespace ECampus.Shared.Messaging.TaskSubmissions;
+﻿namespace ECampus.Core.Messages;
 
-public class SubmissionMarked : IMessage
+public class SubmissionMarked : ISqsMessage
 {
     public required string? UserEmail { get; init; }
     public required string? TaskName { get; init; }

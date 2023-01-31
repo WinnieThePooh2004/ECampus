@@ -1,4 +1,5 @@
-﻿using ECampus.Shared.Interfaces.Auth;
+﻿using ECampus.Core.Metadata;
+using ECampus.Shared.Interfaces.Auth;
 using ECampus.Shared.Interfaces.DataAccess;
 using ECampus.Shared.Interfaces.Domain;
 using ECampus.Shared.Metadata;

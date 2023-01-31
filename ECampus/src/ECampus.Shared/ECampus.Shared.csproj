@@ -29,4 +29,8 @@
     <PackageReference Include="Scrutor" Version="4.2.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ECampus.Core\ECampus.Core.csproj" />
+  </ItemGroup>
+
 </Project>
