@@ -3,15 +3,15 @@ using ECampus.Shared.Interfaces.Data.Models;
 using ECampus.Shared.Interfaces.Domain;
 using ECampus.Shared.Interfaces.Domain.Validation;
 
-namespace ECampus.Domain.Services;
+namespace Services.Services;
 
-public class ServiceWithCreateValidation<TDto> : IBaseService<TDto>
+public class ServiceWithUpdateValidation<TDto> : IBaseService<TDto>
     where TDto : class, IDataTransferObject
 {
     private readonly IBaseService<TDto> _baseService;
-    private readonly ICreateValidator<TDto> _validator;
+    private readonly IUpdateValidator<TDto> _validator;
 
-    public ServiceWithCreateValidation(IBaseService<TDto> baseService, ICreateValidator<TDto> validator)
+    public ServiceWithUpdateValidation(IBaseService<TDto> baseService, IUpdateValidator<TDto> validator)
     {
         _baseService = baseService;
         _validator = validator;
@@ -19,9 +19,9 @@ public class ServiceWithCreateValidation<TDto> : IBaseService<TDto>
 
     public Task<TDto> GetByIdAsync(int? id) => _baseService.GetByIdAsync(id);
 
-    public Task<TDto> UpdateAsync(TDto entity) => _baseService.UpdateAsync(entity);
+    public Task<TDto> CreateAsync(TDto entity) => _baseService.CreateAsync(entity);
 
-    public async Task<TDto> CreateAsync(TDto entity)
+    public async Task<TDto> UpdateAsync(TDto entity)
     {
         var errors = await _validator.ValidateAsync(entity);
         if (!errors.IsValid)
@@ -29,7 +29,7 @@ public class ServiceWithCreateValidation<TDto> : IBaseService<TDto>
             throw new ValidationException(typeof(TDto), errors);
         }
 
-        return await _baseService.CreateAsync(entity);
+        return await _baseService.UpdateAsync(entity);
     }
 
     public Task<TDto> DeleteAsync(int? id) => _baseService.DeleteAsync(id);

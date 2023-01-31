@@ -7,7 +7,7 @@ using ECampus.Shared.Interfaces.Domain.Validation;
 using ECampus.Shared.Metadata;
 using ECampus.Shared.Models;
 
-namespace ECampus.Domain.Services;
+namespace Services.Services;
 
 [Inject(typeof(IUserRolesService))]
 public class UserRolesService : IUserRolesService

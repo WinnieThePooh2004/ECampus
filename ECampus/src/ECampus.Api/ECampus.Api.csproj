@@ -21,6 +21,7 @@
     <ProjectReference Include="..\ECampus.Domain\ECampus.Domain.csproj" />
     <ProjectReference Include="..\ECampus.Infrastructure\ECampus.Infrastructure.csproj" />
     <ProjectReference Include="..\ECampus.Shared\ECampus.Shared.csproj" />
+    <ProjectReference Include="..\Services\Services.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,12 +1,12 @@
-﻿using ECampus.Domain.Services;
-using ECampus.Shared;
+﻿using ECampus.Shared;
 using ECampus.Shared.Installers;
 using ECampus.Shared.Interfaces.Domain;
 using ECampus.Shared.Metadata;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Services.Services;
 
-namespace ECampus.Domain.Installers;
+namespace Services.Installers;
 
 public class ValidationServicesInstaller : IInstaller
 {

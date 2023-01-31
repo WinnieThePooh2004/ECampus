@@ -1,5 +1,4 @@
 ﻿using System.Security.Claims;
-using ECampus.Domain.Services;
 using ECampus.Shared.Auth;
 using ECampus.Shared.DataTransferObjects;
 using ECampus.Shared.Exceptions.DomainExceptions;
@@ -10,6 +9,7 @@ using ECampus.Shared.Models;
 using ECampus.Shared.Validation;
 using ECampus.Tests.Shared.DataFactories;
 using Microsoft.AspNetCore.Http;
+using Services.Services;
 
 namespace ECampus.Tests.Unit.BackEnd.Domain.Services;
 

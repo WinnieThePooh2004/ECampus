@@ -12,7 +12,7 @@ using ECampus.Shared.Messaging.TaskSubmissions;
 using ECampus.Shared.Metadata;
 using Microsoft.AspNetCore.Http;
 
-namespace ECampus.Domain.Services;
+namespace Services.Services;
 
 [Inject(typeof(ITaskSubmissionService))]
 public class TaskSubmissionService : ITaskSubmissionService

@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using ECampus.Domain.Services;
 using ECampus.Shared.DataContainers;
 using ECampus.Shared.DataTransferObjects;
 using ECampus.Shared.Exceptions.DomainExceptions;
@@ -10,6 +9,7 @@ using ECampus.Shared.Validation;
 using ECampus.Tests.Shared.DataFactories;
 using ECampus.Tests.Shared.Extensions;
 using Microsoft.Extensions.Logging;
+using Services.Services;
 
 namespace ECampus.Tests.Unit.BackEnd.Domain.Services;
 

@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using ECampus.Domain.Mapping;
-using ECampus.Domain.Services;
 using ECampus.Shared.DataContainers;
 using ECampus.Shared.DataTransferObjects;
 using ECampus.Shared.Interfaces.DataAccess;
@@ -9,6 +8,7 @@ using ECampus.Shared.Models;
 using ECampus.Shared.QueryParameters;
 using ECampus.Tests.Shared.DataFactories;
 using ECampus.Tests.Shared.Extensions;
+using Services.Services;
 
 namespace ECampus.Tests.Unit.BackEnd.Domain.Services;
 

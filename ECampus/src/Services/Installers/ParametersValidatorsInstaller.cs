@@ -1,4 +1,4 @@
-﻿using ECampus.Domain.Services;
+﻿using ECampus.Domain;
 using ECampus.Shared;
 using ECampus.Shared.Extensions;
 using ECampus.Shared.Installers;
@@ -8,8 +8,9 @@ using ECampus.Shared.Metadata;
 using ECampus.Shared.QueryParameters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Services.Services;
 
-namespace ECampus.Domain.Installers;
+namespace Services.Installers;
 
 public class ParametersValidatorsInstaller : IInstaller
 {

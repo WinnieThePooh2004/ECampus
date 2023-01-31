@@ -5,7 +5,7 @@ using ECampus.Shared.Interfaces.DataAccess;
 using ECampus.Shared.Interfaces.Domain;
 using ECampus.Shared.QueryParameters;
 
-namespace ECampus.Domain.Services;
+namespace Services.Services;
 
 public class ParametersService<TDto, TParameters, TRepositoryModel> : IParametersService<TDto, TParameters>
     where TDto : class, IDataTransferObject, new()
