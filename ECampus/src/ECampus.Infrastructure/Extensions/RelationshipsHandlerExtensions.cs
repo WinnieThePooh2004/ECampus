@@ -1,7 +1,7 @@
-﻿using ECampus.Shared.Interfaces.Data.DataServices;
+﻿using ECampus.Infrastructure.Interfaces;
 using ECampus.Shared.Interfaces.Data.Models;
 
-namespace ECampus.Shared.Extensions;
+namespace ECampus.Infrastructure.Extensions;
 
 public static class RelationshipsHandlerExtensions
 {

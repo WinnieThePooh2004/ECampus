@@ -1,6 +1,6 @@
-﻿using ECampus.Shared.Extensions;
+﻿using ECampus.Infrastructure.Interfaces;
+using ECampus.Shared.Extensions;
 using ECampus.Shared.Installers;
-using ECampus.Shared.Interfaces.Data.DataServices;
 using ECampus.Shared.Metadata;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

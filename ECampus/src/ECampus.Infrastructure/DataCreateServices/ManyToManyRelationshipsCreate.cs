@@ -1,5 +1,6 @@
-﻿using ECampus.Shared.Extensions;
-using ECampus.Shared.Interfaces.Data.DataServices;
+﻿using ECampus.Infrastructure.Extensions;
+using ECampus.Infrastructure.Interfaces;
+using ECampus.Shared.Extensions;
 using ECampus.Shared.Interfaces.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,7 +21,7 @@ public class ManyToManyRelationshipsCreate<TModel, TRelatedModel, TRelations> : 
         _relationshipsHandler = relationshipsHandler;
     }
 
-    public async Task<TModel> CreateAsync(TModel model, DbContext context)
+    public async Task<TModel> CreateAsync(TModel model, ApplicationDbContext context)
     {
         var relatedModels = _relationshipsHandler.RelatedModels.GetFromProperty<IEnumerable<TRelatedModel>>(model);
         if (relatedModels is null)

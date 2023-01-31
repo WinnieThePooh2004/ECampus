@@ -1,9 +1,9 @@
 ﻿using ECampus.Infrastructure.DataCreateServices;
 using ECampus.Infrastructure.DataUpdateServices;
+using ECampus.Infrastructure.Interfaces;
 using ECampus.Infrastructure.Relationships;
 using ECampus.Shared;
 using ECampus.Shared.Installers;
-using ECampus.Shared.Interfaces.Data.DataServices;
 using ECampus.Shared.Metadata;
 using ECampus.Shared.Metadata.Relationships;
 using Microsoft.Extensions.Configuration;

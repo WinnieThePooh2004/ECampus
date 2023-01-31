@@ -1,4 +1,4 @@
-﻿using ECampus.Shared.Interfaces.Data.DataServices;
+﻿using ECampus.Infrastructure.Interfaces;
 using ECampus.Shared.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,7 +13,7 @@ public class CourseUpdateService : IDataUpdateService<Course>
         _baseUpdate = baseUpdate;
     }
 
-    public async Task<Course> UpdateAsync(Course model, DbContext context)
+    public async Task<Course> UpdateAsync(Course model, ApplicationDbContext context)
     {
         if (model.Groups is null)
         {
@@ -27,10 +27,10 @@ public class CourseUpdateService : IDataUpdateService<Course>
         return await _baseUpdate.UpdateAsync(model, context);
     }
 
-    private static async Task<List<TaskSubmission>> SubmissionsToDelete(Course model, DbContext context)
+    private static async Task<List<TaskSubmission>> SubmissionsToDelete(Course model, ApplicationDbContext context)
     {
         var deleteQuery = DeleteQuery(model);
-        return await context.Set<TaskSubmission>()
+        return await context.TaskSubmissions
             .FromSqlRaw(deleteQuery).ToListAsync();
     }
 
@@ -46,11 +46,11 @@ public class CourseUpdateService : IDataUpdateService<Course>
         WHERE G.Id NOT IN ({CurrentGroupIds(model)}) AND C.Id = {model.Id}
         """;
 
-    private static async Task<List<TaskSubmission>> SubmissionsToCreate(Course model, DbContext context)
+    private static async Task<List<TaskSubmission>> SubmissionsToCreate(Course model, ApplicationDbContext context)
     {
         var addedStudents = await context.Set<Student>()
             .FromSqlRaw(CreateQuery(model)).ToListAsync();
-        var allCourseTasks = await context.Set<CourseTask>().Where(task => task.CourseId == model.Id).ToListAsync();
+        var allCourseTasks = await context.CourseTasks.Where(task => task.CourseId == model.Id).ToListAsync();
         var result = new List<TaskSubmission>(addedStudents.Count * allCourseTasks.Count);
 
         foreach (var task in allCourseTasks)

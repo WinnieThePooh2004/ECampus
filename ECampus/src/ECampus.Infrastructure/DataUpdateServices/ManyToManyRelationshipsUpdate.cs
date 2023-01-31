@@ -1,6 +1,7 @@
 ﻿using System.Linq.Expressions;
+using ECampus.Infrastructure.Extensions;
+using ECampus.Infrastructure.Interfaces;
 using ECampus.Shared.Extensions;
-using ECampus.Shared.Interfaces.Data.DataServices;
 using ECampus.Shared.Interfaces.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,7 +22,7 @@ public class ManyToManyRelationshipsUpdate<TModel, TRelatedModel, TRelations> : 
         _relationshipsHandler = relationshipsHandler;
     }
 
-    public async Task<TModel> UpdateAsync(TModel model, DbContext context)
+    public async Task<TModel> UpdateAsync(TModel model, ApplicationDbContext context)
     {
         var relatedModels = _relationshipsHandler.RelatedModels.GetFromProperty<ICollection<TRelatedModel>>(model);
         if (relatedModels is null)

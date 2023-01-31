@@ -1,5 +1,5 @@
 ﻿using System.Reflection;
-using ECampus.Shared.Interfaces.Data.DataServices;
+using ECampus.Infrastructure.Interfaces;
 using ECampus.Shared.Interfaces.Data.Models;
 using ECampus.Shared.Metadata.Relationships;
 

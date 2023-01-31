@@ -1,4 +1,4 @@
-﻿using ECampus.Shared.Interfaces.Data.DataServices;
+﻿using ECampus.Infrastructure.Interfaces;
 using ECampus.Shared.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,9 +13,9 @@ public class StudentCreateService : IDataCreateService<Student>
         _baseCreate = baseCreate;
     }
 
-    public async Task<Student> CreateAsync(Student model, DbContext context)
+    public async Task<Student> CreateAsync(Student model, ApplicationDbContext context)
     {
-        model.Submissions = await context.Set<Group>()
+        model.Submissions = await context.Groups
             .AsNoTracking()
             .Include(group => group.Courses!)
             .ThenInclude(course => course.Tasks)

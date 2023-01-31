@@ -1,7 +1,7 @@
 ﻿using System.Net;
+using ECampus.Infrastructure.Extensions;
+using ECampus.Infrastructure.Interfaces;
 using ECampus.Shared.Exceptions.InfrastructureExceptions;
-using ECampus.Shared.Extensions;
-using ECampus.Shared.Interfaces.Data.DataServices;
 using ECampus.Shared.Interfaces.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,7 +20,7 @@ public class RelationsDataAccess<TLeftTable, TRightTable, TRelations> :
         _relationshipsHandler = relationshipsHandler;
     }
 
-    public async Task CreateRelation(int leftTableId, int rightTableId, DbContext context)
+    public async Task CreateRelation(int leftTableId, int rightTableId, ApplicationDbContext context)
     {
         var relation = _relationshipsHandler.CreateRelationModel(leftTableId, rightTableId);
         context.Add(relation);
@@ -40,7 +40,7 @@ public class RelationsDataAccess<TLeftTable, TRightTable, TRelations> :
         }
     }
 
-    public async Task DeleteRelation(int leftTableId, int rightTableId, DbContext context)
+    public async Task DeleteRelation(int leftTableId, int rightTableId, ApplicationDbContext context)
     {
         var relation = _relationshipsHandler.CreateRelationModel(leftTableId, rightTableId);
         context.Remove(relation);
