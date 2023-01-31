@@ -1,4 +1,4 @@
-﻿using ECampus.Shared.Interfaces.Data.DataServices;
+﻿using ECampus.Infrastructure.Interfaces;
 using ECampus.Shared.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,9 +13,9 @@ public class CourseTaskCreateService : IDataCreateService<CourseTask>
         _baseCreate = baseCreate;
     }
 
-    public async Task<CourseTask> CreateAsync(CourseTask model, DbContext context)
+    public async Task<CourseTask> CreateAsync(CourseTask model, ApplicationDbContext context)
     {
-        model.Submissions = await context.Set<Course>()
+        model.Submissions = await context.Courses
             .Include(course => course.Groups)!
             .ThenInclude(group => group.Students)
             .Where(course => course.Id == model.CourseId)

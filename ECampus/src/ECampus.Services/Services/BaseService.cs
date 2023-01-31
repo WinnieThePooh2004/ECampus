@@ -4,7 +4,7 @@ using ECampus.Shared.Interfaces.Data.Models;
 using ECampus.Shared.Interfaces.DataAccess;
 using ECampus.Shared.Interfaces.Domain;
 
-namespace Services.Services;
+namespace ECampus.Services.Services;
 
 public class BaseService<TDto, TRepositoryModel> : IBaseService<TDto>
     where TRepositoryModel : class, IModel

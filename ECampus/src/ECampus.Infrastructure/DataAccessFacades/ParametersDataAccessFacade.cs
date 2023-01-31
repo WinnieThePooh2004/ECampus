@@ -1,6 +1,6 @@
-﻿using ECampus.Shared.DataContainers;
+﻿using ECampus.Infrastructure.Interfaces;
+using ECampus.Shared.DataContainers;
 using ECampus.Shared.Extensions;
-using ECampus.Shared.Interfaces.Data.DataServices;
 using ECampus.Shared.Interfaces.Data.Models;
 using ECampus.Shared.Interfaces.DataAccess;
 using ECampus.Shared.QueryParameters;

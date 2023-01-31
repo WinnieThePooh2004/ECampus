@@ -25,7 +25,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECampus.FrontEnd", "src\ECa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECampus.Messaging", "src\ECampus.Messaging\ECampus.Messaging.csproj", "{0BD1C1D5-BF8D-4CFA-A12D-047E16DE9A9E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "src\Services\Services.csproj", "{8415C620-D0A4-4E1C-8985-9A1B4F27DC6F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECampus.Services", "src\ECampus.Services\ECampus.Services.csproj", "{8415C620-D0A4-4E1C-8985-9A1B4F27DC6F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

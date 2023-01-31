@@ -3,7 +3,7 @@ using ECampus.Shared.Interfaces.Data.Models;
 
 // ReSharper disable UnusedTypeParameter
 
-namespace ECampus.Shared.Interfaces.Data.DataServices;
+namespace ECampus.Infrastructure.Interfaces;
 
 public interface IRelationshipsHandler<in TLeftTable, out TRightTable, out TRelationModel>
     where TLeftTable : IModel

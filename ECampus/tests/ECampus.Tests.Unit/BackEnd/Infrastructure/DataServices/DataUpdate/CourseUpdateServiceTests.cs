@@ -1,5 +1,6 @@
-﻿using ECampus.Infrastructure.DataUpdateServices;
-using ECampus.Shared.Interfaces.Data.DataServices;
+﻿using ECampus.Infrastructure;
+using ECampus.Infrastructure.DataUpdateServices;
+using ECampus.Infrastructure.Interfaces;
 using ECampus.Shared.Models;
 using ECampus.Shared.Models.RelationModels;
 using ECampus.Tests.Unit.InMemoryDb;
@@ -23,7 +24,7 @@ public class CourseUpdateServiceTests
     [Fact]
     public async Task Update_ShouldInstantlyReturnFromBaseUpdate_WhenGroupsAreNull()
     {
-        var context = Substitute.For<DbContext>();
+        var context = Substitute.For<ApplicationDbContext>();
         var course = new Course();
 
         await _sut.UpdateAsync(course, context);
@@ -78,7 +79,10 @@ public class CourseUpdateServiceTests
             _dataCreated = true;
         }
 
-        context.AddRange(Submissions);
+        if (!context.TaskSubmissions.Any())
+        {
+            context.AddRange(Submissions);
+        }
         await context.SaveChangesAsync();
     }
 

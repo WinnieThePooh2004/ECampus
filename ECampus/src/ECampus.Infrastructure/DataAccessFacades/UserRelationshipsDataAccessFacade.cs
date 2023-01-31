@@ -1,9 +1,8 @@
-﻿using ECampus.Shared.Interfaces.Data.DataServices;
+﻿using ECampus.Infrastructure.Interfaces;
 using ECampus.Shared.Interfaces.DataAccess;
 using ECampus.Shared.Metadata;
 using ECampus.Shared.Models;
 using ECampus.Shared.Models.RelationModels;
-using Microsoft.EntityFrameworkCore;
 
 namespace ECampus.Infrastructure.DataAccessFacades;
 
@@ -13,9 +12,9 @@ public class UserRelationshipsDataAccessFacade : IUserRelationsDataAccessFacade
     private readonly IRelationsDataAccess<User, Auditory, UserAuditory> _userAuditoryRelations;
     private readonly IRelationsDataAccess<User, Group, UserGroup> _userGroupRelations;
     private readonly IRelationsDataAccess<User, Teacher, UserTeacher> _userTeacherRelations;
-    private readonly DbContext _context;
+    private readonly ApplicationDbContext _context;
 
-    public UserRelationshipsDataAccessFacade(DbContext context,
+    public UserRelationshipsDataAccessFacade(ApplicationDbContext context,
         IRelationsDataAccess<User, Auditory, UserAuditory> userAuditoryRelations,
         IRelationsDataAccess<User, Group, UserGroup> userGroupRelations,
         IRelationsDataAccess<User, Teacher, UserTeacher> userTeacherRelations)

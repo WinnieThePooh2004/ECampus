@@ -1,7 +1,7 @@
 ﻿using ECampus.Infrastructure;
 using ECampus.Infrastructure.DataAccessFacades;
+using ECampus.Infrastructure.Interfaces;
 using ECampus.Shared.Exceptions.InfrastructureExceptions;
-using ECampus.Shared.Interfaces.Data.DataServices;
 using ECampus.Shared.Models;
 using ECampus.Tests.Shared.DataFactories;
 using Microsoft.EntityFrameworkCore;
@@ -110,7 +110,7 @@ public class BaseDataAccessFacadeTests
     public async Task Delete_ShouldCall_DeleteService()
     {
         var item = CreateModel();
-        _deleteService.DeleteAsync(1, Arg.Any<DbContext>()).Returns(item);
+        _deleteService.DeleteAsync(1, _context).Returns(item);
 
         var model = await _sut.DeleteAsync(1);
 

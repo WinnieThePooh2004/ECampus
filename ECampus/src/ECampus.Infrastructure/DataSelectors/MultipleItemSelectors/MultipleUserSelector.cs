@@ -1,5 +1,5 @@
-﻿using ECampus.Shared.Extensions;
-using ECampus.Shared.Interfaces.Data.DataServices;
+﻿using ECampus.Infrastructure.Interfaces;
+using ECampus.Shared.Extensions;
 using ECampus.Shared.Models;
 using ECampus.Shared.QueryParameters;
 using Microsoft.EntityFrameworkCore;

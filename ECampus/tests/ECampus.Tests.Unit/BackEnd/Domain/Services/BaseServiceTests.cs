@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
+using ECampus.Services.Services;
 using ECampus.Shared.DataTransferObjects;
 using ECampus.Shared.Exceptions.DomainExceptions;
 using ECampus.Shared.Interfaces.DataAccess;
 using ECampus.Shared.Models;
 using ECampus.Tests.Shared.DataFactories;
-using Services.Services;
 
 namespace ECampus.Tests.Unit.BackEnd.Domain.Services;
 
