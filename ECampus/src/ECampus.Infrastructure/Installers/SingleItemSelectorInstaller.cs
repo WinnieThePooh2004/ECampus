@@ -1,11 +1,9 @@
-﻿using ECampus.Core.Extensions;
-using ECampus.Core.Installers;
+﻿using ECampus.Core.Installers;
 using ECampus.Core.Metadata;
 using ECampus.Infrastructure.DataSelectors.SingleItemSelectors;
 using ECampus.Infrastructure.Interfaces;
 using ECampus.Shared;
 using ECampus.Shared.Extensions;
-using ECampus.Shared.Metadata;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

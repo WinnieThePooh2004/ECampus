@@ -1,5 +1,5 @@
 ﻿using ECampus.Infrastructure.Interfaces;
-using ECampus.Shared.Interfaces.Data.Models;
+using ECampus.Shared.Data;
 
 namespace ECampus.Infrastructure.Extensions;
 

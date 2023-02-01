@@ -1,12 +1,12 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using AutoMapper;
+using ECampus.Contracts.DataAccess;
 using ECampus.Domain.Auth;
 using ECampus.Shared.Auth;
 using ECampus.Shared.DataTransferObjects;
 using ECampus.Shared.Enums;
 using ECampus.Shared.Exceptions.DomainExceptions;
 using ECampus.Shared.Extensions;
-using ECampus.Shared.Interfaces.Auth;
 using ECampus.Shared.Models;
 using ECampus.Tests.Shared;
 using ECampus.Tests.Shared.DataFactories;

@@ -1,7 +1,7 @@
-﻿using ECampus.Domain.Interfaces;
+﻿using ECampus.Contracts.DataValidation;
+using ECampus.Domain.Interfaces.Validation;
 using ECampus.Domain.Validation.UpdateValidators;
 using ECampus.Shared.DataTransferObjects;
-using ECampus.Shared.Interfaces.Domain.Validation;
 using ECampus.Shared.Models;
 using ECampus.Shared.Validation;
 

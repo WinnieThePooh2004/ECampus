@@ -1,8 +1,8 @@
 ﻿using System.Net;
+using ECampus.Contracts.DataAccess;
 using ECampus.Infrastructure.Interfaces;
+using ECampus.Shared.Data;
 using ECampus.Shared.Exceptions.InfrastructureExceptions;
-using ECampus.Shared.Interfaces.Data.Models;
-using ECampus.Shared.Interfaces.DataAccess;
 using Microsoft.EntityFrameworkCore;
 
 namespace ECampus.Infrastructure.DataAccessFacades;

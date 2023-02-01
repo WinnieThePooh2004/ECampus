@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using ECampus.Shared.Auth;
+using ECampus.Shared.DataTransferObjects;
 
 namespace ECampus.Shared.Extensions;
 

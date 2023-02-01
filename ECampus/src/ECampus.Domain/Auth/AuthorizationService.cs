@@ -1,13 +1,13 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using AutoMapper;
+using ECampus.Contracts.DataAccess;
 using ECampus.Core.Metadata;
+using ECampus.Domain.Interfaces.Auth;
 using ECampus.Shared.Auth;
 using ECampus.Shared.DataTransferObjects;
 using ECampus.Shared.Exceptions.DomainExceptions;
 using ECampus.Shared.Extensions;
-using ECampus.Shared.Interfaces.Auth;
-using ECampus.Shared.Metadata;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
 

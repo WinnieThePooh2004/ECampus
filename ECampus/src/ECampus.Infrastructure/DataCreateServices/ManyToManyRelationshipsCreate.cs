@@ -1,9 +1,7 @@
-﻿using ECampus.Core.Extensions;
-using ECampus.Infrastructure.Extensions;
+﻿using ECampus.Infrastructure.Extensions;
 using ECampus.Infrastructure.Interfaces;
+using ECampus.Shared.Data;
 using ECampus.Shared.Extensions;
-using ECampus.Shared.Interfaces.Data.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace ECampus.Infrastructure.DataCreateServices;
 

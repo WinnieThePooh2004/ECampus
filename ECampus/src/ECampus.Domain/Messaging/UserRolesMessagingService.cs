@@ -1,7 +1,7 @@
-﻿using ECampus.Domain.Mapping.Messages;
+﻿using ECampus.Contracts.Services;
+using ECampus.Domain.Interfaces;
+using ECampus.Domain.Mapping.Messages;
 using ECampus.Shared.DataTransferObjects;
-using ECampus.Shared.Interfaces.Domain;
-using ECampus.Shared.Interfaces.Messaging;
 
 namespace ECampus.Domain.Messaging;
 

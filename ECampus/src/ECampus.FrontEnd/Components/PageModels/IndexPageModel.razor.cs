@@ -1,5 +1,5 @@
-﻿using ECampus.Shared.Enums;
-using ECampus.Shared.Interfaces.Data.Models;
+﻿using ECampus.Shared.Data;
+using ECampus.Shared.Enums;
 using ECampus.Shared.QueryParameters;
 using Microsoft.AspNetCore.Components;
 

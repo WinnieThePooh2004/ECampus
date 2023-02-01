@@ -1,5 +1,4 @@
-﻿using ECampus.Shared.Interfaces.Data.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using ECampus.Shared.Data;
 
 namespace ECampus.Infrastructure.Interfaces;
 

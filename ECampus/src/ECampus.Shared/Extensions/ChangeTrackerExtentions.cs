@@ -1,4 +1,4 @@
-﻿using ECampus.Shared.Interfaces.Data.Models;
+﻿using ECampus.Shared.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 

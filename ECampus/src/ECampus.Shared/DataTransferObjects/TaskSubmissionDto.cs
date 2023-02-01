@@ -1,4 +1,4 @@
-﻿using ECampus.Shared.Interfaces.Data.Models;
+﻿using ECampus.Shared.Data;
 using ECampus.Shared.Metadata;
 using ECampus.Shared.Models;
 

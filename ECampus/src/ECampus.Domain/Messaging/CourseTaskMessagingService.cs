@@ -1,8 +1,8 @@
-﻿using ECampus.Core.Messages;
+﻿using ECampus.Contracts.DataAccess;
+using ECampus.Contracts.Services;
+using ECampus.Core.Messages;
+using ECampus.Domain.Interfaces;
 using ECampus.Shared.DataTransferObjects;
-using ECampus.Shared.Interfaces.DataAccess;
-using ECampus.Shared.Interfaces.Domain;
-using ECampus.Shared.Interfaces.Messaging;
 
 namespace ECampus.Domain.Messaging;
 
@@ -33,7 +33,7 @@ public class CourseTaskMessagingService : IBaseService<CourseTaskDto>
 
         var message = new TaskCreated
         {
-            StudentEmails = requiredData.StudentEmails,
+            StudentEmails = requiredData.StudentEmails!,
             MaxPoints = createdTask.MaxPoints,
             TaskName = createdTask.Name,
             Deadline = createdTask.Deadline,

@@ -1,11 +1,10 @@
 ﻿using System.Net;
 using System.Security.Claims;
-using ECampus.Domain.Interfaces;
+using ECampus.Contracts.DataValidation;
+using ECampus.Domain.Interfaces.Validation;
 using ECampus.Shared.Auth;
 using ECampus.Shared.Enums;
 using ECampus.Shared.Exceptions.DomainExceptions;
-using ECampus.Shared.Interfaces.DataAccess.Validation;
-using ECampus.Shared.Interfaces.Domain.Validation;
 using ECampus.Shared.QueryParameters;
 using ECampus.Shared.Validation;
 using Microsoft.AspNetCore.Http;

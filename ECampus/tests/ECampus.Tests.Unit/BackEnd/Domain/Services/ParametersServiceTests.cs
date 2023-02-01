@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
+using ECampus.Contracts.DataAccess;
+using ECampus.Contracts.Services;
 using ECampus.Domain.Mapping;
 using ECampus.Services.Services;
 using ECampus.Shared.DataContainers;
 using ECampus.Shared.DataTransferObjects;
-using ECampus.Shared.Interfaces.DataAccess;
-using ECampus.Shared.Interfaces.Domain;
 using ECampus.Shared.Models;
 using ECampus.Shared.QueryParameters;
 using ECampus.Tests.Shared.DataFactories;

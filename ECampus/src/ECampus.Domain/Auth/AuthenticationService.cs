@@ -1,10 +1,9 @@
 ﻿using System.Net;
 using ECampus.Core.Metadata;
+using ECampus.Domain.Interfaces.Auth;
 using ECampus.Shared.Enums;
 using ECampus.Shared.Exceptions.DomainExceptions;
 using ECampus.Shared.Extensions;
-using ECampus.Shared.Interfaces.Auth;
-using ECampus.Shared.Metadata;
 using IdentityServer4.Extensions;
 using Microsoft.AspNetCore.Http;
 

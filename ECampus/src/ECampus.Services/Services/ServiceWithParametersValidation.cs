@@ -1,9 +1,8 @@
-﻿using ECampus.Domain.Interfaces;
+﻿using ECampus.Contracts.Services;
+using ECampus.Domain.Interfaces.Validation;
+using ECampus.Shared.Data;
 using ECampus.Shared.DataContainers;
 using ECampus.Shared.Exceptions.DomainExceptions;
-using ECampus.Shared.Interfaces.Data.Models;
-using ECampus.Shared.Interfaces.Domain;
-using ECampus.Shared.Interfaces.Domain.Validation;
 using ECampus.Shared.QueryParameters;
 
 namespace ECampus.Services.Services;

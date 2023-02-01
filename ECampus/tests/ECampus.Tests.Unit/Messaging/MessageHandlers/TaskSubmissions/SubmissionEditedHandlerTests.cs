@@ -2,7 +2,6 @@
 using ECampus.Core.Messages;
 using ECampus.Messaging.Mailing;
 using ECampus.Messaging.MessageHandlers.TaskSubmissions;
-using ECampus.Messaging.MessageHandlers.Users;
 using Serilog;
 
 namespace ECampus.Tests.Unit.Messaging.MessageHandlers.TaskSubmissions;

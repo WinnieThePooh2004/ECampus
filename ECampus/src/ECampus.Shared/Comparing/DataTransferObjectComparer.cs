@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using ECampus.Shared.Interfaces.Data.Models;
+using ECampus.Shared.Data;
 
 namespace ECampus.Shared.Comparing;
 

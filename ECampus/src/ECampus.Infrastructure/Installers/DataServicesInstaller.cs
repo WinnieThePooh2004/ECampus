@@ -1,5 +1,4 @@
-﻿using ECampus.Core.Extensions;
-using ECampus.Core.Installers;
+﻿using ECampus.Core.Installers;
 using ECampus.Infrastructure.DataCreateServices;
 using ECampus.Infrastructure.DataDeleteServices;
 using ECampus.Infrastructure.DataUpdateServices;

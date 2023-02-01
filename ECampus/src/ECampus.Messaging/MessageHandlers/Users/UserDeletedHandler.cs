@@ -26,7 +26,7 @@ public class UserDeletedHandler : IRequestHandler<UserDeleted>
             Body = "<h2>Your account was deleted</h2>, <p>you can contact us to restore it</p>",
             IsBodyHtml = true
         };
-        await _emailSendService.SendEmailAsync(email, new List<string> { request.Email });
+        await _emailSendService.SendEmailAsync(email, new List<string?> { request.Email });
         return Unit.Value;
     }
 }

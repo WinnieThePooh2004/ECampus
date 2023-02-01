@@ -1,13 +1,11 @@
 ﻿using AutoMapper;
+using ECampus.Contracts.DataAccess;
+using ECampus.Contracts.Services;
 using ECampus.Core.Metadata;
-using ECampus.Domain.Interfaces;
+using ECampus.Domain.Interfaces.Validation;
 using ECampus.Shared.DataContainers;
 using ECampus.Shared.DataTransferObjects;
 using ECampus.Shared.Exceptions.DomainExceptions;
-using ECampus.Shared.Interfaces.DataAccess;
-using ECampus.Shared.Interfaces.Domain;
-using ECampus.Shared.Interfaces.Domain.Validation;
-using ECampus.Shared.Metadata;
 using ECampus.Shared.Validation;
 using Microsoft.Extensions.Logging;
 

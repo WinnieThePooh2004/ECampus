@@ -1,12 +1,11 @@
 ﻿using System.Security.Claims;
+using ECampus.Contracts.DataAccess;
 using ECampus.Domain.Interfaces;
+using ECampus.Domain.Interfaces.Validation;
 using ECampus.Services.Services;
 using ECampus.Shared.Auth;
 using ECampus.Shared.DataTransferObjects;
 using ECampus.Shared.Exceptions.DomainExceptions;
-using ECampus.Shared.Interfaces.DataAccess;
-using ECampus.Shared.Interfaces.Domain.Validation;
-using ECampus.Shared.Interfaces.Messaging;
 using ECampus.Shared.Models;
 using ECampus.Shared.Validation;
 using ECampus.Tests.Shared.DataFactories;

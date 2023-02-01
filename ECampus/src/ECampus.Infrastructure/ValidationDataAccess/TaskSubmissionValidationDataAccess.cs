@@ -1,7 +1,6 @@
-﻿using ECampus.Core.Metadata;
+﻿using ECampus.Contracts.DataValidation;
+using ECampus.Core.Metadata;
 using ECampus.Shared.Exceptions.InfrastructureExceptions;
-using ECampus.Shared.Interfaces.Domain.Validation;
-using ECampus.Shared.Metadata;
 using ECampus.Shared.Models;
 
 namespace ECampus.Infrastructure.ValidationDataAccess;

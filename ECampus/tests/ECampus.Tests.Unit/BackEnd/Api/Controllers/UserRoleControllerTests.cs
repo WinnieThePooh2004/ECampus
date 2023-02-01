@@ -1,6 +1,6 @@
 ﻿using ECampus.Api.Controllers;
+using ECampus.Contracts.Services;
 using ECampus.Shared.DataTransferObjects;
-using ECampus.Shared.Interfaces.Domain;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECampus.Tests.Unit.BackEnd.Api.Controllers;

@@ -3,7 +3,6 @@ using ECampus.Infrastructure.DataAccessFacades;
 using ECampus.Infrastructure.Interfaces;
 using ECampus.Shared.Models;
 using ECampus.Shared.Models.RelationModels;
-using Microsoft.EntityFrameworkCore;
 
 namespace ECampus.Tests.Unit.BackEnd.Infrastructure.DataAccessFacadesTests;
 

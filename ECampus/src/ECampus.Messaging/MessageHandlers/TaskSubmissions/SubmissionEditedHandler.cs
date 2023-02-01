@@ -32,7 +32,7 @@ public class SubmissionEditedHandler : IRequestHandler<SubmissionEdited>
             Subject = "Submission was edited",
             IsBodyHtml = true
         };
-        await _emailSendService.SendEmailAsync(email, new List<string> { request.UserEmail });
+        await _emailSendService.SendEmailAsync(email, new List<string?> { request.UserEmail });
         return Unit.Value;
     }
 

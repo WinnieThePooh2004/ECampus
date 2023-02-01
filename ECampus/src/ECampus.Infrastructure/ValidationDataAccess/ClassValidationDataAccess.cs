@@ -1,6 +1,5 @@
-﻿using ECampus.Core.Metadata;
-using ECampus.Shared.Interfaces.Domain.Validation;
-using ECampus.Shared.Metadata;
+﻿using ECampus.Contracts.DataValidation;
+using ECampus.Core.Metadata;
 using ECampus.Shared.Models;
 using Microsoft.EntityFrameworkCore;
 
