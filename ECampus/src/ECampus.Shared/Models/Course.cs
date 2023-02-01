@@ -12,8 +12,11 @@ public class Course : IModel, IIsDeleted
     public bool IsDeleted { get; set; }
 
     public string Name { get; set; } = default!;
-    
+
     public int SubjectId { get; set; }
+    
+    public DateTime StartDate { get; set; } = DateTime.Now;
+    public DateTime EndDate { get; set; } = DateTime.Now + TimeSpan.FromDays(150);
     
     public List<Teacher>? Teachers { get; set; }
     public Subject? Subject { get; set; }

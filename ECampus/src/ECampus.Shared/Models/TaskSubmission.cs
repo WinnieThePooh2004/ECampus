@@ -1,4 +1,5 @@
 ﻿using ECampus.Shared.Data;
+using Newtonsoft.Json;
 
 namespace ECampus.Shared.Models;
 
@@ -13,4 +14,6 @@ public class TaskSubmission : IModel
     public int StudentId { get; set; }
     public CourseTask? CourseTask { get; set; }
     public Student? Student { get; set; }
+
+    public double AbsolutePoints() => CourseTask!.Coefficient * TotalPoints;
 }
