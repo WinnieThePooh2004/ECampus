@@ -12,7 +12,7 @@ public interface IQueryParameters
 }
 
 // ReSharper disable once UnusedTypeParameter
-public interface IQueryParameters<T> : IQueryParameters
+public interface IQueryParameters<T>
     where T : class, IModel
 {
 }

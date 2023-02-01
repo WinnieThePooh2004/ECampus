@@ -10,7 +10,7 @@ namespace ECampus.Infrastructure.DataAccessFacades;
 
 public class ParametersDataAccessFacade<TModel, TParameters> : IParametersDataAccessFacade<TModel, TParameters>
     where TModel : class, IModel, new()
-    where TParameters : IQueryParameters<TModel>
+    where TParameters : IQueryParameters<TModel>, IQueryParameters
 {
     private readonly ApplicationDbContext _context;
     private readonly IMultipleItemSelector<TModel, TParameters> _multipleItemSelector;
