@@ -13,10 +13,12 @@ public class CourseTaskDtoValidatorTests
         var expectedErrors = new List<string>
         {
             "Student id cannot be 0",
-            "Task name cannot be empty"
+            "Task name cannot be empty",
+            "Coefficient must be more than 0"
         };
 
-        var actualErrors = _sut.Validate(new CourseTaskDto()).Errors.Select(e => e.ErrorMessage);
+        var actualErrors = _sut.Validate(new CourseTaskDto { Coefficient = -1 })
+            .Errors.Select(e => e.ErrorMessage);
 
         actualErrors.Should().BeEquivalentTo(expectedErrors);
     }
@@ -27,11 +29,13 @@ public class CourseTaskDtoValidatorTests
         var expectedErrors = new List<string>
         {
             "Student id cannot be 0",
-            "Task name cannot be longer than 40 symbols"
+            "Task name cannot be longer than 40 symbols",
+            "Coefficient must not be greater than 0"
         };
         var invalidName = new char[41];
 
-        var actualErrors = _sut.Validate(new CourseTaskDto { Name = new string(invalidName) }).Errors
+        var actualErrors = _sut.Validate(
+                new CourseTaskDto { Name = new string(invalidName), Coefficient = 10 }).Errors
             .Select(e => e.ErrorMessage);
 
         actualErrors.Should().BeEquivalentTo(expectedErrors);

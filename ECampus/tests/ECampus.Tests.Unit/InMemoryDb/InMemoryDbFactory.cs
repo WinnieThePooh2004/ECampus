@@ -6,18 +6,32 @@ namespace ECampus.Tests.Unit.InMemoryDb;
 
 public static class InMemoryDbFactory
 {
-    private static bool _dbCreated;
+    private static bool _creatingEnded;
+    private static bool _creatingStarted;
     public static async Task<ApplicationDbContext> GetContext()
     {
         var context = new ApplicationDbContext(CreateOptions());
-        if (_dbCreated)
+        if (_creatingEnded)
         {
             return context;
         }
 
-        _dbCreated = true;
-        await context.Database.EnsureCreatedAsync();
-        await context.Database.ExecuteSqlRawAsync("PRAGMA foreign_keys=OFF;");
+        //this very strange construction needed to ensure that context won`t be returned until its creation has ended
+        //really, don`t try to touch it, 1 of 10 cases some tests can fall 
+        if (!_creatingStarted)
+        {
+            _creatingStarted = true;
+            await context.Database.EnsureCreatedAsync();
+            _creatingEnded = true;
+        }
+        else
+        {
+            while (!_creatingEnded)
+            {
+                
+            }
+        }
+        
         return context;
     }
 
