@@ -1,4 +1,5 @@
-﻿using ECampus.Contracts.DataAccess;
+﻿using AutoMapper;
+using ECampus.Contracts.DataAccess;
 using ECampus.Contracts.Services;
 using ECampus.Core.Metadata;
 using ECampus.Domain.Interfaces.Validation;
@@ -13,15 +14,17 @@ public class PasswordChangeService : IPasswordChangeService
 {
     private readonly IPasswordChangeDataAccess _passwordChangeDataAccess;
     private readonly IUpdateValidator<PasswordChangeDto> _passwordChangeValidator;
+    private readonly IMapper _mapper;
 
     public PasswordChangeService(IPasswordChangeDataAccess passwordChangeDataAccess,
-        IUpdateValidator<PasswordChangeDto> passwordChangeValidator)
+        IUpdateValidator<PasswordChangeDto> passwordChangeValidator, IMapper mapper)
     {
         _passwordChangeDataAccess = passwordChangeDataAccess;
         _passwordChangeValidator = passwordChangeValidator;
+        _mapper = mapper;
     }
 
-    public async Task<PasswordChangeDto> ChangePassword(PasswordChangeDto passwordChange)
+    public async Task<UserDto> ChangePassword(PasswordChangeDto passwordChange)
     {
         var errors = await _passwordChangeValidator.ValidateAsync(passwordChange);
         if (!errors.IsValid)
@@ -29,8 +32,8 @@ public class PasswordChangeService : IPasswordChangeService
             throw new ValidationException(typeof(PasswordChangeDto), errors);
         }
 
-        await _passwordChangeDataAccess.ChangePassword(passwordChange);
-        return passwordChange;
+        var user = await _passwordChangeDataAccess.ChangePassword(passwordChange);
+        return _mapper.Map<UserDto>(user);
     }
 
     public async Task<ValidationResult> ValidatePasswordChange(PasswordChangeDto passwordChange)

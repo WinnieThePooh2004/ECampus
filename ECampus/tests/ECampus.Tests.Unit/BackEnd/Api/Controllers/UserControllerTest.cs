@@ -131,12 +131,13 @@ public class UserControllerTest
     public async Task ChangePassword_ReturnsFromService_ServiceCalled()
     {
         var passwordChange = _fixture.Create<PasswordChangeDto>();
-        _passwordChangeService.ChangePassword(passwordChange).Returns(passwordChange);
+        var user = new UserDto();
+        _passwordChangeService.ChangePassword(passwordChange).Returns(user);
 
         var actionResult = await _sut.ChangePassword(_passwordChangeService, passwordChange);
 
         actionResult.Should().BeOfType<OkObjectResult>();
-        actionResult.As<OkObjectResult>().Value.Should().Be(passwordChange);
+        actionResult.As<OkObjectResult>().Value.Should().Be(user);
         await _passwordChangeService.Received().ChangePassword(passwordChange);
     }
 

@@ -11,6 +11,7 @@ public class AuditoryEditFormTests
 {
     private readonly IValidator<AuditoryDto> _validator = Substitute.For<IValidator<AuditoryDto>>();
     private readonly TestContext _context;
+    private bool _onSubmitedInvoked;
 
     public AuditoryEditFormTests()
     {
@@ -21,34 +22,37 @@ public class AuditoryEditFormTests
     [Fact]
     public void SubmitForm_ShouldNotInvokeOnSubmit_WhenFormIsInvalid()
     {
-        var onSubmittedInvoked = false;
         var model = new AuditoryDto();
         _validator.ValidateAsync(model).Returns(new ValidationResult(new []{new ValidationFailure("Name", "abc")}));
         var form = _context
             .RenderComponent<AuditoryEditForm>(parameters => parameters
             .Add(form => form.Model, model)
-            .Add(form => form.OnSubmit, _ => onSubmittedInvoked = true));
+            .Add(form => form.OnSubmit, Submit));
         var button = form.Find("button");
         
         button.Click();
         
-        onSubmittedInvoked.Should().BeFalse();
+        _onSubmitedInvoked.Should().BeFalse();
     }
     
     [Fact]
     public void SubmitForm_ShouldNotInvokeOnSubmit_WhenFormInvalid()
     {
-        var onSubmittedInvoked = false;
         var model = new AuditoryDto();
         _validator.ValidateAsync(model).Returns(new ValidationResult());
         var form = _context
             .RenderComponent<AuditoryEditForm>(parameters => parameters
                 .Add(form => form.Model, model)
-                .Add(form => form.OnSubmit, _ => onSubmittedInvoked = true));
+                .Add(form => form.OnSubmit, Submit));
         var button = form.Find("button");
         
         button.Click();
         
-        onSubmittedInvoked.Should().BeTrue();
+        _onSubmitedInvoked.Should().BeTrue();
+    }
+
+    private void Submit()
+    {
+        _onSubmitedInvoked = true;
     }
 }

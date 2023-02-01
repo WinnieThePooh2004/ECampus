@@ -14,5 +14,6 @@ public class UserMessagingInstaller : IInstaller
     {
         services.Decorate<IUserRolesService, UserRolesMessagingService>();
         services.Decorate<IBaseService<UserDto>, UserMessagingService>();
+        services.Decorate<IPasswordChangeService, PasswordChangeMessagingService>();
     }
 }

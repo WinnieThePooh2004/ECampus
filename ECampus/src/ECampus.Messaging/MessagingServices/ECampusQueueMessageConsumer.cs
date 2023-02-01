@@ -46,7 +46,7 @@ public class ECampusQueueMessageConsumer : BackgroundService
         if (response.Messages.Count == 0)
         {
             _logger.Information("No messages found in queue {Name}", _options.Value.Name);
-            await Task.Delay(30000, stoppingToken);
+            await Task.Delay(_options.Value.Delay, stoppingToken);
             return;
         }
         foreach (var message in response.Messages)
@@ -88,6 +88,6 @@ public class ECampusQueueMessageConsumer : BackgroundService
         await _amazonSqs.DeleteMessageAsync(_queueUrl!, message.ReceiptHandle, stoppingToken);
     }
 
-    private async Task<string> GetQueueUrl(CancellationToken stoppingToken) =>
+    private async Task<string> GetQueueUrl(CancellationToken stoppingToken) => 
         _queueUrl ??= (await _amazonSqs.GetQueueUrlAsync(_options.Value.Name, stoppingToken)).QueueUrl;
 }

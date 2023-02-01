@@ -5,6 +5,6 @@ namespace ECampus.Contracts.Services;
 
 public interface IPasswordChangeService
 {
-    Task<PasswordChangeDto> ChangePassword(PasswordChangeDto passwordChange);
+    Task<UserDto> ChangePassword(PasswordChangeDto passwordChange);
     Task<ValidationResult> ValidatePasswordChange(PasswordChangeDto passwordChange);
 }

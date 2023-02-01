@@ -11,7 +11,6 @@ namespace ECampus.Tests.Unit.BackEnd.Infrastructure.DataServices.DataUpdate;
 public class CourseUpdateServiceTests
 {
     private readonly CourseUpdateService _sut;
-    private static bool _dataCreated;
 
     private readonly IDataUpdateService<Course> _baseUpdate =
         Substitute.For<IDataUpdateService<Course>>();
@@ -38,87 +37,83 @@ public class CourseUpdateServiceTests
     {
         await SeedData();
         await using var context = await InMemoryDbFactory.GetContext();
-        var course = new Course { Id = 11, Groups = new List<Group>() };
+        var course = new Course { Id = 1, Groups = new List<Group>() };
 
         await _sut.UpdateAsync(course, context);
         await context.SaveChangesAsync();
 
-        (await context.TaskSubmissions.CountAsync()).Should().Be(0);
+        (await context.TaskSubmissions
+                .Include(t => t.CourseTask)
+                .Where(c => c.CourseTask!.CourseId == 1).CountAsync())
+            .Should().Be(0);
     }
 
     [Fact]
     public async Task Update_ShouldUpdateRelatedSubmissions()
     {
-        await SeedData();
+        await SeedData(100);
         await using var context = await InMemoryDbFactory.GetContext();
-        var course = new Course { Id = 11, Groups = new List<Group> { new() { Id = 10 }, new() { Id = 12 } } };
-        var expectedSubmissions = new List<TaskSubmission>
+        var course = new Course { Id = 100, Groups = new List<Group> { new() { Id = 100 }, new() { Id = 102 } } };
+        var expectedSubmissions = Enumerable.Range(0, 8).Select(i => new TaskSubmission
         {
-            new() { Id = 1, StudentId = 1, CourseTaskId = 1 }, new() { Id = 2, StudentId = 1, CourseTaskId = 2 },
-            new() { Id = 3, StudentId = 2, CourseTaskId = 1 }, new() { Id = 4, StudentId = 2, CourseTaskId = 2 },
-            new() { Id = 9, StudentId = 5, CourseTaskId = 1 }, new() { Id = 11, StudentId = 5, CourseTaskId = 2 },
-            new() { Id = 10, StudentId = 6, CourseTaskId = 1 }, new() { Id = 12, StudentId = 6, CourseTaskId = 2 }
-        };
+            StudentId = i < 4 ? i / 2 + 100 : i / 2 + 102,
+            CourseTaskId = 100 + i % 2
+        });
 
         await _sut.UpdateAsync(course, context);
         await context.SaveChangesAsync();
-
+        
         var submissionsAfterUpdate = await context.TaskSubmissions
-            .Select(s => new TaskSubmission { StudentId = s.StudentId, Id = s.Id, CourseTaskId = s.CourseTaskId })
+            .Include(t => t.CourseTask)
+            .Where(c => c.CourseTask!.CourseId == 100)
+            .Select(s => new TaskSubmission { StudentId = s.StudentId, CourseTaskId = s.CourseTaskId })
             .ToListAsync();
         submissionsAfterUpdate.Should().BeEquivalentTo(expectedSubmissions);
     }
 
-    private static async Task SeedData()
+    private static async Task SeedData(int firstItemId = 1)
     {
         await using var context = await InMemoryDbFactory.GetContext();
-        if (!_dataCreated)
-        {
-            context.Add(Course);
-            context.AddRange(Groups);
-            _dataCreated = true;
-        }
-
-        if (!context.TaskSubmissions.Any())
-        {
-            context.AddRange(Submissions);
-        }
+        context.Add(Course(firstItemId));
+        context.AddRange(Groups(firstItemId));
+        context.AddRange(Submissions(firstItemId));
         await context.SaveChangesAsync();
     }
 
-    private static IEnumerable<Group> Groups => new List<Group>
+    private static IEnumerable<Group> Groups(int firstItemId = 1) => new List<Group>
     {
         new()
         {
-            Id = 10,
-            Students = new List<Student> { new(), new() },
-            CourseGroups = new List<CourseGroup> { new() { CourseId = 11 } }
+            Id = firstItemId,
+            Students = new List<Student> { new() { Id = firstItemId }, new() { Id = firstItemId + 1 } },
+            CourseGroups = new List<CourseGroup> { new() { CourseId = firstItemId } }
         },
         new()
         {
-            Id = 11,
-            Students = new List<Student> { new(), new() },
-            CourseGroups = new List<CourseGroup> { new() { CourseId = 11 } }
+            Id = 1 + firstItemId,
+            Students = new List<Student> { new() { Id = firstItemId + 2 }, new() { Id = firstItemId + 3 } },
+            CourseGroups = new List<CourseGroup> { new() { CourseId = firstItemId } }
         },
         new()
         {
-            Id = 12,
-            Students = new List<Student> { new(), new() }
+            Id = 2 + firstItemId,
+            Students = new List<Student> { new() { Id = firstItemId + 4 }, new() { Id = firstItemId + 5 } }
         }
     };
 
-    private static IEnumerable<TaskSubmission> Submissions => Enumerable.Range(0, 8)
-        .Select(i => new TaskSubmission { Id = i + 1, StudentId = i / 2 + 1, CourseTaskId = 1 + i % 2 })
+    private static IEnumerable<TaskSubmission> Submissions(int firstItemId = 1) => Enumerable.Range(0, 8)
+        .Select(i => new TaskSubmission
+            { Id = i + firstItemId, StudentId = i / 2 + firstItemId, CourseTaskId = firstItemId + i % 2 })
         .ToList();
 
-    private static Course Course => new()
+    private static Course Course(int firstItemId = 1) => new()
     {
-        Id = 11,
+        Id = firstItemId,
         Name = "name",
         Tasks = new List<CourseTask>
         {
-            new() { Id = 1, Name = "Name11" },
-            new() { Id = 2, Name = "Name10" }
+            new() { Id = firstItemId, Name = "Name11" },
+            new() { Id = firstItemId + 1, Name = "Name10" }
         }
     };
 }
