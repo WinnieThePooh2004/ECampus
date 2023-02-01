@@ -1,6 +1,7 @@
 ﻿using ECampus.Core.Extensions;
 using ECampus.Core.Installers;
 using ECampus.Domain;
+using ECampus.Domain.Interfaces;
 using ECampus.Services.Services;
 using ECampus.Shared;
 using ECampus.Shared.Extensions;

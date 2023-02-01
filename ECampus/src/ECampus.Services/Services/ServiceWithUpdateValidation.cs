@@ -1,4 +1,5 @@
-﻿using ECampus.Shared.Exceptions.DomainExceptions;
+﻿using ECampus.Domain.Interfaces;
+using ECampus.Shared.Exceptions.DomainExceptions;
 using ECampus.Shared.Interfaces.Data.Models;
 using ECampus.Shared.Interfaces.Domain;
 using ECampus.Shared.Interfaces.Domain.Validation;

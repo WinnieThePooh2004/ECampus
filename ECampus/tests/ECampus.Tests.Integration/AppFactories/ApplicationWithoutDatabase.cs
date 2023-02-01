@@ -1,4 +1,5 @@
-﻿using ECampus.Infrastructure;
+﻿using ECampus.Api;
+using ECampus.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;

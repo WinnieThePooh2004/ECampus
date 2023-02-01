@@ -1,4 +1,5 @@
-﻿using ECampus.Shared.DataTransferObjects;
+﻿using ECampus.Domain.Interfaces;
+using ECampus.Shared.DataTransferObjects;
 using ECampus.Shared.Interfaces.Domain.Validation;
 using ECampus.Shared.Models;
 using ECampus.Shared.Validation;

@@ -12,7 +12,7 @@ using ECampus.Tests.Shared.Mocks.HttpRequests;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 
-namespace ECampus.Tests.Integration.Tests.AuditoriesEndpoints;
+namespace ECampus.Tests.Integration.Tests.Endpoins.AuditoriesEndpoints;
 
 public class AuditoriesSuccessfulEndpointsTests : IClassFixture<ApplicationFactory>, IAsyncLifetime
 {

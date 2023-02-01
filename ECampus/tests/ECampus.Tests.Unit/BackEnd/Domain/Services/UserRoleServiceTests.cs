@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ECampus.Domain.Interfaces;
 using ECampus.Services.Services;
 using ECampus.Shared.DataTransferObjects;
 using ECampus.Shared.Exceptions.DomainExceptions;

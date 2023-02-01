@@ -5,7 +5,7 @@ using ECampus.Tests.Integration.AppFactories;
 using ECampus.Tests.Integration.AuthHelpers;
 using FluentAssertions;
 
-namespace ECampus.Tests.Integration.Tests.TaskSubmissionEndpoints;
+namespace ECampus.Tests.Integration.Tests.Endpoins.TaskSubmissionEndpoints;
 
 public class AccessRulesFailsTests : IClassFixture<ApplicationFactory>
 {

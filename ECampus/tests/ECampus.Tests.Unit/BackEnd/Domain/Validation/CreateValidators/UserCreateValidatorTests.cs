@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using AutoMapper;
+using ECampus.Domain.Interfaces;
 using ECampus.Domain.Mapping;
 using ECampus.Domain.Validation.CreateValidators;
 using ECampus.Shared.DataTransferObjects;

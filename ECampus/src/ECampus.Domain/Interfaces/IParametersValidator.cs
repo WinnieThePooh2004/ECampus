@@ -1,7 +1,7 @@
 ﻿using ECampus.Shared.QueryParameters;
 using ECampus.Shared.Validation;
 
-namespace ECampus.Shared.Interfaces.Domain.Validation;
+namespace ECampus.Domain.Interfaces;
 
 public interface IParametersValidator<in TParameters> 
     where TParameters : IQueryParameters

@@ -1,6 +1,7 @@
 ﻿using ECampus.Core.Extensions;
 using ECampus.Core.Installers;
 using ECampus.Core.Metadata;
+using ECampus.Domain.Interfaces;
 using ECampus.Domain.Validation.CreateValidators;
 using ECampus.Domain.Validation.UpdateValidators;
 using ECampus.Shared.Extensions;

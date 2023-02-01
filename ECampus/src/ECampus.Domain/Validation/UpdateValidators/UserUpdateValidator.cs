@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using AutoMapper;
+using ECampus.Domain.Interfaces;
 using ECampus.Shared.DataTransferObjects;
 using ECampus.Shared.Enums;
 using ECampus.Shared.Extensions;

@@ -9,7 +9,7 @@ using ECampus.Tests.Integration.AuthHelpers;
 using FluentAssertions;
 using Newtonsoft.Json;
 
-namespace ECampus.Tests.Integration.Tests.TeachersEndpoints;
+namespace ECampus.Tests.Integration.Tests.Endpoins.TeachersEndpoints;
 
 public class SaveDataChangesErrorsTests : IClassFixture<ApplicationFactory>
 {

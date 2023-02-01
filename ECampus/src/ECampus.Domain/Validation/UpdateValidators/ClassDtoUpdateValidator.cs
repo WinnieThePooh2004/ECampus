@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ECampus.Domain.Interfaces;
 using ECampus.Domain.Validation.UniversalValidators;
 using ECampus.Shared.DataTransferObjects;
 using ECampus.Shared.Interfaces.Domain.Validation;

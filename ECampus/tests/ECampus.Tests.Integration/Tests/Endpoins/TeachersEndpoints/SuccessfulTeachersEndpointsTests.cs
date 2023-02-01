@@ -13,7 +13,7 @@ using ECampus.Tests.Shared.Mocks.HttpRequests;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 
-namespace ECampus.Tests.Integration.Tests.TeachersEndpoints;
+namespace ECampus.Tests.Integration.Tests.Endpoins.TeachersEndpoints;
 
 public class SuccessfulTeachersEndpointsTests : IClassFixture<ApplicationFactory>, IAsyncLifetime
 {

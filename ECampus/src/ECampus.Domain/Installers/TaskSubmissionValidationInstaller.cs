@@ -1,4 +1,5 @@
 ﻿using ECampus.Core.Installers;
+using ECampus.Domain.Interfaces;
 using ECampus.Domain.Validation.FluentValidators;
 using ECampus.Domain.Validation.UpdateValidators;
 using ECampus.Shared.DataTransferObjects;

@@ -8,7 +8,7 @@ using ECampus.Tests.Integration.AuthHelpers;
 using FluentAssertions;
 using Newtonsoft.Json;
 
-namespace ECampus.Tests.Integration.Tests.AuditoriesEndpoints;
+namespace ECampus.Tests.Integration.Tests.Endpoins.AuditoriesEndpoints;
 
 public class SaveDataChangesErrorsTests : IClassFixture<ApplicationFactory>
 {

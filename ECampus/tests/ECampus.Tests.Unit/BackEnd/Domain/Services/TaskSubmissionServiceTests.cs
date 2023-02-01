@@ -1,4 +1,5 @@
 ﻿using System.Security.Claims;
+using ECampus.Domain.Interfaces;
 using ECampus.Services.Services;
 using ECampus.Shared.Auth;
 using ECampus.Shared.DataTransferObjects;

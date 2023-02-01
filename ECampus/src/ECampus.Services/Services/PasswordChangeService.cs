@@ -1,4 +1,5 @@
 ﻿using ECampus.Core.Metadata;
+using ECampus.Domain.Interfaces;
 using ECampus.Shared.DataTransferObjects;
 using ECampus.Shared.Exceptions.DomainExceptions;
 using ECampus.Shared.Interfaces.DataAccess;
