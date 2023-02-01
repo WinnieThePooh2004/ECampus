@@ -13,6 +13,8 @@ public class CourseTask : IModel, IIsDeleted
     public int MaxPoints { get; set; }
     public TaskType Type { get; set; }
     
+    public double Coefficient { get; set; }
+    
     public int CourseId { get; set; }
     public Course? Course { get; set; }
     public List<TaskSubmission>? Submissions { get; set; }
