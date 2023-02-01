@@ -8,9 +8,9 @@ namespace ECampus.Infrastructure.DataSelectors.MultipleItemSelectors;
 
 public class MultipleDepartmentSelector : IMultipleItemSelector<Department, DepartmentParameters>
 {
-    public IQueryable<Department> SelectData(DbSet<Department> data, DepartmentParameters parameters)
+    public IQueryable<Department> SelectData(ApplicationDbContext context, DepartmentParameters parameters)
     {
-        var result = data.Search(d => d.Name, parameters.DepartmentName);
+        var result = context.Departments.Search(d => d.Name, parameters.DepartmentName);
         if (parameters.FacultyId == 0)
         {
             return result;

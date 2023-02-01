@@ -8,9 +8,9 @@ namespace ECampus.Infrastructure.DataSelectors.MultipleItemSelectors;
 
 public class MultipleCourseSelector : IMultipleItemSelector<Course, CourseParameters>
 {
-    public IQueryable<Course> SelectData(DbSet<Course> data, CourseParameters parameters)
+    public IQueryable<Course> SelectData(ApplicationDbContext context, CourseParameters parameters)
     {
-        var result = data
+        var result = context.Courses
             .Include(c => c.CourseGroups)
             .Include(c => c.CourseTeachers)
             .Search(c => c.Name, parameters.Name);

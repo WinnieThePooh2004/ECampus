@@ -8,6 +8,6 @@ namespace ECampus.Infrastructure.DataSelectors.MultipleItemSelectors;
 
 public class MultipleFacultySelector : IMultipleItemSelector<Faculty, FacultyParameters>
 {
-    public IQueryable<Faculty> SelectData(DbSet<Faculty> data, FacultyParameters parameters)
-        => data.Search(f => f.Name, parameters.Name);
+    public IQueryable<Faculty> SelectData(ApplicationDbContext context, FacultyParameters parameters)
+        => context.Faculties.Search(f => f.Name, parameters.Name);
 }

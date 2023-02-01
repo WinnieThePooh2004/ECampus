@@ -1,4 +1,5 @@
-﻿using ECampus.Infrastructure.DataSelectors.MultipleItemSelectors;
+﻿using ECampus.Infrastructure;
+using ECampus.Infrastructure.DataSelectors.MultipleItemSelectors;
 using ECampus.Shared.Models;
 using ECampus.Shared.QueryParameters;
 using ECampus.Tests.Shared.Mocks.EntityFramework;
@@ -9,8 +10,8 @@ namespace ECampus.Tests.Unit.BackEnd.Infrastructure.DataServices.ParametersSelec
 public class MultipleFacultySelectorTests
 {
     private readonly MultipleFacultySelector _sut;
-    private readonly DbSet<Faculty> _dataSet;
     private readonly List<Faculty> _data;
+    private readonly ApplicationDbContext _context = Substitute.For<ApplicationDbContext>();
 
     public MultipleFacultySelectorTests()
     {
@@ -21,7 +22,7 @@ public class MultipleFacultySelectorTests
             new() { Name = "name2" },
             new() { Name = "nam" }
         };
-        _dataSet = new DbSetMock<Faculty>(_data);
+        _context.Faculties = new DbSetMock<Faculty>(_data);
     }
 
     [Fact]
@@ -29,7 +30,7 @@ public class MultipleFacultySelectorTests
     {
         var parameters = new FacultyParameters { Name = "name" };
 
-        var selectedData = _sut.SelectData(_dataSet, parameters).ToList();
+        var selectedData = _sut.SelectData(_context, parameters).ToList();
 
         selectedData.Should().Contain(_data[1]);
         selectedData.Should().Contain(_data[0]);

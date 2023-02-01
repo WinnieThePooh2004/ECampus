@@ -1,4 +1,5 @@
-﻿using ECampus.Infrastructure.DataSelectors.MultipleItemSelectors;
+﻿using ECampus.Infrastructure;
+using ECampus.Infrastructure.DataSelectors.MultipleItemSelectors;
 using ECampus.Shared.Models;
 using ECampus.Shared.QueryParameters;
 using ECampus.Tests.Shared.Mocks.EntityFramework;
@@ -9,8 +10,8 @@ namespace ECampus.Tests.Unit.BackEnd.Infrastructure.DataServices.ParametersSelec
 public class MultipleStudentSelectorTests
 {
     private readonly MultipleStudentSelector _sut;
-    private readonly DbSet<Student> _dataSet;
     private readonly List<Student> _data;
+    private readonly ApplicationDbContext _context = Substitute.For<ApplicationDbContext>();
 
     public MultipleStudentSelectorTests()
     {
@@ -21,7 +22,7 @@ public class MultipleStudentSelectorTests
             new() { LastName = "ab", GroupId = 10, UserEmail = "email" },
             new() { LastName = "ab", GroupId = 11 }
         };
-        _dataSet = new DbSetMock<Student>(_data);
+        _context.Students = new DbSetMock<Student>(_data);
     }
 
     [Fact]
@@ -29,7 +30,7 @@ public class MultipleStudentSelectorTests
     {
         var parameters = new StudentParameters { GroupId = 10, LastName = "a", FirstName = "" };
 
-        var selectedData = _sut.SelectData(_dataSet, parameters).ToList();
+        var selectedData = _sut.SelectData(_context, parameters).ToList();
 
         selectedData.Should().Contain(_data[1]);
         selectedData.Count.Should().Be(1);
@@ -40,7 +41,7 @@ public class MultipleStudentSelectorTests
     {
         var parameters = new StudentParameters { GroupId = 0, LastName = "a", FirstName = "" };
 
-        var selectedData = _sut.SelectData(_dataSet, parameters).ToList();
+        var selectedData = _sut.SelectData(_context, parameters).ToList();
 
         selectedData.Should().Contain(_data[1]);
         selectedData.Should().Contain(_data[2]);
@@ -52,7 +53,7 @@ public class MultipleStudentSelectorTests
     {
         var parameters = new StudentParameters { GroupId = 0, LastName = "a", FirstName = "", UserIdCanBeNull = false };
 
-        var selectedData = _sut.SelectData(_dataSet, parameters).ToList();
+        var selectedData = _sut.SelectData(_context, parameters).ToList();
 
         selectedData.Should().Contain(_data[2]);
         selectedData.Count.Should().Be(1);

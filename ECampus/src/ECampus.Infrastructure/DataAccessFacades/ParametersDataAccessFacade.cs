@@ -24,7 +24,7 @@ public class ParametersDataAccessFacade<TModel, TParameters> : IParametersDataAc
 
     public async Task<ListWithPaginationData<TModel>> GetByParameters(TParameters parameters)
     {
-        var query = _multipleItemSelector.SelectData(_context.Set<TModel>(), parameters);
+        var query = _multipleItemSelector.SelectData(_context, parameters);
         var totalCount = await query.CountAsync();
         var pagedItems = await query
             .Sort(parameters.OrderBy, parameters.SortOrder)

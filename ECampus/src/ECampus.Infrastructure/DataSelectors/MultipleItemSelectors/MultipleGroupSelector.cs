@@ -8,13 +8,9 @@ namespace ECampus.Infrastructure.DataSelectors.MultipleItemSelectors;
 
 public class MultipleGroupSelector : IMultipleItemSelector<Group, GroupParameters>
 {
-    public IQueryable<Group> SelectData(DbSet<Group> data, GroupParameters parameters)
+    public IQueryable<Group> SelectData(ApplicationDbContext context, GroupParameters parameters)
     {
-        var result = data.Search(g => g.Name, parameters.Name);
-        if (parameters.DepartmentId == 0)
-        {
-            return result;
-        }
-        return result.Where(g => g.DepartmentId == parameters.DepartmentId);
+        var result = context.Groups.Search(g => g.Name, parameters.Name);
+        return parameters.DepartmentId == 0 ? result : result.Where(g => g.DepartmentId == parameters.DepartmentId);
     }
 }
