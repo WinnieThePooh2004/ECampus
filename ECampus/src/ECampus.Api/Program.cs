@@ -37,7 +37,8 @@ builder.Services.AddControllers(options => { options.Filters.Add<MiddlewareExcep
     .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 
 builder.Services.AddAutoMapper(typeof(DomainAssemblyMarker));
-builder.Services.AddUniqueServices(typeof(DomainAssemblyMarker), typeof(InfrastructureAssemblyMarker), typeof(ServicesAssemblyMarker));
+builder.Services.AddUniqueServices(typeof(DomainAssemblyMarker), typeof(DomainAssemblyMarker), typeof(ApiAssemblyMarker),
+    typeof(InfrastructureAssemblyMarker), typeof(ServicesAssemblyMarker));
 
 builder.Services.UserInstallersFromAssemblyContaining(builder.Configuration, typeof(DomainAssemblyMarker), typeof(ApiAssemblyMarker),
     typeof(InfrastructureAssemblyMarker), typeof(ServicesAssemblyMarker));

@@ -13,7 +13,6 @@ public class ManyToManyRelationshipsUpdateTests
 {
     private readonly ManyToManyRelationshipsUpdate<User, Auditory, UserAuditory> _sut;
     private readonly IDataUpdateService<User> _baseUpdate;
-    private static bool _dataCreated;
 
     private readonly RelationshipsHandler<User, Auditory, UserAuditory> _handler = new();
 
@@ -39,31 +38,30 @@ public class ManyToManyRelationshipsUpdateTests
     [Fact]
     private async Task UpdateRelations_ShouldUpdateRelations()
     {
-        await SeedData();
+        await SeedData(100);
         var context = await InMemoryDbFactory.GetContext();
         var updatedEntity = new User
         {
-            Id = 10,
+            Id = 100,
             SavedAuditories = new List<Auditory>
             {
-                new() { Id = 3 },
-                new() { Id = 4 },
-                new() { Id = 6 }
+                new() { Id = 100 },
+                new() { Id = 102 }
             }
         };
 
         await _sut.UpdateAsync(updatedEntity, context);
         await context.SaveChangesAsync();
         var currentRelations = await context.UserAuditories
+            .Where(u => u.UserId == 100)
             .Select(u => new UserAuditory { UserId = u.UserId, AuditoryId = u.AuditoryId })
             .ToListAsync();
 
         await _baseUpdate.Received().UpdateAsync(updatedEntity, context);
         currentRelations.Should().BeEquivalentTo(new List<UserAuditory>
         {
-            new() { UserId = 10, AuditoryId = 3 },
-            new() { UserId = 10, AuditoryId = 4 },
-            new() { UserId = 10, AuditoryId = 6 }
+            new() { UserId = 100, AuditoryId = 100 },
+            new() { UserId = 100, AuditoryId = 102 }
         });
     }
 
@@ -71,40 +69,35 @@ public class ManyToManyRelationshipsUpdateTests
     public async Task Update_ShouldDeleteAllRelations_WhenNoRelatedModelsPassed()
     {
         await SeedData();
-        var user = new User { Id = 10, SavedAuditories = new List<Auditory>() };
+        var user = new User { Id = 1, SavedAuditories = new List<Auditory>() };
         await using var context = await InMemoryDbFactory.GetContext();
 
         await _sut.UpdateAsync(user, context);
         await context.SaveChangesAsync();
 
-        (await context.UserAuditories.CountAsync()).Should().Be(0);
+        (await context.UserAuditories.Where(u => u.UserId == 1).CountAsync()).Should().Be(0);
     }
 
-    private static async Task SeedData()
+    private static async Task SeedData(int firstItemId = 1)
     {
         await using var context = await InMemoryDbFactory.GetContext();
-        if (!_dataCreated)
-        {
-            context.Add(new User { Id = 10 });
-            context.AddRange(Auditories);
-            _dataCreated = true;
-        }
+        context.Add(new User { Id = firstItemId, Username = firstItemId.ToString(), Email = firstItemId.ToString() });
+        context.AddRange(Auditories(firstItemId));
 
-        context.AddRange(UserAuditories);
+        context.AddRange(UserAuditories(firstItemId));
         await context.SaveChangesAsync();
     }
 
-    private static IEnumerable<Auditory> Auditories => new List<Auditory>
+    private static IEnumerable<Auditory> Auditories(int firstItemId = 1) => new List<Auditory>
     {
-        new() { Id = 3 },
-        new() { Id = 4 },
-        new() { Id = 5 },
-        new() { Id = 6 }
+        new() { Id = firstItemId },
+        new() { Id = firstItemId + 1 },
+        new() { Id = firstItemId + 2 }
     };
 
-    private static IEnumerable<UserAuditory> UserAuditories => new List<UserAuditory>
+    private static IEnumerable<UserAuditory> UserAuditories(int firstItemId = 1) => new List<UserAuditory>
     {
-        new() { UserId = 10, AuditoryId = 3 },
-        new() { UserId = 10, AuditoryId = 5 }
+        new() { UserId = firstItemId, AuditoryId = firstItemId },
+        new() { UserId = firstItemId, AuditoryId = firstItemId + 1 }
     };
 }

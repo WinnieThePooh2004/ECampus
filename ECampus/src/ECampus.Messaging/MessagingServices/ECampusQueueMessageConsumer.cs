@@ -88,6 +88,6 @@ public class ECampusQueueMessageConsumer : BackgroundService
         await _amazonSqs.DeleteMessageAsync(_queueUrl!, message.ReceiptHandle, stoppingToken);
     }
 
-    private async Task<string> GetQueueUrl(CancellationToken stoppingToken) =>
+    private async Task<string> GetQueueUrl(CancellationToken stoppingToken) => 
         _queueUrl ??= (await _amazonSqs.GetQueueUrlAsync(_options.Value.Name, stoppingToken)).QueueUrl;
 }
