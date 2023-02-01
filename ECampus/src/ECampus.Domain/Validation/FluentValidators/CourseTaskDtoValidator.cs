@@ -18,5 +18,11 @@ public class CourseTaskDtoValidator : AbstractValidator<CourseTaskDto>
         RuleFor(c => c.Name)
             .MaximumLength(40)
             .WithMessage("Task name cannot be longer than 40 symbols");
+
+        RuleFor(c => c.Coefficient)
+            .GreaterThan(0.0)
+            .WithMessage("Coefficient must be more than 0")
+            .LessThanOrEqualTo(1.0)
+            .WithMessage("Coefficient must not be greater than 0");
     }
 }
