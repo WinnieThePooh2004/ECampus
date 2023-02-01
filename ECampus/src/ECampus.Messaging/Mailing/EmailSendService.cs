@@ -15,7 +15,7 @@ public class EmailSendService : IEmailSendService
         _smtpClient = smtpClient;
     }
 
-    public async Task SendEmailAsync(MailMessage email, List<string?> receivers)
+    public async Task SendEmailAsync(MailMessage email, IEnumerable<string?> receivers)
     {
         email.From = new MailAddress(_options.Value.Email);
         foreach (var receiver in receivers.Where(receiver => !string.IsNullOrWhiteSpace(receiver)))
@@ -23,6 +23,10 @@ public class EmailSendService : IEmailSendService
             email.To.Add(receiver!);
         }
 
+        if (!email.To.Any())
+        {
+            return;
+        }
         await _smtpClient.SendMailAsync(email);
     }
 }

@@ -46,7 +46,7 @@ public class ECampusQueueMessageConsumer : BackgroundService
         if (response.Messages.Count == 0)
         {
             _logger.Information("No messages found in queue {Name}", _options.Value.Name);
-            await Task.Delay(30000, stoppingToken);
+            await Task.Delay(_options.Value.Delay, stoppingToken);
             return;
         }
         foreach (var message in response.Messages)

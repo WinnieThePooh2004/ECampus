@@ -19,12 +19,6 @@ public class SubmissionEditedHandler : IRequestHandler<SubmissionEdited>
 
     public async Task<Unit> Handle(SubmissionEdited request, CancellationToken cancellationToken)
     {
-        if (string.IsNullOrEmpty(request.UserEmail))
-        {
-            _logger.Warning("User email is null or empty, cannot send email");
-            return Unit.Value;
-        }
-
         Log(request);
         var email = new MailMessage
         {
