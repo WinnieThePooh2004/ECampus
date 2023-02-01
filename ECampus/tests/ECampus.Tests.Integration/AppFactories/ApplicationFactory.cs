@@ -1,10 +1,13 @@
-﻿using ECampus.Api;
+﻿using Amazon.SimpleNotificationService;
+using ECampus.Api;
+using ECampus.Core.Extensions;
 using ECampus.Infrastructure;
 using ECampus.Tests.Shared.TestDatabase;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Configuration;
+using NSubstitute;
 
 namespace ECampus.Tests.Integration.AppFactories;
 
@@ -13,6 +16,8 @@ public class ApplicationFactory : WebApplicationFactory<Program>
     public static ApplicationDbContext Context =>
         new((DbContextOptions<ApplicationDbContext>)
             new DbContextOptionsBuilder<ApplicationDbContext>().UseInMemoryDb().Options);
+
+    public static IAmazonSimpleNotificationService AmazonSnsMock { get; set; } = default!;
 
     static ApplicationFactory()
     {
@@ -23,14 +28,7 @@ public class ApplicationFactory : WebApplicationFactory<Program>
     {
         builder.ConfigureServices(services =>
         {
-            var descriptor = services.SingleOrDefault(service =>
-                service.ServiceType == typeof(DbContextOptions<ApplicationDbContext>));
-            if (descriptor is not null)
-            {
-                services.Remove(descriptor);
-            }
-
-            services.AddDbContext<ApplicationDbContext>(options => options.UseInMemoryDb());
+            services.UserInstallersFromAssemblyContaining<ApplicationFactory>(Substitute.For<IConfiguration>());
         });
     }
 }

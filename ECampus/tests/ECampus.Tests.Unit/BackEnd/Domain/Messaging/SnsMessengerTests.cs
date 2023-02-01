@@ -3,8 +3,8 @@ using Amazon.SimpleNotificationService.Model;
 using ECampus.Core.Messages;
 using ECampus.Domain.Mapping.Messages;
 using ECampus.Domain.Messaging;
+using ECampus.Domain.Messaging.Options;
 using ECampus.Shared.DataTransferObjects;
-using ECampus.Shared.Messaging.Options;
 using ECampus.Tests.Shared.Mocks;
 using Newtonsoft.Json;
 

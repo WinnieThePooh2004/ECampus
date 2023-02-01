@@ -9,7 +9,7 @@ using ECampus.Tests.Integration.AuthHelpers;
 using ECampus.Tests.Shared.Mocks.HttpRequests;
 using FluentAssertions;
 
-namespace ECampus.Tests.Integration.Tests.Endpoins.TimetableEndpoints;
+namespace ECampus.Tests.Integration.Tests.Endpoints.TimetableEndpoints;
 
 public class SuccessfulTimetableEndpointsTest : IClassFixture<ApplicationFactory>, IAsyncLifetime
 {

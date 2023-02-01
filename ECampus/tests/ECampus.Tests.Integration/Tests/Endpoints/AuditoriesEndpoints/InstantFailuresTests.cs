@@ -8,7 +8,7 @@ using ECampus.Tests.Integration.AuthHelpers;
 using FluentAssertions;
 using Newtonsoft.Json;
 
-namespace ECampus.Tests.Integration.Tests.Endpoins.AuditoriesEndpoints;
+namespace ECampus.Tests.Integration.Tests.Endpoints.AuditoriesEndpoints;
 
 public class InstantFailuresTests : IClassFixture<ApplicationWithoutDatabase>
 {
