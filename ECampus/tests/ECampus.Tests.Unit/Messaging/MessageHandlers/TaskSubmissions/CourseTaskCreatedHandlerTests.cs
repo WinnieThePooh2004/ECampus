@@ -21,7 +21,7 @@ public class CourseTaskCreatedHandlerTests
     {
         var taskCreated = new TaskCreated
         {
-            StudentEmails = new List<string> { "email1", "email2" },
+            StudentEmails = new List<string?> { "email1", "email2" },
             CourseName = "course name",
             TaskName = "task name",
             MaxPoints = 10,

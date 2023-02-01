@@ -12,7 +12,6 @@ using ECampus.FrontEnd.Requests.ValidationRequests;
 using ECampus.FrontEnd.Validation;
 using ECampus.FrontEnd.Validation.Interfaces;
 using ECampus.Shared.DataTransferObjects;
-using ECampus.Shared.Extensions;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Serilog;

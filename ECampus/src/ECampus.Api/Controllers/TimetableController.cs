@@ -1,7 +1,7 @@
-﻿using ECampus.Domain.Auth;
+﻿using ECampus.Contracts.Services;
+using ECampus.Domain.Auth;
 using ECampus.Shared.DataTransferObjects;
 using ECampus.Shared.Enums;
-using ECampus.Shared.Interfaces.Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

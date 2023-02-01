@@ -1,7 +1,7 @@
 ﻿using Amazon.SimpleNotificationService;
 using ECampus.Core.Installers;
+using ECampus.Domain.Interfaces;
 using ECampus.Domain.Messaging;
-using ECampus.Shared.Interfaces.Messaging;
 using ECampus.Shared.Messaging.Options;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

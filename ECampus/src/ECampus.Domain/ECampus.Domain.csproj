@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ECampus.Contracts\ECampus.Contracts.csproj" />
     <ProjectReference Include="..\ECampus.Shared\ECampus.Shared.csproj" />
   </ItemGroup>
 

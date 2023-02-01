@@ -1,5 +1,5 @@
 ﻿using ECampus.Infrastructure.Interfaces;
-using ECampus.Shared.Interfaces.Data.Models;
+using ECampus.Shared.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace ECampus.Infrastructure.DataSelectors.SingleItemSelectors;

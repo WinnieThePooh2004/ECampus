@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
+using ECampus.Contracts.DataAccess;
+using ECampus.Contracts.Services;
+using ECampus.Shared.Data;
 using ECampus.Shared.Exceptions.DomainExceptions;
-using ECampus.Shared.Interfaces.Data.Models;
-using ECampus.Shared.Interfaces.DataAccess;
-using ECampus.Shared.Interfaces.Domain;
 
 namespace ECampus.Services.Services;
 

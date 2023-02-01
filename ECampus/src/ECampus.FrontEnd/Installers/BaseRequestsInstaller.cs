@@ -1,5 +1,4 @@
-﻿using ECampus.Core.Extensions;
-using ECampus.Core.Installers;
+﻿using ECampus.Core.Installers;
 using ECampus.FrontEnd.Requests;
 using ECampus.FrontEnd.Requests.Interfaces;
 using ECampus.Shared;

@@ -5,7 +5,6 @@ using ECampus.Infrastructure.DataUpdateServices;
 using ECampus.Infrastructure.Interfaces;
 using ECampus.Infrastructure.Relationships;
 using ECampus.Shared;
-using ECampus.Shared.Metadata;
 using ECampus.Shared.Metadata.Relationships;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

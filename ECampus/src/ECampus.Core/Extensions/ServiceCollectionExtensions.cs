@@ -8,18 +8,22 @@ namespace ECampus.Core.Extensions;
 
 public static class ServiceCollectionExtensions
 {
-    public static void UserInstallersFromAssemblyContaining<TAssemblyMarker>(this IServiceCollection services, IConfiguration configuration)
+    public static void UserInstallersFromAssemblyContaining<TAssemblyMarker>(this IServiceCollection services,
+        IConfiguration configuration)
         where TAssemblyMarker : IAssemblyMarker
     {
         services.UserInstallersFromAssemblyContaining(configuration, typeof(TAssemblyMarker));
     }
-    
-    public static void UserInstallersFromAssemblyContaining(this IServiceCollection services, IConfiguration configuration, params Type[] assemblyMarkers)
+
+    public static void UserInstallersFromAssemblyContaining(this IServiceCollection services,
+        IConfiguration configuration, params Type[] assemblyMarkers)
     {
-        services.UserInstallersFromAssemblies(configuration, assemblyMarkers.Select(marker => marker.Assembly).ToArray());
+        services.UserInstallersFromAssemblies(configuration,
+            assemblyMarkers.Select(marker => marker.Assembly).ToArray());
     }
 
-    private static void UserInstallersFromAssemblies(this IServiceCollection services, IConfiguration configuration, params Assembly[] assemblies)
+    private static void UserInstallersFromAssemblies(this IServiceCollection services, IConfiguration configuration,
+        params Assembly[] assemblies)
     {
         var installers = assemblies.SelectMany(a => a.GetTypes())
             .Where(type => type.IsAssignableTo(typeof(IInstaller)) && type is { IsClass: true, IsAbstract: false })
@@ -32,7 +36,7 @@ public static class ServiceCollectionExtensions
             installer.Install(services, configuration);
         }
     }
-    
+
     public static void AddUniqueServices(this IServiceCollection services, params Type[] assemblyMarkers)
     {
         services.AddUniqueServices(assemblyMarkers.Select(marker => marker.Assembly).ToArray());

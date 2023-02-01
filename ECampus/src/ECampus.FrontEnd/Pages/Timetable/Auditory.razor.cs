@@ -1,5 +1,4 @@
-﻿using IdentityServer4.Extensions;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 
 namespace ECampus.FrontEnd.Pages.Timetable;
 

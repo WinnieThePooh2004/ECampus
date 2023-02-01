@@ -1,6 +1,5 @@
 ﻿using ECampus.Infrastructure.Interfaces;
-using ECampus.Shared.Interfaces.Data.Models;
-using Microsoft.EntityFrameworkCore;
+using ECampus.Shared.Data;
 
 namespace ECampus.Infrastructure.DataDeleteServices;
 

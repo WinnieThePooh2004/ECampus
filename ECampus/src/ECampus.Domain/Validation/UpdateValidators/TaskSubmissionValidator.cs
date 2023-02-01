@@ -1,10 +1,10 @@
 ﻿using System.Security.Claims;
+using ECampus.Contracts.DataValidation;
 using ECampus.Core.Metadata;
+using ECampus.Domain.Interfaces.Validation;
 using ECampus.Shared.Auth;
 using ECampus.Shared.DataTransferObjects;
 using ECampus.Shared.Exceptions.DomainExceptions;
-using ECampus.Shared.Interfaces.Domain.Validation;
-using ECampus.Shared.Metadata;
 using ECampus.Shared.Validation;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;

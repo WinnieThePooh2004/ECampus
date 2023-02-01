@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
+using ECampus.Contracts.DataValidation;
+using ECampus.Domain.Interfaces.Validation;
 using ECampus.Domain.Validation.UniversalValidators;
 using ECampus.Shared.DataTransferObjects;
-using ECampus.Shared.Interfaces.Domain.Validation;
 using ECampus.Shared.Models;
 using ECampus.Shared.Validation;
 

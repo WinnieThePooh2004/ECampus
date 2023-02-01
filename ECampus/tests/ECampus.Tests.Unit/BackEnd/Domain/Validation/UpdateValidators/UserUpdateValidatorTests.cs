@@ -1,11 +1,12 @@
 ﻿using System.Security.Claims;
 using AutoMapper;
+using ECampus.Contracts.DataValidation;
+using ECampus.Domain.Interfaces.Validation;
 using ECampus.Domain.Mapping;
 using ECampus.Domain.Validation.UpdateValidators;
 using ECampus.Shared.Auth;
 using ECampus.Shared.DataTransferObjects;
 using ECampus.Shared.Enums;
-using ECampus.Shared.Interfaces.Domain.Validation;
 using ECampus.Shared.Models;
 using ECampus.Shared.Validation;
 using ECampus.Tests.Shared.DataFactories;

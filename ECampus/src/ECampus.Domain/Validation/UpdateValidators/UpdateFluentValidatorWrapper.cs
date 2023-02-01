@@ -1,5 +1,5 @@
-﻿using ECampus.Domain.Validation.UniversalValidators;
-using ECampus.Shared.Interfaces.Domain.Validation;
+﻿using ECampus.Domain.Interfaces.Validation;
+using ECampus.Domain.Validation.UniversalValidators;
 using FluentValidation;
 
 namespace ECampus.Domain.Validation.UpdateValidators;

@@ -1,6 +1,6 @@
-﻿using ECampus.Domain.Auth;
+﻿using ECampus.Contracts.Services;
+using ECampus.Domain.Auth;
 using ECampus.Shared.DataTransferObjects;
-using ECampus.Shared.Interfaces.Domain;
 using ECampus.Shared.QueryParameters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

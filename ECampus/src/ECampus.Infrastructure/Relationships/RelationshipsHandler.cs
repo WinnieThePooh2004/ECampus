@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 using ECampus.Infrastructure.Interfaces;
-using ECampus.Shared.Interfaces.Data.Models;
+using ECampus.Shared.Data;
 using ECampus.Shared.Metadata.Relationships;
 
 namespace ECampus.Infrastructure.Relationships;

@@ -29,6 +29,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECampus.Services", "src\ECa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECampus.Core", "src\ECampus.Core\ECampus.Core.csproj", "{DA22A3F4-F7C1-4E25-82C7-495B61699BE5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECampus.Contracts", "src\ECampus.Contracts\ECampus.Contracts.csproj", "{CEB3C56E-9DAA-4980-8B58-C08E3878B61C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,6 +85,10 @@ Global
 		{DA22A3F4-F7C1-4E25-82C7-495B61699BE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DA22A3F4-F7C1-4E25-82C7-495B61699BE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DA22A3F4-F7C1-4E25-82C7-495B61699BE5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CEB3C56E-9DAA-4980-8B58-C08E3878B61C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CEB3C56E-9DAA-4980-8B58-C08E3878B61C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CEB3C56E-9DAA-4980-8B58-C08E3878B61C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CEB3C56E-9DAA-4980-8B58-C08E3878B61C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

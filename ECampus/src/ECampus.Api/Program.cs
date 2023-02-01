@@ -7,7 +7,6 @@ using ECampus.Infrastructure.DataCreateServices;
 using ECampus.Infrastructure.Interfaces;
 using ECampus.Services;
 using ECampus.Shared.Auth;
-using ECampus.Shared.Extensions;
 using ECampus.Shared.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -89,6 +88,9 @@ app.MapControllers();
 
 app.Run();
 
-public abstract partial class Program
+namespace ECampus.Api
 {
+    public abstract partial class Program
+    {
+    }
 }

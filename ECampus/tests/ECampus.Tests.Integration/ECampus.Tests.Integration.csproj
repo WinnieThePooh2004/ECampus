@@ -27,5 +27,9 @@
     <ProjectReference Include="..\..\src\ECampus.Infrastructure\ECampus.Infrastructure.csproj" />
     <ProjectReference Include="..\ECampus.Tests.Shared\ECampus.Tests.Shared.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Tests\Endpoins" />
+  </ItemGroup>
   
 </Project>

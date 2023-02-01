@@ -1,8 +1,7 @@
-﻿using ECampus.Core.Metadata;
-using ECampus.Shared.Interfaces.Auth;
-using ECampus.Shared.Interfaces.DataAccess;
-using ECampus.Shared.Interfaces.Domain;
-using ECampus.Shared.Metadata;
+﻿using ECampus.Contracts.DataAccess;
+using ECampus.Contracts.Services;
+using ECampus.Core.Metadata;
+using ECampus.Domain.Interfaces.Auth;
 
 namespace ECampus.Services.Services;
 
