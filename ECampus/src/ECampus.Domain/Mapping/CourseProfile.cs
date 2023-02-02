@@ -15,11 +15,15 @@ public class CourseProfile : Profile
         ).ForMember(
             dest => dest.TeacherNames,
             opt => opt.MapFrom(course =>
-                course.Teachers!.Select(teacher => $"{teacher.LastName} {teacher.FirstName}"))
+                string.Join(",", course.Teachers!.Select(teacher => $"{teacher.LastName} {teacher.FirstName}")))
         ).ForMember(
-            dest => dest.TotalPoints,
-            opt => opt.MapFrom(course => 
+            dest => dest.ScoredPoints,
+            opt => opt.MapFrom(course =>
                 course.Tasks!.Select(task => task.Submissions!.Single().AbsolutePoints()).Sum())
+        ).ForMember(
+            dest => dest.MaxPoints,
+            opt => opt.MapFrom(c =>
+                c.Tasks!.Select(task => task.Coefficient * task.MaxPoints).Sum())
         );
     }
 }

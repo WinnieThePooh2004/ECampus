@@ -57,8 +57,9 @@ public class SuccessfulEndpointsTests : IClassFixture<ApplicationFactory>, IAsyn
             JsonConvert.DeserializeObject<ListWithPaginationData<CourseSummary>>(
                 await response.Content.ReadAsStringAsync());
         content!.Data.Count.Should().Be(2);
-        content.Data[0].TotalPoints.Should().Be(5);
-        content.Data[1].TotalPoints.Should().Be(0);
+        content.Data[0].ScoredPoints.Should().Be(5);
+        content.Data[0].MaxPoints.Should().Be(35);
+        content.Data[1].ScoredPoints.Should().Be(0);
     }
 
     private static async Task SeedData()
