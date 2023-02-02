@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using ECampus.Domain.Mapping.Converters;
 using ECampus.Shared.DataTransferObjects;
 using ECampus.Shared.Models;
 
@@ -15,7 +14,6 @@ namespace ECampus.Domain.Mapping
                 );
 
             CreateMap<UserDto, User>();
-            this.CreateListWithPaginationDataMap<User, UserDto>();
         }
     }
 }

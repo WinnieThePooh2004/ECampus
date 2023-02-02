@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using ECampus.Domain.Mapping.Converters;
 using ECampus.Shared.DataTransferObjects;
 using ECampus.Shared.Models;
 
@@ -10,7 +9,6 @@ public class CourseProfile : Profile
     public CourseProfile()
     {
         CreateMap<Course, CourseDto>().ReverseMap();
-        this.CreateListWithPaginationDataMap<Course, CourseDto>();
         CreateMap<Course, CourseSummary>().ForMember(
             dest => dest.CourseId,
             opt => opt.MapFrom(course => course.Id)
@@ -23,6 +21,5 @@ public class CourseProfile : Profile
             opt => opt.MapFrom(course => 
                 course.Tasks!.Select(task => task.Submissions!.Single().AbsolutePoints()).Sum())
         );
-        this.CreateListWithPaginationDataMap<Course, CourseSummary>();
     }
 }
