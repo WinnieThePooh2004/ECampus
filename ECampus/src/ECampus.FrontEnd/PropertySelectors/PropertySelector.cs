@@ -11,8 +11,7 @@ public class PropertySelector<T> : IPropertySelector<T>
     public PropertySelector()
     {
         _typeProperties = typeof(T).GetProperties().Where(property =>
-                !property.Name.Contains("Id") && (property.PropertyType.IsPrimitive ||
-                                                  property.PropertyType.IsEnum ||
+                !property.Name.Contains("Id") && (property.PropertyType.IsValueType ||
                                                   property.PropertyType == typeof(string) ||
                                                   property.GetCustomAttributes(false).OfType<DisplayNameAttribute>()
                                                       .Any()) &&
