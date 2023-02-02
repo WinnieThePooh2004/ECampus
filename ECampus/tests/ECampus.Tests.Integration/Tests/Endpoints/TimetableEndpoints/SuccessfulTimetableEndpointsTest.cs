@@ -43,35 +43,33 @@ public class SuccessfulTimetableEndpointsTest : IClassFixture<ApplicationFactory
     [Fact]
     public async Task GetById_ShouldReturn404_IfClassNotExist()
     {
-        var response = await _client.GetAsync($"/api/Timetable/{1000}");
+        var response = await _client.GetAsync($"/api/Timetable/-1");
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
         var result = JsonSerializer
             .Deserialize<BadResponseObject>(await response.Content.ReadAsStringAsync(), _serializerOptions);
         result.Should().NotBeNull();
-        result?.Message.Should().Be(new ObjectNotFoundByIdException(typeof(Class), 1000).Message);
+        result?.Message.Should().Be(new ObjectNotFoundByIdException(typeof(Class), -1).Message);
     }
 
     [Fact]
     public async Task DeleteShouldReturn404_WhenClassNotExist()
     {
-        var response = await _client.DeleteAsync($"/api/Timetable/{1000}");
+        var response = await _client.DeleteAsync($"/api/Timetable/-1");
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
         var result = JsonSerializer
             .Deserialize<BadResponseObject>(await response.Content.ReadAsStringAsync(), _serializerOptions);
         result.Should().NotBeNull();
-        result?.Message.Should().Be(new ObjectNotFoundByIdException(typeof(Class), 1000).Message);
+        result?.Message.Should().Be(new ObjectNotFoundByIdException(typeof(Class), -1).Message);
     }
 
     private static async Task CreateTestsData()
     {
         await using var context = ApplicationFactory.Context;
-        context.Add(new Faculty { Id = 20, Name = "" });
-        context.Add(new Department { Id = 20, Name = "", FacultyId = 20 });
-        context.Add(new Teacher { Id = 20, DepartmentId = 20 });
-        context.Add(new Subject { Id = 20 });
-        context.Add(new Group { Id = 20, DepartmentId = 20 });
-        context.Add(new Auditory { Id = 20 });
-        context.Add(new Class { Id = 1, AuditoryId = 20, GroupId = 20, TeacherId = 20, SubjectId = 20 });
+        context.Add(new Teacher { Id = 400, DepartmentId = 1 });
+        context.Add(new Subject { Id = 400 });
+        context.Add(new Group { Id = 400, DepartmentId = 1 });
+        context.Add(new Auditory { Id = 400 });
+        context.Add(new Class { Id = 400, AuditoryId = 400, GroupId = 400, TeacherId = 400, SubjectId = 400 });
         await context.SaveChangesAsync();
     }
 }

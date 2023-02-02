@@ -36,6 +36,15 @@ public class CoursesController : ControllerBase
         return Ok(await _baseService.GetByIdAsync(id));
     }
 
+    [HttpGet("summary")]
+    [Authorized(UserRole.Student)]
+    public async Task<IActionResult> Summary(
+        [FromServices] IParametersService<CourseSummary, CourseSummaryParameters> parametersService,
+        [FromQuery] CourseSummaryParameters parameters)
+    {
+        return Ok(await parametersService.GetByParametersAsync(parameters));
+    }
+
     [HttpPost]
     [Authorized(UserRole.Admin)]
     public async Task<IActionResult> Post(CourseDto course)

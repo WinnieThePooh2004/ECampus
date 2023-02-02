@@ -1,6 +1,5 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http.Headers;
-using ECampus.Shared.Auth;
 using ECampus.Shared.DataTransferObjects;
 using ECampus.Shared.Enums;
 using ECampus.Shared.Extensions;
@@ -21,7 +20,9 @@ public static class HttpClientExtensions
             Email = user.Email,
             Username = user.Username,
             Role = user.Role,
-            UserId = user.Id
+            UserId = user.Id,
+            StudentId = user.StudentId,
+            TeacherId = user.TeacherId
         };
         var jwt = new JwtSecurityToken(
             issuer: options.Issuer,

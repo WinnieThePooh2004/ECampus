@@ -1,24 +1,23 @@
-﻿using ECampus.Shared.Models;
+﻿using ECampus.Shared.Data;
+using ECampus.Shared.Metadata;
+using ECampus.Shared.Models;
+
 namespace ECampus.Shared.DataTransferObjects;
 
-public class CourseSummary
+[Dto(typeof(Course), InjectBaseService = false)]
+public class CourseSummary : IDataTransferObject
 {
     public int CourseId { get; set; }
     public string Name { get; set; } = default!;
     public double TotalPoints { get; set; }
     public string TeacherNames { get; set; } = default!;
+    
+    public DateTime StartDate { get; set; }
+    public DateTime EndDate { get; set; }
 
-    public CourseSummary()
+    int IDataTransferObject.Id
     {
+        get => CourseId;
+        set => CourseId = value;
     }
-
-    public static CourseSummary FromCourse(Course course)
-        => new()
-        {
-            Name = course.Name,
-            CourseId = course.Id,
-            TotalPoints = course.Tasks!.Select(task => task.Submissions!.Single().Id).Sum(),
-            TeacherNames = string.Join(", ",
-                course.Teachers!.Select(teacher => $"{teacher.FirstName} {teacher.LastName}"))
-        };
 }

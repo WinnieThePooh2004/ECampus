@@ -45,12 +45,12 @@ public class AuditoriesSuccessfulEndpointsTests : IClassFixture<ApplicationFacto
     [Fact]
     public async Task Get_ShouldReturnTeacherAndSubjects_IfExists()
     {
-        var response = await _client.GetAsync($"/api/Auditories/2");
+        var response = await _client.GetAsync("/api/Auditories/101");
         response.EnsureSuccessStatusCode();
         var auditory =
             JsonSerializer.Deserialize<Auditory>(await response.Content.ReadAsStringAsync(), _serializerOptions);
         auditory.Should().NotBeNull();
-        auditory?.Id.Should().Be(2);
+        auditory?.Id.Should().Be(101);
         auditory?.Name.Should().Be("name2");
         auditory?.Building.Should().Be("building2");
     }
@@ -60,14 +60,14 @@ public class AuditoriesSuccessfulEndpointsTests : IClassFixture<ApplicationFacto
     {
         var teacher = new AuditoryDto
         {
-            Id = 1,
+            Id = 100,
             Name = "newName",
             Building = "NewBuilding"
         };
         var response = await _client.PutAsJsonAsync("/api/Auditories", teacher);
         response.EnsureSuccessStatusCode();
         var context = ApplicationFactory.Context;
-        var objectInDb = await context.FindAsync<Auditory>(1);
+        var objectInDb = await context.FindAsync<Auditory>(100);
         objectInDb.Should().BeEquivalentTo(teacher, options => options.ComparingByMembers<AuditoryDto>());
     }
 
@@ -76,33 +76,33 @@ public class AuditoriesSuccessfulEndpointsTests : IClassFixture<ApplicationFacto
     {
         var teacher = new AuditoryDto
         {
-            Id = 40,
+            Id = 104,
             Name = "name40",
             Building = "building40"
         };
         var response = await _client.PostAsJsonAsync("/api/Auditories", teacher);
         response.EnsureSuccessStatusCode();
-        (await ApplicationFactory.Context.Auditories.FindAsync(40)).Should().NotBeNull();
+        (await ApplicationFactory.Context.Auditories.FindAsync(104)).Should().NotBeNull();
     }
 
     [Fact]
     public async Task Delete_ShouldReturnDeleteInDb()
     {
-        var response = await _client.DeleteAsync("/api/Auditories/3");
+        var response = await _client.DeleteAsync("/api/Auditories/102");
         response.EnsureSuccessStatusCode();
         (await ApplicationFactory.Context
-            .Auditories.SingleOrDefaultAsync(t => t.Id == 3)).Should().BeNull();
+            .Auditories.SingleOrDefaultAsync(t => t.Id == 102)).Should().BeNull();
     }
 
     [Fact]
     public async Task Delete_ShouldReturn404_WhenNoObjectExists()
     {
-        var response = await _client.DeleteAsync("/api/Auditories/10");
+        var response = await _client.DeleteAsync("/api/Auditories/-1");
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
         var result = JsonSerializer
             .Deserialize<BadResponseObject>(await response.Content.ReadAsStringAsync(), _serializerOptions);
         result.Should().NotBeNull();
-        result?.Message.Should().Be(new ObjectNotFoundByIdException(typeof(Auditory), 10).Message);
+        result?.Message.Should().Be(new ObjectNotFoundByIdException(typeof(Auditory), -1).Message);
     }
     
     private static async Task CreateTestData()
@@ -112,19 +112,19 @@ public class AuditoriesSuccessfulEndpointsTests : IClassFixture<ApplicationFacto
         (
             new Auditory
             {
-                Id = 1,
+                Id = 100,
                 Name = "name1",
                 Building = "building1"
             },
             new Auditory
             {
-                Id = 2,
+                Id = 101,
                 Name = "name2",
                 Building = "building2"
             },
             new Auditory
             {
-                Id = 3,
+                Id = 102,
                 Name = "name3",
                 Building = "building3"
             }

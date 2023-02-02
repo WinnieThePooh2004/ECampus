@@ -24,6 +24,7 @@ public class ParametersService<TDto, TParameters, TRepositoryModel> : IParameter
 
     public async Task<ListWithPaginationData<TDto>> GetByParametersAsync(TParameters parameters)
     {
-        return _mapper.Map<ListWithPaginationData<TDto>>(await _parametersDataAccessFacade.GetByParameters(parameters));
+        var result = await _parametersDataAccessFacade.GetByParameters(parameters);
+        return _mapper.Map<ListWithPaginationData<TDto>>(result);
     }
 }

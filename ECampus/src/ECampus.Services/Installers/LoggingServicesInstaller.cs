@@ -17,7 +17,7 @@ public class LoggingServicesInstaller : IInstaller
 
         foreach (var dto in dataTransferObjects)
         {
-            services.Decorate(typeof(IBaseService<>).MakeGenericType(dto),
+            services.TryDecorate(typeof(IBaseService<>).MakeGenericType(dto),
                 typeof(LoggingService<>).MakeGenericType(dto));
         }
     }

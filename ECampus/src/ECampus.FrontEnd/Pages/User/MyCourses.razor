@@ -7,6 +7,11 @@
     return;
 }
 
+@if (_studentId != 0)
+{
+    <a href="@($"/courses/Summary/{_studentId}")">View courses summary</a>
+}
+
 @if (_actionLinks is null)
 {
     <p><em>Loading...</em></p>

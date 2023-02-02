@@ -47,24 +47,25 @@ public class SuccessfulTeachersEndpointsTests : IClassFixture<ApplicationFactory
     [Fact]
     public async Task GetById_ShouldReturn404_IfTeacherNotExist()
     {
-        var response = await _client.GetAsync("/api/Teachers/10");
+        var response = await _client.GetAsync("/api/Teachers/-1");
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
         var result = JsonSerializer
             .Deserialize<BadResponseObject>(await response.Content.ReadAsStringAsync(), _serializerOptions);
         result.Should().NotBeNull();
-        result?.Message.Should().Be(new ObjectNotFoundByIdException(typeof(Teacher), 10).Message);
+        result?.Message.Should().Be(new ObjectNotFoundByIdException(typeof(Teacher), -1).Message);
     }
 
     [Fact]
     public async Task GetTeacher_ShouldReturnTeacherAndSubjects_IfTeacherExists()
     {
-        var response = await _client.GetAsync($"/api/Teachers/{1}");
+        var response = await _client.GetAsync($"/api/Teachers/{301}");
         response.EnsureSuccessStatusCode();
         var teacher =
             JsonSerializer.Deserialize<TeacherDto>(await response.Content.ReadAsStringAsync(), _serializerOptions);
         teacher.Should().NotBeNull();
-        teacher?.Subjects.Should().NotBeNull();
-        teacher?.Id.Should().Be(1);
+        teacher!.Subjects!.Should().NotBeNull();
+        teacher.Subjects!.Count.Should().Be(1);
+        teacher.Id.Should().Be(301);
     }
 
     [Fact]
@@ -72,19 +73,22 @@ public class SuccessfulTeachersEndpointsTests : IClassFixture<ApplicationFactory
     {
         var teacher = new TeacherDto
         {
-            Id = 1,
+            Id = 300,
             LastName = "ln1",
             FirstName = "fn1",
             DepartmentId = 1,
-            Subjects = new List<SubjectDto> { new() { Id = 1 }, new() { Id = 3 } }
+            Subjects = new List<SubjectDto> { new() { Id = 300 }, new() { Id = 302 } }
         };
         var response = await _client.PutAsJsonAsync("/api/Teachers", teacher);
         response.EnsureSuccessStatusCode();
 
         var context = ApplicationFactory.Context;
-        var subjectTeachers = await context.SubjectTeachers.ToListAsync();
-        subjectTeachers.Should().ContainEquivalentOf(new SubjectTeacher { TeacherId = 1, SubjectId = 3 });
-        subjectTeachers.Should().NotContainEquivalentOf(new SubjectTeacher { TeacherId = 1, SubjectId = 2 });
+        var subjectTeachers = await context.SubjectTeachers.Where(st => st.TeacherId == 300)
+            .Select(st => st.SubjectId)
+            .ToListAsync();
+        subjectTeachers.Should().Contain(300);
+        subjectTeachers.Should().Contain(302);
+        subjectTeachers.Should().NotContain(301);
     }
 
     [Fact]
@@ -106,22 +110,28 @@ public class SuccessfulTeachersEndpointsTests : IClassFixture<ApplicationFactory
     {
         var teacher = new TeacherDto
         {
-            Id = 40,
+            Id = 304,
             LastName = "lastname",
             FirstName = "firstName",
             DepartmentId = 1,
-            Subjects = new List<SubjectDto>()
+            Subjects = new List<SubjectDto> { new() { Id = 301 }, new() { Id = 302 } }
         };
+
         var response = await _client.PostAsJsonAsync("/api/Teachers", teacher);
+
         response.EnsureSuccessStatusCode();
-        (await ApplicationFactory.Context.Teachers.FindAsync(40)).Should().NotBeNull();
+        await using var context = ApplicationFactory.Context;
+        (await context.Teachers.FindAsync(304)).Should().NotBeNull();
+        (await context.SubjectTeachers.Where(st => st.TeacherId == 304).CountAsync()).Should().Be(2);
     }
 
     [Fact]
     public async Task CreateTeacher_ShouldReturn400_WhenValidationErrorOccured()
     {
         var teacher = new TeacherDto { Id = 100 };
+
         var response = await _client.PostAsJsonAsync("/api/Teachers", teacher);
+
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         var result = JsonSerializer
             .Deserialize<BadResponseObject>(await response.Content.ReadAsStreamAsync(), _serializerOptions);
@@ -133,71 +143,70 @@ public class SuccessfulTeachersEndpointsTests : IClassFixture<ApplicationFactory
     [Fact]
     public async Task DeleteTeacher_ShouldReturnDeleteInDb()
     {
-        var response = await _client.DeleteAsync("/api/Teachers/3");
+        var response = await _client.DeleteAsync("/api/Teachers/302");
         response.EnsureSuccessStatusCode();
-        (await ApplicationFactory.Context
-            .Teachers.SingleOrDefaultAsync(t => t.Id == 3)).Should().BeNull();
+
+        await using var context = ApplicationFactory.Context;
+        (await context.Teachers.SingleOrDefaultAsync(t => t.Id == 302)).Should().BeNull();
     }
 
     [Fact]
     public async Task DeleteTeacher_ShouldReturn404_WhenNoObjectExists()
     {
-        var response = await _client.DeleteAsync("/api/Teachers/10");
+        var response = await _client.DeleteAsync("/api/Teachers/-1");
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
         var result = JsonSerializer
             .Deserialize<BadResponseObject>(await response.Content.ReadAsStringAsync(), _serializerOptions);
         result.Should().NotBeNull();
-        result?.Message.Should().Be(new ObjectNotFoundByIdException(typeof(Teacher), 10).Message);
+        result?.Message.Should().Be(new ObjectNotFoundByIdException(typeof(Teacher), -1).Message);
     }
 
     private static async Task CreateTestsData()
     {
         await using var context = ApplicationFactory.Context;
-        context.Add(new Faculty { Id = 1, Name = "F1" });
-        context.Add(new Department { FacultyId = 1, Id = 1, Name = "D1" });
         context.AddRange(
             new Teacher
             {
-                Id = 1,
+                Id = 300,
                 LastName = "ln1",
                 FirstName = "fn1",
                 DepartmentId = 1
             },
             new Teacher
             {
-                Id = 2,
+                Id = 301,
                 LastName = "ln2",
                 FirstName = "fn2",
                 DepartmentId = 1
             },
             new Teacher
             {
-                Id = 3,
+                Id = 302,
                 LastName = "ln3",
                 FirstName = "fn3",
                 DepartmentId = 1
             },
             new Subject
             {
-                Id = 1,
+                Id = 300,
                 Name = "subject1"
             },
             new Subject
             {
-                Id = 2,
+                Id = 301,
                 Name = "subject2"
             },
             new Subject
             {
-                Id = 3,
+                Id = 302,
                 Name = "subject3"
             });
         context.AddRange(new List<SubjectTeacher>
         {
-            new() { TeacherId = 1, SubjectId = 1 },
-            new() { TeacherId = 1, SubjectId = 2 },
-            new() { TeacherId = 2, SubjectId = 2 },
-            new() { TeacherId = 3, SubjectId = 3 }
+            new() { TeacherId = 300, SubjectId = 300 },
+            new() { TeacherId = 300, SubjectId = 301 },
+            new() { TeacherId = 301, SubjectId = 301 },
+            new() { TeacherId = 302, SubjectId = 302 }
         });
         await context.SaveChangesAsync();
     }

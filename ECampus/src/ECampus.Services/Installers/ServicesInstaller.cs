@@ -21,27 +21,32 @@ public class ServicesInstaller : IInstaller
 
         foreach (var dataTransferObject in dataTransferObjects)
         {
-            var model = dataTransferObject.GetCustomAttributes(typeof(DtoAttribute), false).OfType<DtoAttribute>()
-                .Single().ModelType;
+            var metadata = dataTransferObject.GetCustomAttributes(typeof(DtoAttribute), false).OfType<DtoAttribute>()
+                .Single();
 
-            services.AddScoped(typeof(IBaseService<>).MakeGenericType(dataTransferObject), 
-                typeof(BaseService<,>).MakeGenericType(dataTransferObject, model));
-            
-            InjectParametersFacadeIfExists(services, dataTransferObject, model);
+            if (metadata.InjectBaseService)
+            {
+                services.AddScoped(typeof(IBaseService<>).MakeGenericType(dataTransferObject),
+                    typeof(BaseService<,>).MakeGenericType(dataTransferObject, metadata.ModelType));
+            }
+
+            if (metadata.InjectParametersService)
+            {
+                InjectParametersFacadeIfExists(services, dataTransferObject, metadata.ModelType);
+            }
         }
     }
-    
+
     private static void InjectParametersFacadeIfExists(IServiceCollection services, Type dataTransferObject, Type model)
     {
         var modelParametersTypes = typeof(SharedAssemblyMarker).Assembly.GetTypes().Where(type =>
             !type.GetCustomAttributes(typeof(InstallerIgnoreAttribute), false).Any() &&
             type.IsAssignableTo(typeof(IQueryParameters<>).MakeGenericType(model)));
-        
+
         foreach (var modelParametersType in modelParametersTypes)
         {
             services.AddScoped(typeof(IParametersService<,>).MakeGenericType(dataTransferObject, modelParametersType),
                 typeof(ParametersService<,,>).MakeGenericType(dataTransferObject, modelParametersType, model));
-
         }
     }
 }

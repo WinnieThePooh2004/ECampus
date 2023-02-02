@@ -1,4 +1,5 @@
-﻿using ECampus.Contracts.DataAccess;
+﻿using System.Diagnostics.CodeAnalysis;
+using ECampus.Contracts.DataAccess;
 using ECampus.Infrastructure.Interfaces;
 using ECampus.Shared.Data;
 using ECampus.Shared.DataContainers;

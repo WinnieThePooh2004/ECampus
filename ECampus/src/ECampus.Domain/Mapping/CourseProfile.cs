@@ -11,5 +11,18 @@ public class CourseProfile : Profile
     {
         CreateMap<Course, CourseDto>().ReverseMap();
         this.CreateListWithPaginationDataMap<Course, CourseDto>();
+        CreateMap<Course, CourseSummary>().ForMember(
+            dest => dest.CourseId,
+            opt => opt.MapFrom(course => course.Id)
+        ).ForMember(
+            dest => dest.TeacherNames,
+            opt => opt.MapFrom(course =>
+                course.Teachers!.Select(teacher => $"{teacher.LastName} {teacher.FirstName}"))
+        ).ForMember(
+            dest => dest.TotalPoints,
+            opt => opt.MapFrom(course => 
+                course.Tasks!.Select(task => task.Submissions!.Single().AbsolutePoints()).Sum())
+        );
+        this.CreateListWithPaginationDataMap<Course, CourseSummary>();
     }
 }
