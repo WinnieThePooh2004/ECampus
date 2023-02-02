@@ -1,4 +1,5 @@
-﻿using ECampus.Infrastructure.DataSelectors.MultipleItemSelectors;
+﻿using ECampus.Infrastructure;
+using ECampus.Infrastructure.DataSelectors.MultipleItemSelectors;
 using ECampus.Shared.Models;
 using ECampus.Shared.Models.RelationModels;
 using ECampus.Shared.QueryParameters;
@@ -11,8 +12,8 @@ public class MultipleCourseSelectorTests
 {
     private readonly MultipleCourseSelector _sut = new();
     private readonly List<Course> _data;
-    private readonly DbSet<Course> _dataSource;
-
+    private readonly ApplicationDbContext _context = Substitute.For<ApplicationDbContext>();
+    
     public MultipleCourseSelectorTests()
     {
         _data = new List<Course>
@@ -37,13 +38,13 @@ public class MultipleCourseSelectorTests
             }
         };
 
-        _dataSource = new DbSetMock<Course>(_data);
+        _context.Courses = new DbSetMock<Course>(_data);
     }
 
     [Fact]
     public async Task SelectData_ShouldIgnoreTeacherAndGroupId_WhenTheyAre0()
     {
-        var result = await _sut.SelectData(_dataSource, new CourseParameters { Name = "", TeacherId = 0, GroupId = 0 })
+        var result = await _sut.SelectData(_context, new CourseParameters { Name = "", TeacherId = 0, GroupId = 0 })
             .ToListAsync();
 
         result.Should().BeEquivalentTo(_data);
@@ -52,7 +53,7 @@ public class MultipleCourseSelectorTests
     [Fact]
     public async Task SelectData_ShouldNotIgnoreGroupId_WhenItIsNot0()
     {
-        var result = await _sut.SelectData(_dataSource, new CourseParameters { Name = "", TeacherId = 0, GroupId = 10 })
+        var result = await _sut.SelectData(_context, new CourseParameters { Name = "", TeacherId = 0, GroupId = 10 })
             .ToListAsync();
 
         _data.RemoveAt(1);
@@ -62,7 +63,7 @@ public class MultipleCourseSelectorTests
     [Fact]
     public async Task SelectData_ShouldNotIgnoreTeacherId_WhenItIsNot0()
     {
-        var result = await _sut.SelectData(_dataSource, new CourseParameters { Name = "", TeacherId = 10, GroupId = 0 })
+        var result = await _sut.SelectData(_context, new CourseParameters { Name = "", TeacherId = 10, GroupId = 0 })
             .ToListAsync();
 
         _data.RemoveAt(0);

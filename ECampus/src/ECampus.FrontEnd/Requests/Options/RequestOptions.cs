@@ -34,7 +34,9 @@ public class RequestOptions : IRequestOptions
             [typeof(CourseTaskDto)] = configuration["Requests:CourseTasks"] ??
                                       throw new KeyNotFoundException("There is not config for 'CourseTasks'"),
             [typeof(TaskSubmissionDto)] = configuration["Requests:TaskSubmissions"] ??
-                                          throw new KeyNotFoundException("There is not config for 'TaskSubmissions'")
+                                          throw new KeyNotFoundException("There is not config for 'TaskSubmissions'"),
+            [typeof(CourseSummary)] = configuration["Requests:CourseSummary"] ??
+                                      throw new KeyNotFoundException("There is not config for 'CourseSummary'")
         };
     }
 

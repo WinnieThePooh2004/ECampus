@@ -8,7 +8,7 @@ namespace ECampus.Infrastructure.DataSelectors.MultipleItemSelectors;
 
 public class MultipleAuditorySelector : IMultipleItemSelector<Auditory, AuditoryParameters>
 {
-    public IQueryable<Auditory> SelectData(DbSet<Auditory> data, AuditoryParameters parameters)
-        => data.Search(a => a.Name, parameters.AuditoryName)
+    public IQueryable<Auditory> SelectData(ApplicationDbContext context, AuditoryParameters parameters)
+        => context.Auditories.Search(a => a.Name, parameters.AuditoryName)
             .Search(a => a.Building, parameters.BuildingName);
 }

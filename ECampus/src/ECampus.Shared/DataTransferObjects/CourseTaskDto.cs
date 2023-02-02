@@ -15,6 +15,6 @@ public class CourseTaskDto : IDataTransferObject
     public bool ValidAfterDeadline { get; set; }
     public int MaxPoints { get; set; }
     public TaskType Type { get; set; }
-    
+    public double Coefficient { get; set; } = 1;
     public int CourseId { get; set; }
 }

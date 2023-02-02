@@ -1,4 +1,5 @@
-﻿using ECampus.Infrastructure.DataSelectors.MultipleItemSelectors;
+﻿using ECampus.Infrastructure;
+using ECampus.Infrastructure.DataSelectors.MultipleItemSelectors;
 using ECampus.Shared.Models;
 using ECampus.Shared.QueryParameters;
 using ECampus.Tests.Shared.Mocks.EntityFramework;
@@ -10,7 +11,7 @@ public class MultipleTaskSubmissionSelectorTests
 {
     private readonly MultipleTaskSubmissionSelector _sut = new();
     private readonly List<TaskSubmission> _data;
-    private readonly DbSet<TaskSubmission> _dataSource;
+    private readonly ApplicationDbContext _context = Substitute.For<ApplicationDbContext>();
 
     public MultipleTaskSubmissionSelectorTests()
     {
@@ -20,13 +21,13 @@ public class MultipleTaskSubmissionSelectorTests
             new() { CourseTaskId = 12 }
         };
 
-        _dataSource = new DbSetMock<TaskSubmission>(_data);
+        _context.TaskSubmissions = new DbSetMock<TaskSubmission>(_data);
     }
 
     [Fact]
     public async Task Select_ShouldReturnSuitedData()
     {
-        var result = await _sut.SelectData(_dataSource, new TaskSubmissionParameters { CourseTaskId = 10 })
+        var result = await _sut.SelectData(_context, new TaskSubmissionParameters { CourseTaskId = 10 })
             .ToListAsync();
 
         result.Count.Should().Be(1);

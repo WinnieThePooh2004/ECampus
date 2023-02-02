@@ -15,6 +15,7 @@ public partial class MyCourses
 
     private int _teacherId;
     private int _groupId;
+    private int _studentId;
     private UserRole _role;
     private List<(string LinkName, Func<CourseDto, string> LinkSource)>? _actionLinks;
 
@@ -23,6 +24,7 @@ public partial class MyCourses
         var user = HttpContextAccessor.HttpContext?.User;
         _groupId = int.Parse(user?.FindFirst(CustomClaimTypes.GroupId)?.Value ?? "0");
         _teacherId = int.Parse(user?.FindFirst(CustomClaimTypes.TeacherId)?.Value ?? "0");
+        _studentId = int.Parse(user?.FindFirst(CustomClaimTypes.StudentId)?.Value ?? "0");
         _role = Enum.Parse<UserRole>(user?.FindFirst(ClaimTypes.Role)?.Value ??
                                      throw new UnauthorizedAccessException());
         _actionLinks = ActionLinks();

@@ -10,6 +10,8 @@ namespace ECampus.Tests.Unit.BackEnd.Infrastructure.DataServices.DataUpdate;
 
 public class CourseUpdateServiceTests
 {
+    private static bool _relatedDataCreated;
+
     private readonly CourseUpdateService _sut;
 
     private readonly IDataUpdateService<Course> _baseUpdate =
@@ -62,7 +64,7 @@ public class CourseUpdateServiceTests
 
         await _sut.UpdateAsync(course, context);
         await context.SaveChangesAsync();
-        
+
         var submissionsAfterUpdate = await context.TaskSubmissions
             .Include(t => t.CourseTask)
             .Where(c => c.CourseTask!.CourseId == 100)
@@ -74,29 +76,44 @@ public class CourseUpdateServiceTests
     private static async Task SeedData(int firstItemId = 1)
     {
         await using var context = await InMemoryDbFactory.GetContext();
+        CreateRelatedData(context);
         context.Add(Course(firstItemId));
         context.AddRange(Groups(firstItemId));
         context.AddRange(Submissions(firstItemId));
         await context.SaveChangesAsync();
     }
 
+    private static void CreateRelatedData(DbContext context)
+    {
+        if (_relatedDataCreated)
+        {
+            return;
+        }
+
+        var faculty = new Faculty
+            { Id = 1, Name = "f1", Departments = new List<Department> { new() { Name = "name1", Id = 1 } } };
+        context.Add(faculty);
+        context.Add(new Subject { Id = 1, Name = "s1" });
+        _relatedDataCreated = true;
+    }
+
     private static IEnumerable<Group> Groups(int firstItemId = 1) => new List<Group>
     {
         new()
         {
-            Id = firstItemId,
+            Id = firstItemId, DepartmentId = 1,
             Students = new List<Student> { new() { Id = firstItemId }, new() { Id = firstItemId + 1 } },
             CourseGroups = new List<CourseGroup> { new() { CourseId = firstItemId } }
         },
         new()
         {
-            Id = 1 + firstItemId,
+            Id = 1 + firstItemId, DepartmentId = 1,
             Students = new List<Student> { new() { Id = firstItemId + 2 }, new() { Id = firstItemId + 3 } },
             CourseGroups = new List<CourseGroup> { new() { CourseId = firstItemId } }
         },
         new()
         {
-            Id = 2 + firstItemId,
+            Id = 2 + firstItemId, DepartmentId = 1,
             Students = new List<Student> { new() { Id = firstItemId + 4 }, new() { Id = firstItemId + 5 } }
         }
     };
@@ -110,6 +127,7 @@ public class CourseUpdateServiceTests
     {
         Id = firstItemId,
         Name = "name",
+        SubjectId = 1,
         Tasks = new List<CourseTask>
         {
             new() { Id = firstItemId, Name = "Name11" },

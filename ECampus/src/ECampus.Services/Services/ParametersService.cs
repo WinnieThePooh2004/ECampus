@@ -10,7 +10,7 @@ namespace ECampus.Services.Services;
 public class ParametersService<TDto, TParameters, TRepositoryModel> : IParametersService<TDto, TParameters>
     where TDto : class, IDataTransferObject, new()
     where TRepositoryModel : class, IModel, new()
-    where TParameters : class, IQueryParameters<TRepositoryModel>
+    where TParameters : class, IQueryParameters<TRepositoryModel>, IQueryParameters
 {
     private readonly IParametersDataAccessFacade<TRepositoryModel, TParameters> _parametersDataAccessFacade;
     private readonly IMapper _mapper;
@@ -24,6 +24,7 @@ public class ParametersService<TDto, TParameters, TRepositoryModel> : IParameter
 
     public async Task<ListWithPaginationData<TDto>> GetByParametersAsync(TParameters parameters)
     {
-        return _mapper.Map<ListWithPaginationData<TDto>>(await _parametersDataAccessFacade.GetByParameters(parameters));
+        var result = await _parametersDataAccessFacade.GetByParameters(parameters);
+        return _mapper.Map<ListWithPaginationData<TDto>>(result);
     }
 }

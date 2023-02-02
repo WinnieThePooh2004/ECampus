@@ -1,4 +1,5 @@
-﻿using ECampus.Infrastructure.DataSelectors.MultipleItemSelectors;
+﻿using ECampus.Infrastructure;
+using ECampus.Infrastructure.DataSelectors.MultipleItemSelectors;
 using ECampus.Shared.Models;
 using ECampus.Shared.QueryParameters;
 using ECampus.Tests.Shared.Mocks.EntityFramework;
@@ -10,7 +11,7 @@ public class MultipleUserSelectorTests
 {
     private readonly MultipleUserSelector _sut = new();
     private readonly List<User> _data;
-    private readonly DbSet<User> _dataSource;
+    private readonly ApplicationDbContext _context = Substitute.For<ApplicationDbContext>();
 
     public MultipleUserSelectorTests()
     {
@@ -21,14 +22,14 @@ public class MultipleUserSelectorTests
             new() { Email = "a", Username = "a" }
         };
 
-        _dataSource = new DbSetMock<User>(_data);
+        _context.Users = new DbSetMock<User>(_data);
     }
 
     [Fact]
     public async Task SelectData_ShouldReturnSuitedData()
     {
         var result = await _sut
-            .SelectData(_dataSource, new UserParameters { Username = "a", Email = "a", OrderBy = "Username" })
+            .SelectData(_context, new UserParameters { Username = "a", Email = "a", OrderBy = "Username" })
             .ToListAsync();
 
         result.Count.Should().Be(1);

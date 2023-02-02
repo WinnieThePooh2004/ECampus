@@ -8,9 +8,9 @@ namespace ECampus.Infrastructure.DataSelectors.MultipleItemSelectors;
 
 public class MultipleStudentSelector : IMultipleItemSelector<Student, StudentParameters>
 {
-    public IQueryable<Student> SelectData(DbSet<Student> data, StudentParameters parameters)
+    public IQueryable<Student> SelectData(ApplicationDbContext context, StudentParameters parameters)
     {
-        var result = data.Search(s => s.FirstName, parameters.FirstName)
+        var result = context.Students.Search(s => s.FirstName, parameters.FirstName)
             .Search(s => s.LastName, parameters.LastName);
         if (parameters.GroupId != 0)
         {

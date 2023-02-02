@@ -10,7 +10,7 @@ using ECampus.Tests.Integration.AuthHelpers;
 using FluentAssertions;
 using Newtonsoft.Json;
 
-namespace ECampus.Tests.Integration.Tests.Endpoins.TaskSubmissionEndpoints;
+namespace ECampus.Tests.Integration.Tests.Endpoints.TaskSubmissionEndpoints;
 
 public class InstantFailuresTests : IClassFixture<ApplicationWithoutDatabase>
 {

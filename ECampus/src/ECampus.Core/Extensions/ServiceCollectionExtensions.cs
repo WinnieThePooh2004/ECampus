@@ -10,7 +10,6 @@ public static class ServiceCollectionExtensions
 {
     public static void UserInstallersFromAssemblyContaining<TAssemblyMarker>(this IServiceCollection services,
         IConfiguration configuration)
-        where TAssemblyMarker : IAssemblyMarker
     {
         services.UserInstallersFromAssemblyContaining(configuration, typeof(TAssemblyMarker));
     }

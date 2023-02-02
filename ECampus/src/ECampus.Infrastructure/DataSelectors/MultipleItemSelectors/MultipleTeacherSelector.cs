@@ -8,9 +8,9 @@ namespace ECampus.Infrastructure.DataSelectors.MultipleItemSelectors;
 
 public class MultipleTeacherSelector : IMultipleItemSelector<Teacher, TeacherParameters>
 {
-    public IQueryable<Teacher> SelectData(DbSet<Teacher> data, TeacherParameters parameters)
+    public IQueryable<Teacher> SelectData(ApplicationDbContext context, TeacherParameters parameters)
     {
-        var result = data.Search(s => s.FirstName, parameters.FirstName)
+        var result = context.Teachers.Search(s => s.FirstName, parameters.FirstName)
             .Search(s => s.LastName, parameters.LastName);
         if (parameters.DepartmentId != 0)
         {

@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ECampus.Infrastructure.Interfaces;
 
-public interface IMultipleItemSelector<TModel, in TParameters>
+public interface IMultipleItemSelector<out TModel, in TParameters>
     where TModel : class, IModel
     where TParameters : IQueryParameters<TModel>
 {
-    IQueryable<TModel> SelectData(DbSet<TModel> data, TParameters parameters);
+    IQueryable<TModel> SelectData(ApplicationDbContext context, TParameters parameters);
 }

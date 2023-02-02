@@ -24,14 +24,14 @@ public class ParametersRepositoryTests
             new ParametersDataAccessFacade<Auditory, AuditoryParameters>(_context,
                 new MultipleAuditorySelector());
     }
-    
+
     [Fact]
     public async Task GetByParameters_ReturnsFromDb()
     {
         var data = _factory.CreateMany(_fixture, 10);
         var parameters = new AuditoryParameters { PageNumber = 0, PageSize = 5 };
         var set = new DbSetMock<Auditory>(data);
-        _context.Set<Auditory>().Returns(set.Object);
+        _context.Auditories = set;
 
         var result = await _dataAccessFacade.GetByParameters(parameters);
 

@@ -30,14 +30,17 @@ public class ParametersValidatorsInstaller : IInstaller
                 .Single(i => i.IsGenericOfType(typeof(IParametersValidator<>))).GetGenericArguments()[0];
             var parametersModel = parametersType.GetInterfaces()
                 .Single(i => i.IsGenericOfType(typeof(IQueryParameters<>))).GenericTypeArguments[0];
-            var validatorDto = dataTransferObjects.Single(dto =>
+            var validatorDtoTypes = dataTransferObjects.Where(dto =>
                 dto.GetCustomAttributes(typeof(DtoAttribute), false).OfType<DtoAttribute>().Single().ModelType ==
                 parametersModel);
-
-            services.AddScoped(typeof(IParametersValidator<>).MakeGenericType(parametersType),
-                parametersValidator);
-            services.Decorate(typeof(IParametersService<,>).MakeGenericType(validatorDto, parametersType),
-                typeof(ServiceWithParametersValidation<,>).MakeGenericType(validatorDto, parametersType));
+            
+            foreach (var validatorDtoType in validatorDtoTypes)
+            {
+                services.AddScoped(typeof(IParametersValidator<>).MakeGenericType(parametersType),
+                    parametersValidator);
+                services.Decorate(typeof(IParametersService<,>).MakeGenericType(validatorDtoType, parametersType),
+                    typeof(ServiceWithParametersValidation<,>).MakeGenericType(validatorDtoType, parametersType));
+            }
         }
     }
 }

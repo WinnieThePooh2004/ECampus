@@ -8,6 +8,6 @@ namespace ECampus.Infrastructure.DataSelectors.MultipleItemSelectors;
 
 public class MultipleSubjectSelector : IMultipleItemSelector<Subject, SubjectParameters>
 {
-    public IQueryable<Subject> SelectData(DbSet<Subject> data, SubjectParameters parameters)
-        => data.Search(s => s.Name, parameters.Name);
+    public IQueryable<Subject> SelectData(ApplicationDbContext context, SubjectParameters parameters)
+        => context.Subjects.Search(s => s.Name, parameters.Name);
 }

@@ -22,6 +22,11 @@ public class ValidationResult : IEnumerable<ValidationError>
     {
     }
 
+    public ValidationResult(string propertyName, string message)
+    {
+        AddError(new ValidationError(propertyName, message));
+    }
+
     public void AddError(ValidationError error)
     {
         if (!Errors.ContainsKey(error.PropertyName))

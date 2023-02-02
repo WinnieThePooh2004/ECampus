@@ -36,11 +36,11 @@ public static class DefaultUsers
     private static User Teacher => new()
     {
         Username = "teacher",
-        Id = 11,
+        Id = 12,
         Password = "password",
         Email = "teacher@teacher.com",
         Role = UserRole.Teacher,
-        StudentId = 1
+        TeacherId = 1
     };
     
     private static User Admin => new()

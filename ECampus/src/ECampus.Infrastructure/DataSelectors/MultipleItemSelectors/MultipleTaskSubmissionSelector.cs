@@ -7,8 +7,8 @@ namespace ECampus.Infrastructure.DataSelectors.MultipleItemSelectors;
 
 public class MultipleTaskSubmissionSelector : IMultipleItemSelector<TaskSubmission, TaskSubmissionParameters>
 {
-    public IQueryable<TaskSubmission> SelectData(DbSet<TaskSubmission> data, TaskSubmissionParameters parameters)
-        => data.Include(submission => submission.Student)
+    public IQueryable<TaskSubmission> SelectData(ApplicationDbContext context, TaskSubmissionParameters parameters)
+        => context.TaskSubmissions.Include(submission => submission.Student)
                 .Include(t => t.CourseTask)
                 .Where(t => t.CourseTaskId == parameters.CourseTaskId);
 }

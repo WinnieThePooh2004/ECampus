@@ -29,16 +29,14 @@ public class DataFacadesInstaller : IInstaller
 
     private static void InjectParametersFacadeIfExists(IServiceCollection services, Type model)
     {
-        var modelParameters = typeof(SharedAssemblyMarker).Assembly.GetTypes().SingleOrDefault(type =>
+        var modelParametersTypes = typeof(SharedAssemblyMarker).Assembly.GetTypes().Where(type =>
             type.IsAssignableTo(typeof(IQueryParameters<>).MakeGenericType(model)) &&
             !type.GetCustomAttributes(typeof(InstallerIgnoreAttribute), false).Any());
 
-        if (modelParameters is null)
+        foreach (var modelParametersType in modelParametersTypes)
         {
-            return;
+            services.AddScoped(typeof(IParametersDataAccessFacade<,>).MakeGenericType(model, modelParametersType),
+                typeof(ParametersDataAccessFacade<,>).MakeGenericType(model, modelParametersType));
         }
-
-        services.AddScoped(typeof(IParametersDataAccessFacade<,>).MakeGenericType(model, modelParameters),
-            typeof(ParametersDataAccessFacade<,>).MakeGenericType(model, modelParameters));
     }
 }

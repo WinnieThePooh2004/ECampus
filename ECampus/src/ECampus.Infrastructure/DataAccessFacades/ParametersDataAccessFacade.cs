@@ -1,4 +1,5 @@
-﻿using ECampus.Contracts.DataAccess;
+﻿using System.Diagnostics.CodeAnalysis;
+using ECampus.Contracts.DataAccess;
 using ECampus.Infrastructure.Interfaces;
 using ECampus.Shared.Data;
 using ECampus.Shared.DataContainers;
@@ -10,7 +11,7 @@ namespace ECampus.Infrastructure.DataAccessFacades;
 
 public class ParametersDataAccessFacade<TModel, TParameters> : IParametersDataAccessFacade<TModel, TParameters>
     where TModel : class, IModel, new()
-    where TParameters : IQueryParameters<TModel>
+    where TParameters : IQueryParameters<TModel>, IQueryParameters
 {
     private readonly ApplicationDbContext _context;
     private readonly IMultipleItemSelector<TModel, TParameters> _multipleItemSelector;
@@ -24,7 +25,7 @@ public class ParametersDataAccessFacade<TModel, TParameters> : IParametersDataAc
 
     public async Task<ListWithPaginationData<TModel>> GetByParameters(TParameters parameters)
     {
-        var query = _multipleItemSelector.SelectData(_context.Set<TModel>(), parameters);
+        var query = _multipleItemSelector.SelectData(_context, parameters);
         var totalCount = await query.CountAsync();
         var pagedItems = await query
             .Sort(parameters.OrderBy, parameters.SortOrder)
