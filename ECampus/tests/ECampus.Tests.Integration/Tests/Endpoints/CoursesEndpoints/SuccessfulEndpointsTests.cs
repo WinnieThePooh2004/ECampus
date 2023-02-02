@@ -47,7 +47,10 @@ public class SuccessfulEndpointsTests : IClassFixture<ApplicationFactory>, IAsyn
         await SeedData();
 
         var response = await _client.GetAsync(
-            $"/api/Courses/summary?{new CourseSummaryParameters { StudentId = 200 }.ToQueryString()}");
+            $"/api/Courses/summary?{new CourseSummaryParameters
+            {
+                StudentId = 200, OrderBy = nameof(CourseSummary.StartDate)
+            }.ToQueryString()}");
 
         response.EnsureSuccessStatusCode();
         var content =
