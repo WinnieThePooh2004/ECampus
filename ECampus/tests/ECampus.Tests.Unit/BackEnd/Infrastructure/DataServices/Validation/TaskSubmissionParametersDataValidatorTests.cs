@@ -1,4 +1,5 @@
 ﻿using System.Security.Claims;
+using ECampus.Infrastructure;
 using ECampus.Infrastructure.ValidationDataAccess;
 using ECampus.Shared.Auth;
 using ECampus.Shared.Models;
@@ -19,7 +20,7 @@ public class TaskSubmissionParametersDataValidatorTests
     private readonly ClaimsPrincipal _user =
         new(new ClaimsIdentity(new List<Claim> { new(CustomClaimTypes.TeacherId, "1") }));
 
-    private readonly DbContext _context = Substitute.For<DbContext>();
+    private readonly ApplicationDbContext _context = Substitute.For<ApplicationDbContext>();
 
     public TaskSubmissionParametersDataValidatorTests()
     {

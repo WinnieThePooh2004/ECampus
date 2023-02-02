@@ -30,26 +30,19 @@ public class TaskSubmissionDataValidator : ITaskSubmissionDataValidator
         var result = new ValidationResult();
         var submissionAuthorGroup = await FindSubmissionAuthorGroup(taskSubmissionId);
 
-        if (submissionAuthorGroup is null)
-        {
-            result.AddError(new ValidationError(nameof(taskSubmissionId),
-                "Cannot group of submission author with id"));
-            return result;
-        }
-
         await ValidateTeacherTeachesAuthorsGroup(teacherId, submissionAuthorGroup.Id, result);
 
         return result;
     }
 
-    private async Task<Group?> FindSubmissionAuthorGroup(int taskSubmissionId)
+    private async Task<Group> FindSubmissionAuthorGroup(int taskSubmissionId)
     {
-        var submissionAuthorGroup = await _context.Groups
-            .Include(g => g.Students)!
-            .ThenInclude(s => s.Submissions)
-            .SingleOrDefaultAsync(g =>
-                g.Students!.Any(s => s.Submissions!.Any(submission => submission.Id == taskSubmissionId)));
-        return submissionAuthorGroup;
+        var student = await _context.Students
+            .Include(s => s.Submissions)
+            .Include(s => s.Group)
+            .SingleAsync(s => s.Submissions!.Any(submission => submission.Id == taskSubmissionId));
+
+        return student.Group!;
     }
 
     private async Task ValidateTeacherTeachesAuthorsGroup(int teacherId, int submissionAuthorGroupId,

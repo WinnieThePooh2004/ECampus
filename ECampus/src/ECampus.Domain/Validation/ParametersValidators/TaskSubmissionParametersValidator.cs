@@ -44,11 +44,10 @@ public class TaskSubmissionParametersValidator : IParametersValidator<TaskSubmis
 
     private async Task<ValidationResult> ValidateAsTeacher(TaskSubmissionParameters parameters)
     {
-        var teacherIdClaim = _user.FindFirst(CustomClaimTypes.TeacherId);
-        if (teacherIdClaim is null || !int.TryParse(teacherIdClaim.Value, out _))
+        var teacherIdClaimValidation = _user.ValidateNumericalClaim(CustomClaimTypes.TeacherId);
+        if (!teacherIdClaimValidation.Result.IsValid)
         {
-            return new ValidationResult(new ValidationError(nameof(teacherIdClaim),
-                "Yor are now registered as teacher or your TeacherId claim is not a number"));
+            return teacherIdClaimValidation.Result;
         }
 
         return await _parametersDataValidator.ValidateAsync(parameters);
