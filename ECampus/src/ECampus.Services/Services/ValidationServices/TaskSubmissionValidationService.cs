@@ -5,8 +5,10 @@ using ECampus.Domain.Interfaces.Validation;
 using ECampus.Domain.Validation;
 using ECampus.Shared.Auth;
 using ECampus.Shared.DataTransferObjects;
+using ECampus.Shared.Enums;
 using ECampus.Shared.Exceptions.DomainExceptions;
 using ECampus.Shared.Models;
+using ECampus.Shared.Validation;
 using Microsoft.AspNetCore.Http;
 
 namespace ECampus.Services.Services.ValidationServices;
@@ -47,13 +49,38 @@ public class TaskSubmissionValidationService : ITaskSubmissionService
         return await _baseService.UpdateMarkAsync(submissionId, mark);
     }
 
-    public Task<TaskSubmissionDto> GetByIdAsync(int id)
+    public async Task<TaskSubmissionDto> GetByIdAsync(int id)
     {
-        var role = _user.Claims;
-        return _baseService.GetByIdAsync(id);
+        var role = _user.ValidateEnumClaim<UserRole>(ClaimTypes.Role);
+        if (!role.Result.IsValid)
+        {
+            throw new ValidationException(typeof(ClaimsPrincipal), role.Result);
+        }
+        var submission = await _baseService.GetByIdAsync(id);
+        if (role.ClaimValue is UserRole.Admin or UserRole.Teacher)
+        {
+            return submission;
+        }
+        ValidateStudentId(submission);
+        return submission;
     }
 
     public async Task<TaskSubmissionDto> GetByCourseAsync(int courseTaskId)
+    {
+        var submission = await _baseService.GetByCourseAsync(courseTaskId);
+        ValidateStudentId(submission);
+        return submission;
+    }
+
+    private void ValidateStudentId(TaskSubmissionDto submission)
+    {
+        if (submission.StudentId != ValidateStudentClaim().ClaimValue)
+        {
+            throw new DomainException(HttpStatusCode.Forbidden, "You can view only your submissions");
+        }
+    }
+
+    private (ValidationResult Result, int? ClaimValue) ValidateStudentClaim()
     {
         var studentClaimIdValidation = _user.ValidateParsableClaim<int>(CustomClaimTypes.StudentId);
         if (!studentClaimIdValidation.Result.IsValid)
@@ -63,12 +90,6 @@ public class TaskSubmissionValidationService : ITaskSubmissionService
                 studentClaimIdValidation.Result);
         }
 
-        var submission = await _baseService.GetByCourseAsync(courseTaskId);
-        if (submission.StudentId != studentClaimIdValidation.ClaimValue)
-        {
-            throw new DomainException(HttpStatusCode.Forbidden, "You can view only your submissions");
-        }
-
-        return submission;
+        return studentClaimIdValidation;
     }
 }
