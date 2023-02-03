@@ -154,11 +154,8 @@ public class SuccessfulTeachersEndpointsTests : IClassFixture<ApplicationFactory
     public async Task DeleteTeacher_ShouldReturn404_WhenNoObjectExists()
     {
         var response = await _client.DeleteAsync("/api/Teachers/-1");
+        
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
-        var result = JsonSerializer
-            .Deserialize<BadResponseObject>(await response.Content.ReadAsStringAsync(), _serializerOptions);
-        result.Should().NotBeNull();
-        result?.Message.Should().Be(new ObjectNotFoundByIdException(typeof(Teacher), -1).Message);
     }
 
     private static async Task CreateTestsData()

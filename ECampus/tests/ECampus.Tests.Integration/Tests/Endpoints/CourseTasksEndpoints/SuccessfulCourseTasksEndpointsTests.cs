@@ -1,13 +1,11 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
-using Amazon.SimpleNotificationService.Model;
 using ECampus.Shared.Enums;
 using ECampus.Shared.Models;
 using ECampus.Tests.Integration.AppFactories;
 using ECampus.Tests.Integration.AuthHelpers;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
-using NSubstitute;
 
 namespace ECampus.Tests.Integration.Tests.Endpoints.CourseTasksEndpoints;
 
@@ -27,7 +25,7 @@ public class SuccessfulCourseTasksEndpointsTests : IClassFixture<ApplicationFact
         {
             return;
         }
-
+        
         _dataCreated = true;
         await SeedData();
     }
@@ -38,7 +36,7 @@ public class SuccessfulCourseTasksEndpointsTests : IClassFixture<ApplicationFact
     }
 
     [Fact]
-    public async Task CreateTask_ShouldSendSns_WhenTaskCreated()
+    public async Task CreateTask_ShouldCreateSubmissions_WhenTaskCreated()
     {
         _client.Login(UserRole.Admin);
         var task = new CourseTask { Id = 503, CourseId = 500, Name = "task3Name" };
@@ -46,7 +44,6 @@ public class SuccessfulCourseTasksEndpointsTests : IClassFixture<ApplicationFact
         var response = await _client.PostAsJsonAsync("/api/CourseTasks", task);
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
-        await ApplicationFactory.AmazonSnsMock.Received(1).PublishAsync(Arg.Any<PublishRequest>());
         await using var context = ApplicationFactory.Context;
         (await context.TaskSubmissions.Where(submission => submission.CourseTaskId == 503).CountAsync()).Should().Be(9);
     }

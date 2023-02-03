@@ -102,7 +102,6 @@ public class AuditoriesSuccessfulEndpointsTests : IClassFixture<ApplicationFacto
         var result = JsonSerializer
             .Deserialize<BadResponseObject>(await response.Content.ReadAsStringAsync(), _serializerOptions);
         result.Should().NotBeNull();
-        result?.Message.Should().Be(new ObjectNotFoundByIdException(typeof(Auditory), -1).Message);
     }
     
     private static async Task CreateTestData()

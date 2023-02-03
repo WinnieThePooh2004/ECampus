@@ -1,4 +1,7 @@
-﻿using ECampus.Core.Installers;
+﻿using ECampus.Contracts.DataAccess;
+using ECampus.Core.Extensions;
+using ECampus.Core.Installers;
+using ECampus.Infrastructure.DataAccessFacades;
 using ECampus.Infrastructure.DataCreateServices;
 using ECampus.Infrastructure.DataDeleteServices;
 using ECampus.Infrastructure.DataUpdateServices;
@@ -13,7 +16,7 @@ namespace ECampus.Infrastructure.Installers;
 public class DataServicesInstaller : IInstaller
 {
     public int InstallOrder => -1;
-    
+
     public void Install(IServiceCollection services, IConfiguration configuration)
     {
         var models = typeof(SharedAssemblyMarker).Assembly.GetModels();
@@ -27,5 +30,8 @@ public class DataServicesInstaller : IInstaller
             services.AddScoped(typeof(IDataUpdateService<>).MakeGenericType(model),
                 typeof(DataUpdateService<>).MakeGenericType(model));
         }
+
+        services.AddScoped<IDataAccessManager>(provider =>
+            new DataAccessManager(provider.GetServiceOfType<ApplicationDbContext>(), provider));
     }
 }
