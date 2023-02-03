@@ -12,6 +12,10 @@ using NSubstitute;
 
 namespace ECampus.Tests.Integration.AppFactories;
 
+
+/// <summary>
+/// current id is 500, next group of endpoints should use object with ids 600+
+/// </summary>
 public class ApplicationFactory : WebApplicationFactory<Program>
 {
     public static ApplicationDbContext Context =>
@@ -26,7 +30,7 @@ public class ApplicationFactory : WebApplicationFactory<Program>
         context.Database.EnsureCreated();
         //this is used to provide valid FK for create another values, please, do not try to update them, all other 
         //entities` ids must be at least 100 and add 100 for each class uses this  factory, current value is:
-        //100
+        //500
         context.Add(new Faculty { Id = 1, Name = "f1Name" });
         context.Add(new Department { Id = 1, FacultyId = 1, Name = "d1Name" });
         context.Add(new Subject { Id = 1 });
