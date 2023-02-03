@@ -1,6 +1,8 @@
-﻿using ECampus.Core.Extensions;
+﻿using ECampus.Contracts.DataAccess;
+using ECampus.Core.Extensions;
 using ECampus.Core.Installers;
 using ECampus.Core.Metadata;
+using ECampus.Infrastructure.DataAccessFacades;
 using ECampus.Infrastructure.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,5 +24,8 @@ public class MultipleItemSelectorsInstaller : IInstaller
                 .Single(i => i.IsGenericOfType(typeof(IMultipleItemSelector<,>))).GetGenericArguments();
             services.AddScoped(typeof(IMultipleItemSelector<,>).MakeGenericType(selectorParameters), selector);
         }
+
+        services.AddScoped<IParametersDataAccessManager>(provider =>
+            new ParametersDataAccessManager(provider.GetService<ApplicationDbContext>()!, provider));
     }
 }

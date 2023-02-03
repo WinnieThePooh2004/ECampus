@@ -1,7 +1,5 @@
-﻿using AutoMapper;
-using ECampus.Contracts.DataAccess;
+﻿using ECampus.Contracts.DataAccess;
 using ECampus.Contracts.Services;
-using ECampus.Domain.Mapping;
 using ECampus.Services.Services;
 using ECampus.Shared.DataContainers;
 using ECampus.Shared.DataTransferObjects;
@@ -10,26 +8,23 @@ using ECampus.Shared.QueryParameters;
 using ECampus.Tests.Shared.DataFactories;
 using ECampus.Tests.Shared.Extensions;
 using ECampus.Tests.Shared.Mocks.EntityFramework;
-using Microsoft.EntityFrameworkCore;
 
 namespace ECampus.Tests.Unit.BackEnd.Domain.Services;
 
 public sealed class ParametersServiceTests
 {
     private readonly IAbstractFactory<Auditory> _dataFactory;
-    private readonly IMapper _mapper;
     private readonly ParametersService<AuditoryDto, AuditoryParameters, Auditory> _service;
-    private readonly IParametersDataAccessFacade<Auditory, AuditoryParameters> _dataAccessFacade;
+    private readonly IParametersDataAccessManager _dataAccess = Substitute.For<IParametersDataAccessManager>();
     private readonly Fixture _fixture;
 
     public ParametersServiceTests()
     {
         _dataFactory = new AuditoryFactory();
-        _mapper = MapperFactory.Mapper;
+        var mapper = MapperFactory.Mapper;
 
         Substitute.For<IBaseService<AuditoryDto>>();
-        _dataAccessFacade = Substitute.For<IParametersDataAccessFacade<Auditory, AuditoryParameters>>();
-        _service = new ParametersService<AuditoryDto, AuditoryParameters, Auditory>(_dataAccessFacade, _mapper);
+        _service = new ParametersService<AuditoryDto, AuditoryParameters, Auditory>(mapper, _dataAccess);
         _fixture = new Fixture();
         _fixture.Behaviors.Add(new OmitOnRecursionBehavior());
     }
@@ -40,7 +35,7 @@ public sealed class ParametersServiceTests
         var parameters = new AuditoryParameters { PageSize = 10, PageNumber = 1 };
         var data = _dataFactory.CreateMany(_fixture, 10);
         var expected = new DbSetMock<Auditory>(data).Object;
-        _dataAccessFacade.GetByParameters(parameters).Returns(expected);
+        _dataAccess.GetByParameters<Auditory, AuditoryParameters>(parameters).Returns(expected);
 
         var result = await _service.GetByParametersAsync(parameters);
 

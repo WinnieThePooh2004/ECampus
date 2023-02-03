@@ -91,7 +91,7 @@ app.Run();
 
 namespace ECampus.Api
 {
-    public abstract partial class Program
+    public abstract class Program
     {
     }
 }
