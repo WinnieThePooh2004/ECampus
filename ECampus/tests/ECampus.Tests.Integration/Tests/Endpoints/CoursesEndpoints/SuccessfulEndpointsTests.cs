@@ -8,6 +8,7 @@ using ECampus.Shared.QueryParameters;
 using ECampus.Tests.Integration.AppFactories;
 using ECampus.Tests.Integration.AuthHelpers;
 using FluentAssertions;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
 namespace ECampus.Tests.Integration.Tests.Endpoints.CoursesEndpoints;
@@ -24,7 +25,7 @@ public class SuccessfulEndpointsTests : IClassFixture<ApplicationFactory>, IAsyn
 
     public async Task InitializeAsync()
     {
-        if (!_dataCreated)
+        if (_dataCreated)
         {
             return;
         }
@@ -44,7 +45,6 @@ public class SuccessfulEndpointsTests : IClassFixture<ApplicationFactory>, IAsyn
         var student = DefaultUsers.GetUserByRole(UserRole.Student);
         student.StudentId = 200;
         _client.Login(student);
-        await SeedData();
 
         var response = await _client.GetAsync(
             $"/api/Courses/summary?{new CourseSummaryParameters
@@ -62,6 +62,18 @@ public class SuccessfulEndpointsTests : IClassFixture<ApplicationFactory>, IAsyn
         content.Data[1].ScoredPoints.Should().Be(0);
     }
 
+    [Fact]
+    public async Task Delete_ShouldDelete_WhenCourseExist()
+    {
+        _client.Login(UserRole.Admin);
+        
+        var response = await _client.DeleteAsync("api/Courses/210");
+
+        response.EnsureSuccessStatusCode();
+        await using var context = ApplicationFactory.Context;
+        (await context.Courses.AnyAsync(course => course.Id == 210)).Should().BeFalse();
+    }
+
     private static async Task SeedData()
     {
         await using var context = ApplicationFactory.Context;
@@ -72,7 +84,7 @@ public class SuccessfulEndpointsTests : IClassFixture<ApplicationFactory>, IAsyn
                 Id = 200, Name = "g1Name", DepartmentId = 1, Students = new List<Student>
                 {
                     new() { Id = 200, FirstName = "s1fn", LastName = "s1ln", Submissions = CreateSubmission(200) },
-                    new() { Id = 201, FirstName = "s2fn", LastName = "s2ln", Submissions = CreateSubmission(204) },
+                    new() { Id = 201, FirstName = "s2fn", LastName = "s2ln", Submissions = CreateSubmission(204) }
                 }
             },
             new()
@@ -104,10 +116,11 @@ public class SuccessfulEndpointsTests : IClassFixture<ApplicationFactory>, IAsyn
         {
             Id = 201, SubjectId = 1, Name = "emptyCourse",
             CourseTeachers = new List<CourseTeacher> { new() { TeacherId = 200 } },
-            CourseGroups = new List<CourseGroup>{new(){GroupId = 200}}
+            CourseGroups = new List<CourseGroup> { new() { GroupId = 200 } }
         };
         context.Add(course);
         context.Add(emptyCourse);
+        context.Add(new Course { Id = 210, SubjectId = 1, Name = "courseForDelete" });
         await context.SaveChangesAsync();
     }
 
