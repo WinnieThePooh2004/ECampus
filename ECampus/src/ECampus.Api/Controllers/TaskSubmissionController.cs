@@ -39,7 +39,7 @@ public class TaskSubmissionsController : ControllerBase
     [Authorized(UserRole.Student)]
     public async Task<IActionResult> GetByCourse(int courseTaskId)
     {
-        return Ok(await _taskSubmissionService.GetByCourse(courseTaskId));
+        return Ok(await _taskSubmissionService.GetByCourseAsync(courseTaskId));
     }
 
     [HttpPut("content/{taskSubmissionId:int}")]

@@ -5,7 +5,7 @@ using ECampus.Shared.DataContainers;
 using ECampus.Shared.Exceptions.DomainExceptions;
 using ECampus.Shared.QueryParameters;
 
-namespace ECampus.Services.Services;
+namespace ECampus.Services.Services.ValidationServices;
 
 public class ServiceWithParametersValidation<TDto, TParameters> : IParametersService<TDto, TParameters>
     where TParameters : IQueryParameters

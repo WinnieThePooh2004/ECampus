@@ -1,4 +1,6 @@
-﻿using ECampus.Core.Installers;
+﻿using ECampus.Contracts.DataAccess;
+using ECampus.Core.Extensions;
+using ECampus.Core.Installers;
 using ECampus.Core.Metadata;
 using ECampus.Infrastructure.DataCreateServices;
 using ECampus.Infrastructure.DataUpdateServices;
@@ -17,6 +19,9 @@ public class RelationshipsServicesInstaller : IInstaller
 
     public void Install(IServiceCollection services, IConfiguration configuration)
     {
+        services.AddScoped<IRelationsDataAccess>(provider =>
+            new RelationsDataAccess(provider.GetServiceOfType<ApplicationDbContext>(), provider));
+        
         var relationModels = typeof(SharedAssemblyMarker).Assembly.GetTypes()
             .Where(type => type.GetCustomAttributes(typeof(ManyToManyAttribute), false).Any() &&
                            !type.GetCustomAttributes(typeof(InstallerIgnoreAttribute), false).Any()).ToList();
@@ -29,7 +34,8 @@ public class RelationshipsServicesInstaller : IInstaller
         }
     }
 
-    private static void DecorateCurrentServices(IServiceCollection services, IEnumerable<ManyToManyAttribute> relationAttributes,
+    private static void DecorateCurrentServices(IServiceCollection services,
+        IEnumerable<ManyToManyAttribute> relationAttributes,
         Type modelWithRelations)
     {
         foreach (var attribute in relationAttributes)
@@ -47,12 +53,6 @@ public class RelationshipsServicesInstaller : IInstaller
             typeof(IRelationshipsHandler<,,>).MakeGenericType(modelWithRelations, attribute.RelatedModel,
                 attribute.RelationModel),
             typeof(RelationshipsHandler<,,>).MakeGenericType(modelWithRelations, attribute.RelatedModel,
-                attribute.RelationModel));
-
-        services.AddSingleton(
-            typeof(IRelationsDataAccess<,,>).MakeGenericType(modelWithRelations, attribute.RelatedModel,
-                attribute.RelationModel),
-            typeof(RelationsDataAccess<,,>).MakeGenericType(modelWithRelations, attribute.RelatedModel,
                 attribute.RelationModel));
     }
 

@@ -1,4 +1,6 @@
 ﻿using System.Net;
+using ECampus.Contracts.DataAccess;
+using ECampus.Core.Extensions;
 using ECampus.Infrastructure.Extensions;
 using ECampus.Infrastructure.Interfaces;
 using ECampus.Shared.Data;
@@ -7,26 +9,27 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ECampus.Infrastructure.Relationships;
 
-public class RelationsDataAccess<TLeftTable, TRightTable, TRelations> :
-    IRelationsDataAccess<TLeftTable, TRightTable, TRelations>
-    where TLeftTable : IModel
-    where TRightTable : IModel
-    where TRelations : class, new()
+public class RelationsDataAccess : IRelationsDataAccess
 {
-    private readonly IRelationshipsHandler<TLeftTable, TRightTable, TRelations> _relationshipsHandler;
-
-    public RelationsDataAccess(IRelationshipsHandler<TLeftTable, TRightTable, TRelations> relationshipsHandler)
+    private readonly ApplicationDbContext _context;
+    private readonly IServiceProvider _provider;
+    
+    public RelationsDataAccess(ApplicationDbContext context, IServiceProvider provider)
     {
-        _relationshipsHandler = relationshipsHandler;
+        _context = context;
+        _provider = provider;
     }
 
-    public async Task CreateRelation(int leftTableId, int rightTableId, ApplicationDbContext context)
+    public async Task CreateRelation<TLeftTable, TRightTable, TRelations>(int leftTableId, int rightTableId) 
+        where TRelations : class, new()
+        where TRightTable : IModel 
+        where TLeftTable : IModel
     {
-        var relation = _relationshipsHandler.CreateRelationModel(leftTableId, rightTableId);
-        context.Add(relation);
+        var relation = CreateHandler<TLeftTable, TRightTable, TRelations>().CreateRelationModel(leftTableId, rightTableId);
+        _context.Add(relation);
         try
         {
-            await context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
         }
         catch (DbUpdateConcurrencyException)
         {
@@ -40,13 +43,16 @@ public class RelationsDataAccess<TLeftTable, TRightTable, TRelations> :
         }
     }
 
-    public async Task DeleteRelation(int leftTableId, int rightTableId, ApplicationDbContext context)
+    public async Task DeleteRelation<TLeftTable, TRightTable, TRelations>(int leftTableId, int rightTableId) 
+        where TLeftTable : IModel 
+        where TRightTable : IModel 
+        where TRelations : class, new()
     {
-        var relation = _relationshipsHandler.CreateRelationModel(leftTableId, rightTableId);
-        context.Remove(relation);
+        var relation = CreateHandler<TLeftTable, TRightTable, TRelations>().CreateRelationModel(leftTableId, rightTableId);
+        _context.Remove(relation);
         try
         {
-            await context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
         }
         catch (DbUpdateConcurrencyException e)
         {
@@ -58,5 +64,14 @@ public class RelationsDataAccess<TLeftTable, TRightTable, TRelations> :
         {
             throw new UnhandledInfrastructureException(e);
         }
+    }
+
+    private IRelationshipsHandler<TLeftTable, TRightTable, TRelations> CreateHandler
+        <TLeftTable, TRightTable, TRelations>() 
+        where TLeftTable : IModel 
+        where TRightTable : IModel 
+        where TRelations : class, new()
+    {
+        return _provider.GetServiceOfType<IRelationshipsHandler<TLeftTable, TRightTable, TRelations>>();
     }
 }

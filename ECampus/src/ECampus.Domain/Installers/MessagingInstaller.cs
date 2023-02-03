@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace ECampus.Domain.Installers;
 
-public class UserMessagingInstaller : IInstaller
+public class MessagingInstaller : IInstaller
 {
     public int InstallOrder => 3;
     public void Install(IServiceCollection services, IConfiguration configuration)
@@ -15,5 +15,7 @@ public class UserMessagingInstaller : IInstaller
         services.Decorate<IUserRolesService, UserRolesMessagingService>();
         services.Decorate<IBaseService<UserDto>, UserMessagingService>();
         services.Decorate<IPasswordChangeService, PasswordChangeMessagingService>();
+        services.Decorate<IBaseService<CourseTaskDto>, CourseTaskMessagingService>();
+        services.Decorate<ITaskSubmissionService, TaskSubmissionMessagingService>();
     }
 }

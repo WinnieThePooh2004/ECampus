@@ -55,13 +55,13 @@ public class TaskSubmissionControllerTests
     public async Task GetByCourse_ShouldReturnFromService()
     {
         var data = _fixture.Build<TaskSubmissionDto>().With(t => t.Id, 10).Create();
-        _service.GetByCourse(10).Returns(data);
+        _service.GetByCourseAsync(10).Returns(data);
 
         var actionResult = await _sut.GetByCourse(10);
 
         actionResult.Should().BeOfType<OkObjectResult>();
         actionResult.As<OkObjectResult>().Value.Should().Be(data);
-        await _service.Received().GetByCourse(10);    
+        await _service.Received().GetByCourseAsync(10);    
     }
     
     [Fact]

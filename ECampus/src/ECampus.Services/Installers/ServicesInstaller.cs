@@ -41,7 +41,8 @@ public class ServicesInstaller : IInstaller
     {
         var modelParametersTypes = typeof(SharedAssemblyMarker).Assembly.GetTypes().Where(type =>
             !type.GetCustomAttributes(typeof(InstallerIgnoreAttribute), false).Any() &&
-            type.IsAssignableTo(typeof(IQueryParameters<>).MakeGenericType(model)));
+            type.IsAssignableTo(typeof(IQueryParameters<>).MakeGenericType(model)) &&
+            type.IsAssignableTo(typeof(IQueryParameters)));
 
         foreach (var modelParametersType in modelParametersTypes)
         {

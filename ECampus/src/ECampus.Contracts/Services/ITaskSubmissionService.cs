@@ -4,8 +4,8 @@ namespace ECampus.Contracts.Services;
 
 public interface ITaskSubmissionService
 {
-    public Task UpdateContentAsync(int submissionId, string content);
-    public Task UpdateMarkAsync(int submissionId, int mark);
+    public Task<TaskSubmissionDto> UpdateContentAsync(int submissionId, string content);
+    public Task<TaskSubmissionDto> UpdateMarkAsync(int submissionId, int mark);
     Task<TaskSubmissionDto> GetByIdAsync(int id);
-    Task<TaskSubmissionDto> GetByCourse(int courseTaskId);
+    Task<TaskSubmissionDto> GetByCourseAsync(int courseTaskId);
 }

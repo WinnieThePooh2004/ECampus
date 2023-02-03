@@ -34,9 +34,10 @@ public class DataAccessManager : IDataAccessManager
         return _serviceProvider.GetServiceOfType<IDataDeleteService<TModel>>().DeleteAsync(id, _context);
     }
 
-    public Task<TModel?> GetByIdAsync<TModel>(int id) where TModel : class, IModel
+    public async Task<TModel> GetByIdAsync<TModel>(int id) where TModel : class, IModel
     {
-        return _serviceProvider.GetServiceOfType<ISingleItemSelector<TModel>>().SelectModel(id, _context.Set<TModel>());
+        return await _serviceProvider.GetServiceOfType<ISingleItemSelector<TModel>>().SelectModel(id, _context.Set<TModel>())
+            ?? throw new ObjectNotFoundByIdException(typeof(TModel), id);
     }
 
     public async Task<bool> SaveChangesAsync()
