@@ -74,8 +74,8 @@ public class TaskSubmissionParametersValidatorTests
 
         var validationResult = await _sut.ValidateAsync(new TaskSubmissionParameters());
 
-        validationResult.Should().BeEquivalentTo(new ValidationResult(new ValidationError("teacherIdClaim",
-            "Yor are now registered as teacher or your TeacherId claim is not a number")));
+        validationResult.Should().BeEquivalentTo(new ValidationResult(new ValidationError("user",
+            "User must have claim 'TeacherId'")));
     }
 
     [Fact]
@@ -86,8 +86,8 @@ public class TaskSubmissionParametersValidatorTests
 
         var validationResult = await _sut.ValidateAsync(new TaskSubmissionParameters());
 
-        validationResult.Should().BeEquivalentTo(new ValidationResult(new ValidationError("teacherIdClaim",
-            "Yor are now registered as teacher or your TeacherId claim is not a number")));
+        validationResult.Should().BeEquivalentTo(new ValidationResult(new ValidationError("user",
+            "Claim 'TeacherId' must be a number, not 'abc'")));
     }
 
     [Fact]

@@ -41,24 +41,19 @@ public class TaskSubmissionDataValidatorTests
     [Fact]
     public async Task ValidateTeacherId_ShouldReturnError_WhenAuthorsGroupIsNull()
     {
-        _context.Groups = new DbSetMock<Group>();
+        _context.Students = new DbSetMock<Student>();
 
-        var result = await _sut.ValidateTeacherId(1, 1);
-        var errors = result.ToList();
-
-        errors.Should().Contain(new ValidationError("taskSubmissionId", "Cannot group of submission author with id"));
-        errors.Count.Should().Be(1);
+        await new Func<Task>(() => _sut.ValidateTeacherId(1, 1)).Should()
+            .ThrowAsync<ObjectNotFoundByIdException>()
+            .WithMessage(new ObjectNotFoundByIdException(typeof(TaskSubmission), 1).Message);
     }
 
     [Fact]
     public async Task ValidateTeacherId_ShouldReturnError_WhenAuthorsGroupIsNotNullAndTeacherDoesNotTeachCourse()
     {
-        _context.Groups = new DbSetMock<Group>(new List<Group>
+        _context.Students = new DbSetMock<Student>(new List<Student>
         {
-            new()
-            {
-                Students = new List<Student> { new() { Submissions = new List<TaskSubmission> { new() { Id = 10 } } } }
-            }
+            new() { Group = new Group(), Submissions = new List<TaskSubmission> { new() { Id = 10 } } }
         });
         _context.Teachers = new DbSetMock<Teacher>();
 
@@ -74,16 +69,13 @@ public class TaskSubmissionDataValidatorTests
     [Fact]
     public async Task ValidateTeacherId_ShouldReturnEmpty_WhenAuthorsGroupIsNotNullAndTeacherTeachesCourse()
     {
-        var group = new Group
-        {
-            Id = 1,
-            Students = new List<Student> { new() { Submissions = new List<TaskSubmission> { new() { Id = 10 } } } }
-        };
+        var student = new Student
+            { Group = new Group { Id = 1 }, Submissions = new List<TaskSubmission> { new() { Id = 10 } } };
+        _context.Students = new DbSetMock<Student>(new List<Student> { student });
         var teacher = new Teacher
         {
-            Id = 1, Courses = new List<Course> { new() { Groups = new List<Group> { group } } }
+            Id = 1, Courses = new List<Course> { new() { Groups = new List<Group> { student.Group } } }
         };
-        _context.Groups = new DbSetMock<Group>(group);
         _context.Teachers = new DbSetMock<Teacher>(teacher);
 
         var result = await _sut.ValidateTeacherId(1, 10);
