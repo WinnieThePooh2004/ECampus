@@ -3,7 +3,7 @@ using ECampus.Domain.Interfaces.Validation;
 using ECampus.Shared.Data;
 using ECampus.Shared.Exceptions.DomainExceptions;
 
-namespace ECampus.Services.Services;
+namespace ECampus.Services.Services.ValidationServices;
 
 public class ServiceWithCreateValidation<TDto> : IBaseService<TDto>
     where TDto : class, IDataTransferObject

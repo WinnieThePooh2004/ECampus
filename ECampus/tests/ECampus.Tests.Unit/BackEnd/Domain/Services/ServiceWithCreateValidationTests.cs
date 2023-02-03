@@ -1,6 +1,7 @@
 ﻿using ECampus.Contracts.Services;
 using ECampus.Domain.Interfaces.Validation;
 using ECampus.Services.Services;
+using ECampus.Services.Services.ValidationServices;
 using ECampus.Shared.DataTransferObjects;
 using ECampus.Shared.Exceptions.DomainExceptions;
 using ECampus.Shared.Validation;

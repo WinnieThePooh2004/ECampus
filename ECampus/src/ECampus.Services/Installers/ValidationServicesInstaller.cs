@@ -2,6 +2,7 @@
 using ECampus.Core.Installers;
 using ECampus.Core.Metadata;
 using ECampus.Services.Services;
+using ECampus.Services.Services.ValidationServices;
 using ECampus.Shared;
 using ECampus.Shared.Metadata;
 using Microsoft.Extensions.Configuration;

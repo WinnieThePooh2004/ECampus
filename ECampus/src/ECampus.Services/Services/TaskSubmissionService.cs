@@ -1,89 +1,64 @@
-﻿using System.Net;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using AutoMapper;
 using ECampus.Contracts.DataAccess;
 using ECampus.Contracts.Services;
-using ECampus.Core.Messages;
-using ECampus.Core.Metadata;
-using ECampus.Domain.Interfaces;
-using ECampus.Domain.Interfaces.Validation;
 using ECampus.Shared.Auth;
 using ECampus.Shared.DataTransferObjects;
-using ECampus.Shared.Exceptions.DomainExceptions;
+using ECampus.Shared.Exceptions.InfrastructureExceptions;
+using ECampus.Shared.Models;
+using ECampus.Shared.QueryParameters;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 
 namespace ECampus.Services.Services;
 
-[Inject(typeof(ITaskSubmissionService))]
 public class TaskSubmissionService : ITaskSubmissionService
 {
-    private readonly ITaskSubmissionRepository _taskSubmissionRepository;
-    private readonly ITaskSubmissionValidator _taskSubmissionValidator;
-    private readonly ISnsMessenger _snsMessenger;
     private readonly ClaimsPrincipal _user;
     private readonly IMapper _mapper;
+    private readonly IParametersDataAccessManager _parametersDataAccessManager;
+    private readonly IDataAccessManager _dataAccessManager;
 
-    public TaskSubmissionService(ITaskSubmissionRepository taskSubmissionRepository,
-        ITaskSubmissionValidator taskSubmissionValidator,
-        IHttpContextAccessor httpContextAccessor,
-        ISnsMessenger snsMessenger, IMapper mapper)
+    public TaskSubmissionService(IHttpContextAccessor httpContextAccessor, IMapper mapper,
+        IDataAccessManager dataAccessManager, IParametersDataAccessManager parametersDataAccessManager)
     {
-        _taskSubmissionRepository = taskSubmissionRepository;
-        _taskSubmissionValidator = taskSubmissionValidator;
         _mapper = mapper;
-        _snsMessenger = snsMessenger;
+        _dataAccessManager = dataAccessManager;
+        _parametersDataAccessManager = parametersDataAccessManager;
         _user = httpContextAccessor.HttpContext!.User;
     }
 
-    public async Task UpdateContentAsync(int submissionId, string content)
+    public async Task<TaskSubmissionDto> UpdateContentAsync(int submissionId, string content)
     {
-        var validationResult = await _taskSubmissionValidator.ValidateUpdateContentAsync(submissionId, content);
-        if (!validationResult.IsValid)
-        {
-            throw new ValidationException(typeof(TaskSubmissionDto), validationResult);
-        }
-
-        var submission = await _taskSubmissionRepository.UpdateContentAsync(submissionId, content);
-        await _snsMessenger.PublishMessageAsync(new SubmissionEdited
-        {
-            UserEmail = submission.Student?.UserEmail,
-            TaskName = submission.CourseTask!.Name
-        });
+        var submission = await _dataAccessManager.GetByIdAsync<TaskSubmission>(submissionId)
+                         ?? throw new ObjectNotFoundByIdException(typeof(TaskSubmission), submissionId);
+        submission.SubmissionContent = content;
+        await _dataAccessManager.SaveChangesAsync();
+        return _mapper.Map<TaskSubmissionDto>(submission);
     }
 
-    public async Task UpdateMarkAsync(int submissionId, int mark)
+    public async Task<TaskSubmissionDto> UpdateMarkAsync(int submissionId, int mark)
     {
-        var validationResult = await _taskSubmissionValidator.ValidateUpdateMarkAsync(submissionId, mark);
-        if (!validationResult.IsValid)
-        {
-            throw new ValidationException(typeof(TaskSubmissionDto), validationResult);
-        }
-
-        var submission = await _taskSubmissionRepository.UpdateMarkAsync(submissionId, mark);
-        await _snsMessenger.PublishMessageAsync(new SubmissionMarked
-        {
-            TaskName = submission.CourseTask!.Name,
-            UserEmail = submission.Student?.UserEmail,
-            MaxPoints = submission.CourseTask.MaxPoints,
-            ScoredPoints = submission.TotalPoints
-        });
+        var submission = await _dataAccessManager.GetByIdAsync<TaskSubmission>(submissionId);
+        submission.IsMarked = true;
+        submission.TotalPoints = mark;
+        await _dataAccessManager.SaveChangesAsync();
+        return _mapper.Map<TaskSubmissionDto>(submission);
     }
 
     public async Task<TaskSubmissionDto> GetByIdAsync(int id)
     {
-        return _mapper.Map<TaskSubmissionDto>(await _taskSubmissionRepository.GetByIdAsync(id));
+        return _mapper.Map<TaskSubmissionDto>(await _dataAccessManager.GetByIdAsync<TaskSubmission>(id));
     }
 
-    public async Task<TaskSubmissionDto> GetByCourse(int courseTaskId)
+    public async Task<TaskSubmissionDto> GetByCourseAsync(int courseTaskId)
     {
-        var currentStudentIdClaim = _user.FindFirst(CustomClaimTypes.StudentId);
-        if (currentStudentIdClaim is null || !int.TryParse(currentStudentIdClaim.Value, out var currentStudentId))
-        {
-            throw new DomainException(HttpStatusCode.Forbidden,
-                $"Current user is not logged in as student or claim '{CustomClaimTypes.StudentId}' is not a number");
-        }
-
+        var currentStudentId = int.Parse(_user.FindFirst(CustomClaimTypes.StudentId)!.Value);
+        
         return _mapper.Map<TaskSubmissionDto>(
-            await _taskSubmissionRepository.GetByStudentAndCourseAsync(currentStudentId, courseTaskId));
+            await _parametersDataAccessManager
+                .GetByParameters<TaskSubmission, TaskSubmissionByStudentAndCourseParameters>(
+                    new TaskSubmissionByStudentAndCourseParameters
+                        { StudentId = currentStudentId, CourseTaskId = courseTaskId }).SingleOrDefaultAsync());
     }
 }
