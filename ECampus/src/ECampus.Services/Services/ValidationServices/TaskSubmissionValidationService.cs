@@ -47,11 +47,15 @@ public class TaskSubmissionValidationService : ITaskSubmissionService
         return await _baseService.UpdateMarkAsync(submissionId, mark);
     }
 
-    public Task<TaskSubmissionDto> GetByIdAsync(int id) => _baseService.GetByIdAsync(id);
+    public Task<TaskSubmissionDto> GetByIdAsync(int id)
+    {
+        var role = _user.Claims;
+        return _baseService.GetByIdAsync(id);
+    }
 
     public async Task<TaskSubmissionDto> GetByCourseAsync(int courseTaskId)
     {
-        var studentClaimIdValidation = _user.ValidateNumericalClaim(CustomClaimTypes.StudentId);
+        var studentClaimIdValidation = _user.ValidateParsableClaim<int>(CustomClaimTypes.StudentId);
         if (!studentClaimIdValidation.Result.IsValid)
         {
             throw new DomainException(HttpStatusCode.Forbidden,

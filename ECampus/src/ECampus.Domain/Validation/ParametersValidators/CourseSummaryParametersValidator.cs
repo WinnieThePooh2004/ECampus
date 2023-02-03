@@ -18,7 +18,7 @@ public class CourseSummaryParametersValidator : IParametersValidator<CourseSumma
 
     public Task<ValidationResult> ValidateAsync(CourseSummaryParameters parameters)
     {
-        var studentClaimValidation = _user.ValidateNumericalClaim(CustomClaimTypes.StudentId);
+        var studentClaimValidation = _user.ValidateParsableClaim<int>(CustomClaimTypes.StudentId);
         if (!studentClaimValidation.Result.IsValid)
         {
             return Task.FromResult(studentClaimValidation.Result);
