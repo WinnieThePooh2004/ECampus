@@ -38,9 +38,11 @@ public class TaskSubmissionDataValidator : ITaskSubmissionDataValidator
     private async Task<Group> FindSubmissionAuthorGroup(int taskSubmissionId)
     {
         var student = await _context.Students
-            .Include(s => s.Submissions)
-            .Include(s => s.Group)
-            .SingleAsync(s => s.Submissions!.Any(submission => submission.Id == taskSubmissionId));
+                          .Include(s => s.Submissions)
+                          .Include(s => s.Group)
+                          .SingleOrDefaultAsync(
+                              s => s.Submissions!.Any(submission => submission.Id == taskSubmissionId)) ??
+                      throw new ObjectNotFoundByIdException(typeof(TaskSubmission), taskSubmissionId);
 
         return student.Group!;
     }
