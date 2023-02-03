@@ -2,7 +2,6 @@
 using ECampus.Contracts.DataValidation;
 using ECampus.Core.Metadata;
 using ECampus.Shared.Auth;
-using ECampus.Shared.Models;
 using ECampus.Shared.QueryParameters;
 using ECampus.Shared.Validation;
 using Microsoft.AspNetCore.Http;
@@ -13,10 +12,10 @@ namespace ECampus.Infrastructure.ValidationDataAccess;
 [Inject(typeof(IParametersDataValidator<TaskSubmissionParameters>))]
 public class TaskSubmissionParametersDataValidator : IParametersDataValidator<TaskSubmissionParameters>
 {
-    private readonly DbContext _context;
+    private readonly ApplicationDbContext _context;
     private readonly ClaimsPrincipal _user;
 
-    public TaskSubmissionParametersDataValidator(DbContext context, IHttpContextAccessor httpContextAccessor)
+    public TaskSubmissionParametersDataValidator(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor)
     {
         _context = context;
         _user = httpContextAccessor.HttpContext.User;
@@ -26,8 +25,12 @@ public class TaskSubmissionParametersDataValidator : IParametersDataValidator<Ta
     {
         var teacherIdClaim = _user.FindFirst(CustomClaimTypes.TeacherId);
         var teacherId = int.Parse(teacherIdClaim!.Value);
-        if (!await _context.Set<Teacher>().Include(t => t.CourseTeachers).AnyAsync(t =>
-                t.Id == teacherId && t.CourseTeachers!.Any(ct => ct.CourseId == parameters.CourseTaskId)))
+        var teacherTeachesCourse = await _context.Teachers
+            .Include(teacher => teacher.Courses)!
+            .ThenInclude(course => course.Tasks!.Where(task => task.Id == parameters.CourseTaskId))
+            .AnyAsync(teacher => teacher.Id == teacherId && teacher.Courses!.Any(course => course.Tasks!.Any()));
+        
+        if (!teacherTeachesCourse)
         {
             return new ValidationResult(new ValidationError(nameof(parameters.CourseTaskId),
                 "You are not teaching this course, so you can`t view its task"));

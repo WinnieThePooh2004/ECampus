@@ -61,7 +61,7 @@ public class TaskSubmissionValidator : ITaskSubmissionValidator
                 $"Max mark for this task is {submissionFromDb.CourseTask.MaxPoints}, but you are passed {mark}"));
         }
 
-        return await _taskSubmissionDataValidator.ValidateTeacherId(submissionId, teacherId);
+        return await _taskSubmissionDataValidator.ValidateTeacherId(teacherId, submissionId);
     }
 
     private async Task<ValidationResult> ValidateStudentId(int submissionId)

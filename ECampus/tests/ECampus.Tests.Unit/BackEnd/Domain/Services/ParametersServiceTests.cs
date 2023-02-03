@@ -9,6 +9,8 @@ using ECampus.Shared.Models;
 using ECampus.Shared.QueryParameters;
 using ECampus.Tests.Shared.DataFactories;
 using ECampus.Tests.Shared.Extensions;
+using ECampus.Tests.Shared.Mocks.EntityFramework;
+using Microsoft.EntityFrameworkCore;
 
 namespace ECampus.Tests.Unit.BackEnd.Domain.Services;
 
@@ -23,10 +25,7 @@ public sealed class ParametersServiceTests
     public ParametersServiceTests()
     {
         _dataFactory = new AuditoryFactory();
-        _mapper = new MapperConfiguration(cfg => cfg.AddProfiles(new List<Profile>
-        {
-            new AuditoryProfile(),
-        })).CreateMapper();
+        _mapper = MapperFactory.Mapper;
 
         Substitute.For<IBaseService<AuditoryDto>>();
         _dataAccessFacade = Substitute.For<IParametersDataAccessFacade<Auditory, AuditoryParameters>>();
@@ -34,18 +33,18 @@ public sealed class ParametersServiceTests
         _fixture = new Fixture();
         _fixture.Behaviors.Add(new OmitOnRecursionBehavior());
     }
-    
+
     [Fact]
     public async Task GetByParameters_ReturnsFromRepository()
     {
-        var parameters = _fixture.Create<AuditoryParameters>();
+        var parameters = new AuditoryParameters { PageSize = 10, PageNumber = 1 };
         var data = _dataFactory.CreateMany(_fixture, 10);
-        var expected = new ListWithPaginationData<Auditory> { Metadata = _fixture.Create<PaginationData>(), Data = data };
+        var expected = new DbSetMock<Auditory>(data).Object;
         _dataAccessFacade.GetByParameters(parameters).Returns(expected);
-        
+
         var result = await _service.GetByParametersAsync(parameters);
-        
-        result.Metadata.Should().BeEquivalentTo(expected.Metadata);
-        result.Data.Should().BeEquivalentTo(_mapper.Map<ListWithPaginationData<AuditoryDto>>(expected).Data);
+
+        result.Metadata.Should().BeEquivalentTo(new PaginationData { TotalCount = 10, PageNumber = 1, PageSize = 10 });
+        result.Data.Select(a => a.Id).Should().BeEquivalentTo(data.Select(d => d.Id));
     }
 }

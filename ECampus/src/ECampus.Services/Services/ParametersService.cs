@@ -3,7 +3,9 @@ using ECampus.Contracts.DataAccess;
 using ECampus.Contracts.Services;
 using ECampus.Shared.Data;
 using ECampus.Shared.DataContainers;
+using ECampus.Shared.Extensions;
 using ECampus.Shared.QueryParameters;
+using Microsoft.EntityFrameworkCore;
 
 namespace ECampus.Services.Services;
 
@@ -24,7 +26,15 @@ public class ParametersService<TDto, TParameters, TRepositoryModel> : IParameter
 
     public async Task<ListWithPaginationData<TDto>> GetByParametersAsync(TParameters parameters)
     {
-        var result = await _parametersDataAccessFacade.GetByParameters(parameters);
-        return _mapper.Map<ListWithPaginationData<TDto>>(result);
+        var query = _parametersDataAccessFacade.GetByParameters(parameters);
+        var totalCount = await query.CountAsync();
+        var resultList = await query
+            .Sort(parameters.OrderBy, parameters.SortOrder)
+            .Skip((parameters.PageNumber - 1) * parameters.PageSize)
+            .Take(parameters.PageSize)
+            .Select(dto => _mapper.Map<TDto>(dto))
+            .ToListAsync();
+
+        return new ListWithPaginationData<TDto>(resultList, totalCount, parameters.PageNumber, parameters.PageSize);
     }
 }

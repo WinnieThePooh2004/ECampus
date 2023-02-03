@@ -27,7 +27,7 @@ public class CourseSummaryParametersValidator : IParametersValidator<CourseSumma
         if (parameters.StudentId != studentClaimValidation.ClaimValue)
         {
             return Task.FromResult(new ValidationResult(nameof(parameters.StudentId), 
-                "You profile`s student is does not matches provided"));
+                "You profile`s student id does not matches provided"));
         }
 
         return Task.FromResult(new ValidationResult());

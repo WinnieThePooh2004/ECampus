@@ -1,4 +1,5 @@
 ﻿using System.Security.Claims;
+using ECampus.Infrastructure;
 using ECampus.Infrastructure.ValidationDataAccess;
 using ECampus.Shared.Auth;
 using ECampus.Shared.Models;
@@ -7,7 +8,6 @@ using ECampus.Shared.QueryParameters;
 using ECampus.Shared.Validation;
 using ECampus.Tests.Shared.Mocks.EntityFramework;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 
 namespace ECampus.Tests.Unit.BackEnd.Infrastructure.DataServices.Validation;
 
@@ -19,7 +19,7 @@ public class TaskSubmissionParametersDataValidatorTests
     private readonly ClaimsPrincipal _user =
         new(new ClaimsIdentity(new List<Claim> { new(CustomClaimTypes.TeacherId, "1") }));
 
-    private readonly DbContext _context = Substitute.For<DbContext>();
+    private readonly ApplicationDbContext _context = Substitute.For<ApplicationDbContext>();
 
     public TaskSubmissionParametersDataValidatorTests()
     {
@@ -31,8 +31,7 @@ public class TaskSubmissionParametersDataValidatorTests
     [Fact]
     public async Task Validate_ShouldAddError_WhenTeacherIdIsNotValid()
     {
-        var set = (DbSet<Teacher>)new DbSetMock<Teacher>();
-        _context.Set<Teacher>().Returns(set);
+        _context.Teachers = new DbSetMock<Teacher>();
 
         var validationResult = await _sut.ValidateAsync(new TaskSubmissionParameters { CourseTaskId = 10 });
 
@@ -45,11 +44,12 @@ public class TaskSubmissionParametersDataValidatorTests
     [Fact]
     public async Task Validate_ShouldNotAddError_WhenTeacherIdIsValid()
     {
-        var set = (DbSet<Teacher>)new DbSetMock<Teacher>(new Teacher
+        var set = new DbSetMock<Teacher>(new Teacher
         {
-            Id = 1, CourseTeachers = new List<CourseTeacher> { new() { CourseId = 10, TeacherId = 1 } }
-        });
-        _context.Set<Teacher>().Returns(set);
+            Id = 1, CourseTeachers = new List<CourseTeacher> { new() { CourseId = 10, TeacherId = 1 } },
+            Courses = new List<Course> { new() { Id = 10, Tasks = new List<CourseTask> { new() { Id = 10 } } } }
+        }).Object;
+        _context.Teachers = set;
 
         var validationResult = await _sut.ValidateAsync(new TaskSubmissionParameters { CourseTaskId = 10 });
 

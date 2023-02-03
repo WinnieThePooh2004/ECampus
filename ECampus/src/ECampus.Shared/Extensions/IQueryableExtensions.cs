@@ -19,7 +19,7 @@ public static class QueryableExtensions
 
         var searchTermExpression = Expression.Constant(searchTerm.Trim().ToLower());
         var toLowerPropertyValueExpression = Expression.Call(propertySelector.Body,
-            typeof(string).GetMethod("ToLower", new Type[] { })!);
+            typeof(string).GetMethod("ToLower", Array.Empty<Type>())!);
         var checkContainsExpression = Expression.Call(toLowerPropertyValueExpression,
             typeof(string).GetMethod("Contains", new[] { typeof(string) }) ??
             throw new UnreachableException(),
@@ -38,17 +38,26 @@ public static class QueryableExtensions
 
     public static IQueryable<T> Sort<T>(this IQueryable<T> source, string? propertyName, SortOrder sortOrder)
     {
-        if (propertyName is null)
+        if (string.IsNullOrWhiteSpace(propertyName))
         {
             return source;
         }
-        var parameter = Expression.Parameter(typeof(T), "parameter");
-        var propertyAccess = Expression.Property(parameter, propertyName);
-        var sortLambda = Expression.Lambda<Func<T, object>>(propertyAccess, parameter);
+
+        var property = typeof(T).GetProperty(propertyName);
+        if (property is null)
+        {
+            return source;
+        }
+
+        var parameter = Expression.Parameter(typeof(T), "param");
+        var propertyExpression = Expression.MakeMemberAccess(parameter, property);
+        var keySelector =
+            Expression.Lambda<Func<T, object>>(Expression.Convert(propertyExpression, typeof(object)), parameter);
+
         return sortOrder switch
         {
-            SortOrder.Ascending => source.OrderBy(sortLambda),
-            SortOrder.Descending => source.OrderByDescending(sortLambda),
+            SortOrder.Ascending => source.OrderBy(keySelector),
+            SortOrder.Descending => source.OrderByDescending(keySelector),
             _ => throw new UnreachableException($"{sortOrder} is out of enum {typeof(SortOrder)}",
                 new ArgumentOutOfRangeException(nameof(sortOrder)))
         };
