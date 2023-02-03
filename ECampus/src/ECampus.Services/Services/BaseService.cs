@@ -3,27 +3,29 @@ using ECampus.Contracts.DataAccess;
 using ECampus.Contracts.Services;
 using ECampus.Shared.Data;
 using ECampus.Shared.Exceptions.DomainExceptions;
+using ECampus.Shared.Exceptions.InfrastructureExceptions;
 
 namespace ECampus.Services.Services;
 
 public class BaseService<TDto, TRepositoryModel> : IBaseService<TDto>
-    where TRepositoryModel : class, IModel
+    where TRepositoryModel : class, IModel, new()
     where TDto : class, IDataTransferObject
 {
-    private readonly IBaseDataAccessFacade<TRepositoryModel> _dataAccessFacade;
     private readonly IMapper _mapper;
+    private readonly IDataAccessManager _dataAccess;
 
-    public BaseService(IBaseDataAccessFacade<TRepositoryModel> dataAccessFacade,
-        IMapper mapper)
+    public BaseService(IMapper mapper, IDataAccessManager dataAccess)
     {
-        _dataAccessFacade = dataAccessFacade;
         _mapper = mapper;
+        _dataAccess = dataAccess;
     }
 
     public async Task<TDto> CreateAsync(TDto entity)
     {
-        var auditory = _mapper.Map<TRepositoryModel>(entity);
-        return _mapper.Map<TDto>(await _dataAccessFacade.CreateAsync(auditory));
+        var model = _mapper.Map<TRepositoryModel>(entity);
+        var createdModel = await _dataAccess.CreateAsync(model);
+        await _dataAccess.SaveChangesAsync();
+        return _mapper.Map<TDto>(createdModel);
     }
 
     public async Task<TDto> DeleteAsync(int? id)
@@ -32,7 +34,10 @@ public class BaseService<TDto, TRepositoryModel> : IBaseService<TDto>
         {
             throw new NullIdException();
         }
-        return _mapper.Map<TDto>(await _dataAccessFacade.DeleteAsync((int)id));
+
+        var deleted = await _dataAccess.DeleteAsync<TRepositoryModel>((int)id);
+        await _dataAccess.SaveChangesAsync();
+        return _mapper.Map<TDto>(deleted);
     }
 
     public async Task<TDto> GetByIdAsync(int? id)
@@ -41,12 +46,17 @@ public class BaseService<TDto, TRepositoryModel> : IBaseService<TDto>
         {
             throw new NullIdException();
         }
-        return _mapper.Map<TDto>(await _dataAccessFacade.GetByIdAsync((int)id));
+
+        var objectFromDb = await _dataAccess.GetByIdAsync<TRepositoryModel>((int)id) ??
+                           throw new ObjectNotFoundByIdException(typeof(TRepositoryModel), (int)id);
+        return _mapper.Map<TDto>(objectFromDb);
     }
 
     public async Task<TDto> UpdateAsync(TDto entity)
     {
-        var auditory = _mapper.Map<TRepositoryModel>(entity);
-        return _mapper.Map<TDto>(await _dataAccessFacade.UpdateAsync(auditory));
+        var model = _mapper.Map<TRepositoryModel>(entity);
+        var updated = await _dataAccess.UpdateAsync(model);
+        await _dataAccess.SaveChangesAsync();
+        return _mapper.Map<TDto>(updated);
     }
 }

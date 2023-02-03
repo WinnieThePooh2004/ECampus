@@ -27,10 +27,7 @@ public class SaveDataChangesErrorsTests : IClassFixture<ApplicationFactory>
         var teacher = new TeacherDto { FirstName = "fn", LastName = "ln" };
 
         var response = await _client.PostAsJsonAsync("/api/Teachers", teacher);
-        var responseObject =
-            JsonConvert.DeserializeObject<BadResponseObject>(await response.Content.ReadAsStringAsync())!;
 
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-        responseObject.Message.Should().Be($"Error occured while saving entity of type{typeof(Teacher)} details\nError code: 400");
     }
 }

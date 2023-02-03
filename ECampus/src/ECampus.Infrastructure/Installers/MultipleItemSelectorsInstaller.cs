@@ -26,6 +26,6 @@ public class MultipleItemSelectorsInstaller : IInstaller
         }
 
         services.AddScoped<IParametersDataAccessManager>(provider =>
-            new ParametersDataAccessManager(provider.GetService<ApplicationDbContext>()!, provider));
+            new ParametersDataAccessManager(provider.GetServiceOfType<ApplicationDbContext>(), provider));
     }
 }

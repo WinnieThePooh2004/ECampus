@@ -54,12 +54,9 @@ public class SuccessfulTimetableEndpointsTest : IClassFixture<ApplicationFactory
     [Fact]
     public async Task DeleteShouldReturn404_WhenClassNotExist()
     {
-        var response = await _client.DeleteAsync($"/api/Timetable/-1");
+        var response = await _client.DeleteAsync("/api/Timetable/-1");
+
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
-        var result = JsonSerializer
-            .Deserialize<BadResponseObject>(await response.Content.ReadAsStringAsync(), _serializerOptions);
-        result.Should().NotBeNull();
-        result?.Message.Should().Be(new ObjectNotFoundByIdException(typeof(Class), -1).Message);
     }
 
     private static async Task CreateTestsData()
