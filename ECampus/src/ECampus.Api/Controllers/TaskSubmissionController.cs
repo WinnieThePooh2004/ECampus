@@ -29,7 +29,7 @@ public class TaskSubmissionsController : ControllerBase
     }
 
     [HttpGet("{id:int}")]
-    [Authorized(UserRole.Teacher, UserRole.Admin)]
+    [Authorized(UserRole.Student, UserRole.Teacher, UserRole.Admin)]
     public async Task<IActionResult> Get(int id)
     {
         return Ok(await _taskSubmissionService.GetByIdAsync(id));

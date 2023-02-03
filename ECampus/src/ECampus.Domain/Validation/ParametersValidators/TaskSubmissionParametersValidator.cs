@@ -44,7 +44,7 @@ public class TaskSubmissionParametersValidator : IParametersValidator<TaskSubmis
 
     private async Task<ValidationResult> ValidateAsTeacher(TaskSubmissionParameters parameters)
     {
-        var teacherIdClaimValidation = _user.ValidateNumericalClaim(CustomClaimTypes.TeacherId);
+        var teacherIdClaimValidation = _user.ValidateParsableClaim<int>(CustomClaimTypes.TeacherId);
         if (!teacherIdClaimValidation.Result.IsValid)
         {
             return teacherIdClaimValidation.Result;
