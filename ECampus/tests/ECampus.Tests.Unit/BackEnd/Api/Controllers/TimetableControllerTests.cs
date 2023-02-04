@@ -9,7 +9,7 @@ namespace ECampus.Tests.Unit.BackEnd.Api.Controllers;
 
 public class TimetableControllerTests
 {
-    private readonly IClassService _service = Substitute.For<IClassService>();
+    private readonly ITimetableService _service = Substitute.For<ITimetableService>();
     private readonly IBaseService<ClassDto> _baseService = Substitute.For<IBaseService<ClassDto>>();
     private readonly TimetableController _sut;
     private readonly Fixture _fixture;

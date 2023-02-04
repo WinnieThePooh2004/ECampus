@@ -2,6 +2,7 @@
 using ECampus.Domain.Interfaces.Validation;
 using ECampus.Services.Services;
 using ECampus.Shared.DataTransferObjects;
+using ECampus.Shared.Enums;
 using ECampus.Shared.Exceptions.DomainExceptions;
 using ECampus.Shared.Models;
 using ECampus.Shared.Validation;
@@ -16,13 +17,13 @@ public class PasswordChangeServiceTests
     private readonly IUpdateValidator<PasswordChangeDto> _validator =
         Substitute.For<IUpdateValidator<PasswordChangeDto>>();
 
-    private readonly IPasswordChangeDataAccess _dataAccess = Substitute.For<IPasswordChangeDataAccess>();
+    private readonly IDataAccessManager _dataAccess = Substitute.For<IDataAccessManager>();
 
     private readonly Fixture _fixture = new();
 
     public PasswordChangeServiceTests()
     {
-        _sut = new PasswordChangeService(_dataAccess, _validator, MapperFactory.Mapper);
+        _sut = new PasswordChangeService(_validator, MapperFactory.Mapper, _dataAccess);
     }
 
     [Fact]
@@ -47,7 +48,8 @@ public class PasswordChangeServiceTests
         await new Func<Task>(() => _sut.ChangePassword(passwordChange)).Should().ThrowAsync<ValidationException>()
             .WithMessage(new ValidationException(typeof(PasswordChangeDto), errors).Message);
 
-        await _dataAccess.DidNotReceive().ChangePassword(Arg.Any<PasswordChangeDto>());
+        await _dataAccess.DidNotReceive().GetPureByIdAsync<User>(Arg.Any<int>());
+        await _dataAccess.DidNotReceive().SaveChangesAsync();
     }
 
     [Fact]
@@ -56,12 +58,13 @@ public class PasswordChangeServiceTests
         var errors = new ValidationResult();
         var user = new User { Id = new Random().Next() };
         var passwordChange = _fixture.Create<PasswordChangeDto>();
-        _dataAccess.ChangePassword(passwordChange).Returns(user);
+        _dataAccess.GetPureByIdAsync<User>(passwordChange.UserId).Returns(user);
         _validator.ValidateAsync(passwordChange).Returns(errors);
 
         var result = await _sut.ChangePassword(passwordChange);
 
         result.Id.Should().Be(user.Id);
-        await _dataAccess.Received(1).ChangePassword(passwordChange);
+        user.Password.Should().Be(passwordChange.NewPassword);
+        await _dataAccess.Received(1).SaveChangesAsync();
     }
 }

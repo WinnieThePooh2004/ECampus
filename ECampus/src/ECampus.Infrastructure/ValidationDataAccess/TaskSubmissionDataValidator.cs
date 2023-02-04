@@ -37,14 +37,13 @@ public class TaskSubmissionDataValidator : ITaskSubmissionDataValidator
 
     private async Task<Group> FindSubmissionAuthorGroup(int taskSubmissionId)
     {
-        var student = await _context.Students
-                          .Include(s => s.Submissions)
-                          .Include(s => s.Group)
-                          .SingleOrDefaultAsync(
-                              s => s.Submissions!.Any(submission => submission.Id == taskSubmissionId)) ??
-                      throw new ObjectNotFoundByIdException(typeof(TaskSubmission), taskSubmissionId);
+        var result = await _context.TaskSubmissions
+                         .Include(submission => submission.Student)
+                         .ThenInclude(student => student!.Group)
+                         .SingleOrDefaultAsync(submission => submission.Id == taskSubmissionId) ??
+                     throw new ObjectNotFoundByIdException(typeof(TaskSubmission), taskSubmissionId);
 
-        return student.Group!;
+        return result.Student!.Group!;
     }
 
     private async Task ValidateTeacherTeachesAuthorsGroup(int teacherId, int submissionAuthorGroupId,

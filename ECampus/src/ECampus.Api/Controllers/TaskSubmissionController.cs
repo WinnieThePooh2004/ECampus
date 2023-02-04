@@ -46,15 +46,13 @@ public class TaskSubmissionsController : ControllerBase
     [Authorized(UserRole.Student)]
     public async Task<IActionResult> UpdateContent([FromRoute] int taskSubmissionId, [FromBody] string content)
     {
-        await _taskSubmissionService.UpdateContentAsync(taskSubmissionId, content);
-        return NoContent();
+        return Ok(await _taskSubmissionService.UpdateContentAsync(taskSubmissionId, content));
     }
     
     [HttpPut("mark/{taskSubmissionId:int}")]
     [Authorized(UserRole.Teacher)]
     public async Task<IActionResult> UpdateMark([FromRoute] int taskSubmissionId, [FromBody] int mark)
     {
-        await _taskSubmissionService.UpdateMarkAsync(taskSubmissionId, mark);
-        return NoContent();
+        return Ok(await _taskSubmissionService.UpdateMarkAsync(taskSubmissionId, mark));
     }
 }

@@ -16,7 +16,7 @@ public class LoggingService<T> : IBaseService<T>
         _logger = logger;
     }
 
-    public async Task<T> GetByIdAsync(int? id)
+    public async Task<T> GetByIdAsync(int id)
     {
         _logger.Information("Retrieving object of type {Type}, with id = {Id}", typeof(T), id);
         var result = await _baseService.GetByIdAsync(id);
@@ -41,7 +41,7 @@ public class LoggingService<T> : IBaseService<T>
         return updatedEntity;
     }
 
-    public async Task<T> DeleteAsync(int? id)
+    public async Task<T> DeleteAsync(int id)
     {
         _logger.Information("Deleting object of type {Type}, with id = {Id}", typeof(T), id);
         var deletedObject = await _baseService.DeleteAsync(id);

@@ -2,7 +2,7 @@
 
 namespace ECampus.Shared.QueryParameters;
 
-public class FacultyParameters : QueryParameters, IQueryParameters<Faculty>
+public class FacultyParameters : QueryParameters, IDataSelectParameters<Faculty>
 {
     public string? Name { get; set; }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using ECampus.Contracts.DataAccess;
 using ECampus.Core.Extensions;
+using ECampus.Infrastructure.DataSelectors.SingleItemSelectors;
 using ECampus.Infrastructure.Interfaces;
 using ECampus.Shared.Data;
 using ECampus.Shared.Exceptions.InfrastructureExceptions;
@@ -37,6 +38,12 @@ public class DataAccessManager : IDataAccessManager
     public async Task<TModel> GetByIdAsync<TModel>(int id) where TModel : class, IModel
     {
         return await _serviceProvider.GetServiceOfType<ISingleItemSelector<TModel>>().SelectModel(id, _context.Set<TModel>())
+            ?? throw new ObjectNotFoundByIdException(typeof(TModel), id);
+    }
+
+    public async Task<TModel> GetPureByIdAsync<TModel>(int id) where TModel : class, IModel
+    {
+        return await _context.Set<TModel>().GetPureByIdAsync(id)
             ?? throw new ObjectNotFoundByIdException(typeof(TModel), id);
     }
 

@@ -12,9 +12,8 @@ using NSubstitute;
 
 namespace ECampus.Tests.Integration.AppFactories;
 
-
 /// <summary>
-/// current id is 500, next group of endpoints should use object with ids 600+
+/// current id is 600, next group of endpoints should use object with ids 700+
 /// </summary>
 public class ApplicationFactory : WebApplicationFactory<Program>
 {
@@ -34,6 +33,8 @@ public class ApplicationFactory : WebApplicationFactory<Program>
         context.Add(new Faculty { Id = 1, Name = "f1Name" });
         context.Add(new Department { Id = 1, FacultyId = 1, Name = "d1Name" });
         context.Add(new Subject { Id = 1 });
+        context.Add(new Course { Id = 1, Name = "c1Name", SubjectId = 1 });
+        context.Add(new Group { Id = 1, DepartmentId = 1, Name = "g1Name" });
         context.SaveChangesAsync();
     }
 

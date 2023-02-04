@@ -1,16 +1,14 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
-using System.Text.Json;
 using ECampus.Api.MiddlewareFilters;
 using ECampus.Shared.DataTransferObjects;
 using ECampus.Shared.Enums;
-using ECampus.Shared.Exceptions.InfrastructureExceptions;
 using ECampus.Shared.Models;
 using ECampus.Tests.Integration.AppFactories;
 using ECampus.Tests.Integration.AuthHelpers;
-using ECampus.Tests.Shared.Mocks.HttpRequests;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace ECampus.Tests.Integration.Tests.Endpoints.AuditoriesEndpoints;
 
@@ -18,7 +16,6 @@ public class AuditoriesSuccessfulEndpointsTests : IClassFixture<ApplicationFacto
 {
     private static bool _databaseCreated;
     private readonly HttpClient _client;
-    private readonly JsonSerializerOptions _serializerOptions = HttpClientFactory.Options;
 
     public AuditoriesSuccessfulEndpointsTests(ApplicationFactory factory)
     {
@@ -48,7 +45,7 @@ public class AuditoriesSuccessfulEndpointsTests : IClassFixture<ApplicationFacto
         var response = await _client.GetAsync("/api/Auditories/101");
         response.EnsureSuccessStatusCode();
         var auditory =
-            JsonSerializer.Deserialize<Auditory>(await response.Content.ReadAsStringAsync(), _serializerOptions);
+            JsonConvert.DeserializeObject<Auditory>(await response.Content.ReadAsStringAsync());
         auditory.Should().NotBeNull();
         auditory?.Id.Should().Be(101);
         auditory?.Name.Should().Be("name2");
@@ -99,11 +96,10 @@ public class AuditoriesSuccessfulEndpointsTests : IClassFixture<ApplicationFacto
     {
         var response = await _client.DeleteAsync("/api/Auditories/-1");
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
-        var result = JsonSerializer
-            .Deserialize<BadResponseObject>(await response.Content.ReadAsStringAsync(), _serializerOptions);
+        var result = JsonConvert.DeserializeObject<BadResponseObject>(await response.Content.ReadAsStringAsync());
         result.Should().NotBeNull();
     }
-    
+
     private static async Task CreateTestData()
     {
         await using var context = ApplicationFactory.Context;

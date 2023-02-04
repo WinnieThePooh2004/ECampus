@@ -16,22 +16,28 @@ public static class InMemoryDbFactory
             return context;
         }
 
-        //this very strange construction needed to ensure that context won`t be returned until its creation has ended
-        //really, don`t try to touch it, 1 of 10 cases some tests can fall 
         if (!_creatingStarted)
         {
-            _creatingStarted = true;
-            await context.Database.EnsureCreatedAsync();
-            _creatingEnded = true;
+            return await CreateDataAndReturn(context);
         }
-        else
+
+        return ReturnWhenDataIsCreated(context);
+    }
+
+    private static async Task<ApplicationDbContext> CreateDataAndReturn(ApplicationDbContext context)
+    {
+        _creatingStarted = true;
+        await context.Database.EnsureCreatedAsync();
+        _creatingEnded = true;
+        return context;
+    }
+
+    private static ApplicationDbContext ReturnWhenDataIsCreated(ApplicationDbContext context)
+    {
+        while (!_creatingEnded)
         {
-            while (!_creatingEnded)
-            {
-                
-            }
         }
-        
+
         return context;
     }
 

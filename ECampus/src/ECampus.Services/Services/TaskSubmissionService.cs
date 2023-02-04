@@ -1,6 +1,8 @@
-﻿using System.Security.Claims;
+﻿using System.Net;
+using System.Security.Claims;
 using AutoMapper;
 using ECampus.Contracts.DataAccess;
+using ECampus.Contracts.DataSelectParameters;
 using ECampus.Contracts.Services;
 using ECampus.Shared.Auth;
 using ECampus.Shared.DataTransferObjects;
@@ -30,8 +32,7 @@ public class TaskSubmissionService : ITaskSubmissionService
 
     public async Task<TaskSubmissionDto> UpdateContentAsync(int submissionId, string content)
     {
-        var submission = await _dataAccessManager.GetByIdAsync<TaskSubmission>(submissionId)
-                         ?? throw new ObjectNotFoundByIdException(typeof(TaskSubmission), submissionId);
+        var submission = await _dataAccessManager.GetByIdAsync<TaskSubmission>(submissionId);
         submission.SubmissionContent = content;
         await _dataAccessManager.SaveChangesAsync();
         return _mapper.Map<TaskSubmissionDto>(submission);
@@ -54,11 +55,13 @@ public class TaskSubmissionService : ITaskSubmissionService
     public async Task<TaskSubmissionDto> GetByCourseAsync(int courseTaskId)
     {
         var currentStudentId = int.Parse(_user.FindFirst(CustomClaimTypes.StudentId)!.Value);
-        
+
         return _mapper.Map<TaskSubmissionDto>(
             await _parametersDataAccessManager
                 .GetByParameters<TaskSubmission, TaskSubmissionByStudentAndCourseParameters>(
                     new TaskSubmissionByStudentAndCourseParameters
-                        { StudentId = currentStudentId, CourseTaskId = courseTaskId }).SingleOrDefaultAsync());
+                        { StudentId = currentStudentId, CourseTaskId = courseTaskId }).SingleOrDefaultAsync() ??
+            throw new InfrastructureExceptions(HttpStatusCode.NotFound, 
+                $"There is not any submissions with StudentId={currentStudentId} and TaskId={courseTaskId}"));
     }
 }

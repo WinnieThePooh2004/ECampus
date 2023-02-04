@@ -1,6 +1,6 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
-using AutoMapper;
 using ECampus.Contracts.DataAccess;
+using ECampus.Contracts.DataSelectParameters;
 using ECampus.Domain.Auth;
 using ECampus.Shared.Auth;
 using ECampus.Shared.DataTransferObjects;
@@ -9,7 +9,7 @@ using ECampus.Shared.Exceptions.DomainExceptions;
 using ECampus.Shared.Extensions;
 using ECampus.Shared.Models;
 using ECampus.Tests.Shared;
-using ECampus.Tests.Shared.DataFactories;
+using ECampus.Tests.Shared.Mocks.EntityFramework;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
 
@@ -18,18 +18,17 @@ namespace ECampus.Tests.Unit.BackEnd.Domain.Auth;
 public class AuthorizationServiceTests
 {
     private readonly AuthorizationService _sut;
-    private readonly IAuthorizationDataAccess _dataAccess;
     private readonly IHttpContextAccessor _httpContextAccessor = Substitute.For<IHttpContextAccessor>();
     private readonly HttpContext _httpContext = Substitute.For<HttpContext>();
-    private readonly IMapper _mapper = MapperFactory.Mapper;
     private readonly JwtAuthOptions _authOptions = AuthData.DefaultOptions;
+
+    private readonly IParametersDataAccessManager
+        _parametersDataAccess = Substitute.For<IParametersDataAccessManager>();
 
     public AuthorizationServiceTests()
     {
-        _dataAccess = Substitute.For<IAuthorizationDataAccess>();
         _httpContextAccessor.HttpContext.Returns(_httpContext);
-        _sut = new AuthorizationService(_dataAccess, _mapper,
-            _httpContextAccessor, _authOptions);
+        _sut = new AuthorizationService(_httpContextAccessor, _authOptions, _parametersDataAccess);
     }
 
     [Fact]
@@ -43,7 +42,10 @@ public class AuthorizationServiceTests
     public async Task Login_ShouldThrowException_IfPasswordsDontMatch()
     {
         var login = new LoginDto { Password = "password1", Email = "secretEmail@abc.com" };
-        _dataAccess.GetByEmailAsync("secretEmail@abc.com").Returns(new User { Password = "password2" });
+        var set = new DbSetMock<User>(new User { Password = "invalid password" }).Object;
+        _parametersDataAccess
+            .GetByParameters<User, UserEmailParameters>(Arg.Is<UserEmailParameters>(p =>
+                p.Email == "secretEmail@abc.com")).Returns(set);
 
         await new Func<Task>(() => _sut.Login(login)).Should().ThrowAsync<DomainException>()
             .WithMessage("Wrong password or email\nError code: 400");
@@ -60,7 +62,10 @@ public class AuthorizationServiceTests
             Id = 10,
             Role = UserRole.Admin
         };
-        _dataAccess.GetByEmailAsync("secretEmail@abc.com").Returns(user);
+        var set = new DbSetMock<User>(user).Object;
+        _parametersDataAccess
+            .GetByParameters<User, UserEmailParameters>(Arg.Is<UserEmailParameters>(p =>
+                p.Email == "secretEmail@abc.com")).Returns(set);
         var loginResult = new LoginResult
         {
             Email = user.Email,
