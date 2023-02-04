@@ -8,6 +8,8 @@ public class InjectAttribute : Attribute
     public ServiceLifetime ServiceLifetime { get; }
     
     public Type ServiceType { get; }
+    
+    public Func<IServiceProvider, object>? Factory { get; init; }
 
     public InjectAttribute(Type serviceType, ServiceLifetime serviceLifetime = ServiceLifetime.Scoped)
     {
