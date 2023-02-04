@@ -32,7 +32,9 @@ public class PasswordChangeService : IPasswordChangeService
             throw new ValidationException(typeof(PasswordChangeDto), errors);
         }
 
-        var user = await _passwordChangeDataAccess.ChangePassword(passwordChange);
+        var user = await _passwordChangeDataAccess.GetUserAsync(passwordChange.UserId);
+        user.Password = passwordChange.NewPassword;
+        await _passwordChangeDataAccess.SaveChangesAsync();
         return _mapper.Map<UserDto>(user);
     }
 

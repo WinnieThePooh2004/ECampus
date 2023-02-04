@@ -17,7 +17,7 @@ public class PasswordChangeDataAccessTests
     {
         _context = Substitute.For<DbContext>();
         _sut = new PasswordChangeDataAccess(_context);
-        _testModel = new User { Id = 10, Password = "OldPassword" };
+        _testModel = new User { Id = 10 };
         var data = new DbSetMock<User>(new List<User> { _testModel }).Object;
         _context.Set<User>().Returns(data);
     }
@@ -25,21 +25,24 @@ public class PasswordChangeDataAccessTests
     [Fact]
     public async Task ChangePassword_ShouldThrowException_IfUserNotFoundById()
     {
-        await new Func<Task>(() => _sut.ChangePassword(new PasswordChangeDto { UserId = 11 })).Should()
+        await new Func<Task>(() => _sut.GetUserAsync(11)).Should()
             .ThrowAsync<ObjectNotFoundByIdException>()
             .WithMessage(new ObjectNotFoundByIdException(typeof(User), 11).Message);
-
-        await _context.DidNotReceive().SaveChangesAsync();
-        _testModel.Password.Should().Be("OldPassword");
     }
 
     [Fact]
-    public async Task ChangePassword_ShouldChangePassword_IfUserExists()
+    public async Task ChangePassword_ShouldReturnUser_IfUserExists()
     {
-        var passwordChange = new PasswordChangeDto { UserId = 10, NewPassword = "NewPassword" };
+        var result = await _sut.GetUserAsync(10);
 
-        await _sut.ChangePassword(passwordChange);
+        result.Should().Be(_testModel);
+    }
 
-        _testModel.Password.Should().Be(passwordChange.NewPassword);
+    [Fact]
+    public async Task SaveChanges_ShouldSaveChangesInContext()
+    {
+        await _sut.SaveChangesAsync();
+
+        await _context.Received(1).SaveChangesAsync();
     }
 }

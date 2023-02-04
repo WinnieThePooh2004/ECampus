@@ -69,7 +69,7 @@ public class TaskSubmissionControllerTests
     {
         var actionResult = await _sut.UpdateMark(10, 20);
 
-        actionResult.Should().BeOfType<NoContentResult>();
+        actionResult.Should().BeOfType<OkObjectResult>();
         await _service.Received(1).UpdateMarkAsync(10, 20);
     }
     
@@ -78,7 +78,7 @@ public class TaskSubmissionControllerTests
     {
         var actionResult = await _sut.UpdateContent(10, "New content");
 
-        actionResult.Should().BeOfType<NoContentResult>();
+        actionResult.Should().BeOfType<OkObjectResult>();
         await _service.Received(1).UpdateContentAsync(10, "New content");
     }
 }

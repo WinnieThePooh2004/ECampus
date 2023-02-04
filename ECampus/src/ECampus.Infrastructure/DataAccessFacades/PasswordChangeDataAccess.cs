@@ -16,14 +16,15 @@ public class PasswordChangeDataAccess : IPasswordChangeDataAccess
     {
         _context = context;
     }
-    
-    public async Task<User> ChangePassword(PasswordChangeDto passwordChange)
+
+    public async Task<User> GetUserAsync(int userId)
     {
-        var user = await _context.Set<User>().FirstOrDefaultAsync(user => user.Id == passwordChange.UserId)
-                   ?? throw new ObjectNotFoundByIdException(typeof(User), passwordChange.UserId);
-        
-        user.Password = passwordChange.NewPassword;
-        await _context.SaveChangesAsync();
-        return user;
+        return await _context.Set<User>().FirstOrDefaultAsync(user => user.Id == userId)
+               ?? throw new ObjectNotFoundByIdException(typeof(User), userId);
+    }
+
+    public async Task<bool> SaveChangesAsync()
+    {
+        return await _context.SaveChangesAsync() > 0;
     }
 }

@@ -41,7 +41,7 @@ public class TaskSubmissionDataValidatorTests
     [Fact]
     public async Task ValidateTeacherId_ShouldReturnError_WhenAuthorsGroupIsNull()
     {
-        _context.Students = new DbSetMock<Student>();
+        _context.TaskSubmissions = new DbSetMock<TaskSubmission>();
 
         await new Func<Task>(() => _sut.ValidateTeacherId(1, 1)).Should()
             .ThrowAsync<ObjectNotFoundByIdException>()
@@ -51,10 +51,8 @@ public class TaskSubmissionDataValidatorTests
     [Fact]
     public async Task ValidateTeacherId_ShouldReturnError_WhenAuthorsGroupIsNotNullAndTeacherDoesNotTeachCourse()
     {
-        _context.Students = new DbSetMock<Student>(new List<Student>
-        {
-            new() { Group = new Group(), Submissions = new List<TaskSubmission> { new() { Id = 10 } } }
-        });
+        var submission = new TaskSubmission{ Id = 10, Student = new Student { Group = new Group() } };
+        _context.TaskSubmissions = new DbSetMock<TaskSubmission>(submission);
         _context.Teachers = new DbSetMock<Teacher>();
 
         var result = await _sut.ValidateTeacherId(1, 10);
@@ -69,12 +67,11 @@ public class TaskSubmissionDataValidatorTests
     [Fact]
     public async Task ValidateTeacherId_ShouldReturnEmpty_WhenAuthorsGroupIsNotNullAndTeacherTeachesCourse()
     {
-        var student = new Student
-            { Group = new Group { Id = 1 }, Submissions = new List<TaskSubmission> { new() { Id = 10 } } };
-        _context.Students = new DbSetMock<Student>(new List<Student> { student });
+        var submission = new TaskSubmission{ Id = 10, Student = new Student { Group = new Group() } };
+        _context.TaskSubmissions = new DbSetMock<TaskSubmission>(submission);
         var teacher = new Teacher
         {
-            Id = 1, Courses = new List<Course> { new() { Groups = new List<Group> { student.Group } } }
+            Id = 1, Courses = new List<Course> { new() { Groups = new List<Group> { submission.Student.Group } } }
         };
         _context.Teachers = new DbSetMock<Teacher>(teacher);
 
