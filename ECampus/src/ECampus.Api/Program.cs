@@ -1,12 +1,18 @@
+using AutoMapper;
 using ECampus.Api;
 using ECampus.Api.MiddlewareFilters;
+using ECampus.Contracts.Services;
 using ECampus.Core.Extensions;
 using ECampus.Domain;
+using ECampus.Domain.Interfaces.Validation;
 using ECampus.Infrastructure;
+using ECampus.Infrastructure.DataAccessFacades;
 using ECampus.Infrastructure.DataCreateServices;
 using ECampus.Infrastructure.Interfaces;
 using ECampus.Services;
+using ECampus.Services.Services;
 using ECampus.Shared.Auth;
+using ECampus.Shared.DataTransferObjects;
 using ECampus.Shared.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -27,6 +33,11 @@ builder.Logging.AddSerilog(logger);
 
 builder.Services.AddSingleton<ILogger>(logger);
 
+builder.Services.AddScoped<PrimitiveDataAccessManager>();
+builder.Services.AddScoped<IPasswordChangeService>(provider =>
+    new PasswordChangeService(provider.GetServiceOfType<IUpdateValidator<PasswordChangeDto>>(),
+        provider.GetServiceOfType<IMapper>(), provider.GetServiceOfType<PrimitiveDataAccessManager>()));
+
 // Add services to the container.
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ApplicationDbContext")!));
@@ -37,10 +48,12 @@ builder.Services.AddControllers(options => { options.Filters.Add<MiddlewareExcep
     .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 
 builder.Services.AddAutoMapper(typeof(DomainAssemblyMarker));
-builder.Services.AddUniqueServices(typeof(DomainAssemblyMarker), typeof(DomainAssemblyMarker), typeof(ApiAssemblyMarker),
+builder.Services.AddUniqueServices(typeof(DomainAssemblyMarker), typeof(DomainAssemblyMarker),
+    typeof(ApiAssemblyMarker),
     typeof(InfrastructureAssemblyMarker), typeof(ServicesAssemblyMarker));
 
-builder.Services.UserInstallersFromAssemblyContaining(builder.Configuration, typeof(DomainAssemblyMarker), typeof(ApiAssemblyMarker),
+builder.Services.UserInstallersFromAssemblyContaining(builder.Configuration, typeof(DomainAssemblyMarker),
+    typeof(ApiAssemblyMarker),
     typeof(InfrastructureAssemblyMarker), typeof(ServicesAssemblyMarker));
 
 builder.Services.Decorate<IDataCreateService<CourseTask>, CourseTaskCreateService>();

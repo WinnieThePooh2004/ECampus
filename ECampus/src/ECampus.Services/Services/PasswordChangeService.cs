@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using ECampus.Contracts.DataAccess;
 using ECampus.Contracts.Services;
-using ECampus.Core.Metadata;
 using ECampus.Domain.Interfaces.Validation;
 using ECampus.Shared.DataTransferObjects;
 using ECampus.Shared.Exceptions.DomainExceptions;
@@ -10,7 +9,6 @@ using ECampus.Shared.Validation;
 
 namespace ECampus.Services.Services;
 
-[Inject(typeof(IPasswordChangeService))]
 public class PasswordChangeService : IPasswordChangeService
 {
     private readonly IDataAccessManager _dataAccess;
@@ -33,7 +31,7 @@ public class PasswordChangeService : IPasswordChangeService
             throw new ValidationException(typeof(PasswordChangeDto), errors);
         }
 
-        var user = await _dataAccess.GetPureByIdAsync<User>(passwordChange.UserId);
+        var user = await _dataAccess.GetByIdAsync<User>(passwordChange.UserId);
         user.Password = passwordChange.NewPassword;
         await _dataAccess.SaveChangesAsync();
         return _mapper.Map<UserDto>(user);

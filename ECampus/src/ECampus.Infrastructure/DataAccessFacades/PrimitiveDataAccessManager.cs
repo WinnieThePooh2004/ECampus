@@ -1,43 +1,44 @@
 ﻿using System.Net;
 using ECampus.Contracts.DataAccess;
-using ECampus.Core.Extensions;
-using ECampus.Infrastructure.Interfaces;
+using ECampus.Infrastructure.DataSelectors.SingleItemSelectors;
 using ECampus.Shared.Data;
 using ECampus.Shared.Exceptions.InfrastructureExceptions;
 using Microsoft.EntityFrameworkCore;
 
 namespace ECampus.Infrastructure.DataAccessFacades;
 
-public class DataAccessManager : IDataAccessManager
+public class PrimitiveDataAccessManager : IDataAccessManager
 {
     private readonly ApplicationDbContext _context;
-    private readonly IServiceProvider _serviceProvider;
 
-    public DataAccessManager(ApplicationDbContext context, IServiceProvider serviceProvider)
+    public PrimitiveDataAccessManager(ApplicationDbContext context)
     {
         _context = context;
-        _serviceProvider = serviceProvider;
     }
 
     public Task<TModel> CreateAsync<TModel>(TModel model) where TModel : class, IModel
     {
-        return _serviceProvider.GetServiceOfType<IDataCreateService<TModel>>().CreateAsync(model, _context);
+        _context.Update(model);
+        return Task.FromResult(model);
     }
 
     public Task<TModel> UpdateAsync<TModel>(TModel model) where TModel : class, IModel
     {
-        return _serviceProvider.GetServiceOfType<IDataUpdateService<TModel>>().UpdateAsync(model, _context);
+        _context.Update(model);
+        return Task.FromResult(model);
     }
 
     public Task<TModel> DeleteAsync<TModel>(int id) where TModel : class, IModel, new()
     {
-        return _serviceProvider.GetServiceOfType<IDataDeleteService<TModel>>().DeleteAsync(id, _context);
+        var model = new TModel { Id = id };
+        _context.Update(model);
+        return Task.FromResult(model);
     }
 
     public async Task<TModel> GetByIdAsync<TModel>(int id) where TModel : class, IModel
     {
-        return await _serviceProvider.GetServiceOfType<ISingleItemSelector<TModel>>().SelectModel(id, _context.Set<TModel>())
-            ?? throw new ObjectNotFoundByIdException(typeof(TModel), id);
+        return await _context.Set<TModel>().GetPureByIdAsync(id) ??
+               throw new ObjectNotFoundByIdException(typeof(TModel), id);
     }
 
     public async Task<bool> SaveChangesAsync()
