@@ -16,7 +16,7 @@ public class UserMessagingService : IBaseService<UserDto>
         _snsMessenger = snsMessenger;
     }
 
-    public Task<UserDto> GetByIdAsync(int? id) => _baseService.GetByIdAsync(id);
+    public Task<UserDto> GetByIdAsync(int id) => _baseService.GetByIdAsync(id);
 
     public async Task<UserDto> CreateAsync(UserDto entity)
     {
@@ -32,7 +32,7 @@ public class UserMessagingService : IBaseService<UserDto>
         return createdUser;
     }
 
-    public async Task<UserDto> DeleteAsync(int? id)
+    public async Task<UserDto> DeleteAsync(int id)
     {
         var deletedUser = await _baseService.DeleteAsync(id);
         await _snsMessenger.PublishMessageAsync(deletedUser.ToUserDeletedMessage());

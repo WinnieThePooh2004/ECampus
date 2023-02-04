@@ -20,7 +20,7 @@ public class CourseTaskMessagingService : IBaseService<CourseTaskDto>
         _courseTaskMessageDataAccess = courseTaskMessageDataAccess;
     }
 
-    public Task<CourseTaskDto> GetByIdAsync(int? id) => _baseService.GetByIdAsync(id);
+    public Task<CourseTaskDto> GetByIdAsync(int id) => _baseService.GetByIdAsync(id);
 
     public async Task<CourseTaskDto> CreateAsync(CourseTaskDto entity)
     {
@@ -46,5 +46,5 @@ public class CourseTaskMessagingService : IBaseService<CourseTaskDto>
 
     public Task<CourseTaskDto> UpdateAsync(CourseTaskDto entity) => _baseService.UpdateAsync(entity);
 
-    public Task<CourseTaskDto> DeleteAsync(int? id) => _baseService.DeleteAsync(id);
+    public Task<CourseTaskDto> DeleteAsync(int id) => _baseService.DeleteAsync(id);
 }

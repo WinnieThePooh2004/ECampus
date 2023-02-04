@@ -1,13 +1,14 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Net;
-using AutoMapper;
 using ECampus.Contracts.DataAccess;
+using ECampus.Contracts.DataSelectParameters;
 using ECampus.Core.Metadata;
 using ECampus.Domain.Interfaces.Auth;
 using ECampus.Shared.Auth;
 using ECampus.Shared.DataTransferObjects;
 using ECampus.Shared.Exceptions.DomainExceptions;
 using ECampus.Shared.Extensions;
+using ECampus.Shared.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
 
@@ -16,18 +17,16 @@ namespace ECampus.Domain.Auth;
 [Inject(typeof(IAuthorizationService))]
 public class AuthorizationService : IAuthorizationService
 {
-    private readonly IAuthorizationDataAccess _repository;
-    private readonly IMapper _mapper;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly JwtAuthOptions _authOptions;
+    private readonly IParametersDataAccessManager _parametersDataAccess;
 
-    public AuthorizationService(IAuthorizationDataAccess repository,
-        IMapper mapper, IHttpContextAccessor httpContextAccessor, JwtAuthOptions authOptions)
+    public AuthorizationService(IHttpContextAccessor httpContextAccessor, JwtAuthOptions authOptions,
+        IParametersDataAccessManager parametersDataAccess)
     {
-        _repository = repository;
-        _mapper = mapper;
         _httpContextAccessor = httpContextAccessor;
         _authOptions = authOptions;
+        _parametersDataAccess = parametersDataAccess;
     }
 
     public async Task<LoginResult> Login(LoginDto login)
@@ -37,7 +36,8 @@ public class AuthorizationService : IAuthorizationService
             throw new HttpContextNotFoundExceptions();
         }
 
-        var user = _mapper.Map<UserDto>(await _repository.GetByEmailAsync(login.Email));
+        var user = await _parametersDataAccess.GetSingleAsync<User, UserEmailParameters>(new UserEmailParameters
+            { Email = login.Email });
         if (user.Password != login.Password)
         {
             throw new DomainException(HttpStatusCode.BadRequest, "Wrong password or email");
@@ -53,15 +53,15 @@ public class AuthorizationService : IAuthorizationService
             TeacherId = user.TeacherId,
             GroupId = user.Student?.GroupId
         };
-        
+
         var jwt = new JwtSecurityToken(
             issuer: _authOptions.Issuer,
             audience: _authOptions.Audience,
             claims: HttpContextExtensions.CreateClaims(result),
-            expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(2)),
+            expires: DateTime.UtcNow.Add(TimeSpan.FromHours(2)),
             signingCredentials: new SigningCredentials(_authOptions.GetSymmetricSecurityKey(),
                 SecurityAlgorithms.HmacSha256));
-        
+
         result.Token = new JwtSecurityTokenHandler().WriteToken(jwt);
         return result;
     }

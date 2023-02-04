@@ -2,7 +2,7 @@
 
 namespace ECampus.Shared.QueryParameters;
 
-public class SubjectParameters : QueryParameters, IQueryParameters<Subject>
+public class SubjectParameters : QueryParameters, IDataSelectParameters<Subject>
 {
     public string? Name { get; set; }
 }

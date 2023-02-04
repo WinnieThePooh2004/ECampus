@@ -1,11 +1,11 @@
 ﻿using System.Security.Claims;
 using AutoMapper;
 using ECampus.Contracts.DataAccess;
+using ECampus.Contracts.DataSelectParameters;
 using ECampus.Services.Services;
 using ECampus.Shared.Auth;
 using ECampus.Shared.Exceptions.InfrastructureExceptions;
 using ECampus.Shared.Models;
-using ECampus.Shared.QueryParameters;
 using ECampus.Tests.Shared.DataFactories;
 using ECampus.Tests.Shared.Mocks.EntityFramework;
 using Microsoft.AspNetCore.Http;

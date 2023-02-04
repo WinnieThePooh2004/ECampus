@@ -2,7 +2,7 @@
 
 namespace ECampus.Shared.QueryParameters;
 
-public class TaskSubmissionParameters : QueryParameters, IQueryParameters<TaskSubmission>
+public class TaskSubmissionParameters : QueryParameters, IDataSelectParameters<TaskSubmission>
 {
     public int CourseTaskId { get; set; }
 }

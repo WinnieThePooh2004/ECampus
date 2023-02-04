@@ -33,7 +33,7 @@ public class DepartmentsController : ControllerBase
     // GET: Departments/Details/5
     [HttpGet("{id:int?}")]
     [AllowAnonymous]
-    public async Task<IActionResult> Get(int? id)
+    public async Task<IActionResult> Get(int id)
     {
         return Ok(await _baseService.GetByIdAsync(id));
     }
@@ -60,7 +60,7 @@ public class DepartmentsController : ControllerBase
     // GET: Departments/Delete/5
     [HttpDelete("{id:int?}")]
     [Authorized(UserRole.Admin)]
-    public async Task<IActionResult> Delete(int? id)
+    public async Task<IActionResult> Delete(int id)
     {
         return Ok(await _baseService.DeleteAsync(id));
     }

@@ -30,7 +30,7 @@ public class ParametersValidatorsInstaller : IInstaller
             var parametersType = parametersValidator.GetInterfaces()
                 .Single(i => i.IsGenericOfType(typeof(IParametersValidator<>))).GetGenericArguments()[0];
             var parametersModel = parametersType.GetInterfaces()
-                .Single(i => i.IsGenericOfType(typeof(IQueryParameters<>))).GenericTypeArguments[0];
+                .Single(i => i.IsGenericOfType(typeof(IDataSelectParameters<>))).GenericTypeArguments[0];
             var validatorDtoTypes = dataTransferObjects.Where(dto =>
                 dto.GetCustomAttributes(typeof(DtoAttribute), false).OfType<DtoAttribute>().Single().ModelType ==
                 parametersModel);

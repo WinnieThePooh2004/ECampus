@@ -1,4 +1,5 @@
-﻿using ECampus.Infrastructure.Interfaces;
+﻿using ECampus.Contracts.DataSelectParameters;
+using ECampus.Infrastructure.Interfaces;
 using ECampus.Shared.Models;
 using ECampus.Shared.QueryParameters;
 using Microsoft.EntityFrameworkCore;

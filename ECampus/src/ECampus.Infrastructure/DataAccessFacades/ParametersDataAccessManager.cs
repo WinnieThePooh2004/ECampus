@@ -19,7 +19,7 @@ public class ParametersDataAccessManager : IParametersDataAccessManager
 
     public IQueryable<TModel> GetByParameters<TModel, TParameters>(TParameters parameters)
         where TModel : class, IModel
-        where TParameters : IQueryParameters<TModel>
+        where TParameters : IDataSelectParameters<TModel>
     {
         var selector = _serviceProvider.GetServiceOfType<IMultipleItemSelector<TModel, TParameters>>();
         return selector.SelectData(_context, parameters);

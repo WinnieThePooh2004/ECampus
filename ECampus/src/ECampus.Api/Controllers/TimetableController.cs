@@ -11,43 +11,43 @@ namespace ECampus.Api.Controllers;
 [Route("api/[controller]")]
 public class TimetableController : ControllerBase
 {
-    private readonly IClassService _service;
+    private readonly ITimetableService _service;
     private readonly IBaseService<ClassDto> _baseService;
 
-    public TimetableController(IClassService service, IBaseService<ClassDto> baseService)
+    public TimetableController(ITimetableService service, IBaseService<ClassDto> baseService)
     {
         _service = service;
         _baseService = baseService;
     }
 
-    [HttpGet("Auditory/{auditoryId:int?}")]
+    [HttpGet("Auditory/{auditoryId:int}")]
     [AllowAnonymous]
-    public async Task<IActionResult> AuditoryTimetable(int? auditoryId)
+    public async Task<IActionResult> AuditoryTimetable(int auditoryId)
     {
         var table = await _service.GetTimetableForAuditoryAsync(auditoryId);
         return Ok(table);
     }
 
-    [HttpGet("Group/{groupId:int?}")]
+    [HttpGet("Group/{groupId:int}")]
     [AllowAnonymous]
-    public async Task<IActionResult> GroupTimetable(int? groupId)
+    public async Task<IActionResult> GroupTimetable(int groupId)
     {
         var table = await _service.GetTimetableForGroupAsync(groupId);
         return Ok(table);
     }
 
-    [HttpGet("Teacher/{teacherId:int?}")]
+    [HttpGet("Teacher/{teacherId:int}")]
     [AllowAnonymous]
-    public async Task<IActionResult> TeacherTimetable(int? teacherId)
+    public async Task<IActionResult> TeacherTimetable(int teacherId)
     {
         var table = await _service.GetTimetableForTeacherAsync(teacherId);
         return Ok(table);
     }
 
     // GET: Classes/Details/5
-    [HttpGet("{id:int?}")]
+    [HttpGet("{id:int}")]
     [AllowAnonymous]
-    public async Task<IActionResult> Get(int? id)
+    public async Task<IActionResult> Get(int id)
     {
         return Ok(await _baseService.GetByIdAsync(id));
     }
@@ -70,7 +70,7 @@ public class TimetableController : ControllerBase
 
     [HttpDelete("{id:int?}")]
     [Authorized(UserRole.Admin)]
-    public async Task<IActionResult> Delete(int? id)
+    public async Task<IActionResult> Delete(int id)
     {
         return Ok(await _baseService.DeleteAsync(id));
     }

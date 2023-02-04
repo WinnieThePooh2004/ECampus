@@ -2,6 +2,7 @@
 using System.Security.Claims;
 using AutoMapper;
 using ECampus.Contracts.DataAccess;
+using ECampus.Contracts.DataSelectParameters;
 using ECampus.Contracts.Services;
 using ECampus.Shared.Auth;
 using ECampus.Shared.DataTransferObjects;

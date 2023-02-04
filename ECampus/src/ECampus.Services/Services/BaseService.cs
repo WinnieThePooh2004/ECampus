@@ -28,27 +28,16 @@ public class BaseService<TDto, TRepositoryModel> : IBaseService<TDto>
         return _mapper.Map<TDto>(createdModel);
     }
 
-    public async Task<TDto> DeleteAsync(int? id)
+    public async Task<TDto> DeleteAsync(int id)
     {
-        if (id is null)
-        {
-            throw new NullIdException();
-        }
-
-        var deleted = await _dataAccess.DeleteAsync<TRepositoryModel>((int)id);
+        var deleted = await _dataAccess.DeleteAsync<TRepositoryModel>(id);
         await _dataAccess.SaveChangesAsync();
         return _mapper.Map<TDto>(deleted);
     }
 
-    public async Task<TDto> GetByIdAsync(int? id)
+    public async Task<TDto> GetByIdAsync(int id)
     {
-        if (id is null)
-        {
-            throw new NullIdException();
-        }
-
-        var objectFromDb = await _dataAccess.GetByIdAsync<TRepositoryModel>((int)id) ??
-                           throw new ObjectNotFoundByIdException(typeof(TRepositoryModel), (int)id);
+        var objectFromDb = await _dataAccess.GetByIdAsync<TRepositoryModel>(id);
         return _mapper.Map<TDto>(objectFromDb);
     }
 

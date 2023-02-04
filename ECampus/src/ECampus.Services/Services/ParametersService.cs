@@ -12,7 +12,7 @@ namespace ECampus.Services.Services;
 public class ParametersService<TDto, TParameters, TRepositoryModel> : IParametersService<TDto, TParameters>
     where TDto : class, IDataTransferObject, new()
     where TRepositoryModel : class, IModel, new()
-    where TParameters : class, IQueryParameters<TRepositoryModel>, IQueryParameters
+    where TParameters : class, IDataSelectParameters<TRepositoryModel>, IQueryParameters
 {
     private readonly IParametersDataAccessManager _dataAccess;
     private readonly IMapper _mapper;

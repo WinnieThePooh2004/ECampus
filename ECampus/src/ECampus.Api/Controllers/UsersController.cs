@@ -27,7 +27,7 @@ public class UsersController : ControllerBase
 
     [HttpGet("{id:int?}")]
     [AllowAnonymous]
-    public async Task<IActionResult> Get(int? id)
+    public async Task<IActionResult> Get(int id)
     {
         return Ok(await _baseService.GetByIdAsync(id));
     }
@@ -55,7 +55,7 @@ public class UsersController : ControllerBase
 
     [HttpDelete("{id:int?}")]
     [Authorized]
-    public async Task<IActionResult> Delete(int? id)
+    public async Task<IActionResult> Delete(int id)
     {
         return Ok(await _baseService.DeleteAsync(id));
     }

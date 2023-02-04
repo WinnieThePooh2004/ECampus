@@ -2,7 +2,7 @@
 
 namespace ECampus.Shared.QueryParameters;
 
-public class StudentParameters : QueryParameters, IQueryParameters<Student>
+public class StudentParameters : QueryParameters, IDataSelectParameters<Student>
 {
     public string? LastName { get; init; }
     public string? FirstName { get; init; }

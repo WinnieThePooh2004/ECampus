@@ -46,15 +46,6 @@ public sealed class BaseServiceTests
     }
 
     [Fact]
-    private async Task Delete_ShouldThrowException_WhenIdIsNull()
-    {
-        await new Func<Task>(() => _sut.DeleteAsync(null)).Should().ThrowAsync<NullIdException>();
-
-        await _dataAccess.DidNotReceive().DeleteAsync<Auditory>(Arg.Any<int>());
-        await _dataAccess.DidNotReceive().SaveChangesAsync();
-    }
-
-    [Fact]
     private async Task Delete_ShouldReturnFromService_WhenIdIsNotNull()
     {
         var item = _fixture.Create<AuditoryDto>();
@@ -66,14 +57,6 @@ public sealed class BaseServiceTests
             opt => opt.ComparingByMembers<AuditoryDto>());
         await _dataAccess.Received(1).DeleteAsync<Auditory>(10);
         await _dataAccess.Received().SaveChangesAsync();
-    }
-
-    [Fact]
-    private async Task GetById_ShouldThrowException_WhenIdIsNull()
-    {
-        await new Func<Task>(() => _sut.GetByIdAsync(null)).Should().ThrowAsync<NullIdException>();
-
-        await _dataAccess.DidNotReceive().GetByIdAsync<Auditory>(Arg.Any<int>());
     }
 
     [Fact]
