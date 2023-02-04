@@ -86,7 +86,7 @@ public class TaskSubmissionValidationService : ITaskSubmissionService
         if (!studentClaimIdValidation.Result.IsValid)
         {
             throw new DomainException(HttpStatusCode.Forbidden,
-                "To view this submission you must be registered as student",
+                $"You are registered as student, but your claim '{nameof(UserRole.Student)}' is not valid",
                 studentClaimIdValidation.Result);
         }
 
