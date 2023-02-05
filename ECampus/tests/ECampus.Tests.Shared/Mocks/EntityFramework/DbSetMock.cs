@@ -17,8 +17,6 @@ public sealed class DbSetMock<T>
         ((IQueryable)Object).Provider.Returns(new TestAsyncEnumerableEfCore<T>(queryable));
         ((IAsyncEnumerable<T>)Object).GetAsyncEnumerator(Arg.Any<CancellationToken>())
             .Returns(new TestAsyncEnumerator<T>(source.GetEnumerator()));
-
-        Object.Add(Arg.Do<T>(source.Add));
     }
 
     public DbSetMock()
