@@ -8,6 +8,24 @@ namespace ECampus.Core.Extensions;
 
 public static class ServiceCollectionExtensions
 {
+    public static void AddLazy<TService, TImplementation>(this IServiceCollection services,
+        ServiceLifetime serviceLifetime = ServiceLifetime.Scoped)
+        where TService : class
+        where TImplementation : class, TService
+    {
+        var descriptor = new ServiceDescriptor(typeof(TService), typeof(TImplementation), serviceLifetime);
+        services.Add(descriptor);
+        services.AddLazy<TService>();
+    }
+
+    public static void AddLazy<T>(this IServiceCollection services,
+        ServiceLifetime serviceLifetime = ServiceLifetime.Scoped)
+    {
+        var descriptor = new ServiceDescriptor(typeof(Lazy<T>), provider => new Lazy<T>(provider.GetServiceOfType<T>),
+            serviceLifetime);
+        services.Add(descriptor);
+    }
+
     public static void UserInstallersFromAssemblyContaining<TAssemblyMarker>(this IServiceCollection services,
         IConfiguration configuration)
     {

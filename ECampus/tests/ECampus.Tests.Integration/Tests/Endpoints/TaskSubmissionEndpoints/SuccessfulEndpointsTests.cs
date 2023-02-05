@@ -74,12 +74,12 @@ public class SuccessfulEndpointsTests : IClassFixture<ApplicationFactory>, IAsyn
         var course = new Course
         {
             Id = 600, SubjectId = 1, Name = "c1Name",
-            Teachers = new List<Teacher> { new() { Id = 600, FirstName = "t1fn", LastName = "t2f2", DepartmentId = 1 } },
+            Teachers = new List<Teacher> { new() { Id = 600, FirstName = "t1fn", LastName = "t1ln", DepartmentId = 1 } },
             Groups = new List<Group> { new() { Id = 600, DepartmentId = 1, Name = "g1Name" } }
         };
         var task = new CourseTask
         {
-            Id = 600, CourseId = 1, Name = "ct1Name", MaxPoints = 10,
+            Id = 600, CourseId = 600, Name = "ct1Name", MaxPoints = 10,
             Submissions = Enumerable.Range(0, 10).Select(i => new TaskSubmission
             {
                 Id = 600 + i, SubmissionContent = "", Student = new Student
