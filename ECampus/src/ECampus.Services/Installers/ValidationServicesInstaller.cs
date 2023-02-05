@@ -12,7 +12,7 @@ namespace ECampus.Services.Installers;
 
 public class ValidationServicesInstaller : IInstaller
 {
-    public int InstallOrder => 0;
+    public int InstallOrder => 10;
 
     public void Install(IServiceCollection services, IConfiguration configuration)
     {

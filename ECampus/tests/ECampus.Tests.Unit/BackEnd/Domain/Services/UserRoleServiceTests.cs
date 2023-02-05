@@ -21,7 +21,7 @@ public class UserRoleServiceTests
 
     public UserRoleServiceTests()
     {
-        _sut = new UserRolesService(_repository, _mapper, _updateValidator, _createValidator);
+        _sut = new UserRolesService(_repository, _mapper);
     }
 
     [Fact]
