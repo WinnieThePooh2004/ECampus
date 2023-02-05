@@ -1,9 +1,7 @@
-﻿using AutoMapper;
-using ECampus.Contracts.DataValidation;
+﻿using ECampus.Contracts.DataAccess;
 using ECampus.Domain.Interfaces.Validation;
 using ECampus.Domain.Validation.UniversalValidators;
 using ECampus.Shared.DataTransferObjects;
-using ECampus.Shared.Models;
 using ECampus.Shared.Validation;
 
 namespace ECampus.Domain.Validation.CreateValidators;
@@ -11,13 +9,13 @@ namespace ECampus.Domain.Validation.CreateValidators;
 public class ClassDtoCreateValidator : BaseClassDtoValidator, ICreateValidator<ClassDto>
 {
     private readonly ICreateValidator<ClassDto> _createValidator;
-    
-    public ClassDtoCreateValidator(IMapper mapper, IValidationDataAccess<Class> dataAccess, ICreateValidator<ClassDto> createValidator)
-        : base(mapper, dataAccess)
+
+    public ClassDtoCreateValidator(ICreateValidator<ClassDto> createValidator,
+        IParametersDataAccessManager parametersDataAccessManager)
+        :base(parametersDataAccessManager)
     {
         _createValidator = createValidator;
     }
-
 
     async Task<ValidationResult> ICreateValidator<ClassDto>.ValidateAsync(ClassDto dataTransferObject)
     {

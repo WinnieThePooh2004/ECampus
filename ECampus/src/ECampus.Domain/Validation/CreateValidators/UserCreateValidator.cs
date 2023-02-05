@@ -1,30 +1,29 @@
-﻿using AutoMapper;
-using ECampus.Contracts.DataValidation;
+﻿using System.Security.Claims;
+using ECampus.Contracts.DataAccess;
+using ECampus.Contracts.DataSelectParameters;
 using ECampus.Domain.Interfaces.Validation;
 using ECampus.Shared.DataTransferObjects;
 using ECampus.Shared.Enums;
 using ECampus.Shared.Exceptions.DomainExceptions;
-using ECampus.Shared.Extensions;
 using ECampus.Shared.Models;
 using ECampus.Shared.Validation;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 
 namespace ECampus.Domain.Validation.CreateValidators;
 
 public class UserCreateValidator : ICreateValidator<UserDto>
 {
-    private readonly IMapper _mapper;
-    private readonly IDataValidator<User> _dataAccess;
     private readonly ICreateValidator<UserDto> _baseValidator;
-    private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly ClaimsPrincipal _user;
+    private readonly IParametersDataAccessManager _parametersDataAccess;
 
-    public UserCreateValidator(IMapper mapper, IDataValidator<User> dataAccess,
-        ICreateValidator<UserDto> baseValidator, IHttpContextAccessor httpContextAccessor)
+    public UserCreateValidator(ICreateValidator<UserDto> baseValidator,
+        IHttpContextAccessor httpContextAccessor, IParametersDataAccessManager parametersDataAccess)
     {
-        _mapper = mapper;
-        _dataAccess = dataAccess;
         _baseValidator = baseValidator;
-        _httpContextAccessor = httpContextAccessor;
+        _user = httpContextAccessor.HttpContext!.User;
+        _parametersDataAccess = parametersDataAccess;
     }
 
     public async Task<ValidationResult> ValidateAsync(UserDto dataTransferObject)
@@ -35,19 +34,37 @@ public class UserCreateValidator : ICreateValidator<UserDto>
         {
             return errors;
         }
-        var model = _mapper.Map<User>(dataTransferObject);
-        errors.MergeResults(await _dataAccess.ValidateCreate(model));
+
+        await ValidateEmailUniqueness(dataTransferObject.Email, errors);
+        await ValidateUsernameUniqueness(dataTransferObject, errors);
         return errors;
+    }
+
+    private async Task ValidateUsernameUniqueness(UserDto dataTransferObject, ValidationResult errors)
+    {
+        var usersWithSameUsername =
+            _parametersDataAccess.GetByParameters<User, UserUsernameParameters>(new UserUsernameParameters
+                { Username = dataTransferObject.Username });
+        if (await usersWithSameUsername.AnyAsync())
+        {
+            errors.AddError(new ValidationError(nameof(UserDto.Username), "User with same username already exists"));
+        }
+    }
+
+    private async Task ValidateEmailUniqueness(string email, ValidationResult errors)
+    {
+        var usersWithSameEmails =
+            _parametersDataAccess.GetByParameters<User, UserEmailParameters>(new UserEmailParameters
+                { Email = email });
+        if (await usersWithSameEmails.AnyAsync())
+        {
+            errors.AddError(new ValidationError(nameof(UserDto.Email), "User with same email already exists"));
+        }
     }
 
     private void ValidateRole(UserDto user, ValidationResult currentErrors)
     {
-        if (_httpContextAccessor.HttpContext is null)
-        {
-            throw new HttpContextNotFoundExceptions();
-        }
-
-        if (user.Role == UserRole.Guest || _httpContextAccessor.HttpContext.User.IsInRole(nameof(UserRole.Admin)))
+        if (user.Role == UserRole.Guest || _user.IsInRole(nameof(UserRole.Admin)))
         {
             return;
         }

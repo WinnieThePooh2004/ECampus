@@ -1,141 +1,69 @@
-﻿using AutoMapper;
-using ECampus.Contracts.DataValidation;
+﻿using ECampus.Contracts.DataAccess;
+using ECampus.Contracts.DataSelectParameters;
 using ECampus.Shared.DataTransferObjects;
-using ECampus.Shared.Enums;
-using ECampus.Shared.Extensions;
 using ECampus.Shared.Models;
 using ECampus.Shared.Validation;
-
-#pragma warning disable CS8602
-#pragma warning disable CS8604
+using Microsoft.EntityFrameworkCore;
 
 namespace ECampus.Domain.Validation.UniversalValidators;
 
 public class BaseClassDtoValidator
 {
-    private readonly IMapper _mapper;
-    private readonly IValidationDataAccess<Class> _dataAccess;
+    private readonly IParametersDataAccessManager _parametersDataAccess;
 
-    protected BaseClassDtoValidator(IMapper mapper, IValidationDataAccess<Class> dataAccess)
+    protected BaseClassDtoValidator(IParametersDataAccessManager parametersDataAccess)
     {
-        _mapper = mapper;
-        _dataAccess = dataAccess;
+        _parametersDataAccess = parametersDataAccess;
     }
 
-    protected async Task<ValidationResult> ValidateAsync(ClassDto dataTransferObject)
+    protected async Task<ValidationResult> ValidateAsync(ClassDto @class)
     {
-        var model = await _dataAccess.LoadRequiredDataForCreateAsync(_mapper.Map<Class>(dataTransferObject));
-        var errors = ValidateReferencedValues(model);
-        if (!errors.IsValid)
-        {
-            return errors;
-        }
+        var errors = new ValidationResult();
+        var classesOnSameTime = _parametersDataAccess.GetByParameters<Class, ClassValidationDataParameters>(
+            new ClassValidationDataParameters
+            {
+                Number = @class.Number, WeekDependency = @class.WeekDependency,
+                DayOfWeek = @class.DayOfWeek
+            });
 
-        errors.MergeResults(ValidateSubject(model));
-        errors.MergeResults(ValidateTeacher(model));
-        errors.MergeResults(ValidateAuditory(model));
-        errors.MergeResults(ValidateGroup(model));
+        await ValidateTeacherId(@class, classesOnSameTime, errors);
+        await ValidateAuditoryId(@class, classesOnSameTime, errors);
+        await ValidateGroupId(@class, classesOnSameTime, errors);
         return errors;
     }
 
-    private static ValidationResult ValidateTeacher(Class @class)
+    private static async Task ValidateGroupId(ClassDto @class, IQueryable<Class> classesOnSameTime, ValidationResult errors)
     {
-        var errors = new ValidationResult();
-        if (@class.Teacher.Classes
-            .Any(c => c.Id != @class.Id &&
-                      c.Number == @class.Number &&
-                      c.DayOfWeek == @class.DayOfWeek &&
-                      (c.WeekDependency == WeekDependency.None ||
-                       @class.WeekDependency != WeekDependency.None ||
-                       c.WeekDependency == @class.WeekDependency)))
-        {
-            errors.AddError(new ValidationError(nameof(@class.TeacherId),
-                $"Teacher {@class.Teacher.FirstName} {@class.Teacher.LastName} " +
-                $"already has class number {@class.Number}" +
-                $" on {(DayOfWeek)@class.DayOfWeek}s " +
-                $"with week dependency {@class.WeekDependency}"));
-        }
-
-        return errors;
-    }
-
-    private static ValidationResult ValidateSubject(Class @class)
-    {
-        var errors = new ValidationResult();
-        if (@class.Teacher.SubjectIds.All(s => s.SubjectId != @class.SubjectId))
-        {
-            errors.AddError(new ValidationError(nameof(@class.SubjectId),
-                $"Teacher {@class.Teacher.FirstName} {@class.Teacher.LastName} " +
-                $"does not teach subject {@class.Subject.Name}"));
-        }
-
-        return errors;
-    }
-
-    private static ValidationResult ValidateAuditory(Class @class)
-    {
-        var errors = new ValidationResult();
-        if (@class.Auditory.Classes
-            .Any(c => c.Number == @class.Number &&
-                      c.DayOfWeek == @class.DayOfWeek &&
-                      c.Id != @class.Id &&
-                      (c.WeekDependency == WeekDependency.None ||
-                       @class.WeekDependency == WeekDependency.None ||
-                       c.WeekDependency == @class.WeekDependency)))
-        {
-            errors.AddError(new ValidationError(nameof(@class.AuditoryId),
-                $"Auditory {@class.Auditory.Name} in building {@class.Auditory.Building} " +
-                $"already has class number {@class.Number}" +
-                $" on {(DayOfWeek)@class.DayOfWeek}s " +
-                $"with week dependency {@class.WeekDependency}"));
-        }
-
-        return errors;
-    }
-
-    private static ValidationResult ValidateReferencedValues(Class @class)
-    {
-        var errors = new ValidationResult();
-        if (@class.Group is null)
-        {
-            errors.AddError(new ValidationError(nameof(@class.GroupId), "Group does not exist"));
-        }
-
-        if (@class.Auditory is null)
-        {
-            errors.AddError(new ValidationError(nameof(@class.AuditoryId), "Auditory does not exist"));
-        }
-
-        if (@class.Subject is null)
-        {
-            errors.AddError(new ValidationError(nameof(@class.SubjectId), "Subject does not exist"));
-        }
-
-        if (@class.Teacher is null)
-        {
-            errors.AddError(new ValidationError(nameof(@class.TeacherId), "Teacher does not exist"));
-        }
-
-        return errors;
-    }
-
-    private static ValidationResult ValidateGroup(Class @class)
-    {
-        var errors = new ValidationResult();
-        if (@class.Group.Classes
-            .Any(c => c.Number == @class.Number &&
-                      c.DayOfWeek == @class.DayOfWeek &&
-                      c.Id != @class.Id &&
-                      (c.WeekDependency == WeekDependency.None
-                       || @class.WeekDependency == WeekDependency.None ||
-                       c.WeekDependency == @class.WeekDependency)))
+        if (await classesOnSameTime.AnyAsync(c => c.GroupId == @class.GroupId))
         {
             errors.AddError(new ValidationError(nameof(@class.GroupId),
-                $"Group {@class.Group.Name} already has class number {@class.Number}" +
+                $"Group with id {@class.GroupId}" +
                 $" on {(DayOfWeek)@class.DayOfWeek}s " +
                 $"with week dependency {@class.WeekDependency}"));
         }
+    }
 
-        return errors;
+    private static async Task ValidateAuditoryId(ClassDto @class, IQueryable<Class> classesOnSameTime, ValidationResult errors)
+    {
+        if (await classesOnSameTime.AnyAsync(c => c.AuditoryId == @class.AuditoryId))
+        {
+            errors.AddError(new ValidationError(nameof(@class.AuditoryId),
+                $"Auditory with id = {@class.AuditoryId} " +
+                $"already has class number {@class.Number}" +
+                $" on {(DayOfWeek)@class.DayOfWeek}s " +
+                $"with week dependency {@class.WeekDependency}"));
+        }
+    }
+
+    private static async Task ValidateTeacherId(ClassDto @class, IQueryable<Class> classesOnSameTime, ValidationResult errors)
+    {
+        if (await classesOnSameTime.AnyAsync(c => c.TeacherId == @class.TeacherId))
+        {
+            errors.AddError(new ValidationError(nameof(@class.TeacherId),
+                $"Teacher with id = {@class.TeacherId}" +
+                $"already has class number {@class.Number}" +
+                $" on {(DayOfWeek)@class.DayOfWeek}s " +
+                $"with week dependency {@class.WeekDependency}"));
+        }
     }
 }
