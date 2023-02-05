@@ -1,10 +1,13 @@
 ﻿using ECampus.Contracts.DataAccess;
+using ECampus.Contracts.DataSelectParameters;
 using ECampus.Contracts.Services;
 using ECampus.Core.Messages;
 using ECampus.Domain.Interfaces;
 using ECampus.Domain.Messaging;
 using ECampus.Shared.DataTransferObjects;
 using ECampus.Shared.Enums;
+using ECampus.Shared.Models;
+using ECampus.Tests.Shared.Mocks.EntityFramework;
 
 namespace ECampus.Tests.Unit.BackEnd.Domain.Messaging;
 
@@ -13,11 +16,15 @@ public class CourseTaskMessagingServiceTests
     private readonly CourseTaskMessagingService _sut;
     private readonly IBaseService<CourseTaskDto> _baseService = Substitute.For<IBaseService<CourseTaskDto>>();
     private readonly ISnsMessenger _snsMessenger = Substitute.For<ISnsMessenger>();
-    private readonly ICourseTaskMessageDataAccess _messageDataAccess = Substitute.For<ICourseTaskMessageDataAccess>();
+    private readonly IDataAccessManagerFactory _dataAccessManagerFactory = Substitute.For<IDataAccessManagerFactory>();
+    private readonly IDataAccessManager _complex = Substitute.For<IDataAccessManager>();
+    private readonly IDataAccessManager _primitive = Substitute.For<IDataAccessManager>();
 
     public CourseTaskMessagingServiceTests()
     {
-        _sut = new CourseTaskMessagingService(_baseService, _snsMessenger, _messageDataAccess);
+        _dataAccessManagerFactory.Complex.Returns(_complex);
+        _dataAccessManagerFactory.Primitive.Returns(_primitive);
+        _sut = new CourseTaskMessagingService(_baseService, _snsMessenger, _dataAccessManagerFactory);
     }
 
     [Fact]
@@ -25,7 +32,10 @@ public class CourseTaskMessagingServiceTests
     {
         var task = new CourseTaskDto { CourseId = 10 };
         _baseService.CreateAsync(task).Returns(task);
-        _messageDataAccess.LoadDataForSendMessage(10).Returns(("", new List<string>()));
+        _primitive.GetByIdAsync<Course>(10).Returns(new Course());
+        var returnData = new DbSetMock<Student>().Object;
+        _complex.GetByParameters<Student, StudentsByCourseParameters>(Arg.Any<StudentsByCourseParameters>())
+            .Returns(returnData);
 
         var result = await _sut.CreateAsync(task);
 
@@ -41,7 +51,10 @@ public class CourseTaskMessagingServiceTests
         var task = new CourseTaskDto
             { CourseId = 10, MaxPoints = 100, Deadline = deadline, Name = "name", Type = TaskType.Classwork };
         _baseService.CreateAsync(task).Returns(task);
-        _messageDataAccess.LoadDataForSendMessage(10).Returns(("courseName", new List<string> { "email" }));
+        _primitive.GetByIdAsync<Course>(10).Returns(new Course { Name = "courseName" });
+        var returnData = new DbSetMock<Student>(new Student { UserEmail = "email" }).Object;
+        _complex.GetByParameters<Student, StudentsByCourseParameters>(Arg.Any<StudentsByCourseParameters>())
+            .Returns(returnData);
 
         var result = await _sut.CreateAsync(task);
 
