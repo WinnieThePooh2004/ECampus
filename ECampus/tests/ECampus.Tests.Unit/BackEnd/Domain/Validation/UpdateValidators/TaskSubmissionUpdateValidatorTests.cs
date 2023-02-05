@@ -1,5 +1,4 @@
 ﻿using System.Security.Claims;
-using ECampus.Contracts.DataValidation;
 using ECampus.Domain.Validation.UpdateValidators;
 using ECampus.Shared.Auth;
 using ECampus.Shared.DataTransferObjects;

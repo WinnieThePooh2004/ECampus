@@ -16,16 +16,14 @@ public class UserUpdateValidator : IUpdateValidator<UserDto>
 {
     private readonly IUpdateValidator<UserDto> _updateValidator;
     private readonly IHttpContextAccessor _httpContextAccessor;
-    private readonly IParametersDataAccessManager _parametersDataAccess;
     private readonly IDataAccessManager _dataAccess;
 
     public UserUpdateValidator(IUpdateValidator<UserDto> updateValidator,
-        IHttpContextAccessor httpContextAccessor, IParametersDataAccessManager parametersDataAccess,
+        IHttpContextAccessor httpContextAccessor,
         IDataAccessManagerFactory dataAccess)
     {
         _updateValidator = updateValidator;
         _httpContextAccessor = httpContextAccessor;
-        _parametersDataAccess = parametersDataAccess;
         _dataAccess = dataAccess.Primitive;
     }
 
@@ -58,7 +56,7 @@ public class UserUpdateValidator : IUpdateValidator<UserDto>
     private async Task ValidateUsernameUniqueness(UserDto dataTransferObject, ValidationResult errors)
     {
         var usersWithSaveUsername =
-            _parametersDataAccess.GetByParameters<User, UserUsernameParameters>(new UserUsernameParameters
+            _dataAccess.GetByParameters<User, UserUsernameParameters>(new UserUsernameParameters
                 { Username = dataTransferObject.Username });
         if (await usersWithSaveUsername.AnyAsync(user => user.Id != dataTransferObject.Id))
         {

@@ -11,7 +11,7 @@ public class ClassDtoUpdateValidator : BaseClassDtoValidator, IUpdateValidator<C
     private readonly IUpdateValidator<ClassDto> _updateValidator;
 
     public ClassDtoUpdateValidator(IUpdateValidator<ClassDto> updateValidator,
-        IParametersDataAccessManager parametersDataAccess)
+        IDataAccessManager parametersDataAccess)
         : base(parametersDataAccess)
     {
         _updateValidator = updateValidator;

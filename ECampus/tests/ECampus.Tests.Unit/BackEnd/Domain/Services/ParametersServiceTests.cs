@@ -15,7 +15,7 @@ public sealed class ParametersServiceTests
 {
     private readonly IAbstractFactory<Auditory> _dataFactory;
     private readonly ParametersService<AuditoryDto, AuditoryParameters, Auditory> _service;
-    private readonly IParametersDataAccessManager _dataAccess = Substitute.For<IParametersDataAccessManager>();
+    private readonly IDataAccessManager _dataAccess = Substitute.For<IDataAccessManager>();
     private readonly Fixture _fixture;
 
     public ParametersServiceTests()

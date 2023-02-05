@@ -7,6 +7,7 @@ using ECampus.Shared.Enums;
 using ECampus.Shared.Models;
 using ECampus.Tests.Shared.DataFactories;
 using ECampus.Tests.Shared.Mocks.EntityFramework;
+using Microsoft.EntityFrameworkCore;
 
 namespace ECampus.Tests.Unit.BackEnd.Domain.Services;
 
@@ -16,22 +17,23 @@ public class UserRoleServiceTests
     private readonly IMapper _mapper = MapperFactory.Mapper;
     private readonly IDataAccessManager _dataAccessManager = Substitute.For<IDataAccessManager>();
 
-    private readonly IParametersDataAccessManager
-        _parametersDataAccess = Substitute.For<IParametersDataAccessManager>();
+    private readonly IDataAccessManager
+        _parametersDataAccess = Substitute.For<IDataAccessManager>();
 
     public UserRoleServiceTests()
     {
         var factory = Substitute.For<IDataAccessManagerFactory>();
-        factory.Primitive.Returns(_dataAccessManager);
-        _sut = new UserRolesService(_mapper, _parametersDataAccess, factory);
+        factory.Complex.Returns(_dataAccessManager);
+        factory.Primitive.Returns(_parametersDataAccess);
+        _sut = new UserRolesService(_mapper, factory);
     }
 
     [Fact]
     public async Task GetById_ShouldReturnDataAccess_WhenDataAccessReturnsSingle()
     {
         var user = new User { Id = 128 };
-        var data = new DbSetMock<User>(user).Object;
-        _parametersDataAccess.GetByParameters<User, UserRolesParameters>(Arg.Any<UserRolesParameters>())
+        var data = (DbSet<User>)new DbSetMock<User>(new List<User> { user });
+        _dataAccessManager.GetByParameters<User, UserRolesParameters>(Arg.Any<UserRolesParameters>())
             .Returns(data);
 
         var result = await _sut.GetByIdAsync(1);

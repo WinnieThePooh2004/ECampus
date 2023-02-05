@@ -11,7 +11,7 @@ public class ClassDtoCreateValidator : BaseClassDtoValidator, ICreateValidator<C
     private readonly ICreateValidator<ClassDto> _createValidator;
 
     public ClassDtoCreateValidator(ICreateValidator<ClassDto> createValidator,
-        IParametersDataAccessManager parametersDataAccessManager)
+        IDataAccessManager parametersDataAccessManager)
         :base(parametersDataAccessManager)
     {
         _createValidator = createValidator;

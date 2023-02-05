@@ -19,10 +19,10 @@ public class TaskSubmissionValidator : ITaskSubmissionValidator
 {
     private readonly ClaimsPrincipal _user;
     private readonly IValidator<TaskSubmissionDto> _validator;
-    private readonly IParametersDataAccessManager _parametersDataAccess;
+    private readonly IDataAccessManager _parametersDataAccess;
 
     public TaskSubmissionValidator(IHttpContextAccessor httpContextAccessor, IValidator<TaskSubmissionDto> validator,
-        IParametersDataAccessManager parametersDataAccess)
+        IDataAccessManager parametersDataAccess)
     {
         _user = httpContextAccessor.HttpContext?.User ?? throw new HttpContextNotFoundExceptions();
         _validator = validator;
