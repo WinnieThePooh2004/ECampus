@@ -23,7 +23,9 @@ public class PasswordChangeServiceTests
 
     public PasswordChangeServiceTests()
     {
-        _sut = new PasswordChangeService(_validator, MapperFactory.Mapper, _dataAccess);
+        var dataAccessFactory = Substitute.For<IDataAccessManagerFactory>();
+        dataAccessFactory.Primitive.Returns(_dataAccess);
+        _sut = new PasswordChangeService(_validator, MapperFactory.Mapper, dataAccessFactory);
     }
 
     [Fact]

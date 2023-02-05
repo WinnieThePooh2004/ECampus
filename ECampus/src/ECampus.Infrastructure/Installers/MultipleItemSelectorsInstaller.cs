@@ -25,7 +25,6 @@ public class MultipleItemSelectorsInstaller : IInstaller
             services.AddScoped(typeof(IMultipleItemSelector<,>).MakeGenericType(selectorParameters), selector);
         }
 
-        services.AddScoped<IParametersDataAccessManager>(provider =>
-            new ParametersDataAccessManager(provider.GetServiceOfType<ApplicationDbContext>(), provider));
+        services.AddScoped<IParametersDataAccessManager, ParametersDataAccessManager>();
     }
 }

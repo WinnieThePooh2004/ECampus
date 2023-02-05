@@ -31,7 +31,9 @@ public class DataServicesInstaller : IInstaller
                 typeof(DataUpdateService<>).MakeGenericType(model));
         }
 
-        services.AddScoped<IDataAccessManager>(provider =>
-            new DataAccessManager(provider.GetServiceOfType<ApplicationDbContext>(), provider));
+        services.AddLazy<IDataAccessManager, DataAccessManager>();
+        services.AddLazy<PrimitiveDataAccessManager>();
+        services.AddScoped<IDataAccessManagerFactory, DataAccessManagerFactory>();
+        
     }
 }

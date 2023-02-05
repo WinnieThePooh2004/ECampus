@@ -15,22 +15,26 @@ public class UserCreateValidator : ICreateValidator<UserDto>
 {
     private readonly IMapper _mapper;
     private readonly IDataValidator<User> _dataAccess;
-    private readonly ICreateValidator<UserDto> _createValidator;
+    private readonly ICreateValidator<UserDto> _baseValidator;
     private readonly IHttpContextAccessor _httpContextAccessor;
 
     public UserCreateValidator(IMapper mapper, IDataValidator<User> dataAccess,
-        ICreateValidator<UserDto> createValidator, IHttpContextAccessor httpContextAccessor)
+        ICreateValidator<UserDto> baseValidator, IHttpContextAccessor httpContextAccessor)
     {
         _mapper = mapper;
         _dataAccess = dataAccess;
-        _createValidator = createValidator;
+        _baseValidator = baseValidator;
         _httpContextAccessor = httpContextAccessor;
     }
 
     public async Task<ValidationResult> ValidateAsync(UserDto dataTransferObject)
     {
-        var errors = await _createValidator.ValidateAsync(dataTransferObject);
+        var errors = await _baseValidator.ValidateAsync(dataTransferObject);
         ValidateRole(dataTransferObject, errors);
+        if (!errors.IsValid)
+        {
+            return errors;
+        }
         var model = _mapper.Map<User>(dataTransferObject);
         errors.MergeResults(await _dataAccess.ValidateCreate(model));
         return errors;

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ECampus.Contracts.DataAccess;
 using ECampus.Contracts.Services;
+using ECampus.Core.Metadata;
 using ECampus.Domain.Interfaces.Validation;
 using ECampus.Shared.DataTransferObjects;
 using ECampus.Shared.Exceptions.DomainExceptions;
@@ -9,6 +10,7 @@ using ECampus.Shared.Validation;
 
 namespace ECampus.Services.Services;
 
+[Inject(typeof(IPasswordChangeService))]
 public class PasswordChangeService : IPasswordChangeService
 {
     private readonly IDataAccessManager _dataAccess;
@@ -16,11 +18,11 @@ public class PasswordChangeService : IPasswordChangeService
     private readonly IMapper _mapper;
 
     public PasswordChangeService(IUpdateValidator<PasswordChangeDto> passwordChangeValidator, IMapper mapper,
-        IDataAccessManager dataAccess)
+        IDataAccessManagerFactory dataAccessManagerFactory)
     {
         _passwordChangeValidator = passwordChangeValidator;
         _mapper = mapper;
-        _dataAccess = dataAccess;
+        _dataAccess = dataAccessManagerFactory.Primitive;
     }
 
     public async Task<UserDto> ChangePassword(PasswordChangeDto passwordChange)

@@ -34,9 +34,6 @@ builder.Logging.AddSerilog(logger);
 builder.Services.AddSingleton<ILogger>(logger);
 
 builder.Services.AddScoped<PrimitiveDataAccessManager>();
-builder.Services.AddScoped<IPasswordChangeService>(provider =>
-    new PasswordChangeService(provider.GetServiceOfType<IUpdateValidator<PasswordChangeDto>>(),
-        provider.GetServiceOfType<IMapper>(), provider.GetServiceOfType<PrimitiveDataAccessManager>()));
 
 // Add services to the container.
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
