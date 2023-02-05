@@ -11,20 +11,17 @@ namespace ECampus.Services.Services;
 public class UserRolesService : IBaseService<UserDto>
 {
     private readonly IMapper _mapper;
-    private readonly IParametersDataAccessManager _parametersDataAccess;
-    private readonly IDataAccessManager _dataAccessManager;
+    private readonly IDataAccessManagerFactory _dataAccessFactory;
 
-    public UserRolesService(IMapper mapper, IParametersDataAccessManager parametersDataAccess,
-        IDataAccessManagerFactory dataAccessManager)
+    public UserRolesService(IMapper mapper, IDataAccessManagerFactory dataAccessFactory)
     {
         _mapper = mapper;
-        _parametersDataAccess = parametersDataAccess;
-        _dataAccessManager = dataAccessManager.Primitive;
+        _dataAccessFactory = dataAccessFactory;
     }
 
     public async Task<UserDto> GetByIdAsync(int id)
     {
-        var user = await _parametersDataAccess.GetSingleAsync<User, UserRolesParameters>(new UserRolesParameters
+        var user = await _dataAccessFactory.Complex.GetSingleAsync<User, UserRolesParameters>(new UserRolesParameters
             { UserId = id });
         return _mapper.Map<UserDto>(user);
     }
@@ -41,7 +38,7 @@ public class UserRolesService : IBaseService<UserDto>
 
     public async Task<UserDto> DeleteAsync(int id)
     {
-        return _mapper.Map<UserDto>(await _dataAccessManager.DeleteAsync<User>(id));
+        return _mapper.Map<UserDto>(await _dataAccessFactory.Complex.DeleteAsync<User>(id));
     }
 
     private async Task<User> CreateAsync(User user)
@@ -50,21 +47,21 @@ public class UserRolesService : IBaseService<UserDto>
         var student = user.Student;
         user.Teacher = null;
         user.Student = null;
-        await _dataAccessManager.CreateAsync(user);
+        await _dataAccessFactory.Primitive.CreateAsync(user);
         var result = user.Role switch
         {
             UserRole.Teacher when teacher is not null => await SetTeacherId(user, teacher),
             UserRole.Student when student is not null => await SetStudentId(user, student),
             _ => user
         };
-        await _dataAccessManager.SaveChangesAsync();
+        await _dataAccessFactory.Primitive.SaveChangesAsync();
         return result;
     }
 
     private async Task<User> UpdateAsync(User user)
     {
         await ChangeUserRelationships(user);
-        await _dataAccessManager.SaveChangesAsync();
+        await _dataAccessFactory.Primitive.SaveChangesAsync();
         return user;
     }
 
@@ -72,7 +69,7 @@ public class UserRolesService : IBaseService<UserDto>
     {
         student.UserEmail = user.Email;
         user.StudentId = student.Id;
-        await _dataAccessManager.UpdateAsync(student);
+        await _dataAccessFactory.Primitive.UpdateAsync(student);
         return user;
     }
 
@@ -80,7 +77,7 @@ public class UserRolesService : IBaseService<UserDto>
     {
         teacher.UserEmail = user.Email;
         user.TeacherId = teacher.Id;
-        await _dataAccessManager.UpdateAsync(teacher);
+        await _dataAccessFactory.Primitive.UpdateAsync(teacher);
         return user;
     }
 
@@ -101,7 +98,7 @@ public class UserRolesService : IBaseService<UserDto>
         }
 
         model.Teacher.UserEmail = null;
-        await _dataAccessManager.UpdateAsync(model.Teacher);
+        await _dataAccessFactory.Primitive.UpdateAsync(model.Teacher);
         model.Teacher = null;
     }
 
@@ -114,7 +111,7 @@ public class UserRolesService : IBaseService<UserDto>
         }
 
         model.Student.UserEmail = null;
-        await _dataAccessManager.UpdateAsync(model.Student);
+        await _dataAccessFactory.Primitive.UpdateAsync(model.Student);
         model.Student = null;
     }
 
@@ -128,7 +125,7 @@ public class UserRolesService : IBaseService<UserDto>
 
         model.Student.UserEmail = model.Email;
         model.StudentId = model.Student.Id;
-        await _dataAccessManager.UpdateAsync(model);
+        await _dataAccessFactory.Primitive.UpdateAsync(model);
     }
 
     private async Task UpdateAsTeacher(User model)
@@ -141,13 +138,13 @@ public class UserRolesService : IBaseService<UserDto>
 
         model.Teacher.UserEmail = model.Email;
         model.TeacherId = model.Teacher.Id;
-        await _dataAccessManager.UpdateAsync(model);
+        await _dataAccessFactory.Primitive.UpdateAsync(model);
     }
 
     private async Task UpdateAsAdminOrGuest(User model)
     {
         await ClearStudentData(model);
         await ClearTeacherData(model);
-        await _dataAccessManager.UpdateAsync(model);
+        await _dataAccessFactory.Primitive.UpdateAsync(model);
     }
 }

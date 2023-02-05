@@ -22,8 +22,8 @@ public class AuthorizationServiceTests
     private readonly HttpContext _httpContext = Substitute.For<HttpContext>();
     private readonly JwtAuthOptions _authOptions = AuthData.DefaultOptions;
 
-    private readonly IParametersDataAccessManager
-        _parametersDataAccess = Substitute.For<IParametersDataAccessManager>();
+    private readonly IDataAccessManager
+        _parametersDataAccess = Substitute.For<IDataAccessManager>();
 
     public AuthorizationServiceTests()
     {

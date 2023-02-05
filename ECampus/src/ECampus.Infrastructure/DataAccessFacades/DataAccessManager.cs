@@ -4,6 +4,7 @@ using ECampus.Core.Extensions;
 using ECampus.Infrastructure.Interfaces;
 using ECampus.Shared.Data;
 using ECampus.Shared.Exceptions.InfrastructureExceptions;
+using ECampus.Shared.QueryParameters;
 using Microsoft.EntityFrameworkCore;
 
 namespace ECampus.Infrastructure.DataAccessFacades;
@@ -38,6 +39,14 @@ public class DataAccessManager : IDataAccessManager
     {
         return await _serviceProvider.GetServiceOfType<ISingleItemSelector<TModel>>().SelectModel(id, _context.Set<TModel>())
             ?? throw new ObjectNotFoundByIdException(typeof(TModel), id);
+    }
+
+    public IQueryable<TModel> GetByParameters<TModel, TParameters>(TParameters parameters)
+        where TModel : class, IModel
+        where TParameters : IDataSelectParameters<TModel>
+    {
+        var selector = _serviceProvider.GetServiceOfType<IMultipleItemSelector<TModel, TParameters>>();
+        return selector.SelectData(_context, parameters);
     }
 
     public async Task<bool> SaveChangesAsync()

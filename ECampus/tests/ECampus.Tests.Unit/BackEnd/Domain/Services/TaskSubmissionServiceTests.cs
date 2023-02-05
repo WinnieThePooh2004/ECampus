@@ -19,15 +19,12 @@ public class TaskSubmissionServiceTests
     private readonly IMapper _mapper = MapperFactory.Mapper;
     private readonly IDataAccessManager _dataAccessManager = Substitute.For<IDataAccessManager>();
 
-    private readonly IParametersDataAccessManager
-        _parametersDataAccess = Substitute.For<IParametersDataAccessManager>();
-
     public TaskSubmissionServiceTests()
     {
         var httpContextAccessor = Substitute.For<IHttpContextAccessor>();
         httpContextAccessor.HttpContext = Substitute.For<HttpContext>();
         httpContextAccessor.HttpContext.User.Returns(_user);
-        _sut = new TaskSubmissionService(httpContextAccessor, _mapper, _dataAccessManager, _parametersDataAccess);
+        _sut = new TaskSubmissionService(httpContextAccessor, _mapper, _dataAccessManager);
     }
 
     [Fact]
@@ -71,7 +68,7 @@ public class TaskSubmissionServiceTests
         _user.FindFirst(CustomClaimTypes.StudentId).Returns(new Claim("", "10"));
         var values = new List<TaskSubmission> { new() };
         var asyncQueryable = new DbSetMock<TaskSubmission>(values).Object;
-        _parametersDataAccess.GetByParameters<TaskSubmission, TaskSubmissionByStudentAndCourseParameters>(
+        _dataAccessManager.GetByParameters<TaskSubmission, TaskSubmissionByStudentAndCourseParameters>(
             Arg.Any<TaskSubmissionByStudentAndCourseParameters>()).Returns(asyncQueryable);
 
         var result = await _sut.GetByCourseAsync(10);
@@ -84,7 +81,7 @@ public class TaskSubmissionServiceTests
     {
         _user.FindFirst(CustomClaimTypes.StudentId).Returns(new Claim("", "15"));
         var set = new DbSetMock<TaskSubmission>().Object;
-        _parametersDataAccess.GetByParameters<TaskSubmission, TaskSubmissionByStudentAndCourseParameters>(
+        _dataAccessManager.GetByParameters<TaskSubmission, TaskSubmissionByStudentAndCourseParameters>(
             Arg.Any<TaskSubmissionByStudentAndCourseParameters>()).Returns(set);
 
         await new Func<Task>(() => _sut.GetByCourseAsync(10)).Should()

@@ -7,7 +7,6 @@ using ECampus.Domain.Interfaces.Validation;
 using ECampus.Shared.DataContainers;
 using ECampus.Shared.DataTransferObjects;
 using ECampus.Shared.Models;
-using ECampus.Shared.QueryParameters;
 using ECampus.Shared.Validation;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,22 +17,19 @@ public class TimetableService : ITimetableService
 {
     private readonly IMapper _mapper;
     private readonly IUpdateValidator<ClassDto> _validator;
-    private readonly IDataAccessManager _dataAccessManager;
-    private readonly IParametersDataAccessManager _parametersDataAccess;
+    private readonly IDataAccessManager _dataAccess;
 
-    public TimetableService(IMapper mapper, IUpdateValidator<ClassDto> validator, IDataAccessManager dataAccessManager,
-        IParametersDataAccessManager parametersDataAccess)
+    public TimetableService(IMapper mapper, IUpdateValidator<ClassDto> validator, IDataAccessManager dataAccess)
     {
         _mapper = mapper;
         _validator = validator;
-        _dataAccessManager = dataAccessManager;
-        _parametersDataAccess = parametersDataAccess;
+        _dataAccess = dataAccess;
     }
 
     public async Task<Timetable> GetTimetableForAuditoryAsync(int auditoryId)
     {
-        var auditory = await _dataAccessManager.GetByIdAsync<Auditory>(auditoryId);
-        return new Timetable(_mapper.Map<List<ClassDto>>(await _parametersDataAccess
+        var auditory = await _dataAccess.GetByIdAsync<Auditory>(auditoryId);
+        return new Timetable(_mapper.Map<List<ClassDto>>(await _dataAccess
             .GetByParameters<Class, AuditoryTimetableParameters>(new AuditoryTimetableParameters
                 { AuditoryId = auditoryId }).ToListAsync()))
         {
@@ -43,8 +39,8 @@ public class TimetableService : ITimetableService
 
     public async Task<Timetable> GetTimetableForGroupAsync(int groupId)
     {
-        var group = await _dataAccessManager.GetByIdAsync<Group>(groupId);
-        return new Timetable(_mapper.Map<List<ClassDto>>(await _parametersDataAccess
+        var group = await _dataAccess.GetByIdAsync<Group>(groupId);
+        return new Timetable(_mapper.Map<List<ClassDto>>(await _dataAccess
             .GetByParameters<Class, GroupTimetableParameters>(new GroupTimetableParameters { GroupId = groupId })
             .ToListAsync()))
         {
@@ -54,8 +50,8 @@ public class TimetableService : ITimetableService
 
     public async Task<Timetable> GetTimetableForTeacherAsync(int teacherId)
     {
-        var teacher = await _dataAccessManager.GetByIdAsync<Group>(teacherId);
-        return new Timetable(_mapper.Map<List<ClassDto>>(await _parametersDataAccess
+        var teacher = await _dataAccess.GetByIdAsync<Group>(teacherId);
+        return new Timetable(_mapper.Map<List<ClassDto>>(await _dataAccess
             .GetByParameters<Class, TeacherTimetableParameters>(
                 new TeacherTimetableParameters { TeacherId = teacherId }).ToListAsync()))
         {

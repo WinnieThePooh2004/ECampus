@@ -19,10 +19,10 @@ public class AuthorizationService : IAuthorizationService
 {
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly JwtAuthOptions _authOptions;
-    private readonly IParametersDataAccessManager _parametersDataAccess;
+    private readonly IDataAccessManager _parametersDataAccess;
 
     public AuthorizationService(IHttpContextAccessor httpContextAccessor, JwtAuthOptions authOptions,
-        IParametersDataAccessManager parametersDataAccess)
+        IDataAccessManager parametersDataAccess)
     {
         _httpContextAccessor = httpContextAccessor;
         _authOptions = authOptions;

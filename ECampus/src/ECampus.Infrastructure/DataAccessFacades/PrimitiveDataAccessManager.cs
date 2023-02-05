@@ -3,6 +3,7 @@ using ECampus.Contracts.DataAccess;
 using ECampus.Infrastructure.DataSelectors.SingleItemSelectors;
 using ECampus.Shared.Data;
 using ECampus.Shared.Exceptions.InfrastructureExceptions;
+using ECampus.Shared.QueryParameters;
 using Microsoft.EntityFrameworkCore;
 
 namespace ECampus.Infrastructure.DataAccessFacades;
@@ -39,6 +40,13 @@ public class PrimitiveDataAccessManager : IDataAccessManager
     {
         return await _context.Set<TModel>().GetPureByIdAsync(id) ??
                throw new ObjectNotFoundByIdException(typeof(TModel), id);
+    }
+
+    public IQueryable<TModel> GetByParameters<TModel, TParameters>(TParameters parameters) 
+        where TModel : class, IModel 
+        where TParameters : IDataSelectParameters<TModel>
+    {
+        return _context.Set<TModel>();
     }
 
     public async Task<bool> SaveChangesAsync()

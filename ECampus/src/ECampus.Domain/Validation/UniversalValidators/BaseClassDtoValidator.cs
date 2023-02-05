@@ -9,9 +9,9 @@ namespace ECampus.Domain.Validation.UniversalValidators;
 
 public class BaseClassDtoValidator
 {
-    private readonly IParametersDataAccessManager _parametersDataAccess;
+    private readonly IDataAccessManager _parametersDataAccess;
 
-    protected BaseClassDtoValidator(IParametersDataAccessManager parametersDataAccess)
+    protected BaseClassDtoValidator(IDataAccessManager parametersDataAccess)
     {
         _parametersDataAccess = parametersDataAccess;
     }

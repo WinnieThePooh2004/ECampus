@@ -17,10 +17,10 @@ namespace ECampus.Domain.Validation.ParametersValidators;
 public class TaskSubmissionParametersValidator : IParametersValidator<TaskSubmissionParameters>
 {
     private readonly ClaimsPrincipal _user;
-    private readonly IParametersDataAccessManager _parametersDataAccess;
+    private readonly IDataAccessManager _parametersDataAccess;
 
     public TaskSubmissionParametersValidator(IHttpContextAccessor httpContextAccessor,
-        IParametersDataAccessManager parametersDataAccess)
+        IDataAccessManager parametersDataAccess)
     {
         _parametersDataAccess = parametersDataAccess;
         _user = httpContextAccessor.HttpContext?.User ?? throw new HttpContextNotFoundExceptions();

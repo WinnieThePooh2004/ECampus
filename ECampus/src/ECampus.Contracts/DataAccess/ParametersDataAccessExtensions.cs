@@ -9,7 +9,7 @@ namespace ECampus.Contracts.DataAccess;
 public static class ParametersDataAccessExtensions
 {
     public static async Task<TModel> GetSingleAsync<TModel, TParameters>(
-        this IParametersDataAccessManager parametersDataAccess, TParameters parameters)
+        this IDataAccessManager parametersDataAccess, TParameters parameters)
         where TModel : class, IModel
         where TParameters : IDataSelectParameters<TModel>
     {

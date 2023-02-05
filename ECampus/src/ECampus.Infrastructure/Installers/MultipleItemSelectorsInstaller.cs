@@ -24,7 +24,5 @@ public class MultipleItemSelectorsInstaller : IInstaller
                 .Single(i => i.IsGenericOfType(typeof(IMultipleItemSelector<,>))).GetGenericArguments();
             services.AddScoped(typeof(IMultipleItemSelector<,>).MakeGenericType(selectorParameters), selector);
         }
-
-        services.AddScoped<IParametersDataAccessManager, ParametersDataAccessManager>();
     }
 }

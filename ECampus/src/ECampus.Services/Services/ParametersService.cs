@@ -14,10 +14,10 @@ public class ParametersService<TDto, TParameters, TRepositoryModel> : IParameter
     where TRepositoryModel : class, IModel, new()
     where TParameters : class, IDataSelectParameters<TRepositoryModel>, IQueryParameters
 {
-    private readonly IParametersDataAccessManager _dataAccess;
+    private readonly IDataAccessManager _dataAccess;
     private readonly IMapper _mapper;
 
-    public ParametersService(IMapper mapper, IParametersDataAccessManager dataAccess)
+    public ParametersService(IMapper mapper, IDataAccessManager dataAccess)
     {
         _mapper = mapper;
         _dataAccess = dataAccess;

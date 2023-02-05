@@ -4,7 +4,6 @@ using ECampus.Contracts.DataSelectParameters;
 using ECampus.Domain.Interfaces.Validation;
 using ECampus.Shared.DataTransferObjects;
 using ECampus.Shared.Enums;
-using ECampus.Shared.Exceptions.DomainExceptions;
 using ECampus.Shared.Models;
 using ECampus.Shared.Validation;
 using Microsoft.AspNetCore.Http;
@@ -16,10 +15,10 @@ public class UserCreateValidator : ICreateValidator<UserDto>
 {
     private readonly ICreateValidator<UserDto> _baseValidator;
     private readonly ClaimsPrincipal _user;
-    private readonly IParametersDataAccessManager _parametersDataAccess;
+    private readonly IDataAccessManager _parametersDataAccess;
 
     public UserCreateValidator(ICreateValidator<UserDto> baseValidator,
-        IHttpContextAccessor httpContextAccessor, IParametersDataAccessManager parametersDataAccess)
+        IHttpContextAccessor httpContextAccessor, IDataAccessManager parametersDataAccess)
     {
         _baseValidator = baseValidator;
         _user = httpContextAccessor.HttpContext!.User;
