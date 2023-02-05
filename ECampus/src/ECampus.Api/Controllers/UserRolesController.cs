@@ -11,9 +11,9 @@ namespace ECampus.Api.Controllers;
 [Authorized(UserRole.Admin)]
 public class UserRolesController : ControllerBase
 {
-    private readonly IUserRolesService _service;
+    private readonly IBaseService<UserDto> _service;
 
-    public UserRolesController(IUserRolesService service)
+    public UserRolesController(IBaseService<UserDto> service)
     {
         _service = service;
     }

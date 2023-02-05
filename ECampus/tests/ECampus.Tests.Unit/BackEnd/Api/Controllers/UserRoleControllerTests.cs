@@ -8,7 +8,7 @@ namespace ECampus.Tests.Unit.BackEnd.Api.Controllers;
 public class UserRoleControllerTests
 {
     private readonly UserRolesController _sut;
-    private readonly IUserRolesService _service = Substitute.For<IUserRolesService>();
+    private readonly IBaseService<UserDto> _service = Substitute.For<IBaseService<UserDto>>();
 
     public UserRoleControllerTests()
     {
