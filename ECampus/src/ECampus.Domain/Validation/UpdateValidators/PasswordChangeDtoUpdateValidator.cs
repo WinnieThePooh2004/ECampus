@@ -1,5 +1,4 @@
 ﻿using ECampus.Contracts.DataAccess;
-using ECampus.Contracts.DataValidation;
 using ECampus.Domain.Interfaces.Validation;
 using ECampus.Shared.DataTransferObjects;
 using ECampus.Shared.Models;
