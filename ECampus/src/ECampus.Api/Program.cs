@@ -4,14 +4,8 @@ using ECampus.Core.Extensions;
 using ECampus.Domain;
 using ECampus.Infrastructure;
 using ECampus.Infrastructure.DataAccessFacades;
-using ECampus.Infrastructure.DataCreateServices;
-using ECampus.Infrastructure.Interfaces;
 using ECampus.Services;
-using ECampus.Shared.Auth;
-using ECampus.Shared.Models;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Serilog;
 using ILogger = Serilog.ILogger;
@@ -52,27 +46,7 @@ builder.Services.UserInstallersFromAssemblyContaining(builder.Configuration, typ
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-var authOptions = builder.Configuration.GetSection("jwtAuthOptions")
-    .Get<JwtAuthOptions>()!;
-
-builder.Services.AddSingleton(authOptions);
-
 builder.Services.AddHttpContextAccessor();
-
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidIssuer = authOptions.Issuer,
-            ValidateAudience = true,
-            ValidAudience = authOptions.Audience,
-            ValidateLifetime = true,
-            IssuerSigningKey = authOptions.GetSymmetricSecurityKey(),
-            ValidateIssuerSigningKey = true,
-        };
-    });
 
 var app = builder.Build();
 
@@ -87,6 +61,7 @@ app.UseCookiePolicy(new CookiePolicyOptions { MinimumSameSitePolicy = SameSiteMo
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+app.UseCors(builder.Configuration["Cors:Name"] ?? throw new Exception("cannot find cors name"));
 
 app.MapControllers();
 
