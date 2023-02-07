@@ -10,8 +10,14 @@ public class CorsInstaller : IInstaller
         services.AddCors(options =>
         {
             options.AddPolicy(name: configuration["Cors:Name"] ?? throw new Exception("cannot find cors name"),
-                policy => policy.WithOrigins(configuration
-                    .GetSection("Cors:Origins").Get<string[]>()?.ToArray() ?? throw new Exception("cannot find cors origins")));
+                policy =>
+                {
+                    policy.WithOrigins(configuration
+                                           .GetSection("Cors:Origins").Get<string[]>()?.ToArray() ??
+                                       throw new Exception("cannot find cors origins"));
+                    policy.AllowAnyHeader();
+                    policy.AllowAnyMethod();
+                });
         });
     }
 }
