@@ -69,7 +69,7 @@ public class AuthorizationServiceTests
         var loginResult = new LoginResult
         {
             Email = user.Email,
-            Role = user.Role,
+            Role = user.Role.ToString(),
             UserId = user.Id,
             Username = user.Username
         };
