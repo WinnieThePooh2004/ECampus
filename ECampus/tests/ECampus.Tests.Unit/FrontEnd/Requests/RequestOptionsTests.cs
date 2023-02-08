@@ -1,5 +1,4 @@
 ﻿using ECampus.FrontEnd.Requests.Options;
-using ECampus.Shared.DataTransferObjects;
 using Microsoft.Extensions.Configuration;
 
 namespace ECampus.Tests.Unit.FrontEnd.Requests;
@@ -7,13 +6,11 @@ namespace ECampus.Tests.Unit.FrontEnd.Requests;
 public class RequestOptionsTests
 {
     [Fact]
-    public void CreateOptions_ShouldReturnValuesFromProvidedDictionary()
+    public void CreateOptions_ShouldThrow_WhenCannotCreateDictionary()
     {
         var configuration = Substitute.For<IConfiguration>();
-        configuration[Arg.Any<string>()].Returns(info => info.Arg<string>());
+        configuration[Arg.Any<string>()].Returns("");
 
-        var options = new RequestOptions(configuration);
-
-        options.GetControllerName(typeof(FacultyDto)).Should().Be(configuration["Requests:Faculties"]);
+        new Func<RequestOptions>(() => new RequestOptions(configuration)).Should().Throw<InvalidOperationException>();
     }
 }
