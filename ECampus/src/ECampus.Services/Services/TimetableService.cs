@@ -2,7 +2,7 @@
 using ECampus.Contracts.DataAccess;
 using ECampus.Contracts.DataSelectParameters;
 using ECampus.Contracts.Services;
-using ECampus.Core.Metadata;
+using ECampus.Core.Installers;
 using ECampus.Domain.Interfaces.Validation;
 using ECampus.Shared.DataContainers;
 using ECampus.Shared.DataTransferObjects;

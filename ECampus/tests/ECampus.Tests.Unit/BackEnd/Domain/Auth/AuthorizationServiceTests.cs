@@ -1,7 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using ECampus.Contracts.DataAccess;
 using ECampus.Contracts.DataSelectParameters;
-using ECampus.Domain.Auth;
+using ECampus.Services.Services.Auth;
 using ECampus.Shared.Auth;
 using ECampus.Shared.DataTransferObjects;
 using ECampus.Shared.Enums;

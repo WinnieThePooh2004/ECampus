@@ -2,7 +2,7 @@
 using System.Net;
 using ECampus.Contracts.DataAccess;
 using ECampus.Contracts.DataSelectParameters;
-using ECampus.Core.Metadata;
+using ECampus.Core.Installers;
 using ECampus.Domain.Interfaces.Auth;
 using ECampus.Shared.Auth;
 using ECampus.Shared.DataTransferObjects;
@@ -12,7 +12,7 @@ using ECampus.Shared.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
 
-namespace ECampus.Domain.Auth;
+namespace ECampus.Services.Services.Auth;
 
 [Inject(typeof(IAuthorizationService))]
 public class AuthorizationService : IAuthorizationService

@@ -3,7 +3,6 @@ using ECampus.Domain.Validation.UpdateValidators;
 using ECampus.Shared.Auth;
 using ECampus.Shared.DataTransferObjects;
 using ECampus.Shared.Models;
-using ECampus.Shared.Validation;
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Http;

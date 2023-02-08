@@ -1,7 +1,6 @@
 ﻿using ECampus.Contracts.DataAccess;
 using ECampus.Core.Extensions;
 using ECampus.Core.Installers;
-using ECampus.Core.Metadata;
 using ECampus.Infrastructure.DataAccessFacades;
 using ECampus.Infrastructure.Interfaces;
 using Microsoft.Extensions.Configuration;

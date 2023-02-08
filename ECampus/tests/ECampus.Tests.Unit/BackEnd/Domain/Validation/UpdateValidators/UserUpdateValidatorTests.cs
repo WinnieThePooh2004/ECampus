@@ -7,7 +7,6 @@ using ECampus.Shared.Auth;
 using ECampus.Shared.DataTransferObjects;
 using ECampus.Shared.Enums;
 using ECampus.Shared.Models;
-using ECampus.Shared.Validation;
 using ECampus.Tests.Shared.DataFactories;
 using Microsoft.AspNetCore.Http;
 

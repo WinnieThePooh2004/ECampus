@@ -8,6 +8,8 @@ using ECampus.Services;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Serilog;
+using Serilog.Events;
+using Serilog.Sinks.MSSqlServer;
 using ILogger = Serilog.ILogger;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +17,16 @@ var builder = WebApplication.CreateBuilder(args);
 var logger = new LoggerConfiguration()
     .ReadFrom.Configuration(builder.Configuration)
     .WriteTo.Console()
+    .WriteTo.MSSqlServer(
+        builder.Configuration.GetConnectionString(ApplicationDbContext.ConnectionKey),
+        sinkOptions: new MSSqlServerSinkOptions
+        {
+            TableName = "Logs",
+            SchemaName = "dbo",
+            AutoCreateSqlTable = true
+        },
+        restrictedToMinimumLevel: LogEventLevel.Debug
+    )
     .CreateLogger();
 
 builder.Logging.ClearProviders();
@@ -24,9 +36,8 @@ builder.Services.AddSingleton<ILogger>(logger);
 
 builder.Services.AddScoped<PrimitiveDataAccessManager>();
 
-// Add services to the container.
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("ApplicationDbContext")!));
+    options.UseSqlServer(builder.Configuration.GetConnectionString(ApplicationDbContext.ConnectionKey)!));
 
 builder.Services.AddScoped<DbContext, ApplicationDbContext>();
 

@@ -1,5 +1,5 @@
 ﻿using System.Security.Claims;
-using ECampus.Core.Metadata;
+using ECampus.Core.Installers;
 using ECampus.FrontEnd.Requests.Interfaces;
 using ECampus.Shared.DataTransferObjects;
 using ECampus.Shared.Exceptions.DomainExceptions;

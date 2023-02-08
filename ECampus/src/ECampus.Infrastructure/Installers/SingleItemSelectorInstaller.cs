@@ -1,5 +1,4 @@
 ﻿using ECampus.Core.Installers;
-using ECampus.Core.Metadata;
 using ECampus.Infrastructure.DataSelectors.SingleItemSelectors;
 using ECampus.Infrastructure.Interfaces;
 using ECampus.Shared;

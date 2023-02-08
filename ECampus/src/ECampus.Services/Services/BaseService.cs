@@ -2,8 +2,6 @@
 using ECampus.Contracts.DataAccess;
 using ECampus.Contracts.Services;
 using ECampus.Shared.Data;
-using ECampus.Shared.Exceptions.DomainExceptions;
-using ECampus.Shared.Exceptions.InfrastructureExceptions;
 
 namespace ECampus.Services.Services;
 

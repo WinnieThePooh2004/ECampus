@@ -1,5 +1,5 @@
 ﻿
-namespace ECampus.Core.Metadata;
+namespace ECampus.Core.Installers;
 
 [AttributeUsage(AttributeTargets.Class)]
 public class InstallerIgnoreAttribute : Attribute

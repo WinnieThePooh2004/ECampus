@@ -1,5 +1,5 @@
 ﻿using ECampus.Contracts.Services;
-using ECampus.Core.Metadata;
+using ECampus.Core.Installers;
 using ECampus.Domain.Interfaces.Validation;
 using ECampus.Shared.DataTransferObjects;
 using ECampus.Shared.Validation;
