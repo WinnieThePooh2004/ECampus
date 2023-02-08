@@ -1,7 +1,7 @@
 ﻿using System.Security.Claims;
 using ECampus.Contracts.DataAccess;
 using ECampus.Contracts.DataSelectParameters;
-using ECampus.Core.Metadata;
+using ECampus.Core.Installers;
 using ECampus.Domain.Interfaces.Validation;
 using ECampus.Shared.Auth;
 using ECampus.Shared.DataTransferObjects;

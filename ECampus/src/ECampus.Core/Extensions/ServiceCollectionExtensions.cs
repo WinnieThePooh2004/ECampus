@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using ECampus.Core.Installers;
-using ECampus.Core.Metadata;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

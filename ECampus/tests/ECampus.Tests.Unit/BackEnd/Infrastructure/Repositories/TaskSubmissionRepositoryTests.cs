@@ -1,6 +1,5 @@
 ﻿using ECampus.Infrastructure;
 using ECampus.Infrastructure.DataSelectors.SingleItemSelectors;
-using ECampus.Shared.Exceptions.InfrastructureExceptions;
 using ECampus.Shared.Models;
 using ECampus.Tests.Shared.Mocks.EntityFramework;
 

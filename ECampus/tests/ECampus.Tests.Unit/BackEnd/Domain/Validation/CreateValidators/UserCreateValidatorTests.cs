@@ -5,9 +5,7 @@ using ECampus.Domain.Mapping;
 using ECampus.Domain.Validation.CreateValidators;
 using ECampus.Shared.DataTransferObjects;
 using ECampus.Shared.Enums;
-using ECampus.Shared.Exceptions.DomainExceptions;
 using ECampus.Shared.Models;
-using ECampus.Shared.Validation;
 using Microsoft.AspNetCore.Http;
 
 namespace ECampus.Tests.Unit.BackEnd.Domain.Validation.CreateValidators;

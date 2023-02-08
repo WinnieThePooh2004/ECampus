@@ -1,5 +1,5 @@
 ﻿using System.Reflection;
-using ECampus.Core.Metadata;
+using ECampus.Core.Installers;
 using ECampus.Shared.Data;
 using ECampus.Shared.Metadata;
 

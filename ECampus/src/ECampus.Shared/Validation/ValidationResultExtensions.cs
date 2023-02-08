@@ -1,6 +1,4 @@
-﻿using ECampus.Shared.Validation;
-
-namespace ECampus.Shared.Extensions;
+﻿namespace ECampus.Shared.Validation;
 
 public static class ValidationResultExtensions
 {

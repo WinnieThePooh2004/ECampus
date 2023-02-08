@@ -4,12 +4,12 @@ using ECampus.Contracts.DataAccess;
 using ECampus.Domain.Interfaces.Validation;
 using ECampus.Shared.Auth;
 using ECampus.Shared.Enums;
-using ECampus.Shared.Exceptions.DomainExceptions;
 using ECampus.Shared.Models;
 using ECampus.Shared.QueryParameters;
-using ECampus.Shared.Validation;
 using Microsoft.AspNetCore.Http;
 using ECampus.Contracts.DataSelectParameters;
+using ECampus.Shared.Exceptions.DomainExceptions;
+using ECampus.Shared.Validation;
 using Microsoft.EntityFrameworkCore;
 
 namespace ECampus.Domain.Validation.ParametersValidators;

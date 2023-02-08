@@ -1,5 +1,5 @@
 ﻿using System.Net;
-using ECampus.Core.Metadata;
+using ECampus.Core.Installers;
 using ECampus.Domain.Interfaces.Auth;
 using ECampus.Shared.Enums;
 using ECampus.Shared.Exceptions.DomainExceptions;
@@ -7,7 +7,7 @@ using ECampus.Shared.Extensions;
 using IdentityServer4.Extensions;
 using Microsoft.AspNetCore.Http;
 
-namespace ECampus.Domain.Auth;
+namespace ECampus.Services.Services.Auth;
 
 [Inject(typeof(IAuthenticationService))]
 public class AuthenticationService : IAuthenticationService

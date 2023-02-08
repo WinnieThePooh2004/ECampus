@@ -1,5 +1,5 @@
 ﻿using System.Security.Claims;
-using ECampus.Domain.Auth;
+using ECampus.Services.Services.Auth;
 using ECampus.Shared.Auth;
 using ECampus.Shared.Enums;
 using ECampus.Shared.Exceptions.DomainExceptions;

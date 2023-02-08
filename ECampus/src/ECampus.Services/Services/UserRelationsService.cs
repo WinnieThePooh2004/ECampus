@@ -1,6 +1,6 @@
 ﻿using ECampus.Contracts.DataAccess;
 using ECampus.Contracts.Services;
-using ECampus.Core.Metadata;
+using ECampus.Core.Installers;
 using ECampus.Domain.Interfaces.Auth;
 using ECampus.Shared.Models;
 using ECampus.Shared.Models.RelationModels;

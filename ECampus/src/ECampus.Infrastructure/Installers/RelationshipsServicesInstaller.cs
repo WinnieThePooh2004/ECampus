@@ -1,7 +1,6 @@
 ﻿using ECampus.Contracts.DataAccess;
 using ECampus.Core.Extensions;
 using ECampus.Core.Installers;
-using ECampus.Core.Metadata;
 using ECampus.Infrastructure.DataCreateServices;
 using ECampus.Infrastructure.DataUpdateServices;
 using ECampus.Infrastructure.Interfaces;

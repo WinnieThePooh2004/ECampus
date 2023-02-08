@@ -2,9 +2,7 @@
 using ECampus.Domain.Validation.ParametersValidators;
 using ECampus.Shared.Auth;
 using ECampus.Shared.Enums;
-using ECampus.Shared.Exceptions.DomainExceptions;
 using ECampus.Shared.QueryParameters;
-using ECampus.Shared.Validation;
 using Microsoft.AspNetCore.Http;
 
 namespace ECampus.Tests.Unit.BackEnd.Domain.Validation.ParametersValidation;
