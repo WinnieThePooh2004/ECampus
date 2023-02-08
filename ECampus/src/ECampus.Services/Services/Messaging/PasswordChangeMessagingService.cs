@@ -17,9 +17,9 @@ public class PasswordChangeMessagingService : IPasswordChangeService
         _snsMessenger = snsMessenger;
     }
 
-    public async Task<UserDto> ChangePassword(PasswordChangeDto passwordChange)
+    public async Task<UserDto> ChangePassword(PasswordChangeDto passwordChange, CancellationToken token = default)
     {
-        var user = await _baseService.ChangePassword(passwordChange);
+        var user = await _baseService.ChangePassword(passwordChange, token);
         var message = new PasswordChanged
         {
             Username = user.Username,
@@ -29,6 +29,6 @@ public class PasswordChangeMessagingService : IPasswordChangeService
         return user;
     }
 
-    public Task<ValidationResult> ValidatePasswordChange(PasswordChangeDto passwordChange) =>
-        _baseService.ValidatePasswordChange(passwordChange);
+    public Task<ValidationResult> ValidatePasswordChange(PasswordChangeDto passwordChange, CancellationToken token = default) =>
+        _baseService.ValidatePasswordChange(passwordChange, token);
 }

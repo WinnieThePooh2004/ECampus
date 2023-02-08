@@ -27,12 +27,12 @@ public class UserUpdateValidator : IUpdateValidator<UserDto>
         _dataAccess = dataAccess.Primitive;
     }
 
-    public async Task<ValidationResult> ValidateAsync(UserDto dataTransferObject)
+    public async Task<ValidationResult> ValidateAsync(UserDto dataTransferObject, CancellationToken token = default)
     {
-        var errors = await _updateValidator.ValidateAsync(dataTransferObject);
-        var userFromDb = await _dataAccess.GetByIdAsync<User>(dataTransferObject.Id);
+        var errors = await _updateValidator.ValidateAsync(dataTransferObject, token);
+        var userFromDb = await _dataAccess.GetByIdAsync<User>(dataTransferObject.Id, token);
         ValidateRole(dataTransferObject, userFromDb, errors);
-        await ValidateUsernameUniqueness(dataTransferObject, errors);
+        await ValidateUsernameUniqueness(dataTransferObject, errors, token);
         
         ValidateChanges(dataTransferObject, userFromDb, errors);
 
@@ -53,12 +53,12 @@ public class UserUpdateValidator : IUpdateValidator<UserDto>
         }
     }
 
-    private async Task ValidateUsernameUniqueness(UserDto dataTransferObject, ValidationResult errors)
+    private async Task ValidateUsernameUniqueness(UserDto dataTransferObject, ValidationResult errors, CancellationToken token = default)
     {
         var usersWithSaveUsername =
             _dataAccess.GetByParameters<User, UserUsernameParameters>(new UserUsernameParameters
                 { Username = dataTransferObject.Username });
-        if (await usersWithSaveUsername.AnyAsync(user => user.Id != dataTransferObject.Id))
+        if (await usersWithSaveUsername.AnyAsync(user => user.Id != dataTransferObject.Id, token))
         {
             errors.AddError(new ValidationError(nameof(dataTransferObject.Username),
                 "User with this username already exists"));

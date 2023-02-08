@@ -24,39 +24,39 @@ public class SubjectsController : ControllerBase
     // GET: Subjects
     [HttpGet]
     [AllowAnonymous]
-    public async Task<IActionResult> Get([FromQuery] SubjectParameters parameters)
+    public async Task<IActionResult> Get([FromQuery] SubjectParameters parameters, CancellationToken token = default)
     {
-        return Ok(await _service.GetByParametersAsync(parameters));
+        return Ok(await _service.GetByParametersAsync(parameters, token));
     }
 
     // GET: Subjects/Details/5
     [HttpGet("{id:int?}")]
     [AllowAnonymous]
-    public async Task<IActionResult> Get(int id)
+    public async Task<IActionResult> Get(int id, CancellationToken token = default)
     {
-        return Ok(await _baseService.GetByIdAsync(id));
+        return Ok(await _baseService.GetByIdAsync(id, token));
     }
 
     [HttpPost]
     [Authorized(UserRole.Admin)]
-    public async Task<IActionResult> Post(SubjectDto subject)
+    public async Task<IActionResult> Post(SubjectDto subject, CancellationToken token = default)
     {
-        await _baseService.CreateAsync(subject);
+        await _baseService.CreateAsync(subject, token);
         return Ok(subject);
     }
 
     [HttpPut]
     [Authorized(UserRole.Admin)]
-    public async Task<IActionResult> Put(SubjectDto subject)
+    public async Task<IActionResult> Put(SubjectDto subject, CancellationToken token = default)
     {
-        await _baseService.UpdateAsync(subject);
+        await _baseService.UpdateAsync(subject, token);
         return Ok(subject);
     }
 
     [HttpDelete("{id:int?}")]
     [Authorized(UserRole.Admin)]
-    public async Task<IActionResult> Delete(int id)
+    public async Task<IActionResult> Delete(int id, CancellationToken token = default)
     {
-        return Ok(await _baseService.DeleteAsync(id));
+        return Ok(await _baseService.DeleteAsync(id, token));
     }
 }

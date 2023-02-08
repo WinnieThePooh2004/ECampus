@@ -16,25 +16,25 @@ public class UserMessagingService : IBaseService<UserDto>
         _snsMessenger = snsMessenger;
     }
 
-    public Task<UserDto> GetByIdAsync(int id) => _baseService.GetByIdAsync(id);
+    public Task<UserDto> GetByIdAsync(int id, CancellationToken token = default) => _baseService.GetByIdAsync(id, token);
 
-    public async Task<UserDto> CreateAsync(UserDto entity)
+    public async Task<UserDto> CreateAsync(UserDto entity, CancellationToken token = default)
     {
-        var createdUser = await _baseService.CreateAsync(entity);
+        var createdUser = await _baseService.CreateAsync(entity, token);
         await _snsMessenger.PublishMessageAsync(createdUser.ToCreatedUserMessage());
         return createdUser;
     }
 
-    public async Task<UserDto> UpdateAsync(UserDto entity)
+    public async Task<UserDto> UpdateAsync(UserDto entity, CancellationToken token = default)
     {
-        var createdUser = await _baseService.UpdateAsync(entity);
+        var createdUser = await _baseService.UpdateAsync(entity, token);
         await _snsMessenger.PublishMessageAsync(createdUser.ToUserUpdatedMessage());
         return createdUser;
     }
 
-    public async Task<UserDto> DeleteAsync(int id)
+    public async Task<UserDto> DeleteAsync(int id, CancellationToken token = default)
     {
-        var deletedUser = await _baseService.DeleteAsync(id);
+        var deletedUser = await _baseService.DeleteAsync(id, token);
         await _snsMessenger.PublishMessageAsync(deletedUser.ToUserDeletedMessage());
         return deletedUser;
     }

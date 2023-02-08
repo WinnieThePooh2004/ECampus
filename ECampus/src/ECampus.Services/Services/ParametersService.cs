@@ -23,16 +23,16 @@ public class ParametersService<TDto, TParameters, TRepositoryModel> : IParameter
         _dataAccess = dataAccess;
     }
 
-    public async Task<ListWithPaginationData<TDto>> GetByParametersAsync(TParameters parameters)
+    public async Task<ListWithPaginationData<TDto>> GetByParametersAsync(TParameters parameters, CancellationToken token = default)
     {
         var query = _dataAccess.GetByParameters<TRepositoryModel, TParameters>(parameters);
-        var totalCount = await query.CountAsync();
+        var totalCount = await query.CountAsync(token);
         var resultList = await query
             .Sort(parameters.OrderBy, parameters.SortOrder)
             .Skip((parameters.PageNumber - 1) * parameters.PageSize)
             .Take(parameters.PageSize)
             .Select(dto => _mapper.Map<TDto>(dto))
-            .ToListAsync();
+            .ToListAsync(token);
 
         return new ListWithPaginationData<TDto>(resultList, totalCount, parameters.PageNumber, parameters.PageSize);
     }

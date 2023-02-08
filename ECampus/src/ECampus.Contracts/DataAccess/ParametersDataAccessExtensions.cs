@@ -9,11 +9,11 @@ namespace ECampus.Contracts.DataAccess;
 public static class ParametersDataAccessExtensions
 {
     public static async Task<TModel> GetSingleAsync<TModel, TParameters>(
-        this IDataAccessManager parametersDataAccess, TParameters parameters)
+        this IDataAccessManager parametersDataAccess, TParameters parameters, CancellationToken token = default)
         where TModel : class, IModel
         where TParameters : IDataSelectParameters<TModel>
     {
-        return await parametersDataAccess.GetByParameters<TModel, TParameters>(parameters).SingleOrDefaultAsync()
+        return await parametersDataAccess.GetByParameters<TModel, TParameters>(parameters).SingleOrDefaultAsync(token)
                ?? throw new InfrastructureExceptions(HttpStatusCode.NotFound,
                    $"Cannot find object of type {typeof(TModel)} by parameters of type {typeof(TParameters)}", parameters);
     }

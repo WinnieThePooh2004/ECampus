@@ -27,29 +27,29 @@ public class TaskSubmissionService : ITaskSubmissionService
         _user = httpContextAccessor.HttpContext!.User;
     }
 
-    public async Task<TaskSubmissionDto> UpdateContentAsync(int submissionId, string content)
+    public async Task<TaskSubmissionDto> UpdateContentAsync(int submissionId, string content, CancellationToken token = default)
     {
-        var submission = await _dataAccess.GetByIdAsync<TaskSubmission>(submissionId);
+        var submission = await _dataAccess.GetByIdAsync<TaskSubmission>(submissionId, token);
         submission.SubmissionContent = content;
-        await _dataAccess.SaveChangesAsync();
+        await _dataAccess.SaveChangesAsync(token);
         return _mapper.Map<TaskSubmissionDto>(submission);
     }
 
-    public async Task<TaskSubmissionDto> UpdateMarkAsync(int submissionId, int mark)
+    public async Task<TaskSubmissionDto> UpdateMarkAsync(int submissionId, int mark, CancellationToken token = default)
     {
-        var submission = await _dataAccess.GetByIdAsync<TaskSubmission>(submissionId);
+        var submission = await _dataAccess.GetByIdAsync<TaskSubmission>(submissionId, token);
         submission.IsMarked = true;
         submission.TotalPoints = mark;
-        await _dataAccess.SaveChangesAsync();
+        await _dataAccess.SaveChangesAsync(token);
         return _mapper.Map<TaskSubmissionDto>(submission);
     }
 
-    public async Task<TaskSubmissionDto> GetByIdAsync(int id)
+    public async Task<TaskSubmissionDto> GetByIdAsync(int id, CancellationToken token = default)
     {
-        return _mapper.Map<TaskSubmissionDto>(await _dataAccess.GetByIdAsync<TaskSubmission>(id));
+        return _mapper.Map<TaskSubmissionDto>(await _dataAccess.GetByIdAsync<TaskSubmission>(id, token));
     }
 
-    public async Task<TaskSubmissionDto> GetByCourseAsync(int courseTaskId)
+    public async Task<TaskSubmissionDto> GetByCourseAsync(int courseTaskId, CancellationToken token = default)
     {
         var currentStudentId = int.Parse(_user.FindFirst(CustomClaimTypes.StudentId)!.Value);
 
@@ -57,7 +57,7 @@ public class TaskSubmissionService : ITaskSubmissionService
             await _dataAccess
                 .GetByParameters<TaskSubmission, TaskSubmissionByStudentAndCourseParameters>(
                     new TaskSubmissionByStudentAndCourseParameters
-                        { StudentId = currentStudentId, CourseTaskId = courseTaskId }).SingleOrDefaultAsync() ??
+                        { StudentId = currentStudentId, CourseTaskId = courseTaskId }).SingleOrDefaultAsync(token) ??
             throw new InfrastructureExceptions(HttpStatusCode.NotFound, 
                 $"There is not any submissions with StudentId={currentStudentId} and TaskId={courseTaskId}"));
     }

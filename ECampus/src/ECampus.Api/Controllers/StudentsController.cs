@@ -19,32 +19,32 @@ public class StudentsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> Get([FromQuery] StudentParameters parameters)
+    public async Task<IActionResult> Get([FromQuery] StudentParameters parameters, CancellationToken token = default)
     {
-        return Ok(await _parametersService.GetByParametersAsync(parameters));
+        return Ok(await _parametersService.GetByParametersAsync(parameters, token));
     }
 
     [HttpGet("{id:int}")]
-    public async Task<IActionResult> Get(int id)
+    public async Task<IActionResult> Get(int id, CancellationToken token = default)
     {
-        return Ok(await _baseService.GetByIdAsync(id));
+        return Ok(await _baseService.GetByIdAsync(id, token));
     }
 
     [HttpPost]
-    public async Task<IActionResult> Post(StudentDto student)
+    public async Task<IActionResult> Post(StudentDto student, CancellationToken token = default)
     {
-        return Ok(await _baseService.CreateAsync(student));
+        return Ok(await _baseService.CreateAsync(student, token));
     }
 
     [HttpDelete("{id:int}")]
-    public async Task<IActionResult> Delete(int id)
+    public async Task<IActionResult> Delete(int id, CancellationToken token = default)
     {
-        return Ok(await _baseService.DeleteAsync(id));
+        return Ok(await _baseService.DeleteAsync(id, token));
     }
 
     [HttpPut]
-    public async Task<IActionResult> Put(StudentDto student)
+    public async Task<IActionResult> Put(StudentDto student, CancellationToken token = default)
     {
-        return Ok(await _baseService.UpdateAsync(student));
+        return Ok(await _baseService.UpdateAsync(student, token));
     }
 }

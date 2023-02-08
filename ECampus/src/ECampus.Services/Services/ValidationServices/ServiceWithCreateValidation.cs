@@ -17,11 +17,11 @@ public class ServiceWithCreateValidation<TDto> : IBaseService<TDto>
         _validator = validator;
     }
 
-    public Task<TDto> GetByIdAsync(int id) => _baseService.GetByIdAsync(id);
+    public Task<TDto> GetByIdAsync(int id, CancellationToken token = default) => _baseService.GetByIdAsync(id, token);
 
-    public Task<TDto> UpdateAsync(TDto entity) => _baseService.UpdateAsync(entity);
+    public Task<TDto> UpdateAsync(TDto entity, CancellationToken token = default) => _baseService.UpdateAsync(entity, token);
 
-    public async Task<TDto> CreateAsync(TDto entity)
+    public async Task<TDto> CreateAsync(TDto entity, CancellationToken token = default)
     {
         var errors = await _validator.ValidateAsync(entity);
         if (!errors.IsValid)
@@ -29,8 +29,8 @@ public class ServiceWithCreateValidation<TDto> : IBaseService<TDto>
             throw new ValidationException(typeof(TDto), errors);
         }
 
-        return await _baseService.CreateAsync(entity);
+        return await _baseService.CreateAsync(entity, token);
     }
 
-    public Task<TDto> DeleteAsync(int id) => _baseService.DeleteAsync(id);
+    public Task<TDto> DeleteAsync(int id, CancellationToken token = default) => _baseService.DeleteAsync(id, token);
 }

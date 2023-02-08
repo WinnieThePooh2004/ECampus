@@ -21,14 +21,14 @@ public class ServiceWithParametersValidation<TDto, TParameters> : IParametersSer
         _parametersValidator = parametersValidator;
     }
 
-    public async Task<ListWithPaginationData<TDto>> GetByParametersAsync(TParameters parameters)
+    public async Task<ListWithPaginationData<TDto>> GetByParametersAsync(TParameters parameters, CancellationToken token = default)
     {
-        var errors = await _parametersValidator.ValidateAsync(parameters);
+        var errors = await _parametersValidator.ValidateAsync(parameters, token);
         if (!errors.IsValid)
         {
             throw new ValidationException(typeof(TParameters), errors);
         }
 
-        return await _baseService.GetByParametersAsync(parameters);
+        return await _baseService.GetByParametersAsync(parameters, token);
     }
 }

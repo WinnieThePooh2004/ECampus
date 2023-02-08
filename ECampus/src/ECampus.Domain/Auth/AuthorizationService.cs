@@ -29,7 +29,7 @@ public class AuthorizationService : IAuthorizationService
         _parametersDataAccess = parametersDataAccess;
     }
 
-    public async Task<LoginResult> Login(LoginDto login)
+    public async Task<LoginResult> Login(LoginDto login, CancellationToken token = default)
     {
         if (_httpContextAccessor.HttpContext is null)
         {
@@ -37,7 +37,7 @@ public class AuthorizationService : IAuthorizationService
         }
 
         var user = await _parametersDataAccess.GetSingleAsync<User, UserEmailParameters>(new UserEmailParameters
-            { Email = login.Email });
+            { Email = login.Email }, token: token);
         if (user.Password != login.Password)
         {
             throw new DomainException(HttpStatusCode.BadRequest, "Wrong password or email");

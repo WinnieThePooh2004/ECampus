@@ -17,28 +17,28 @@ public class PrimitiveDataAccessManager : IDataAccessManager
         _context = context;
     }
 
-    public Task<TModel> CreateAsync<TModel>(TModel model) where TModel : class, IModel
+    public Task<TModel> CreateAsync<TModel>(TModel model, CancellationToken token = default) where TModel : class, IModel
     {
         _context.Update(model);
         return Task.FromResult(model);
     }
 
-    public Task<TModel> UpdateAsync<TModel>(TModel model) where TModel : class, IModel
+    public Task<TModel> UpdateAsync<TModel>(TModel model, CancellationToken token = default) where TModel : class, IModel
     {
         _context.Update(model);
         return Task.FromResult(model);
     }
 
-    public Task<TModel> DeleteAsync<TModel>(int id) where TModel : class, IModel, new()
+    public Task<TModel> DeleteAsync<TModel>(int id, CancellationToken token = default) where TModel : class, IModel, new()
     {
         var model = new TModel { Id = id };
         _context.Update(model);
         return Task.FromResult(model);
     }
 
-    public async Task<TModel> GetByIdAsync<TModel>(int id) where TModel : class, IModel
+    public async Task<TModel> GetByIdAsync<TModel>(int id, CancellationToken token = default) where TModel : class, IModel
     {
-        return await _context.Set<TModel>().GetPureByIdAsync(id) ??
+        return await _context.Set<TModel>().GetPureByIdAsync(id, token: token) ??
                throw new ObjectNotFoundByIdException(typeof(TModel), id);
     }
 
@@ -49,11 +49,11 @@ public class PrimitiveDataAccessManager : IDataAccessManager
         return _context.Set<TModel>();
     }
 
-    public async Task<bool> SaveChangesAsync()
+    public async Task<bool> SaveChangesAsync(CancellationToken token = default)
     {
         try
         {
-            return await _context.SaveChangesAsync() > 0;
+            return await _context.SaveChangesAsync(token) > 0;
         }
         catch (DbUpdateConcurrencyException e)
         {

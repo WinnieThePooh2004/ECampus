@@ -12,7 +12,7 @@ public abstract class FluentValidatorWrapper<TDto>
         _fluentValidationValidator = fluentValidationValidator;
     }
 
-    public async Task<ValidationResult> ValidateAsync(TDto dataTransferObject) =>
-        new((await _fluentValidationValidator.ValidateAsync(dataTransferObject))
+    public async Task<ValidationResult> ValidateAsync(TDto dataTransferObject, CancellationToken token = default) =>
+        new((await _fluentValidationValidator.ValidateAsync(dataTransferObject, token))
             .Errors.Select(error => new ValidationError(error.PropertyName, error.ErrorMessage)));
 }

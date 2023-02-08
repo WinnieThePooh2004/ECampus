@@ -25,7 +25,7 @@ public class TeachersController : ControllerBase
     // GET: Teachers
     [HttpGet]
     [AllowAnonymous]
-    public async Task<IActionResult> Get([FromQuery] TeacherParameters parameters)
+    public async Task<IActionResult> Get([FromQuery] TeacherParameters parameters, CancellationToken token = default)
     {
         return Ok(await _service.GetByParametersAsync(parameters));
     }
@@ -33,31 +33,31 @@ public class TeachersController : ControllerBase
     // GET: Teachers/Details/5
     [HttpGet("{id:int?}")]
     [AllowAnonymous]
-    public async Task<IActionResult> Get(int id)
+    public async Task<IActionResult> Get(int id, CancellationToken token = default)
     {
-        return Ok(await _baseService.GetByIdAsync(id));
+        return Ok(await _baseService.GetByIdAsync(id, token));
     }
 
     [HttpPost]
     [Authorized(UserRole.Admin)]
-    public async Task<IActionResult> Post(TeacherDto teacher)
+    public async Task<IActionResult> Post(TeacherDto teacher, CancellationToken token = default)
     {
-        await _baseService.CreateAsync(teacher);
+        await _baseService.CreateAsync(teacher, token);
         return Ok(teacher);
     }
 
     [HttpPut]
     [Authorized(UserRole.Admin)]
-    public async Task<IActionResult> Put(TeacherDto teacher)
+    public async Task<IActionResult> Put(TeacherDto teacher, CancellationToken token = default)
     {
-        await _baseService.UpdateAsync(teacher);
+        await _baseService.UpdateAsync(teacher, token);
         return Ok(teacher);
     }
 
     [HttpDelete("{id:int}")]
     [Authorized(UserRole.Admin)]
-    public async Task<IActionResult> Delete(int id)
+    public async Task<IActionResult> Delete(int id, CancellationToken token = default)
     {
-        return Ok(await _baseService.DeleteAsync(id));
+        return Ok(await _baseService.DeleteAsync(id, token));
     }
 }

@@ -19,20 +19,20 @@ public class UserRolesController : ControllerBase
     }
 
     [HttpGet("{id:int}")]
-    public async Task<IActionResult> Get(int id)
+    public async Task<IActionResult> Get(int id, CancellationToken token = default)
     {
-        return Ok(await _service.GetByIdAsync(id));
+        return Ok(await _service.GetByIdAsync(id, token));
     }
 
     [HttpPut]
-    public async Task<IActionResult> Put(UserDto user)
+    public async Task<IActionResult> Put(UserDto user, CancellationToken token = default)
     {
-        return Ok(await _service.UpdateAsync(user));
+        return Ok(await _service.UpdateAsync(user, token));
     }
     
     [HttpPost]
-    public async Task<IActionResult> Post(UserDto user)
+    public async Task<IActionResult> Post(UserDto user, CancellationToken token = default)
     {
-        return Ok(await _service.CreateAsync(user));
+        return Ok(await _service.CreateAsync(user, token));
     }
 }

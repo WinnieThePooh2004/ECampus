@@ -26,24 +26,24 @@ public class CourseTaskService : IBaseService<CourseTaskDto>
         _mapper = mapper;
     }
 
-    public Task<CourseTaskDto> GetByIdAsync(int id) => _baseService.GetByIdAsync(id);
+    public Task<CourseTaskDto> GetByIdAsync(int id, CancellationToken token = default) => _baseService.GetByIdAsync(id, token);
 
-    public async Task<CourseTaskDto> CreateAsync(CourseTaskDto entity)
+    public async Task<CourseTaskDto> CreateAsync(CourseTaskDto entity, CancellationToken token = default)
     {
         var task = _mapper.Map<CourseTask>(entity);
         var relatedStudents = await _dataAccessFactory.Complex
             .GetByParameters<Student, StudentsByCourseParameters>(new StudentsByCourseParameters
-                { CourseId = entity.CourseId }).ToListAsync();
+                { CourseId = entity.CourseId }).ToListAsync(token);
         
         task.Submissions = relatedStudents.Select(student => new TaskSubmission{StudentId = student.Id}).ToList();
-        await _dataAccessFactory.Primitive.CreateAsync(task);
-        await _dataAccessFactory.Primitive.SaveChangesAsync();
+        await _dataAccessFactory.Primitive.CreateAsync(task, token);
+        await _dataAccessFactory.Primitive.SaveChangesAsync(token);
         
-        await PublishMessage(entity, task, relatedStudents);
+        await PublishMessage(entity, task, relatedStudents, token);
         return _mapper.Map<CourseTaskDto>(task);
     }
 
-    private async Task PublishMessage(CourseTaskDto entity, CourseTask task, List<Student> relatedStudents)
+    private async Task PublishMessage(CourseTaskDto entity, CourseTask task, List<Student> relatedStudents, CancellationToken token = default)
     {
         var studentEmails = relatedStudents
             .Where(student => student.UserEmail is not null)
@@ -54,7 +54,7 @@ public class CourseTaskService : IBaseService<CourseTaskDto>
             return;
         }
 
-        var course = await _dataAccessFactory.Primitive.GetByIdAsync<Course>(entity.CourseId);
+        var course = await _dataAccessFactory.Primitive.GetByIdAsync<Course>(entity.CourseId, token);
         var message = new TaskCreated
         {
             StudentEmails = studentEmails,
@@ -67,7 +67,7 @@ public class CourseTaskService : IBaseService<CourseTaskDto>
         await _snsMessenger.PublishMessageAsync(message);
     }
 
-    public Task<CourseTaskDto> UpdateAsync(CourseTaskDto entity) => _baseService.UpdateAsync(entity);
+    public Task<CourseTaskDto> UpdateAsync(CourseTaskDto entity, CancellationToken token = default) => _baseService.UpdateAsync(entity, token);
 
-    public Task<CourseTaskDto> DeleteAsync(int id) => _baseService.DeleteAsync(id);
+    public Task<CourseTaskDto> DeleteAsync(int id, CancellationToken token = default) => _baseService.DeleteAsync(id, token);
 }

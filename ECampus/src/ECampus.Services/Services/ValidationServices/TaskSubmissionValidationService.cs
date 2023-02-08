@@ -27,7 +27,7 @@ public class TaskSubmissionValidationService : ITaskSubmissionService
         _user = httpContextAccessor.HttpContext!.User;
     }
 
-    public async Task<TaskSubmissionDto> UpdateContentAsync(int submissionId, string content)
+    public async Task<TaskSubmissionDto> UpdateContentAsync(int submissionId, string content, CancellationToken token = default)
     {
         var validationResult = await _validator.ValidateUpdateContentAsync(submissionId, content);
         if (!validationResult.IsValid)
@@ -35,10 +35,10 @@ public class TaskSubmissionValidationService : ITaskSubmissionService
             throw new ValidationException(typeof(TaskSubmissionDto), validationResult);
         }
 
-        return await _baseService.UpdateContentAsync(submissionId, content);
+        return await _baseService.UpdateContentAsync(submissionId, content, token);
     }
 
-    public async Task<TaskSubmissionDto> UpdateMarkAsync(int submissionId, int mark)
+    public async Task<TaskSubmissionDto> UpdateMarkAsync(int submissionId, int mark, CancellationToken token = default)
     {
         var validationResult = await _validator.ValidateUpdateMarkAsync(submissionId, mark);
         if (!validationResult.IsValid)
@@ -46,17 +46,17 @@ public class TaskSubmissionValidationService : ITaskSubmissionService
             throw new ValidationException(typeof(TaskSubmission), validationResult);
         }
 
-        return await _baseService.UpdateMarkAsync(submissionId, mark);
+        return await _baseService.UpdateMarkAsync(submissionId, mark, token);
     }
 
-    public async Task<TaskSubmissionDto> GetByIdAsync(int id)
+    public async Task<TaskSubmissionDto> GetByIdAsync(int id, CancellationToken token = default)
     {
         var role = _user.ValidateEnumClaim<UserRole>(ClaimTypes.Role);
         if (!role.Result.IsValid)
         {
             throw new ValidationException(typeof(ClaimsPrincipal), role.Result);
         }
-        var submission = await _baseService.GetByIdAsync(id);
+        var submission = await _baseService.GetByIdAsync(id, token);
         if (role.ClaimValue is UserRole.Admin or UserRole.Teacher)
         {
             return submission;
@@ -65,9 +65,9 @@ public class TaskSubmissionValidationService : ITaskSubmissionService
         return submission;
     }
 
-    public async Task<TaskSubmissionDto> GetByCourseAsync(int courseTaskId)
+    public async Task<TaskSubmissionDto> GetByCourseAsync(int courseTaskId, CancellationToken token = default)
     {
-        var submission = await _baseService.GetByCourseAsync(courseTaskId);
+        var submission = await _baseService.GetByCourseAsync(courseTaskId, token);
         ValidateStudentId(submission);
         return submission;
     }
