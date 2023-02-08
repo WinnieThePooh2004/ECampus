@@ -21,9 +21,9 @@ public class FacultiesController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> Get([FromQuery] FacultyParameters parameters)
+    public async Task<IActionResult> Get([FromQuery] FacultyParameters parameters, CancellationToken token = default)
     {
-        return Ok(await _service.GetByParametersAsync(parameters));
+        return Ok(await _service.GetByParametersAsync(parameters, token));
     }
 
     [HttpGet("{id:int?}")]
@@ -35,24 +35,24 @@ public class FacultiesController : ControllerBase
 
     [HttpPost]
     [Authorized(UserRole.Admin)]
-    public async Task<IActionResult> Post([Bind("Name")] FacultyDto faculty)
+    public async Task<IActionResult> Post([Bind("Name")] FacultyDto faculty, CancellationToken token = default)
     {
-        await _baseService.CreateAsync(faculty);
+        await _baseService.CreateAsync(faculty, token);
         return Ok(faculty);
     }
 
     [HttpPut]
     [Authorized(UserRole.Admin)]
-    public async Task<IActionResult> Put(FacultyDto faculty)
+    public async Task<IActionResult> Put(FacultyDto faculty, CancellationToken token = default)
     {
-        await _baseService.UpdateAsync(faculty);
+        await _baseService.UpdateAsync(faculty, token);
         return Ok(faculty);
     }
 
     [HttpDelete("{id:int?}")]
     [Authorized(UserRole.Admin)]
-    public async Task<IActionResult> Delete(int id)
+    public async Task<IActionResult> Delete(int id, CancellationToken token = default)
     {
-        return Ok(await _baseService.DeleteAsync(id));
+        return Ok(await _baseService.DeleteAsync(id, token));
     }
 }

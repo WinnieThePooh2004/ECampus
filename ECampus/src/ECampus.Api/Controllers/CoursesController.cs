@@ -24,14 +24,14 @@ public class CoursesController : ControllerBase
 
     [HttpGet]
     [AllowAnonymous]
-    public async Task<IActionResult> Get([FromQuery] CourseParameters parameters)
+    public async Task<IActionResult> Get([FromQuery] CourseParameters parameters, CancellationToken token = default)
     {
         return Ok(await _parametersService.GetByParametersAsync(parameters));
     }
 
     [HttpGet("{id:int}")]
     [AllowAnonymous]
-    public async Task<IActionResult> Get(int id)
+    public async Task<IActionResult> Get(int id, CancellationToken token = default)
     {
         return Ok(await _baseService.GetByIdAsync(id));
     }
@@ -47,24 +47,24 @@ public class CoursesController : ControllerBase
 
     [HttpPost]
     [Authorized(UserRole.Admin)]
-    public async Task<IActionResult> Post(CourseDto course)
+    public async Task<IActionResult> Post(CourseDto course, CancellationToken token = default)
     {
-        await _baseService.CreateAsync(course);
+        await _baseService.CreateAsync(course, token);
         return Ok(course);
     }
 
     [HttpPut]
     [Authorized(UserRole.Admin)]
-    public async Task<IActionResult> Put(CourseDto course)
+    public async Task<IActionResult> Put(CourseDto course, CancellationToken token = default)
     {
-        await _baseService.UpdateAsync(course);
+        await _baseService.UpdateAsync(course, token);
         return Ok(course);
     }
 
     [HttpDelete("{id:int?}")]
     [Authorized(UserRole.Admin)]
-    public async Task<IActionResult> Delete(int id)
+    public async Task<IActionResult> Delete(int id, CancellationToken token = default)
     {
-        return Ok(await _baseService.DeleteAsync(id));
+        return Ok(await _baseService.DeleteAsync(id, token));
     }
 }

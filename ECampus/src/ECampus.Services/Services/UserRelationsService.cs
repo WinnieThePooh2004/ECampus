@@ -19,39 +19,39 @@ public class UserRelationsService : IUserRelationsService
         _relationsDataAccess = relationsDataAccess;
     }
 
-    public Task SaveAuditory(int userId, int auditoryId)
+    public Task SaveAuditory(int userId, int auditoryId, CancellationToken token = default)
     {
         _authenticationService.VerifyUser(userId);
-        return _relationsDataAccess.CreateRelation<User, Auditory, UserAuditory>(userId, auditoryId);
+        return _relationsDataAccess.CreateRelation<User, Auditory, UserAuditory>(userId, auditoryId, token);
     }
 
-    public Task RemoveSavedAuditory(int userId, int auditoryId)
+    public Task RemoveSavedAuditory(int userId, int auditoryId, CancellationToken token = default)
     {
         _authenticationService.VerifyUser(userId);
-        return _relationsDataAccess.DeleteRelation<User, Auditory, UserAuditory>(userId, auditoryId);
+        return _relationsDataAccess.DeleteRelation<User, Auditory, UserAuditory>(userId, auditoryId, token);
     }
 
-    public Task SaveGroup(int userId, int groupId)
+    public Task SaveGroup(int userId, int groupId, CancellationToken token = default)
     {
         _authenticationService.VerifyUser(userId);
-        return _relationsDataAccess.CreateRelation<User, Group, UserGroup>(userId, groupId);
+        return _relationsDataAccess.CreateRelation<User, Group, UserGroup>(userId, groupId, token);
     }
 
-    public Task RemoveSavedGroup(int userId, int groupId)
+    public Task RemoveSavedGroup(int userId, int groupId, CancellationToken token = default)
     {
         _authenticationService.VerifyUser(userId);
-        return _relationsDataAccess.DeleteRelation<User, Group, UserGroup>(userId, groupId);
+        return _relationsDataAccess.DeleteRelation<User, Group, UserGroup>(userId, groupId, token);
     }
 
-    public Task SaveTeacher(int userId, int teacherId)
+    public Task SaveTeacher(int userId, int teacherId, CancellationToken token = default)
     {
         _authenticationService.VerifyUser(userId);
-        return _relationsDataAccess.CreateRelation<User, Teacher, UserTeacher>(userId, teacherId);
+        return _relationsDataAccess.CreateRelation<User, Teacher, UserTeacher>(userId, teacherId, token);
     }
 
-    public Task RemoveSavedTeacher(int userId, int teacherId)
+    public Task RemoveSavedTeacher(int userId, int teacherId, CancellationToken token = default)
     {
         _authenticationService.VerifyUser(userId);
-        return _relationsDataAccess.DeleteRelation<User, Teacher, UserTeacher>(userId, teacherId);
+        return _relationsDataAccess.DeleteRelation<User, Teacher, UserTeacher>(userId, teacherId, token);
     }
 }

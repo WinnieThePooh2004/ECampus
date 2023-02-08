@@ -3,7 +3,7 @@ using ECampus.Core.Messages;
 using ECampus.Domain.Interfaces;
 using ECampus.Shared.DataTransferObjects;
 
-namespace ECampus.Domain.Messaging;
+namespace ECampus.Services.Services.Messaging;
 
 public class TaskSubmissionMessagingService : ITaskSubmissionService
 {
@@ -16,9 +16,10 @@ public class TaskSubmissionMessagingService : ITaskSubmissionService
         _snsMessenger = snsMessenger;
     }
 
-    public async Task<TaskSubmissionDto> UpdateContentAsync(int submissionId, string content)
+    public async Task<TaskSubmissionDto> UpdateContentAsync(int submissionId, string content,
+        CancellationToken token = default)
     {
-        var submission = await _baseService.UpdateContentAsync(submissionId, content);
+        var submission = await _baseService.UpdateContentAsync(submissionId, content, token);
         await _snsMessenger.PublishMessageAsync(new SubmissionEdited
         {
             UserEmail = submission.Student?.UserEmail,
@@ -27,9 +28,9 @@ public class TaskSubmissionMessagingService : ITaskSubmissionService
         return submission;
     }
 
-    public async Task<TaskSubmissionDto> UpdateMarkAsync(int submissionId, int mark)
+    public async Task<TaskSubmissionDto> UpdateMarkAsync(int submissionId, int mark, CancellationToken token = default)
     {
-        var submission = await _baseService.UpdateMarkAsync(submissionId, mark);
+        var submission = await _baseService.UpdateMarkAsync(submissionId, mark, token);
         await _snsMessenger.PublishMessageAsync(new SubmissionMarked
         {
             TaskName = submission.CourseTask!.Name,
@@ -40,7 +41,9 @@ public class TaskSubmissionMessagingService : ITaskSubmissionService
         return submission;
     }
 
-    public Task<TaskSubmissionDto> GetByIdAsync(int id) => _baseService.GetByIdAsync(id);
+    public Task<TaskSubmissionDto> GetByIdAsync(int id, CancellationToken token = default) =>
+        _baseService.GetByIdAsync(id, token);
 
-    public Task<TaskSubmissionDto> GetByCourseAsync(int courseTaskId) => _baseService.GetByCourseAsync(courseTaskId);
+    public Task<TaskSubmissionDto> GetByCourseAsync(int courseTaskId, CancellationToken token = default) =>
+        _baseService.GetByCourseAsync(courseTaskId, token);
 }

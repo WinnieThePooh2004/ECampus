@@ -19,13 +19,13 @@ public class UserService : IUserService
         _createValidator = createValidator;
     }
 
-    public async Task<ValidationResult> ValidateCreateAsync(UserDto user)
+    public async Task<ValidationResult> ValidateCreateAsync(UserDto user, CancellationToken token = default)
     {
-        return await _createValidator.ValidateAsync(user);
+        return await _createValidator.ValidateAsync(user, token);
     }
 
-    public async Task<ValidationResult> ValidateUpdateAsync(UserDto user)
+    public async Task<ValidationResult> ValidateUpdateAsync(UserDto user, CancellationToken token = default)
     {
-        return await _updateValidator.ValidateAsync(user);
+        return await _updateValidator.ValidateAsync(user, token);
     }
 }

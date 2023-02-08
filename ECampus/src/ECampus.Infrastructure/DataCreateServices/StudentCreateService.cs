@@ -13,7 +13,7 @@ public class StudentCreateService : IDataCreateService<Student>
         _baseCreate = baseCreate;
     }
 
-    public async Task<Student> CreateAsync(Student model, ApplicationDbContext context)
+    public async Task<Student> CreateAsync(Student model, ApplicationDbContext context, CancellationToken token = default)
     {
         model.Submissions = await context.Groups
             .AsNoTracking()
@@ -23,8 +23,8 @@ public class StudentCreateService : IDataCreateService<Student>
             .SelectMany(group => group.Courses!)
             .SelectMany(course => course.Tasks!)
             .Select(task => new TaskSubmission { CourseTaskId = task.Id })
-            .ToListAsync();
+            .ToListAsync(token);
 
-        return await _baseCreate.CreateAsync(model, context);
+        return await _baseCreate.CreateAsync(model, context, token);
     }
 }

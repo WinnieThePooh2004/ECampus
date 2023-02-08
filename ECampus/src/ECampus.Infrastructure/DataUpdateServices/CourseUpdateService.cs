@@ -13,25 +13,26 @@ public class CourseUpdateService : IDataUpdateService<Course>
         _baseUpdate = baseUpdate;
     }
 
-    public async Task<Course> UpdateAsync(Course model, ApplicationDbContext context)
+    public async Task<Course> UpdateAsync(Course model, ApplicationDbContext context, CancellationToken token = default)
     {
         if (model.Groups is null)
         {
-            return await _baseUpdate.UpdateAsync(model, context);
+            return await _baseUpdate.UpdateAsync(model, context, token);
         }
 
-        var submissionsToDelete = await SubmissionsToDelete(model, context);
-        var submissionsToCreate = await SubmissionsToCreate(model, context);
+        var submissionsToDelete = await SubmissionsToDelete(model, context, token);
+        var submissionsToCreate = await SubmissionsToCreate(model, context, token);
         context.RemoveRange(submissionsToDelete);
         context.AddRange(submissionsToCreate);
-        return await _baseUpdate.UpdateAsync(model, context);
+        return await _baseUpdate.UpdateAsync(model, context, token);
     }
 
-    private static async Task<List<TaskSubmission>> SubmissionsToDelete(Course model, ApplicationDbContext context)
+    private static async Task<List<TaskSubmission>> SubmissionsToDelete(Course model, ApplicationDbContext context,
+        CancellationToken token = default)
     {
         var deleteQuery = DeleteQuery(model);
         return await context.TaskSubmissions
-            .FromSqlRaw(deleteQuery).ToListAsync();
+            .FromSqlRaw(deleteQuery).ToListAsync(token);
     }
 
     private static string DeleteQuery(Course model) =>
@@ -46,11 +47,12 @@ public class CourseUpdateService : IDataUpdateService<Course>
         WHERE G.Id NOT IN ({CurrentGroupIds(model)}) AND C.Id = {model.Id}
         """;
 
-    private static async Task<List<TaskSubmission>> SubmissionsToCreate(Course model, ApplicationDbContext context)
+    private static async Task<List<TaskSubmission>> SubmissionsToCreate(Course model, ApplicationDbContext context,
+        CancellationToken token = default)
     {
         var addedStudents = await context.Set<Student>()
-            .FromSqlRaw(CreateQuery(model)).ToListAsync();
-        var allCourseTasks = await context.CourseTasks.Where(task => task.CourseId == model.Id).ToListAsync();
+            .FromSqlRaw(CreateQuery(model)).ToListAsync(token);
+        var allCourseTasks = await context.CourseTasks.Where(task => task.CourseId == model.Id).ToListAsync(token);
         var result = new List<TaskSubmission>(addedStudents.Count * allCourseTasks.Count);
 
         foreach (var task in allCourseTasks)

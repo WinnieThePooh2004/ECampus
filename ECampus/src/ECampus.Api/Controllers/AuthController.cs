@@ -19,8 +19,8 @@ public class AuthController : ControllerBase
     [HttpPost]
     [AllowAnonymous]
     [Route("login")]
-    public async Task<IActionResult> Login(LoginDto login)
+    public async Task<IActionResult> Login(LoginDto login, CancellationToken token = default)
     {
-        return Ok(await _authorizationService.Login(login));
+        return Ok(await _authorizationService.Login(login, token));
     }
 }

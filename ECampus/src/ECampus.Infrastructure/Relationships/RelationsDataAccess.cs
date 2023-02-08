@@ -20,7 +20,7 @@ public class RelationsDataAccess : IRelationsDataAccess
         _provider = provider;
     }
 
-    public async Task CreateRelation<TLeftTable, TRightTable, TRelations>(int leftTableId, int rightTableId) 
+    public async Task CreateRelation<TLeftTable, TRightTable, TRelations>(int leftTableId, int rightTableId, CancellationToken token = default) 
         where TRelations : class, new()
         where TRightTable : IModel 
         where TLeftTable : IModel
@@ -29,7 +29,7 @@ public class RelationsDataAccess : IRelationsDataAccess
         _context.Add(relation);
         try
         {
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(token);
         }
         catch (DbUpdateConcurrencyException)
         {
@@ -43,7 +43,7 @@ public class RelationsDataAccess : IRelationsDataAccess
         }
     }
 
-    public async Task DeleteRelation<TLeftTable, TRightTable, TRelations>(int leftTableId, int rightTableId) 
+    public async Task DeleteRelation<TLeftTable, TRightTable, TRelations>(int leftTableId, int rightTableId, CancellationToken token = default) 
         where TLeftTable : IModel 
         where TRightTable : IModel 
         where TRelations : class, new()
@@ -52,7 +52,7 @@ public class RelationsDataAccess : IRelationsDataAccess
         _context.Remove(relation);
         try
         {
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(token);
         }
         catch (DbUpdateConcurrencyException e)
         {

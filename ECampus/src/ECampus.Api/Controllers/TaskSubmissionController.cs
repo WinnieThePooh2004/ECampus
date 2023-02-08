@@ -23,36 +23,36 @@ public class TaskSubmissionsController : ControllerBase
 
     [HttpGet]
     [Authorized(UserRole.Teacher)]
-    public async Task<IActionResult> Get([FromQuery] TaskSubmissionParameters parameters)
+    public async Task<IActionResult> Get([FromQuery] TaskSubmissionParameters parameters, CancellationToken token = default)
     {
         return Ok(await _parametersService.GetByParametersAsync(parameters));
     }
 
     [HttpGet("{id:int}")]
     [Authorized(UserRole.Student, UserRole.Teacher, UserRole.Admin)]
-    public async Task<IActionResult> Get(int id)
+    public async Task<IActionResult> Get(int id, CancellationToken token = default)
     {
-        return Ok(await _taskSubmissionService.GetByIdAsync(id));
+        return Ok(await _taskSubmissionService.GetByIdAsync(id, token));
     }
 
     [HttpGet("byCourseTask/{courseTaskId:int}")]
     [Authorized(UserRole.Student)]
-    public async Task<IActionResult> GetByCourse(int courseTaskId)
+    public async Task<IActionResult> GetByCourse(int courseTaskId, CancellationToken token = default)
     {
-        return Ok(await _taskSubmissionService.GetByCourseAsync(courseTaskId));
+        return Ok(await _taskSubmissionService.GetByCourseAsync(courseTaskId, token));
     }
 
     [HttpPut("content/{taskSubmissionId:int}")]
     [Authorized(UserRole.Student)]
-    public async Task<IActionResult> UpdateContent([FromRoute] int taskSubmissionId, [FromBody] string content)
+    public async Task<IActionResult> UpdateContent([FromRoute] int taskSubmissionId, [FromBody] string content, CancellationToken token = default)
     {
-        return Ok(await _taskSubmissionService.UpdateContentAsync(taskSubmissionId, content));
+        return Ok(await _taskSubmissionService.UpdateContentAsync(taskSubmissionId, content, token));
     }
     
     [HttpPut("mark/{taskSubmissionId:int}")]
     [Authorized(UserRole.Teacher)]
-    public async Task<IActionResult> UpdateMark([FromRoute] int taskSubmissionId, [FromBody] int mark)
+    public async Task<IActionResult> UpdateMark([FromRoute] int taskSubmissionId, [FromBody] int mark, CancellationToken token = default)
     {
-        return Ok(await _taskSubmissionService.UpdateMarkAsync(taskSubmissionId, mark));
+        return Ok(await _taskSubmissionService.UpdateMarkAsync(taskSubmissionId, mark, token));
     }
 }

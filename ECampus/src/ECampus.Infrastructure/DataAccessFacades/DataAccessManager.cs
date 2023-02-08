@@ -20,26 +20,31 @@ public class DataAccessManager : IDataAccessManager
         _serviceProvider = serviceProvider;
     }
 
-    public Task<TModel> CreateAsync<TModel>(TModel model) where TModel : class, IModel
+    public Task<TModel> CreateAsync<TModel>(TModel model, CancellationToken token = default)
+        where TModel : class, IModel
     {
         var service = _serviceProvider.GetServiceOfType<IDataCreateService<TModel>>();
-        return service.CreateAsync(model, _context);
+        return service.CreateAsync(model, _context, token);
     }
 
-    public Task<TModel> UpdateAsync<TModel>(TModel model) where TModel : class, IModel
+    public Task<TModel> UpdateAsync<TModel>(TModel model, CancellationToken token = default)
+        where TModel : class, IModel
     {
-        return _serviceProvider.GetServiceOfType<IDataUpdateService<TModel>>().UpdateAsync(model, _context);
+        return _serviceProvider.GetServiceOfType<IDataUpdateService<TModel>>().UpdateAsync(model, _context, token);
     }
 
-    public Task<TModel> DeleteAsync<TModel>(int id) where TModel : class, IModel, new()
+    public Task<TModel> DeleteAsync<TModel>(int id, CancellationToken token = default)
+        where TModel : class, IModel, new()
     {
-        return _serviceProvider.GetServiceOfType<IDataDeleteService<TModel>>().DeleteAsync(id, _context);
+        return _serviceProvider.GetServiceOfType<IDataDeleteService<TModel>>().DeleteAsync(id, _context, token);
     }
 
-    public async Task<TModel> GetByIdAsync<TModel>(int id) where TModel : class, IModel
+    public async Task<TModel> GetByIdAsync<TModel>(int id, CancellationToken token = default)
+        where TModel : class, IModel
     {
-        return await _serviceProvider.GetServiceOfType<ISingleItemSelector<TModel>>().SelectModel(id, _context.Set<TModel>())
-            ?? throw new ObjectNotFoundByIdException(typeof(TModel), id);
+        return await _serviceProvider.GetServiceOfType<ISingleItemSelector<TModel>>()
+                   .SelectModel(id, _context.Set<TModel>(), token)
+               ?? throw new ObjectNotFoundByIdException(typeof(TModel), id);
     }
 
     public IQueryable<TModel> GetByParameters<TModel, TParameters>(TParameters parameters)
@@ -50,11 +55,11 @@ public class DataAccessManager : IDataAccessManager
         return selector.SelectData(_context, parameters);
     }
 
-    public async Task<bool> SaveChangesAsync()
+    public async Task<bool> SaveChangesAsync(CancellationToken token = default)
     {
         try
         {
-            return await _context.SaveChangesAsync() > 0;
+            return await _context.SaveChangesAsync(token) > 0;
         }
         catch (DbUpdateConcurrencyException e)
         {

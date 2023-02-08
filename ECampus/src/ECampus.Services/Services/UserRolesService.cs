@@ -19,49 +19,49 @@ public class UserRolesService : IBaseService<UserDto>
         _dataAccessFactory = dataAccessFactory;
     }
 
-    public async Task<UserDto> GetByIdAsync(int id)
+    public async Task<UserDto> GetByIdAsync(int id, CancellationToken token = default)
     {
         var user = await _dataAccessFactory.Complex.GetSingleAsync<User, UserRolesParameters>(new UserRolesParameters
-            { UserId = id });
+            { UserId = id }, token);
         return _mapper.Map<UserDto>(user);
     }
 
-    public async Task<UserDto> UpdateAsync(UserDto user)
+    public async Task<UserDto> UpdateAsync(UserDto user, CancellationToken token = default)
     {
-        return _mapper.Map<UserDto>(await UpdateAsync(_mapper.Map<User>(user)));
+        return _mapper.Map<UserDto>(await UpdateAsync(_mapper.Map<User>(user), token));
     }
 
-    public async Task<UserDto> CreateAsync(UserDto user)
+    public async Task<UserDto> CreateAsync(UserDto user, CancellationToken token = default)
     {
-        return _mapper.Map<UserDto>(await CreateAsync(_mapper.Map<User>(user)));
+        return _mapper.Map<UserDto>(await CreateAsync(_mapper.Map<User>(user), token));
     }
 
-    public async Task<UserDto> DeleteAsync(int id)
+    public async Task<UserDto> DeleteAsync(int id, CancellationToken token = default)
     {
-        return _mapper.Map<UserDto>(await _dataAccessFactory.Complex.DeleteAsync<User>(id));
+        return _mapper.Map<UserDto>(await _dataAccessFactory.Complex.DeleteAsync<User>(id, token));
     }
 
-    private async Task<User> CreateAsync(User user)
+    private async Task<User> CreateAsync(User user, CancellationToken token = default)
     {
         var teacher = user.Teacher;
         var student = user.Student;
         user.Teacher = null;
         user.Student = null;
-        await _dataAccessFactory.Primitive.CreateAsync(user);
+        await _dataAccessFactory.Primitive.CreateAsync(user, token);
         var result = user.Role switch
         {
             UserRole.Teacher when teacher is not null => await SetTeacherId(user, teacher),
             UserRole.Student when student is not null => await SetStudentId(user, student),
             _ => user
         };
-        await _dataAccessFactory.Primitive.SaveChangesAsync();
+        await _dataAccessFactory.Primitive.SaveChangesAsync(token);
         return result;
     }
 
-    private async Task<User> UpdateAsync(User user)
+    private async Task<User> UpdateAsync(User user, CancellationToken token = default)
     {
         await ChangeUserRelationships(user);
-        await _dataAccessFactory.Primitive.SaveChangesAsync();
+        await _dataAccessFactory.Primitive.SaveChangesAsync(token);
         return user;
     }
 

@@ -17,9 +17,9 @@ public class ClassDtoCreateValidator : BaseClassDtoValidator, ICreateValidator<C
         _createValidator = createValidator;
     }
 
-    async Task<ValidationResult> ICreateValidator<ClassDto>.ValidateAsync(ClassDto dataTransferObject)
+    async Task<ValidationResult> ICreateValidator<ClassDto>.ValidateAsync(ClassDto dataTransferObject, CancellationToken token)
     {
-        var baseErrors = await _createValidator.ValidateAsync(dataTransferObject);
+        var baseErrors = await _createValidator.ValidateAsync(dataTransferObject, token);
         if (!baseErrors.IsValid)
         {
             return baseErrors;

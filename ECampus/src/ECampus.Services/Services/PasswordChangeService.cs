@@ -25,22 +25,22 @@ public class PasswordChangeService : IPasswordChangeService
         _dataAccess = dataAccessManagerFactory.Primitive;
     }
 
-    public async Task<UserDto> ChangePassword(PasswordChangeDto passwordChange)
+    public async Task<UserDto> ChangePassword(PasswordChangeDto passwordChange, CancellationToken token = default)
     {
-        var errors = await _passwordChangeValidator.ValidateAsync(passwordChange);
+        var errors = await _passwordChangeValidator.ValidateAsync(passwordChange, token);
         if (!errors.IsValid)
         {
             throw new ValidationException(typeof(PasswordChangeDto), errors);
         }
 
-        var user = await _dataAccess.GetByIdAsync<User>(passwordChange.UserId);
+        var user = await _dataAccess.GetByIdAsync<User>(passwordChange.UserId, token);
         user.Password = passwordChange.NewPassword;
-        await _dataAccess.SaveChangesAsync();
+        await _dataAccess.SaveChangesAsync(token);
         return _mapper.Map<UserDto>(user);
     }
 
-    public async Task<ValidationResult> ValidatePasswordChange(PasswordChangeDto passwordChange)
+    public async Task<ValidationResult> ValidatePasswordChange(PasswordChangeDto passwordChange, CancellationToken token = default)
     {
-        return await _passwordChangeValidator.ValidateAsync(passwordChange);
+        return await _passwordChangeValidator.ValidateAsync(passwordChange, token);
     }
 }

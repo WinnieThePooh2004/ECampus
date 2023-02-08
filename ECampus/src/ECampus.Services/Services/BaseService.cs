@@ -20,32 +20,32 @@ public class BaseService<TDto, TRepositoryModel> : IBaseService<TDto>
         _dataAccess = dataAccess;
     }
 
-    public async Task<TDto> CreateAsync(TDto entity)
+    public async Task<TDto> CreateAsync(TDto entity, CancellationToken token = default)
     {
         var model = _mapper.Map<TRepositoryModel>(entity);
-        var createdModel = await _dataAccess.CreateAsync(model);
-        await _dataAccess.SaveChangesAsync();
+        var createdModel = await _dataAccess.CreateAsync(model, token);
+        await _dataAccess.SaveChangesAsync(token);
         return _mapper.Map<TDto>(createdModel);
     }
 
-    public async Task<TDto> DeleteAsync(int id)
+    public async Task<TDto> DeleteAsync(int id, CancellationToken token = default)
     {
-        var deleted = await _dataAccess.DeleteAsync<TRepositoryModel>(id);
-        await _dataAccess.SaveChangesAsync();
+        var deleted = await _dataAccess.DeleteAsync<TRepositoryModel>(id, token);
+        await _dataAccess.SaveChangesAsync(token);
         return _mapper.Map<TDto>(deleted);
     }
 
-    public async Task<TDto> GetByIdAsync(int id)
+    public async Task<TDto> GetByIdAsync(int id, CancellationToken token = default)
     {
-        var objectFromDb = await _dataAccess.GetByIdAsync<TRepositoryModel>(id);
+        var objectFromDb = await _dataAccess.GetByIdAsync<TRepositoryModel>(id, token);
         return _mapper.Map<TDto>(objectFromDb);
     }
 
-    public async Task<TDto> UpdateAsync(TDto entity)
+    public async Task<TDto> UpdateAsync(TDto entity, CancellationToken token = default)
     {
         var model = _mapper.Map<TRepositoryModel>(entity);
-        var updated = await _dataAccess.UpdateAsync(model);
-        await _dataAccess.SaveChangesAsync();
+        var updated = await _dataAccess.UpdateAsync(model, token);
+        await _dataAccess.SaveChangesAsync(token);
         return _mapper.Map<TDto>(updated);
     }
 }

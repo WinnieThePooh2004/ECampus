@@ -24,38 +24,38 @@ public class AuditoriesController : ControllerBase
 
     [HttpGet]
     [AllowAnonymous]
-    public async Task<IActionResult> Get([FromQuery] AuditoryParameters parameters)
+    public async Task<IActionResult> Get([FromQuery] AuditoryParameters parameters, CancellationToken token = default)
     {
-        return Ok(await _parametersService.GetByParametersAsync(parameters));
+        return Ok(await _parametersService.GetByParametersAsync(parameters, token));
     }
 
     [HttpGet("{id:int}")]
     [AllowAnonymous]
-    public async Task<IActionResult> Get(int id)
+    public async Task<IActionResult> Get(int id, CancellationToken token = default)
     {
-        return Ok(await _baseService.GetByIdAsync(id));
+        return Ok(await _baseService.GetByIdAsync(id, token));
     }
 
     [HttpPost]
     [Authorized(UserRole.Admin)]
-    public async Task<IActionResult> Post(AuditoryDto auditory)
+    public async Task<IActionResult> Post(AuditoryDto auditory, CancellationToken token = default)
     {
-        await _baseService.CreateAsync(auditory);
+        await _baseService.CreateAsync(auditory, token);
         return Ok(auditory);
     }
 
     [HttpPut]
     [Authorized(UserRole.Admin)]
-    public async Task<IActionResult> Put(AuditoryDto auditory)
+    public async Task<IActionResult> Put(AuditoryDto auditory, CancellationToken token = default)
     {
-        await _baseService.UpdateAsync(auditory);
+        await _baseService.UpdateAsync(auditory, token);
         return Ok(auditory);
     }
 
     [HttpDelete("{id:int?}")]
     [Authorized(UserRole.Admin)]
-    public async Task<IActionResult> Delete(int id)
+    public async Task<IActionResult> Delete(int id, CancellationToken token = default)
     {
-        return Ok(await _baseService.DeleteAsync(id));
+        return Ok(await _baseService.DeleteAsync(id, token));
     }
 }

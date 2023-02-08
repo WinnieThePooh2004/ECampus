@@ -6,11 +6,11 @@ namespace ECampus.Infrastructure.DataSelectors.SingleItemSelectors;
 
 public class SingleTaskSubmissionSelector : ISingleItemSelector<TaskSubmission>
 {
-    public async Task<TaskSubmission?> SelectModel(int id, DbSet<TaskSubmission> dataSource)
+    public async Task<TaskSubmission?> SelectModel(int id, DbSet<TaskSubmission> dataSource, CancellationToken token = default)
     {
         return await dataSource
             .Include(submission => submission.Student)
             .Include(submission => submission.CourseTask)
-            .SingleOrDefaultAsync(submission => submission.Id == id);
+            .SingleOrDefaultAsync(submission => submission.Id == id, cancellationToken: token);
     }
 }

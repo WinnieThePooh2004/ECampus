@@ -25,17 +25,17 @@ public class DepartmentsController : ControllerBase
     // GET: Departments
     [HttpGet]
     [AllowAnonymous]
-    public async Task<IActionResult> Get([FromQuery] DepartmentParameters parameters)
+    public async Task<IActionResult> Get([FromQuery] DepartmentParameters parameters, CancellationToken token = default)
     {
-        return Ok(await _parametersService.GetByParametersAsync(parameters));
+        return Ok(await _parametersService.GetByParametersAsync(parameters, token));
     }
 
     // GET: Departments/Details/5
-    [HttpGet("{id:int?}")]
+    [HttpGet("{id:int}")]
     [AllowAnonymous]
-    public async Task<IActionResult> Get(int id)
+    public async Task<IActionResult> Get(int id, CancellationToken token = default)
     {
-        return Ok(await _baseService.GetByIdAsync(id));
+        return Ok(await _baseService.GetByIdAsync(id, token));
     }
 
     // POST: Departments/Create
@@ -43,25 +43,25 @@ public class DepartmentsController : ControllerBase
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [Authorized(UserRole.Admin)]
-    public async Task<IActionResult> Post(DepartmentDto department)
+    public async Task<IActionResult> Post(DepartmentDto department, CancellationToken token = default)
     {
-        await _baseService.CreateAsync(department);
+        await _baseService.CreateAsync(department, token);
         return Ok(department);
     }
 
     [HttpPut]
     [Authorized(UserRole.Admin)]
-    public async Task<IActionResult> Put(DepartmentDto department)
+    public async Task<IActionResult> Put(DepartmentDto department, CancellationToken token = default)
     {
-        await _baseService.UpdateAsync(department);
+        await _baseService.UpdateAsync(department, token);
         return Ok(department);
     }
 
     // GET: Departments/Delete/5
     [HttpDelete("{id:int?}")]
     [Authorized(UserRole.Admin)]
-    public async Task<IActionResult> Delete(int id)
+    public async Task<IActionResult> Delete(int id, CancellationToken token = default)
     {
-        return Ok(await _baseService.DeleteAsync(id));
+        return Ok(await _baseService.DeleteAsync(id, token));
     }
 }

@@ -25,9 +25,9 @@ public class UserCreateValidator : ICreateValidator<UserDto>
         _parametersDataAccess = parametersDataAccess;
     }
 
-    public async Task<ValidationResult> ValidateAsync(UserDto dataTransferObject)
+    public async Task<ValidationResult> ValidateAsync(UserDto dataTransferObject, CancellationToken token = default)
     {
-        var errors = await _baseValidator.ValidateAsync(dataTransferObject);
+        var errors = await _baseValidator.ValidateAsync(dataTransferObject, token);
         ValidateRole(dataTransferObject, errors);
         if (!errors.IsValid)
         {

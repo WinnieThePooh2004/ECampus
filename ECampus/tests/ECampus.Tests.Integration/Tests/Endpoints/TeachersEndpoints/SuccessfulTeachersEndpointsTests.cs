@@ -128,7 +128,7 @@ public class SuccessfulTeachersEndpointsTests : IClassFixture<ApplicationFactory
     [Fact]
     public async Task CreateTeacher_ShouldReturn400_WhenValidationErrorOccured()
     {
-        var teacher = new TeacherDto { Id = 100 };
+        var teacher = new TeacherDto { Id = 350 };
 
         var response = await _client.PostAsJsonAsync("/api/Teachers", teacher);
 

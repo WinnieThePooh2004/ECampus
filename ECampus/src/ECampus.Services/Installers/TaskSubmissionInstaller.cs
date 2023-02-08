@@ -2,6 +2,7 @@
 using ECampus.Core.Installers;
 using ECampus.Domain.Messaging;
 using ECampus.Services.Services;
+using ECampus.Services.Services.Messaging;
 using ECampus.Services.Services.ValidationServices;
 using ECampus.Shared.DataTransferObjects;
 using Microsoft.Extensions.Configuration;
@@ -14,7 +15,6 @@ public class TaskSubmissionInstaller : IInstaller
     public int InstallOrder => -1;
     public void Install(IServiceCollection services, IConfiguration configuration)
     {
-        services.Decorate<IBaseService<CourseTaskDto>, CourseTaskService>();
         services.AddScoped<ITaskSubmissionService, TaskSubmissionService>();
         services.Decorate<ITaskSubmissionService, TaskSubmissionValidationService>();
     }

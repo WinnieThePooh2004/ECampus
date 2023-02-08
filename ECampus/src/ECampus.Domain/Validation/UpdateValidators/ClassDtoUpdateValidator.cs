@@ -18,9 +18,9 @@ public class ClassDtoUpdateValidator : BaseClassDtoValidator, IUpdateValidator<C
     }
 
 
-    async Task<ValidationResult> IUpdateValidator<ClassDto>.ValidateAsync(ClassDto dataTransferObject)
+    async Task<ValidationResult> IUpdateValidator<ClassDto>.ValidateAsync(ClassDto dataTransferObject, CancellationToken token)
     {
-        var baseErrors = await _updateValidator.ValidateAsync(dataTransferObject);
+        var baseErrors = await _updateValidator.ValidateAsync(dataTransferObject, token);
         if (!baseErrors.IsValid)
         {
             return baseErrors;

@@ -16,7 +16,7 @@ public class CourseSummaryParametersValidator : IParametersValidator<CourseSumma
         _user = httpContextAccessor.HttpContext!.User;
     }
 
-    public Task<ValidationResult> ValidateAsync(CourseSummaryParameters parameters)
+    public Task<ValidationResult> ValidateAsync(CourseSummaryParameters parameters, CancellationToken token = default)
     {
         var studentClaimValidation = _user.ValidateParsableClaim<int>(CustomClaimTypes.StudentId);
         if (!studentClaimValidation.Result.IsValid)

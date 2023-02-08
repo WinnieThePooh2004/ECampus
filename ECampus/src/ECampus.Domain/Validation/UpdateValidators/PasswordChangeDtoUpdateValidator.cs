@@ -18,10 +18,10 @@ public class PasswordChangeDtoUpdateValidator : IUpdateValidator<PasswordChangeD
         _dataAccess = dataAccessManagerFactory.Primitive;
     }
 
-    public async Task<ValidationResult> ValidateAsync(PasswordChangeDto dataTransferObject)
+    public async Task<ValidationResult> ValidateAsync(PasswordChangeDto dataTransferObject, CancellationToken token = default)
     {
-        var errors = await _baseValidator.ValidateAsync(dataTransferObject);
-        var user = await _dataAccess.GetByIdAsync<User>(dataTransferObject.UserId);
+        var errors = await _baseValidator.ValidateAsync(dataTransferObject, token);
+        var user = await _dataAccess.GetByIdAsync<User>(dataTransferObject.UserId, token);
         if (user.Password != dataTransferObject.OldPassword)
         {
             errors.AddError(new ValidationError(nameof(dataTransferObject.OldPassword), "Invalid old password"));

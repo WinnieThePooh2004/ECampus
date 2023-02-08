@@ -5,6 +5,6 @@ namespace ECampus.Contracts.Services;
 
 public interface IUserService
 {
-    Task<ValidationResult> ValidateCreateAsync(UserDto user);
-    Task<ValidationResult> ValidateUpdateAsync(UserDto user);
+    Task<ValidationResult> ValidateCreateAsync(UserDto user, CancellationToken token = default);
+    Task<ValidationResult> ValidateUpdateAsync(UserDto user, CancellationToken token = default);
 }

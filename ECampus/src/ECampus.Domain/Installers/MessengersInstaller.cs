@@ -2,7 +2,6 @@
 using ECampus.Core.Installers;
 using ECampus.Domain.Interfaces;
 using ECampus.Domain.Messaging;
-using ECampus.Domain.Messaging.Options;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

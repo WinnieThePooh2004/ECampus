@@ -24,39 +24,39 @@ public class GroupsController : ControllerBase
     // GET: Groups
     [HttpGet]
     [AllowAnonymous]
-    public async Task<IActionResult> Get([FromQuery] GroupParameters parameters)
+    public async Task<IActionResult> Get([FromQuery] GroupParameters parameters, CancellationToken token = default)
     {
-        return Ok(await _service.GetByParametersAsync(parameters));
+        return Ok(await _service.GetByParametersAsync(parameters, token));
     }
 
     // GET: Groups/Details/5
     [HttpGet("{id:int?}")]
     [AllowAnonymous]
-    public async Task<IActionResult> Get(int id)
+    public async Task<IActionResult> Get(int id, CancellationToken token = default)
     {
-        return Ok(await _baseService.GetByIdAsync(id));
+        return Ok(await _baseService.GetByIdAsync(id, token));
     }
 
     [HttpPost]
     [Authorized(UserRole.Admin)]
-    public async Task<IActionResult> Post(GroupDto group)
+    public async Task<IActionResult> Post(GroupDto group, CancellationToken token = default)
     {
-        await _baseService.CreateAsync(group);
+        await _baseService.CreateAsync(group, token);
         return Ok(group);
     }
 
     [HttpPut]
     [Authorized(UserRole.Admin)]
-    public async Task<IActionResult> Put(GroupDto group)
+    public async Task<IActionResult> Put(GroupDto group, CancellationToken token = default)
     {
-        await _baseService.UpdateAsync(group);
+        await _baseService.UpdateAsync(group, token);
         return Ok(group);
     }
 
     [HttpDelete("{id:int?}")]
     [Authorized(UserRole.Admin)]
-    public async Task<IActionResult> Delete(int id)
+    public async Task<IActionResult> Delete(int id, CancellationToken token = default)
     {
-        return Ok(await _baseService.DeleteAsync(id));
+        return Ok(await _baseService.DeleteAsync(id, token));
     }
 }
