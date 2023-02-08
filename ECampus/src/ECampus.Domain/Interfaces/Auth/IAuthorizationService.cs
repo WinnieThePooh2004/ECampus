@@ -1,5 +1,4 @@
-﻿using ECampus.Shared.Auth;
-using ECampus.Shared.DataTransferObjects;
+﻿using ECampus.Shared.DataTransferObjects;
 
 namespace ECampus.Domain.Interfaces.Auth;
 

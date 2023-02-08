@@ -8,7 +8,7 @@ using ECampus.Shared.DataTransferObjects;
 using ECampus.Shared.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace ECampus.Services.Services;
+namespace ECampus.Services.Services.Messaging;
 
 public class CourseTaskService : IBaseService<CourseTaskDto>
 {

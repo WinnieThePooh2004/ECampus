@@ -3,7 +3,7 @@ using ECampus.Core.Messages;
 using ECampus.Domain.Interfaces;
 using ECampus.Shared.DataTransferObjects;
 
-namespace ECampus.Domain.Messaging;
+namespace ECampus.Services.Services.Messaging;
 
 public class TaskSubmissionMessagingService : ITaskSubmissionService
 {

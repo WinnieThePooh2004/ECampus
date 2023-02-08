@@ -3,7 +3,7 @@ using ECampus.Domain.Interfaces;
 using ECampus.Domain.Mapping.Messages;
 using ECampus.Shared.DataTransferObjects;
 
-namespace ECampus.Domain.Messaging;
+namespace ECampus.Services.Services.Messaging;
 
 public class UserMessagingService : IBaseService<UserDto>
 {

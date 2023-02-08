@@ -1,4 +1,4 @@
-﻿namespace ECampus.Domain.Messaging.Options;
+﻿namespace ECampus.Domain.Messaging;
 
 public class NotificationsSettings
 {

@@ -2,7 +2,6 @@
 using Amazon.SimpleNotificationService.Model;
 using ECampus.Core.Messages;
 using ECampus.Domain.Interfaces;
-using ECampus.Domain.Messaging.Options;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 

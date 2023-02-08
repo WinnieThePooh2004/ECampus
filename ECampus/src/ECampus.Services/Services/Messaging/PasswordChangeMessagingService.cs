@@ -4,7 +4,7 @@ using ECampus.Domain.Interfaces;
 using ECampus.Shared.DataTransferObjects;
 using ECampus.Shared.Validation;
 
-namespace ECampus.Domain.Messaging;
+namespace ECampus.Services.Services.Messaging;
 
 public class PasswordChangeMessagingService : IPasswordChangeService
 {
