@@ -7,7 +7,7 @@ public static class PropertyInfoExtensions
 {
     public static int DisplayOrder(this PropertyInfo property)
     {
-        return property.GetCustomAttributes(false).OfType<DisplayNameAttribute>().SingleOrDefault()?.DisplayOrder ?? 0;
+        return property.GetCustomAttributes(false).OfType<DisplayNameAttribute>().SingleOrDefault()?.DisplayOrder ?? int.MaxValue;
     }
 
     public static string DisplayName(this PropertyInfo property)

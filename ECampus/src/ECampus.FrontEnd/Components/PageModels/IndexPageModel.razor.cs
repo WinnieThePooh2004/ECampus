@@ -16,6 +16,8 @@ public partial class IndexPageModel<TData, TParameters>
     [Parameter] public List<(string LinkName, Func<TData, string> LinkSource)> ActionLinks { get; set; } = new();
     
     [Parameter] public bool? EditEnabled { get; set; }
+    [Parameter] public bool ShowEditButton { get; set; } = true;
+    [Parameter] public bool ShowDeleteButton { get; set; } = true;
 
     [Inject] private IHttpContextAccessor HttpContextAccessor { get; set; } = default!;
     
