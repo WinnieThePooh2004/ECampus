@@ -8,31 +8,8 @@ using ECampus.Services;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Serilog;
-using Serilog.Events;
-using Serilog.Sinks.MSSqlServer;
-using ILogger = Serilog.ILogger;
 
 var builder = WebApplication.CreateBuilder(args);
-
-var logger = new LoggerConfiguration()
-    .ReadFrom.Configuration(builder.Configuration)
-    .WriteTo.Console()
-    .WriteTo.MSSqlServer(
-        builder.Configuration.GetConnectionString(ApplicationDbContext.ConnectionKey),
-        sinkOptions: new MSSqlServerSinkOptions
-        {
-            TableName = "Logs",
-            SchemaName = "dbo",
-            AutoCreateSqlTable = true
-        },
-        restrictedToMinimumLevel: LogEventLevel.Debug
-    )
-    .CreateLogger();
-
-builder.Logging.ClearProviders();
-builder.Logging.AddSerilog(logger);
-
-builder.Services.AddSingleton<ILogger>(logger);
 
 builder.Services.AddScoped<PrimitiveDataAccessManager>();
 
@@ -58,6 +35,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddHttpContextAccessor();
+
+builder.Logging.ClearProviders();
+builder.Logging.AddSerilog(Log.Logger);
 
 var app = builder.Build();
 

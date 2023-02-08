@@ -8,7 +8,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using NSubstitute;
+using ILogger = Serilog.ILogger;
 
 namespace ECampus.Tests.Integration.AppFactories;
 
@@ -40,9 +43,14 @@ public class ApplicationFactory : WebApplicationFactory<Program>
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
+        builder.ConfigureLogging(loggingBuilder => loggingBuilder.ClearProviders());
         builder.ConfigureServices(services =>
         {
             services.UserInstallersFromAssemblyContaining<ApplicationFactory>(Substitute.For<IConfiguration>());
+            var loggerDescriptor = services.Single(serviceDescriptor =>
+                serviceDescriptor.ServiceType == typeof(ILogger));
+            services.Remove(loggerDescriptor);
+            services.AddSingleton(Substitute.For<ILogger>());
         });
     }
 }

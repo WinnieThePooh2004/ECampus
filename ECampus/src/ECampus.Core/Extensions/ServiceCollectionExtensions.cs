@@ -25,14 +25,13 @@ public static class ServiceCollectionExtensions
         services.Add(descriptor);
     }
 
-    public static void UserInstallersFromAssemblyContaining<TAssemblyMarker>(this IServiceCollection services,
-        IConfiguration configuration)
+    public static void UserInstallersFromAssemblyContaining<TAssemblyMarker>(this IServiceCollection services, IConfiguration configuration)
     {
         services.UserInstallersFromAssemblyContaining(configuration, typeof(TAssemblyMarker));
     }
 
-    public static void UserInstallersFromAssemblyContaining(this IServiceCollection services,
-        IConfiguration configuration, params Type[] assemblyMarkers)
+    public static void UserInstallersFromAssemblyContaining(this IServiceCollection services, IConfiguration configuration,
+        params Type[] assemblyMarkers)
     {
         services.UserInstallersFromAssemblies(configuration,
             assemblyMarkers.Select(marker => marker.Assembly).ToArray());

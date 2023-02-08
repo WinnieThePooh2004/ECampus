@@ -24,13 +24,16 @@ public class SingleItemSelectorTests
     [Fact]
     public async Task GetById_ReturnsFromSet_IfModelExists()
     {
-        await _singleItemSelector.SelectModel(_testDataSource[0].Id, _testSet);
-        await _testSet.Received(1).FindAsync(_testDataSource[0].Id);
+        var result = await _singleItemSelector.SelectModel(_testDataSource[0].Id, _testSet);
+
+        result.Should().Be(_testDataSource[0]);
     }
     
     [Fact]
     public async Task GetById_ReturnsNull_IfItemDoesNotExist()
     {
-        await _singleItemSelector.SelectModel(-1, _testSet);
+        var result = await _singleItemSelector.SelectModel(-1, _testSet);
+
+        result.Should().BeNull();
     }
 }

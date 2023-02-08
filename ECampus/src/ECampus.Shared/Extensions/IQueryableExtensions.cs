@@ -6,7 +6,7 @@ namespace ECampus.Shared.Extensions;
 
 public static class QueryableExtensions
 {
-    public static IQueryable<T> Search<T>(this IQueryable<T> source, Expression<Func<T, string>> propertySelector,
+    public static IQueryable<T> Search<T>(this IQueryable<T> source, Expression<Func<T, string?>> propertySelector,
         string? searchTerm)
     {
         if (string.IsNullOrWhiteSpace(searchTerm))
