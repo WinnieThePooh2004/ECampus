@@ -27,7 +27,7 @@ public class MiddlewareExceptionFilter : IExceptionFilter, IOrderedFilter
             return;
         }
 
-        _logger.Error(context.Exception, "Unhandled exception in unpredictable place happened," +
+        _logger.Fatal(context.Exception, "Unhandled exception in unpredictable place happened," +
                                          " nobody knows what it is, all is bad :(");
         context.Result = new ObjectResult(context.Exception.Message)
         {
