@@ -57,10 +57,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCookiePolicy(new CookiePolicyOptions { MinimumSameSitePolicy = SameSiteMode.Strict });
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+app.UseAuthentication();
 app.UseCors(builder.Configuration["Cors:Name"] ?? throw new Exception("cannot find cors name"));
 
 app.MapControllers();

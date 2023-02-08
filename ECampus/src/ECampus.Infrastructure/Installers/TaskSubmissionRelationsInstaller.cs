@@ -13,7 +13,6 @@ public class TaskSubmissionRelationsInstaller : IInstaller
     public int InstallOrder => 11;
     public void Install(IServiceCollection services, IConfiguration configuration)
     {
-        services.Decorate<IDataCreateService<CourseTask>, CourseTaskCreateService>();
         services.Decorate<IDataCreateService<Student>, StudentCreateService>();
         services.Decorate<IDataUpdateService<Course>, CourseUpdateService>();
     }
