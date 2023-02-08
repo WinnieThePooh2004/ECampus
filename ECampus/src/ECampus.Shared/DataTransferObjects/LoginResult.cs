@@ -1,6 +1,4 @@
-﻿using ECampus.Shared.Enums;
-
-namespace ECampus.Shared.DataTransferObjects;
+﻿namespace ECampus.Shared.DataTransferObjects;
 
 public class LoginResult
 {
@@ -11,5 +9,5 @@ public class LoginResult
     public int? GroupId { get; set; }
     public int? TeacherId { get; set; }
     public int? StudentId { get; set; }
-    public UserRole Role { get; set; }
+    public string Role { get; set; } = string.Empty;
 }

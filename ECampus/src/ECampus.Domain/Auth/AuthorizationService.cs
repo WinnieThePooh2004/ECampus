@@ -46,7 +46,7 @@ public class AuthorizationService : IAuthorizationService
         var result = new LoginResult
         {
             Email = user.Email,
-            Role = user.Role,
+            Role = user.Role.ToString(),
             Username = user.Username,
             UserId = user.Id,
             StudentId = user.StudentId,

@@ -19,7 +19,7 @@ public static class HttpClientExtensions
         {
             Email = user.Email,
             Username = user.Username,
-            Role = user.Role,
+            Role = user.Role.ToString(),
             UserId = user.Id,
             StudentId = user.StudentId,
             TeacherId = user.TeacherId

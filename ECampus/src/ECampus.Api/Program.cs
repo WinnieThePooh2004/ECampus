@@ -1,22 +1,11 @@
-using AutoMapper;
 using ECampus.Api;
 using ECampus.Api.MiddlewareFilters;
-using ECampus.Contracts.Services;
 using ECampus.Core.Extensions;
 using ECampus.Domain;
-using ECampus.Domain.Interfaces.Validation;
 using ECampus.Infrastructure;
 using ECampus.Infrastructure.DataAccessFacades;
-using ECampus.Infrastructure.DataCreateServices;
-using ECampus.Infrastructure.Interfaces;
 using ECampus.Services;
-using ECampus.Services.Services;
-using ECampus.Shared.Auth;
-using ECampus.Shared.DataTransferObjects;
-using ECampus.Shared.Models;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Serilog;
 using ILogger = Serilog.ILogger;
@@ -53,33 +42,11 @@ builder.Services.UserInstallersFromAssemblyContaining(builder.Configuration, typ
     typeof(ApiAssemblyMarker),
     typeof(InfrastructureAssemblyMarker), typeof(ServicesAssemblyMarker));
 
-builder.Services.Decorate<IDataCreateService<CourseTask>, CourseTaskCreateService>();
-
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-var authOptions = builder.Configuration.GetSection("jwtAuthOptions")
-    .Get<JwtAuthOptions>()!;
-
-builder.Services.AddSingleton(authOptions);
-
 builder.Services.AddHttpContextAccessor();
-
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidIssuer = authOptions.Issuer,
-            ValidateAudience = true,
-            ValidAudience = authOptions.Audience,
-            ValidateLifetime = true,
-            IssuerSigningKey = authOptions.GetSymmetricSecurityKey(),
-            ValidateIssuerSigningKey = true,
-        };
-    });
 
 var app = builder.Build();
 
@@ -90,10 +57,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCookiePolicy(new CookiePolicyOptions { MinimumSameSitePolicy = SameSiteMode.Strict });
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+app.UseAuthentication();
+app.UseCors(builder.Configuration["Cors:Name"] ?? throw new Exception("cannot find cors name"));
 
 app.MapControllers();
 

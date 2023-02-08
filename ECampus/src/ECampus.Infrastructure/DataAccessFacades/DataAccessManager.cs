@@ -22,7 +22,8 @@ public class DataAccessManager : IDataAccessManager
 
     public Task<TModel> CreateAsync<TModel>(TModel model) where TModel : class, IModel
     {
-        return _serviceProvider.GetServiceOfType<IDataCreateService<TModel>>().CreateAsync(model, _context);
+        var service = _serviceProvider.GetServiceOfType<IDataCreateService<TModel>>();
+        return service.CreateAsync(model, _context);
     }
 
     public Task<TModel> UpdateAsync<TModel>(TModel model) where TModel : class, IModel

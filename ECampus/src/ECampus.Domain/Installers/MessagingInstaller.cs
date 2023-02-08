@@ -14,7 +14,6 @@ public class MessagingInstaller : IInstaller
     {
         services.Decorate<IBaseService<UserDto>, UserMessagingService>();
         services.Decorate<IPasswordChangeService, PasswordChangeMessagingService>();
-        services.Decorate<IBaseService<CourseTaskDto>, CourseTaskMessagingService>();
         services.Decorate<ITaskSubmissionService, TaskSubmissionMessagingService>();
     }
 }

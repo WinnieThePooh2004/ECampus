@@ -3,17 +3,18 @@ using ECampus.Contracts.DataSelectParameters;
 using ECampus.Contracts.Services;
 using ECampus.Core.Messages;
 using ECampus.Domain.Interfaces;
-using ECampus.Domain.Messaging;
+using ECampus.Services.Services;
 using ECampus.Shared.DataTransferObjects;
 using ECampus.Shared.Enums;
 using ECampus.Shared.Models;
+using ECampus.Tests.Shared.DataFactories;
 using ECampus.Tests.Shared.Mocks.EntityFramework;
 
 namespace ECampus.Tests.Unit.BackEnd.Domain.Messaging;
 
 public class CourseTaskMessagingServiceTests
 {
-    private readonly CourseTaskMessagingService _sut;
+    private readonly CourseTaskService _sut;
     private readonly IBaseService<CourseTaskDto> _baseService = Substitute.For<IBaseService<CourseTaskDto>>();
     private readonly ISnsMessenger _snsMessenger = Substitute.For<ISnsMessenger>();
     private readonly IDataAccessManagerFactory _dataAccessManagerFactory = Substitute.For<IDataAccessManagerFactory>();
@@ -24,7 +25,7 @@ public class CourseTaskMessagingServiceTests
     {
         _dataAccessManagerFactory.Complex.Returns(_complex);
         _dataAccessManagerFactory.Primitive.Returns(_primitive);
-        _sut = new CourseTaskMessagingService(_baseService, _snsMessenger, _dataAccessManagerFactory);
+        _sut = new CourseTaskService(_baseService, _snsMessenger, _dataAccessManagerFactory, MapperFactory.Mapper);
     }
 
     [Fact]
@@ -37,10 +38,8 @@ public class CourseTaskMessagingServiceTests
         _complex.GetByParameters<Student, StudentsByCourseParameters>(Arg.Any<StudentsByCourseParameters>())
             .Returns(returnData);
 
-        var result = await _sut.CreateAsync(task);
+        await _sut.CreateAsync(task);
 
-        result.Should().Be(task);
-        await _baseService.Received(1).CreateAsync(task);
         await _snsMessenger.DidNotReceive().PublishMessageAsync(Arg.Any<IMessage>());
     }
 
@@ -56,10 +55,8 @@ public class CourseTaskMessagingServiceTests
         _complex.GetByParameters<Student, StudentsByCourseParameters>(Arg.Any<StudentsByCourseParameters>())
             .Returns(returnData);
 
-        var result = await _sut.CreateAsync(task);
+        await _sut.CreateAsync(task);
 
-        result.Should().Be(task);
-        await _baseService.Received(1).CreateAsync(task);
         await _snsMessenger.Received(1).PublishMessageAsync(Arg.Is<TaskCreated>(t =>
             t.CourseName == "courseName" && t.Deadline == deadline && t.StudentEmails.Count == 1 &&
             t.StudentEmails.Contains("email") && t.TaskType == nameof(TaskType.Classwork) && t.MaxPoints == 100));
