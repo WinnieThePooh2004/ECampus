@@ -14,7 +14,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<PrimitiveDataAccessManager>();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString(ApplicationDbContext.ConnectionKey)!));
+    options.UseSqlServer(builder.Configuration.GetConnectionString(ApplicationDbContext.ConnectionKey)!, 
+    optionsBuilder => optionsBuilder.MigrationsAssembly("ECampus.Infrastructure")));
 
 builder.Services.AddScoped<DbContext, ApplicationDbContext>();
 
