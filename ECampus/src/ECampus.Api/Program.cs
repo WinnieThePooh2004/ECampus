@@ -1,40 +1,27 @@
 using ECampus.Api;
-using ECampus.Api.MiddlewareFilters;
 using ECampus.Core.Extensions;
 using ECampus.DataAccess;
 using ECampus.DataAccess.DataAccessFacades;
 using ECampus.Domain;
 using ECampus.Infrastructure;
 using ECampus.Services;
-using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddScoped<PrimitiveDataAccessManager>();
 
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString(ApplicationDbContext.ConnectionKey)!, 
-    optionsBuilder => optionsBuilder.MigrationsAssembly("ECampus.Infrastructure")));
-
-builder.Services.AddScoped<DbContext, ApplicationDbContext>();
-
-builder.Services.AddControllers(options => { options.Filters.Add<MiddlewareExceptionFilter>(); })
-    .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
-
 builder.Services.AddAutoMapper(typeof(DomainAssemblyMarker));
 builder.Services.UserInstallersFromAssemblyContaining(builder.Configuration, typeof(DomainAssemblyMarker),
     typeof(ApiAssemblyMarker), typeof(DataAccessAssemblyMarker),
     typeof(InfrastructureAssemblyMarker), typeof(ServicesAssemblyMarker));
 
+builder.Services.AddHttpContextAccessor();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddHttpContextAccessor();
-
-builder.Services.AddHostedService<MigrationsService>();
 
 builder.Logging.ClearProviders();
 builder.Logging.AddSerilog(Log.Logger);
