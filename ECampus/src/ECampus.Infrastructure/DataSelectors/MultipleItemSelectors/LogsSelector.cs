@@ -8,10 +8,8 @@ public class LogsSelector : IMultipleItemSelector<Log, LogParameters>
 {
     public IQueryable<Log> SelectData(ApplicationDbContext context, LogParameters parameters)
     {
-         return context.Logs
+         return context.Set<Log>()
              .Where(log => parameters.From <= log.TimeStamp &&
-                           log.TimeStamp <= parameters.To &&
-                           parameters.MinimalLevel <= log.Level &&
-                           log.Level <= parameters.MaxLevel);
+                           log.TimeStamp <= parameters.To);
     }
 }

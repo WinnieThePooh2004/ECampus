@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace ECampus.FrontEnd.Auth;
 
-[Inject(typeof(IAuthRequests))]
 public class AuthService : IAuthService
 {
     private readonly IHttpContextAccessor _httpContextAccessor;

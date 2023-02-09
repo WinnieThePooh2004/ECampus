@@ -9,6 +9,7 @@ public class LogConfiguration : IEntityTypeConfiguration<Log>
 {
     public void Configure(EntityTypeBuilder<Log> builder)
     {
+        builder.ToTable("Logs");
         builder.Property(log => log.Level)
             .HasConversion(level => level.ToString(),
                 level => Enum.Parse<LogEventLevel>(level));

@@ -36,7 +36,6 @@ public class ApplicationDbContext : DbContext
     public DbSet<TaskSubmission> TaskSubmissions { get; set; } = default!;
     public DbSet<CourseGroup> CourseGroups { get; set; } = default!;
     public DbSet<CourseTeacher> CourseTeachers { get; set; } = default!;
-    public DbSet<Log> Logs { get; set; } = default!;
 
     public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
     {
