@@ -36,8 +36,8 @@ public class CourseTaskService : IBaseService<CourseTaskDto>
                 { CourseId = entity.CourseId }).ToListAsync(token);
         
         task.Submissions = relatedStudents.Select(student => new TaskSubmission{StudentId = student.Id}).ToList();
-        await _dataAccessFactory.Primitive.CreateAsync(task, token);
-        await _dataAccessFactory.Primitive.SaveChangesAsync(token);
+        await _dataAccessFactory.Complex.CreateAsync(task, token);
+        await _dataAccessFactory.Complex.SaveChangesAsync(token);
         
         await PublishMessage(entity, task, relatedStudents, token);
         return _mapper.Map<CourseTaskDto>(task);

@@ -13,6 +13,7 @@ public class StudentsByCourseSelector : IMultipleItemSelector<Student, StudentsB
         return context.Courses
             .Include(course => course.Groups)!
             .ThenInclude(group => group.Students)
+            .Where(course => course.Id == parameters.CourseId)
             .SelectMany(course => course.Groups!)
             .SelectMany(group => group.Students!);
     }

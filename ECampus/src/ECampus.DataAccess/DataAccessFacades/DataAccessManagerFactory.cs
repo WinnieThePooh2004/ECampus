@@ -13,6 +13,6 @@ public class DataAccessManagerFactory : IDataAccessManagerFactory
         _primitive = primitive;
     }
 
-    public IDataAccessManager Primitive => _complex.Value;
-    public IDataAccessManager Complex => _primitive.Value;
+    public IDataAccessManager Primitive => _primitive.Value;
+    public IDataAccessManager Complex => _complex.Value;
 }
