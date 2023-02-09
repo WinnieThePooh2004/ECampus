@@ -7,7 +7,7 @@ using ECampus.Shared.Models;
 
 namespace ECampus.DataAccess.DataSelectors.MultipleItemSelectors;
 
-public class ClassValidationDataParametersSelect : IMultipleItemSelector<Class, ClassValidationDataParameters>
+public class ClassValidationDataParametersSelect : IParametersSelector<Class, ClassValidationDataParameters>
 {
     public IQueryable<Class> SelectData(ApplicationDbContext context, ClassValidationDataParameters parameters)
     {

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ECampus.DataAccess.DataSelectors.MultipleItemSelectors;
 
-public class UserRolesSelect : IMultipleItemSelector<User, UserRolesParameters>
+public class UserRolesSelect : IParametersSelector<User, UserRolesParameters>
 {
     public IQueryable<User> SelectData(ApplicationDbContext context, UserRolesParameters parameters)
     {

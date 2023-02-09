@@ -6,7 +6,7 @@ using ECampus.Shared.QueryParameters;
 
 namespace ECampus.DataAccess.DataSelectors.MultipleItemSelectors;
 
-public class MultipleGroupSelector : IMultipleItemSelector<Group, GroupParameters>
+public class MultipleGroupSelector : IParametersSelector<Group, GroupParameters>
 {
     public IQueryable<Group> SelectData(ApplicationDbContext context, GroupParameters parameters)
     {

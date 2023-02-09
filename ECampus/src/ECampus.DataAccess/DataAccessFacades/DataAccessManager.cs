@@ -34,10 +34,10 @@ public class DataAccessManager : IDataAccessManager
         return _serviceProvider.GetServiceOfType<IDataUpdateService<TModel>>().UpdateAsync(model, _context, token);
     }
 
-    public Task<TModel> DeleteAsync<TModel>(int id, CancellationToken token = default)
+    public TModel Delete<TModel>(TModel model)
         where TModel : class, IModel, new()
     {
-        return _serviceProvider.GetServiceOfType<IDataDeleteService<TModel>>().DeleteAsync(id, _context, token);
+        return _serviceProvider.GetServiceOfType<IDataDeleteService<TModel>>().Delete(model, _context);
     }
 
     public async Task<TModel> GetByIdAsync<TModel>(int id, CancellationToken token = default)
@@ -52,7 +52,7 @@ public class DataAccessManager : IDataAccessManager
         where TModel : class, IModel
         where TParameters : IDataSelectParameters<TModel>
     {
-        var selector = _serviceProvider.GetServiceOfType<IMultipleItemSelector<TModel, TParameters>>();
+        var selector = _serviceProvider.GetServiceOfType<IParametersSelector<TModel, TParameters>>();
         return selector.SelectData(_context, parameters);
     }
 

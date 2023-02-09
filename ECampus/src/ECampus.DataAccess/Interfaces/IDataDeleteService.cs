@@ -4,7 +4,7 @@ using ECampus.Shared.Data;
 namespace ECampus.DataAccess.Interfaces;
 
 public interface IDataDeleteService<TModel>
-    where TModel : class, IModel, new()
+    where TModel : class, IModel
 {
-    Task<TModel> DeleteAsync(int id, ApplicationDbContext context, CancellationToken token = default);
+    TModel Delete(TModel model, ApplicationDbContext context);
 }

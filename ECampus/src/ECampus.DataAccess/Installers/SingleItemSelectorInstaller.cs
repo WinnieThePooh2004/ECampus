@@ -1,7 +1,6 @@
 ﻿using ECampus.Core.Installers;
 using ECampus.DataAccess.DataSelectors.SingleItemSelectors;
 using ECampus.DataAccess.Interfaces;
-using ECampus.Infrastructure;
 using ECampus.Shared;
 using ECampus.Shared.Extensions;
 using Microsoft.Extensions.Configuration;

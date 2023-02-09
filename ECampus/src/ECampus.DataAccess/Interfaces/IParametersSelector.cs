@@ -4,7 +4,7 @@ using ECampus.Shared.QueryParameters;
 
 namespace ECampus.DataAccess.Interfaces;
 
-public interface IMultipleItemSelector<out TModel, in TParameters>
+public interface IParametersSelector<out TModel, in TParameters>
     where TModel : class, IModel
     where TParameters : IDataSelectParameters<TModel>
 {

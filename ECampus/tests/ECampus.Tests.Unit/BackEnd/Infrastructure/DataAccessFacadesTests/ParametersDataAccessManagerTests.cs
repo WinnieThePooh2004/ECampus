@@ -15,8 +15,8 @@ public class ParametersDataAccessManagerTests
     private readonly ApplicationDbContext _context = Substitute.For<ApplicationDbContext>();
     private readonly IServiceProvider _serviceProvider = Substitute.For<IServiceProvider>();
 
-    private readonly IMultipleItemSelector<Auditory, AuditoryParameters> _selector =
-        Substitute.For<IMultipleItemSelector<Auditory, AuditoryParameters>>();
+    private readonly IParametersSelector<Auditory, AuditoryParameters> _selector =
+        Substitute.For<IParametersSelector<Auditory, AuditoryParameters>>();
 
     public ParametersDataAccessManagerTests()
     {
@@ -29,7 +29,7 @@ public class ParametersDataAccessManagerTests
         var data = Enumerable.Range(0, 10).Select(i => new Auditory { Id = i }).ToList();
         var parameters = new AuditoryParameters { PageNumber = 1, PageSize = 5 };
         var set = new DbSetMock<Auditory>(data).Object;
-        _serviceProvider.GetService(typeof(IMultipleItemSelector<Auditory, AuditoryParameters>)).Returns(_selector);
+        _serviceProvider.GetService(typeof(IParametersSelector<Auditory, AuditoryParameters>)).Returns(_selector);
         _selector.SelectData(_context, parameters).Returns(set);
 
         var result = await _sut.GetByParameters<Auditory, AuditoryParameters>(parameters).ToListAsync();
@@ -43,6 +43,6 @@ public class ParametersDataAccessManagerTests
         new Action(() => _sut.GetByParameters<Group, GroupParameters>(new GroupParameters())).Should()
             .ThrowExactly<InvalidOperationException>()
             .WithMessage("There is not any registered services for type " +
-                         $"{typeof(IMultipleItemSelector<Group, GroupParameters>)}");
+                         $"{typeof(IParametersSelector<Group, GroupParameters>)}");
     }
 }

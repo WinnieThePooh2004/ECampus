@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ECampus.DataAccess.DataSelectors.MultipleItemSelectors;
 
-public class MultipleCourseSummarySelector : IMultipleItemSelector<Course, CourseSummaryParameters>
+public class MultipleCourseSummarySelector : IParametersSelector<Course, CourseSummaryParameters>
 {
     public IQueryable<Course> SelectData(ApplicationDbContext context, CourseSummaryParameters parameters) =>
         context.Courses

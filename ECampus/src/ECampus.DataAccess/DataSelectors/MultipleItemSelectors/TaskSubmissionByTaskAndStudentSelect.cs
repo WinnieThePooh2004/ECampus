@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 namespace ECampus.DataAccess.DataSelectors.MultipleItemSelectors;
 
 public class TaskSubmissionByTaskAndStudentSelect 
-    : IMultipleItemSelector<TaskSubmission, TaskSubmissionByStudentAndCourseParameters>
+    : IParametersSelector<TaskSubmission, TaskSubmissionByStudentAndCourseParameters>
 {
     public IQueryable<TaskSubmission> SelectData(ApplicationDbContext context,
         TaskSubmissionByStudentAndCourseParameters parameters) =>

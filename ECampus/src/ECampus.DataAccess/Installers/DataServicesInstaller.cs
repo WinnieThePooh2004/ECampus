@@ -1,5 +1,4 @@
 ﻿using ECampus.Contracts.DataAccess;
-using ECampus.Core.Extensions;
 using ECampus.Core.Installers;
 using ECampus.DataAccess.DataAccessFacades;
 using ECampus.DataAccess.DataCreateServices;
@@ -31,9 +30,6 @@ public class DataServicesInstaller : IInstaller
                 typeof(DataUpdateService<>).MakeGenericType(model));
         }
 
-        services.AddLazy<IDataAccessManager, DataAccessManager>();
-        services.AddLazy<PrimitiveDataAccessManager>();
-        services.AddScoped<IDataAccessManagerFactory, DataAccessManagerFactory>();
-        
+        services.AddScoped<IDataAccessManager, DataAccessManager>();
     }
 }

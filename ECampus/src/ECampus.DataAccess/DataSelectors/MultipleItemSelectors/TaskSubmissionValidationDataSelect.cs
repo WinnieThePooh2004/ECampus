@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ECampus.DataAccess.DataSelectors.MultipleItemSelectors;
 
-public class TaskSubmissionValidationDataSelect : IMultipleItemSelector<TaskSubmission, TaskSubmissionValidationParameters>
+public class TaskSubmissionValidationDataSelect : IParametersSelector<TaskSubmission, TaskSubmissionValidationParameters>
 {
     public IQueryable<TaskSubmission> SelectData(ApplicationDbContext context, TaskSubmissionValidationParameters parameters)
     {

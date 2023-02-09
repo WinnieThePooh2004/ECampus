@@ -1,5 +1,5 @@
 ﻿using System.Linq.Expressions;
-using ECampus.DataAccess.Extensions;
+using ECampus.Contracts.DataAccess;
 using ECampus.DataAccess.Interfaces;
 using ECampus.Infrastructure;
 using ECampus.Shared.Data;

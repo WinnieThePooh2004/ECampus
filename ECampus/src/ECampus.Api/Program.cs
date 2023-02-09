@@ -1,15 +1,12 @@
 using ECampus.Api;
 using ECampus.Core.Extensions;
 using ECampus.DataAccess;
-using ECampus.DataAccess.DataAccessFacades;
 using ECampus.Domain;
 using ECampus.Infrastructure;
 using ECampus.Services;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
-
-builder.Services.AddScoped<PrimitiveDataAccessManager>();
 
 builder.Services.AddAutoMapper(typeof(DomainAssemblyMarker));
 builder.Services.UserInstallersFromAssemblyContaining(builder.Configuration, typeof(DomainAssemblyMarker),

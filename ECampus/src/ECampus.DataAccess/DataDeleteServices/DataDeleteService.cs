@@ -7,10 +7,9 @@ namespace ECampus.DataAccess.DataDeleteServices;
 public class DataDeleteService<TModel> : IDataDeleteService<TModel>
     where TModel : class, IModel, new()
 {
-    public Task<TModel> DeleteAsync(int id, ApplicationDbContext context, CancellationToken token = default)
+    public TModel Delete(TModel model, ApplicationDbContext context)
     {
-        var model = new TModel { Id = id };
         context.Remove(model);
-        return Task.FromResult(model);
+        return model;
     }
 }

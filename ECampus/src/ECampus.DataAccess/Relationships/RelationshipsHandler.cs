@@ -1,5 +1,5 @@
 ﻿using System.Reflection;
-using ECampus.DataAccess.Interfaces;
+using ECampus.Contracts.DataAccess;
 using ECampus.Shared.Data;
 using ECampus.Shared.Metadata.Relationships;
 

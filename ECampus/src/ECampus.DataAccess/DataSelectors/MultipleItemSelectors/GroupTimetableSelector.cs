@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ECampus.DataAccess.DataSelectors.MultipleItemSelectors;
 
-public class GroupTimetableSelector : IMultipleItemSelector<Class, GroupTimetableParameters>
+public class GroupTimetableSelector : IParametersSelector<Class, GroupTimetableParameters>
 {
     public IQueryable<Class> SelectData(ApplicationDbContext context, GroupTimetableParameters parameters) =>
         context.Classes

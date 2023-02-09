@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ECampus.DataAccess.DataSelectors.MultipleItemSelectors;
 
-public class TeacherTimetableSelector : IMultipleItemSelector<Class, TeacherTimetableParameters>
+public class TeacherTimetableSelector : IParametersSelector<Class, TeacherTimetableParameters>
 {
     public IQueryable<Class> SelectData(ApplicationDbContext context, TeacherTimetableParameters parameters) =>
         context.Classes

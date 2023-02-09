@@ -14,11 +14,11 @@ public class CourseTaskService : IBaseService<CourseTaskDto>
 {
     private readonly IBaseService<CourseTaskDto> _baseService;
     private readonly ISnsMessenger _snsMessenger;
-    private readonly IDataAccessManagerFactory _dataAccessFactory;
+    private readonly IDataAccessManager _dataAccessFactory;
     private readonly IMapper _mapper;
 
     public CourseTaskService(IBaseService<CourseTaskDto> baseService, ISnsMessenger snsMessenger,
-        IDataAccessManagerFactory dataAccessFactory, IMapper mapper)
+        IDataAccessManager dataAccessFactory, IMapper mapper)
     {
         _baseService = baseService;
         _snsMessenger = snsMessenger;
@@ -32,13 +32,13 @@ public class CourseTaskService : IBaseService<CourseTaskDto>
     public async Task<CourseTaskDto> CreateAsync(CourseTaskDto entity, CancellationToken token = default)
     {
         var task = _mapper.Map<CourseTask>(entity);
-        var relatedStudents = await _dataAccessFactory.Complex
+        var relatedStudents = await _dataAccessFactory
             .GetByParameters<Student, StudentsByCourseParameters>(new StudentsByCourseParameters(entity.CourseId))
             .ToListAsync(token);
 
         task.Submissions = relatedStudents.Select(student => new TaskSubmission { StudentId = student.Id }).ToList();
-        await _dataAccessFactory.Complex.CreateAsync(task, token);
-        await _dataAccessFactory.Complex.SaveChangesAsync(token);
+        await _dataAccessFactory.CreateAsync(task, token);
+        await _dataAccessFactory.SaveChangesAsync(token);
 
         await PublishMessage(entity, task, relatedStudents, token);
         return _mapper.Map<CourseTaskDto>(task);
@@ -56,7 +56,7 @@ public class CourseTaskService : IBaseService<CourseTaskDto>
             return;
         }
 
-        var course = await _dataAccessFactory.Primitive.GetByIdAsync<Course>(entity.CourseId, token);
+        var course = await _dataAccessFactory.GetPureByIdAsync<Course>(entity.CourseId, token);
         var message = new TaskCreated
         {
             StudentEmails = studentEmails,

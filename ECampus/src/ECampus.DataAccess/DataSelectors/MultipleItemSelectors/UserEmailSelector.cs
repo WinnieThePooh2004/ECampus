@@ -5,7 +5,7 @@ using ECampus.Shared.Models;
 
 namespace ECampus.DataAccess.DataSelectors.MultipleItemSelectors;
 
-public class UserEmailSelector : IMultipleItemSelector<User, UserEmailParameters>
+public class UserEmailSelector : IParametersSelector<User, UserEmailParameters>
 {
     public IQueryable<User> SelectData(ApplicationDbContext context, UserEmailParameters parameters)
     {

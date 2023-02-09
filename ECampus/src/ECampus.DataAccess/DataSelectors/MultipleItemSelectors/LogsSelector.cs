@@ -5,7 +5,7 @@ using ECampus.Shared.QueryParameters;
 
 namespace ECampus.DataAccess.DataSelectors.MultipleItemSelectors;
 
-public class LogsSelector : IMultipleItemSelector<Log, LogParameters>
+public class LogsSelector : IParametersSelector<Log, LogParameters>
 {
     public IQueryable<Log> SelectData(ApplicationDbContext context, LogParameters parameters)
     {

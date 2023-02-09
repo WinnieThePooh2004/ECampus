@@ -6,7 +6,7 @@ using ECampus.Shared.QueryParameters;
 
 namespace ECampus.DataAccess.DataSelectors.MultipleItemSelectors;
 
-public class MultipleAuditorySelector : IMultipleItemSelector<Auditory, AuditoryParameters>
+public class MultipleAuditorySelector : IParametersSelector<Auditory, AuditoryParameters>
 {
     public IQueryable<Auditory> SelectData(ApplicationDbContext context, AuditoryParameters parameters)
         => context.Auditories.Search(a => a.Name, parameters.AuditoryName)

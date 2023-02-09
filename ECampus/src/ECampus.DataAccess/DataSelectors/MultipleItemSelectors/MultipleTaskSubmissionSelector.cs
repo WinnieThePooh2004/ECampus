@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ECampus.DataAccess.DataSelectors.MultipleItemSelectors;
 
-public class MultipleTaskSubmissionSelector : IMultipleItemSelector<TaskSubmission, TaskSubmissionParameters>
+public class MultipleTaskSubmissionSelector : IParametersSelector<TaskSubmission, TaskSubmissionParameters>
 {
     public IQueryable<TaskSubmission> SelectData(ApplicationDbContext context, TaskSubmissionParameters parameters)
         => context.TaskSubmissions.Include(submission => submission.Student)

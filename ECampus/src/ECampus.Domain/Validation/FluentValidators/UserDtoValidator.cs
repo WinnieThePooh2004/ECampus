@@ -1,4 +1,5 @@
 ﻿using ECampus.Shared.DataTransferObjects;
+using ECampus.Shared.Enums;
 using FluentValidation;
 
 namespace ECampus.Domain.Validation.FluentValidators;
@@ -30,5 +31,15 @@ public class UserDtoValidator : AbstractValidator<UserDto>
         RuleFor(u => u.PasswordConfirm)
             .Equal(x => x.Password)
             .WithMessage("Passwords don't match");
+
+        RuleFor(u => u.StudentId)
+            .NotNull()
+            .When(u => u.Role == UserRole.Student)
+            .WithMessage("You must bind user to student to set role as student");
+        
+        RuleFor(u => u.TeacherId)
+            .NotNull()
+            .When(u => u.Role == UserRole.Teacher)
+            .WithMessage("You must bind user to teacher to set role as teacher");
     }
 }

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ECampus.DataAccess.DataSelectors.MultipleItemSelectors;
 
-public class TeacherByCourseSelector : IMultipleItemSelector<Teacher, TeacherByCourseParameters>
+public class TeacherByCourseSelector : IParametersSelector<Teacher, TeacherByCourseParameters>
 {
     public IQueryable<Teacher> SelectData(ApplicationDbContext context, TeacherByCourseParameters parameters)
     {

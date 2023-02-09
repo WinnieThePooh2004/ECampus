@@ -20,17 +20,17 @@ public class UserUpdateValidator : IUpdateValidator<UserDto>
 
     public UserUpdateValidator(IUpdateValidator<UserDto> updateValidator,
         IHttpContextAccessor httpContextAccessor,
-        IDataAccessManagerFactory dataAccess)
+        IDataAccessManager dataAccess)
     {
         _updateValidator = updateValidator;
         _httpContextAccessor = httpContextAccessor;
-        _dataAccess = dataAccess.Primitive;
+        _dataAccess = dataAccess;
     }
 
     public async Task<ValidationResult> ValidateAsync(UserDto dataTransferObject, CancellationToken token = default)
     {
         var errors = await _updateValidator.ValidateAsync(dataTransferObject, token);
-        var userFromDb = await _dataAccess.GetByIdAsync<User>(dataTransferObject.Id, token);
+        var userFromDb = await _dataAccess.GetPureByIdAsync<User>(dataTransferObject.Id, token);
         ValidateRole(dataTransferObject, userFromDb, errors);
         await ValidateUsernameUniqueness(dataTransferObject, errors, token);
 

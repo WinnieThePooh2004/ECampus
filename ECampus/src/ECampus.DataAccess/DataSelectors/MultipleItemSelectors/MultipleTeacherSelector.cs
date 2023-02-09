@@ -6,7 +6,7 @@ using ECampus.Shared.QueryParameters;
 
 namespace ECampus.DataAccess.DataSelectors.MultipleItemSelectors;
 
-public class MultipleTeacherSelector : IMultipleItemSelector<Teacher, TeacherParameters>
+public class MultipleTeacherSelector : IParametersSelector<Teacher, TeacherParameters>
 {
     public IQueryable<Teacher> SelectData(ApplicationDbContext context, TeacherParameters parameters)
     {

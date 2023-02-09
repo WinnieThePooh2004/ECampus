@@ -48,13 +48,13 @@ public sealed class BaseServiceTests
     private async Task Delete_ShouldReturnFromService_WhenIdIsNotNull()
     {
         var item = _fixture.Create<AuditoryDto>();
-        _dataAccess.DeleteAsync<Auditory>(10).Returns(_mapper.Map<Auditory>(item));
+        _dataAccess.Delete(Arg.Any<Auditory>()).Returns(_mapper.Map<Auditory>(item));
 
         var result = await _sut.DeleteAsync(10);
-        
+
         result.Should().BeEquivalentTo(_mapper.Map<AuditoryDto>(_mapper.Map<Auditory>(item)),
             opt => opt.ComparingByMembers<AuditoryDto>());
-        await _dataAccess.Received(1).DeleteAsync<Auditory>(10);
+        _dataAccess.Received(1).Delete(Arg.Any<Auditory>());
         await _dataAccess.Received().SaveChangesAsync();
     }
 
@@ -65,7 +65,7 @@ public sealed class BaseServiceTests
         _dataAccess.GetByIdAsync<Auditory>(10).Returns(_mapper.Map<Auditory>(item));
 
         var result = await _sut.GetByIdAsync(10);
-        
+
         result.Should().BeEquivalentTo(_mapper.Map<AuditoryDto>(_mapper.Map<Auditory>(item)),
             opt => opt.ComparingByMembers<AuditoryDto>());
         await _dataAccess.Received(1).GetByIdAsync<Auditory>(10);

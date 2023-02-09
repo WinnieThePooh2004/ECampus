@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ECampus.DataAccess.DataSelectors.MultipleItemSelectors;
 
-public class AuditoryTimetableSelector : IMultipleItemSelector<Class, AuditoryTimetableParameters>
+public class AuditoryTimetableSelector : IParametersSelector<Class, AuditoryTimetableParameters>
 {
     public IQueryable<Class> SelectData(ApplicationDbContext context, AuditoryTimetableParameters parameters) =>
         context.Classes
