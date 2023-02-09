@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ECampus.DataAccess\ECampus.DataAccess.csproj" />
     <ProjectReference Include="..\ECampus.Domain\ECampus.Domain.csproj" />
     <ProjectReference Include="..\ECampus.Infrastructure\ECampus.Infrastructure.csproj" />
     <ProjectReference Include="..\ECampus.Shared\ECampus.Shared.csproj" />

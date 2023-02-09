@@ -1,6 +1,6 @@
-﻿using ECampus.Infrastructure;
-using ECampus.Infrastructure.Interfaces;
-using ECampus.Infrastructure.Relationships;
+﻿using ECampus.DataAccess.Interfaces;
+using ECampus.DataAccess.Relationships;
+using ECampus.Infrastructure;
 using ECampus.Shared.Exceptions.InfrastructureExceptions;
 using ECampus.Shared.Models;
 using ECampus.Shared.Models.RelationModels;

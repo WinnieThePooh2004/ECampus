@@ -1,4 +1,4 @@
-﻿using ECampus.Infrastructure.DataSelectors.SingleItemSelectors;
+﻿using ECampus.DataAccess.DataSelectors.SingleItemSelectors;
 using ECampus.Shared.Models;
 using ECampus.Tests.Shared.Mocks.EntityFramework;
 using Microsoft.EntityFrameworkCore;

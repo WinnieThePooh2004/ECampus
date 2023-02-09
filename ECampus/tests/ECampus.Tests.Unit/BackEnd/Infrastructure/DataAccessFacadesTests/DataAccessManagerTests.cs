@@ -1,6 +1,6 @@
-﻿using ECampus.Infrastructure;
-using ECampus.Infrastructure.DataAccessFacades;
-using ECampus.Infrastructure.Interfaces;
+﻿using ECampus.DataAccess.DataAccessFacades;
+using ECampus.DataAccess.Interfaces;
+using ECampus.Infrastructure;
 using ECampus.Shared.Exceptions.InfrastructureExceptions;
 using ECampus.Shared.Models;
 using ECampus.Tests.Shared.DataFactories;

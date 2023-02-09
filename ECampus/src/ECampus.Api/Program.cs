@@ -1,9 +1,10 @@
 using ECampus.Api;
 using ECampus.Api.MiddlewareFilters;
 using ECampus.Core.Extensions;
+using ECampus.DataAccess;
+using ECampus.DataAccess.DataAccessFacades;
 using ECampus.Domain;
 using ECampus.Infrastructure;
-using ECampus.Infrastructure.DataAccessFacades;
 using ECampus.Services;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -24,7 +25,7 @@ builder.Services.AddControllers(options => { options.Filters.Add<MiddlewareExcep
 
 builder.Services.AddAutoMapper(typeof(DomainAssemblyMarker));
 builder.Services.UserInstallersFromAssemblyContaining(builder.Configuration, typeof(DomainAssemblyMarker),
-    typeof(ApiAssemblyMarker),
+    typeof(ApiAssemblyMarker), typeof(DataAccessAssemblyMarker),
     typeof(InfrastructureAssemblyMarker), typeof(ServicesAssemblyMarker));
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -32,6 +33,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddHostedService<MigrationsService>();
 
 builder.Logging.ClearProviders();
 builder.Logging.AddSerilog(Log.Logger);

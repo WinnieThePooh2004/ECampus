@@ -1,6 +1,6 @@
-﻿using ECampus.Infrastructure;
-using ECampus.Infrastructure.DataCreateServices;
-using ECampus.Infrastructure.Interfaces;
+﻿using ECampus.DataAccess.DataCreateServices;
+using ECampus.DataAccess.Interfaces;
+using ECampus.Infrastructure;
 using ECampus.Shared.Models;
 using ECampus.Tests.Shared.Mocks.EntityFramework;
 
