@@ -3,7 +3,12 @@ using ECampus.Shared.QueryParameters;
 
 namespace ECampus.Contracts.DataSelectParameters;
 
-public class UserUsernameParameters : IDataSelectParameters<User>
+public readonly struct UserUsernameParameters : IDataSelectParameters<User>
 {
-    public string Username { get; set; } = default!;
+    public readonly string Username;
+
+    public UserUsernameParameters(string username)
+    {
+        Username = username;
+    }
 }

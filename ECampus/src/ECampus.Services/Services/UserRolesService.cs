@@ -21,8 +21,8 @@ public class UserRolesService : IBaseService<UserDto>
 
     public async Task<UserDto> GetByIdAsync(int id, CancellationToken token = default)
     {
-        var user = await _dataAccessFactory.Complex.GetSingleAsync<User, UserRolesParameters>(new UserRolesParameters
-            { UserId = id }, token);
+        var user = await _dataAccessFactory.Complex
+            .GetSingleAsync<User, UserRolesParameters>(new UserRolesParameters(id), token);
         return _mapper.Map<UserDto>(user);
     }
 

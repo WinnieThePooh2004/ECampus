@@ -59,7 +59,7 @@ public class TaskSubmissionParametersValidator : IParametersValidator<TaskSubmis
     {
         var teachersRelatedToCourseTask =
             _parametersDataAccess.GetByParameters<Teacher, TeacherRelatedToTaskParameters>(
-                new TeacherRelatedToTaskParameters { CourseTaskId = parameters.CourseTaskId });
+                new TeacherRelatedToTaskParameters(parameters.CourseTaskId));
 
         if (!await teachersRelatedToCourseTask.AnyAsync(teacher =>
                 teacher.Id == teacherIdClaimValidation.ClaimValue &&

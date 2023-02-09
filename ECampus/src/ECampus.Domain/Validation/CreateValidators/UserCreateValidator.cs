@@ -42,8 +42,8 @@ public class UserCreateValidator : ICreateValidator<UserDto>
     private async Task ValidateUsernameUniqueness(UserDto dataTransferObject, ValidationResult errors)
     {
         var usersWithSameUsername =
-            _parametersDataAccess.GetByParameters<User, UserUsernameParameters>(new UserUsernameParameters
-                { Username = dataTransferObject.Username });
+            _parametersDataAccess.GetByParameters<User, UserUsernameParameters>(
+                new UserUsernameParameters(dataTransferObject.Username));
         if (await usersWithSameUsername.AnyAsync())
         {
             errors.AddError(new ValidationError(nameof(UserDto.Username), "User with same username already exists"));
@@ -53,8 +53,7 @@ public class UserCreateValidator : ICreateValidator<UserDto>
     private async Task ValidateEmailUniqueness(string email, ValidationResult errors)
     {
         var usersWithSameEmails =
-            _parametersDataAccess.GetByParameters<User, UserEmailParameters>(new UserEmailParameters
-                { Email = email });
+            _parametersDataAccess.GetByParameters<User, UserEmailParameters>(new UserEmailParameters(email));
         if (await usersWithSameEmails.AnyAsync())
         {
             errors.AddError(new ValidationError(nameof(UserDto.Email), "User with same email already exists"));

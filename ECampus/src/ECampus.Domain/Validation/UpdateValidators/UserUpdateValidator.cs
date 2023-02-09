@@ -33,7 +33,7 @@ public class UserUpdateValidator : IUpdateValidator<UserDto>
         var userFromDb = await _dataAccess.GetByIdAsync<User>(dataTransferObject.Id, token);
         ValidateRole(dataTransferObject, userFromDb, errors);
         await ValidateUsernameUniqueness(dataTransferObject, errors, token);
-        
+
         ValidateChanges(dataTransferObject, userFromDb, errors);
 
         return errors;
@@ -53,11 +53,12 @@ public class UserUpdateValidator : IUpdateValidator<UserDto>
         }
     }
 
-    private async Task ValidateUsernameUniqueness(UserDto dataTransferObject, ValidationResult errors, CancellationToken token = default)
+    private async Task ValidateUsernameUniqueness(UserDto dataTransferObject, ValidationResult errors,
+        CancellationToken token = default)
     {
         var usersWithSaveUsername =
-            _dataAccess.GetByParameters<User, UserUsernameParameters>(new UserUsernameParameters
-                { Username = dataTransferObject.Username });
+            _dataAccess.GetByParameters<User, UserUsernameParameters>(
+                new UserUsernameParameters(dataTransferObject.Username));
         if (await usersWithSaveUsername.AnyAsync(user => user.Id != dataTransferObject.Id, token))
         {
             errors.AddError(new ValidationError(nameof(dataTransferObject.Username),
