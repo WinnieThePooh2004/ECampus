@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace ECampus.Tests.Shared.Mocks.EntityFramework;
 
@@ -9,7 +9,7 @@ public static class DbSetMockExtensions
         return new DbSetMock<T>(source).Object;
     }
 
-    public static IQueryable<T> ToAsyncQueryable<T>(this ICollection<T> source) where T : class
+    public static DbSet<T> AsDbSet<T>(this ICollection<T> source) where T : class
     {
         return new DbSetMock<T>(source).Object;
     }
