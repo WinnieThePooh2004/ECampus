@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Diagnostics;
+using AutoMapper;
 using ECampus.Contracts.DataAccess;
 using ECampus.Contracts.DataSelectParameters;
 using ECampus.Contracts.Services;
@@ -34,7 +35,7 @@ public class UserRolesService : IBaseService<UserDto>
             UserRole.Admin or UserRole.Guest => await CreateAsAdminOrGuest(user, token),
             UserRole.Student => await CreateAsStudent(user, token),
             UserRole.Teacher => await CreateAsTeacher(user, token),
-            _ => throw new ArgumentOutOfRangeException(nameof(entity))
+            _ => throw new UnreachableException("", new ArgumentOutOfRangeException(nameof(entity)))
         };
     }
 
@@ -44,7 +45,7 @@ public class UserRolesService : IBaseService<UserDto>
             token);
         var result = _dataAccess.Delete(user);
         await _dataAccess.SaveChangesAsync(token);
-        return await EndUpdateAsync(result, token);
+        return _mapper.Map<UserDto>(result);
     }
 
     public async Task<UserDto> UpdateAsync(UserDto entity, CancellationToken token = default)
@@ -62,8 +63,8 @@ public class UserRolesService : IBaseService<UserDto>
         {
             UserRole.Admin or UserRole.Guest => await UpdateAsAdminOrGuest(userFromDb, user, token),
             UserRole.Student => await UpdateAsStudent(userFromDb, user, entity, token),
-            UserRole.Teacher => await UpdateAsTeacher(entity, userFromDb, user, token),
-            _ => throw new ArgumentOutOfRangeException(nameof(entity))
+            UserRole.Teacher => await UpdateAsTeacher(userFromDb, user, token),
+            _ => throw new UnreachableException("", new ArgumentOutOfRangeException(nameof(entity)))
         };
     }
 
@@ -71,10 +72,10 @@ public class UserRolesService : IBaseService<UserDto>
     {
         return userFromDb.Role switch
         {
-            UserRole.Admin or UserRole.Guest => await EndUpdateAsync(userFromDb, token),
+            UserRole.Admin or UserRole.Guest => await EndUpdateAsync(userFromDb, user.Role, token),
             UserRole.Student => await UpdateWhenRoleStudentNotChanged(userFromDb, user, token),
             UserRole.Teacher => await UpdateWhenRoleTeacherNotChanged(userFromDb, user, token),
-            _ => throw new ArgumentOutOfRangeException(nameof(user))
+            _ => throw new UnreachableException("", new ArgumentOutOfRangeException(nameof(user)))
         };
     }
 
@@ -82,82 +83,83 @@ public class UserRolesService : IBaseService<UserDto>
     {
         if (userFromDb.TeacherId == user.TeacherId)
         {
-            return await EndUpdateAsync(userFromDb, token);
+            return await EndUpdateAsync(userFromDb, user.Role, token);
         }
         
         var newTeacher = await _dataAccess.PureByIdAsync<Teacher>((int)user.TeacherId!, token);
-        newTeacher.UserEmail = user.Email;
+        newTeacher.UserEmail = userFromDb.Email;
         userFromDb.Teacher!.UserEmail = null;
         userFromDb.TeacherId = newTeacher.Id;
-        return await EndUpdateAsync(userFromDb, token);
+        return await EndUpdateAsync(userFromDb, user.Role, token);
     }
 
     private async Task<UserDto> UpdateWhenRoleStudentNotChanged(User userFromDb, User user, CancellationToken token)
     {
         if (userFromDb.StudentId == user.StudentId)
         {
-            return await EndUpdateAsync(userFromDb, token);
+            return await EndUpdateAsync(userFromDb, user.Role, token);
         }
 
         var newStudent = await _dataAccess.PureByIdAsync<Student>((int)user.StudentId!, token);
-        newStudent.UserEmail = user.Email;
+        newStudent.UserEmail = userFromDb.Email;
         userFromDb.Student!.UserEmail = null;
         userFromDb.StudentId = newStudent.Id;
-        return await EndUpdateAsync(userFromDb, token);
+        userFromDb.Student = null;
+        return await EndUpdateAsync(userFromDb, user.Role, token);
     }
 
-    private async Task<UserDto> UpdateAsTeacher(UserDto entity, User userFromDb, User user, CancellationToken token)
+    private async Task<UserDto> UpdateAsTeacher(User userFromDb, User user, CancellationToken token)
     {
-        if (userFromDb.Student is not null)
-        {
-            userFromDb.Student.UserEmail = null;
-            userFromDb.StudentId = null;
-            userFromDb.Student = null;
-        }
+        ClearStudentData(userFromDb);
 
-        userFromDb.TeacherId = entity.TeacherId;
+        userFromDb.TeacherId = user.TeacherId;
         var selectedTeacher = await _dataAccess.PureByIdAsync<Teacher>((int)user.TeacherId!, token);
-        selectedTeacher.UserEmail = user.Email;
-        return await EndUpdateAsync(userFromDb, token);
+        selectedTeacher.UserEmail = userFromDb.Email;
+        return await EndUpdateAsync(userFromDb, user.Role, token);
+    }
+
+    private static void ClearStudentData(User userFromDb)
+    {
+        if (userFromDb.Student is null)
+        {
+            return;
+        }
+        userFromDb.Student.UserEmail = null;
+        userFromDb.StudentId = null;
+        userFromDb.Student = null;
     }
 
     private async Task<UserDto> UpdateAsStudent(User userFromDb, User user, UserDto entity, CancellationToken token)
     {
-        if (userFromDb.Teacher is not null)
-        {
-            userFromDb.Teacher.UserEmail = null;
-            userFromDb.TeacherId = null;
-            userFromDb.Teacher = null;
-        }
+        CreateTeacherData(userFromDb);
 
         userFromDb.StudentId = entity.StudentId;
         var selectedStudent = await _dataAccess.PureByIdAsync<Student>((int)user.StudentId!, token);
-        selectedStudent.UserEmail = user.Email;
-        return await EndUpdateAsync(userFromDb, token);
+        selectedStudent.UserEmail = userFromDb.Email;
+        return await EndUpdateAsync(userFromDb, user.Role, token);
+    }
+
+    private static void CreateTeacherData(User userFromDb)
+    {
+        if (userFromDb.Teacher is null)
+        {
+            return;
+        }
+        userFromDb.Teacher.UserEmail = null;
+        userFromDb.TeacherId = null;
+        userFromDb.Teacher = null;
     }
 
     private async Task<UserDto> UpdateAsAdminOrGuest(User userFromDb, User user, CancellationToken token)
     {
-        if (userFromDb.Student is not null)
-        {
-            userFromDb.Student.UserEmail = null;
-            userFromDb.StudentId = null;
-            userFromDb.Student = null;
-        }
-
-        if (userFromDb.Teacher is null)
-        {
-            return await EndUpdateAsync(user, token);
-        }
-
-        userFromDb.Teacher.UserEmail = null;
-        userFromDb.TeacherId = null;
-        userFromDb.Teacher = null;
-        return await EndUpdateAsync(user, token);
+        ClearStudentData(userFromDb);
+        CreateTeacherData(userFromDb);
+        return await EndUpdateAsync(user, user.Role, token);
     }
 
-    private async Task<UserDto> EndUpdateAsync(User user, CancellationToken token)
+    private async Task<UserDto> EndUpdateAsync(User user, UserRole newRole, CancellationToken token)
     {
+        user.Role = newRole;
         await _dataAccess.SaveChangesAsync(token);
         return _mapper.Map<UserDto>(user);
     }
@@ -166,8 +168,7 @@ public class UserRolesService : IBaseService<UserDto>
     {
         user.StudentId = null;
         user.Student = null;
-        var teacherFromDb = await _dataAccess.PureByIdAsync<Teacher>((int)user.TeacherId!, token);
-        teacherFromDb.UserEmail = user.Email;
+        user.Teacher = await _dataAccess.PureByIdAsync<Teacher>((int)user.TeacherId!, token);
         return await EndCreateAsync(user, token);
     }
 
@@ -175,8 +176,7 @@ public class UserRolesService : IBaseService<UserDto>
     {
         user.Teacher = null;
         user.TeacherId = null;
-        var studentFromDb = await _dataAccess.PureByIdAsync<Student>((int)user.StudentId!, token);
-        studentFromDb.UserEmail = user.Email;
+        user.Student = await _dataAccess.PureByIdAsync<Student>((int)user.StudentId!, token);
         return await EndCreateAsync(user, token);
     }
 

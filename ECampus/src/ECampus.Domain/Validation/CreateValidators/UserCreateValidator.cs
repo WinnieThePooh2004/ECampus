@@ -64,12 +64,10 @@ public class UserCreateValidator : UserValidatorBase, ICreateValidator<UserDto>
 
     private void ValidateRole(UserDto user, ValidationResult currentErrors)
     {
-        if (user.Role == UserRole.Guest || _user.IsInRole(nameof(UserRole.Admin)))
+        if (user.Role != UserRole.Guest && !_user.IsInRole(nameof(UserRole.Admin)))
         {
-            return;
+            currentErrors.AddError(new ValidationError(nameof(user.Role),
+                $"Only admin can create user with roles different from {nameof(UserRole.Guest)}"));
         }
-
-        currentErrors.AddError(new ValidationError(nameof(user.Role),
-            $"Only admin can create user with roles different from {nameof(UserRole.Guest)}"));
     }
 }

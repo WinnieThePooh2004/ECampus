@@ -31,6 +31,10 @@ public class UserUpdateValidator : UserValidatorBase, IUpdateValidator<UserDto>
     public async Task<ValidationResult> ValidateAsync(UserDto dataTransferObject, CancellationToken token = default)
     {
         var errors = await _updateValidator.ValidateAsync(dataTransferObject, token);
+        if (!errors.IsValid)
+        {
+            return errors;
+        }
         var userFromDb = await _dataAccess.PureByIdAsync<User>(dataTransferObject.Id, token);
         ValidateRole(dataTransferObject, userFromDb, errors);
         await ValidateUsernameUniqueness(dataTransferObject, errors, token);

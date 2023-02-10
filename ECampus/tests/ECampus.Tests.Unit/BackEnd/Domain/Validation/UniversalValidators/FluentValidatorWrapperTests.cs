@@ -8,12 +8,12 @@ using ValidationResult = FluentValidation.Results.ValidationResult;
 
 namespace ECampus.Tests.Unit.BackEnd.Domain.Validation.UniversalValidators;
 
-public class UniversalValidatorTests
+public class FluentValidatorWrapperTests
 {
     private readonly FluentValidatorWrapper<FacultyDto> _sut;
     private readonly IValidator<FacultyDto> _fluentValidator;
 
-    public UniversalValidatorTests()
+    public FluentValidatorWrapperTests()
     {
         _fluentValidator = Substitute.For<IValidator<FacultyDto>>();
         _sut = new UpdateFluentValidatorWrapper<FacultyDto>(_fluentValidator);

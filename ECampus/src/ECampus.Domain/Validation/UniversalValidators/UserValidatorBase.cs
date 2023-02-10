@@ -33,9 +33,9 @@ public abstract class UserValidatorBase
                 $"Teacher with id {user.TeacherId} does not exist"));
         }
 
-        if (teacher.UserEmail is not null)
+        if (teacher.UserEmail is not null && teacher.UserEmail != user.Email)
         {
-            return new ValidationResult(nameof(user.StudentId),
+            return new ValidationResult(nameof(user.TeacherId),
                 $"Cannot bind to teacher with id {user.TeacherId} because it is " +
                 $"already bind to user with email {teacher.UserEmail}");
         }
@@ -52,7 +52,7 @@ public abstract class UserValidatorBase
                 $"Student with id {user.StudentId} does not exist"));
         }
 
-        if (student.UserEmail is not null)
+        if (student.UserEmail is not null  && student.UserEmail != user.Email)
         {
             return new ValidationResult(nameof(user.StudentId),
                 $"Cannot bind to student with id {user.StudentId} because it is " +

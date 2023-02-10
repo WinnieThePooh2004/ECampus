@@ -1,5 +1,4 @@
-﻿using System.Collections.Immutable;
-using System.Reflection;
+﻿using System.Reflection;
 using ECampus.Core.Installers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,16 +7,6 @@ namespace ECampus.Core.Extensions;
 
 public static class ServiceCollectionExtensions
 {
-    public static void AddLazy<TService, TImplementation>(this IServiceCollection services,
-        ServiceLifetime serviceLifetime = ServiceLifetime.Scoped)
-        where TService : class
-        where TImplementation : class, TService
-    {
-        var descriptor = new ServiceDescriptor(typeof(TService), typeof(TImplementation), serviceLifetime);
-        services.Add(descriptor);
-        services.AddLazy<TService>();
-    }
-
     public static void AddLazy<T>(this IServiceCollection services,
         ServiceLifetime serviceLifetime = ServiceLifetime.Scoped)
     {
