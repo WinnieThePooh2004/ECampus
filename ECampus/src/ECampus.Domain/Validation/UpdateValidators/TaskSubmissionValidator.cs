@@ -74,7 +74,7 @@ public class TaskSubmissionValidator : ITaskSubmissionValidator
 
         return await ValidateTeacher(
             _parametersDataAccess.GetByParameters<Teacher, TeacherByCourseParameters>(new TeacherByCourseParameters
-                { CourseId = submissionFromDb.CourseTask.CourseId }), teacherId);
+                (submissionFromDb.CourseTask.CourseId)), teacherId);
     }
 
     private static async Task<ValidationResult> ValidateTeacher(IQueryable<Teacher> teachers, int teacherId)

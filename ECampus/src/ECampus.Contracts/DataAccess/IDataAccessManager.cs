@@ -7,7 +7,7 @@ public interface IDataAccessManager
 {
     Task<TModel> CreateAsync<TModel>(TModel model, CancellationToken token = default) where TModel : class, IModel;
     Task<TModel> UpdateAsync<TModel>(TModel model, CancellationToken token = default) where TModel : class, IModel;
-    Task<TModel> DeleteAsync<TModel>(int id, CancellationToken token = default) where TModel : class, IModel, new();
+    TModel Delete<TModel>(TModel model) where TModel : class, IModel, new();
     Task<TModel> GetByIdAsync<TModel>(int id, CancellationToken token = default) where TModel : class, IModel;
     IQueryable<TModel> GetByParameters<TModel, TParameters>(TParameters parameters)
         where TModel : class, IModel

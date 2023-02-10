@@ -52,6 +52,8 @@ public class SuccessfulEndpointsTests : IClassFixture<ApplicationFactory>, IAsyn
                 StudentId = 200, OrderBy = nameof(CourseSummary.StartDate)
             }.ToQueryString()}");
 
+        var result = await response.Content.ReadAsStringAsync();
+
         response.EnsureSuccessStatusCode();
         var content =
             JsonConvert.DeserializeObject<ListWithPaginationData<CourseSummary>>(

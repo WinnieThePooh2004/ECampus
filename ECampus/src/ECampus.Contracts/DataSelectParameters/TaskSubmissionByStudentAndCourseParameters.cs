@@ -3,8 +3,8 @@ using ECampus.Shared.QueryParameters;
 
 namespace ECampus.Contracts.DataSelectParameters;
 
-public class TaskSubmissionByStudentAndCourseParameters : IDataSelectParameters<TaskSubmission>
+public readonly struct TaskSubmissionByStudentAndCourseParameters : IDataSelectParameters<TaskSubmission>
 {
-    public int StudentId { get; set; }
-    public int CourseTaskId { get; set; }
+    public required int StudentId { get; init; }
+    public required int CourseTaskId { get; init; }
 }

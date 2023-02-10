@@ -1,6 +1,6 @@
-﻿using ECampus.Infrastructure;
-using ECampus.Infrastructure.DataUpdateServices;
-using ECampus.Infrastructure.Interfaces;
+﻿using ECampus.DataAccess.DataUpdateServices;
+using ECampus.DataAccess.Interfaces;
+using ECampus.Infrastructure;
 using ECampus.Shared.Models;
 using ECampus.Shared.Models.RelationModels;
 using ECampus.Tests.Unit.InMemoryDb;

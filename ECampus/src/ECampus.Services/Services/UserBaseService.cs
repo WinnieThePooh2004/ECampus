@@ -9,13 +9,13 @@ public class UserBaseService : IBaseService<UserDto>
     private readonly IBaseService<UserDto> _realService;
 
     public UserBaseService(IBaseService<UserDto> baseService,
-        UserRolesService userRolesService,
+        Lazy<UserRolesService> userRolesService,
         IHttpContextAccessor httpContextAccessor)
     {
         var currentRequestQueryString = httpContextAccessor.HttpContext!.Request.Path;
         if (currentRequestQueryString.ToString().ToLower().Contains("userrole"))
         {
-            _realService = userRolesService;
+            _realService = userRolesService.Value;
             return;
         }
         _realService = baseService;

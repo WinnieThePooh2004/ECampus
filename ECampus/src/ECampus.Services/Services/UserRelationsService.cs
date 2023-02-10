@@ -12,46 +12,55 @@ public class UserRelationsService : IUserRelationsService
 {
     private readonly IAuthenticationService _authenticationService;
     private readonly IRelationsDataAccess _relationsDataAccess;
+    private readonly IDataAccessManager _dataAccess;
 
-    public UserRelationsService(IAuthenticationService authenticationService, IRelationsDataAccess relationsDataAccess)
+    public UserRelationsService(IAuthenticationService authenticationService, IRelationsDataAccess relationsDataAccess,
+        IDataAccessManager dataAccess)
     {
         _authenticationService = authenticationService;
         _relationsDataAccess = relationsDataAccess;
+        _dataAccess = dataAccess;
     }
 
-    public Task SaveAuditory(int userId, int auditoryId, CancellationToken token = default)
+    public async Task SaveAuditory(int userId, int auditoryId, CancellationToken token = default)
     {
         _authenticationService.VerifyUser(userId);
-        return _relationsDataAccess.CreateRelation<User, Auditory, UserAuditory>(userId, auditoryId, token);
+        _relationsDataAccess.CreateRelation<User, Auditory, UserAuditory>(userId, auditoryId);
+        await _dataAccess.SaveChangesAsync(token);
     }
 
-    public Task RemoveSavedAuditory(int userId, int auditoryId, CancellationToken token = default)
+    public async Task RemoveSavedAuditory(int userId, int auditoryId, CancellationToken token = default)
     {
         _authenticationService.VerifyUser(userId);
-        return _relationsDataAccess.DeleteRelation<User, Auditory, UserAuditory>(userId, auditoryId, token);
+        _relationsDataAccess.DeleteRelation<User, Auditory, UserAuditory>(userId, auditoryId);
+        await _dataAccess.SaveChangesAsync(token);
     }
 
-    public Task SaveGroup(int userId, int groupId, CancellationToken token = default)
+    public async Task SaveGroup(int userId, int groupId, CancellationToken token = default)
     {
         _authenticationService.VerifyUser(userId);
-        return _relationsDataAccess.CreateRelation<User, Group, UserGroup>(userId, groupId, token);
+        _relationsDataAccess.CreateRelation<User, Group, UserGroup>(userId, groupId);
+        await _dataAccess.SaveChangesAsync(token);
     }
 
-    public Task RemoveSavedGroup(int userId, int groupId, CancellationToken token = default)
+    public async Task RemoveSavedGroup(int userId, int groupId, CancellationToken token = default)
     {
         _authenticationService.VerifyUser(userId);
-        return _relationsDataAccess.DeleteRelation<User, Group, UserGroup>(userId, groupId, token);
+        _relationsDataAccess.DeleteRelation<User, Group, UserGroup>(userId, groupId);
+        await _dataAccess.SaveChangesAsync(token);
     }
 
-    public Task SaveTeacher(int userId, int teacherId, CancellationToken token = default)
+    public async Task SaveTeacher(int userId, int teacherId, CancellationToken token = default)
     {
         _authenticationService.VerifyUser(userId);
-        return _relationsDataAccess.CreateRelation<User, Teacher, UserTeacher>(userId, teacherId, token);
+        _relationsDataAccess.CreateRelation<User, Teacher, UserTeacher>(userId, teacherId);
+        await _dataAccess.SaveChangesAsync(token);
     }
 
-    public Task RemoveSavedTeacher(int userId, int teacherId, CancellationToken token = default)
+    public async Task RemoveSavedTeacher(int userId, int teacherId, CancellationToken token = default)
     {
         _authenticationService.VerifyUser(userId);
-        return _relationsDataAccess.DeleteRelation<User, Teacher, UserTeacher>(userId, teacherId, token);
+        _relationsDataAccess.DeleteRelation<User, Teacher, UserTeacher>(userId, teacherId);
+        await _dataAccess.SaveChangesAsync(token);
     }
 }

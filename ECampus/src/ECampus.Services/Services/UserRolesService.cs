@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Diagnostics;
+using AutoMapper;
 using ECampus.Contracts.DataAccess;
 using ECampus.Contracts.DataSelectParameters;
 using ECampus.Contracts.Services;
@@ -11,140 +12,187 @@ namespace ECampus.Services.Services;
 public class UserRolesService : IBaseService<UserDto>
 {
     private readonly IMapper _mapper;
-    private readonly IDataAccessManagerFactory _dataAccessFactory;
+    private readonly IDataAccessManager _dataAccess;
 
-    public UserRolesService(IMapper mapper, IDataAccessManagerFactory dataAccessFactory)
+    public UserRolesService(IMapper mapper, IDataAccessManager dataAccess)
     {
         _mapper = mapper;
-        _dataAccessFactory = dataAccessFactory;
+        _dataAccess = dataAccess;
     }
 
     public async Task<UserDto> GetByIdAsync(int id, CancellationToken token = default)
     {
-        var user = await _dataAccessFactory.Complex.GetSingleAsync<User, UserRolesParameters>(new UserRolesParameters
-            { UserId = id }, token);
+        var user = await _dataAccess.GetSingleAsync<User, UserRolesParameters>(new UserRolesParameters(id),
+            token);
         return _mapper.Map<UserDto>(user);
     }
 
-    public async Task<UserDto> UpdateAsync(UserDto user, CancellationToken token = default)
+    public async Task<UserDto> CreateAsync(UserDto entity, CancellationToken token = default)
     {
-        return _mapper.Map<UserDto>(await UpdateAsync(_mapper.Map<User>(user), token));
-    }
-
-    public async Task<UserDto> CreateAsync(UserDto user, CancellationToken token = default)
-    {
-        return _mapper.Map<UserDto>(await CreateAsync(_mapper.Map<User>(user), token));
+        var user = _mapper.Map<User>(entity);
+        return user.Role switch
+        {
+            UserRole.Admin or UserRole.Guest => await CreateAsAdminOrGuest(user, token),
+            UserRole.Student => await CreateAsStudent(user, token),
+            UserRole.Teacher => await CreateAsTeacher(user, token),
+            _ => throw new UnreachableException("", new ArgumentOutOfRangeException(nameof(entity)))
+        };
     }
 
     public async Task<UserDto> DeleteAsync(int id, CancellationToken token = default)
     {
-        return _mapper.Map<UserDto>(await _dataAccessFactory.Complex.DeleteAsync<User>(id, token));
+        var user = await _dataAccess.GetSingleAsync<User, UserRolesParameters>(new UserRolesParameters(id),
+            token);
+        var result = _dataAccess.Delete(user);
+        await _dataAccess.SaveChangesAsync(token);
+        return _mapper.Map<UserDto>(result);
     }
 
-    private async Task<User> CreateAsync(User user, CancellationToken token = default)
+    public async Task<UserDto> UpdateAsync(UserDto entity, CancellationToken token = default)
     {
-        var teacher = user.Teacher;
-        var student = user.Student;
-        user.Teacher = null;
-        user.Student = null;
-        await _dataAccessFactory.Primitive.CreateAsync(user, token);
-        var result = user.Role switch
+        var user = _mapper.Map<User>(entity);
+        var userFromDb =
+            await _dataAccess.GetSingleAsync<User, UserRolesParameters>(new UserRolesParameters(user.Id), token);
+        userFromDb.Username = user.Username;
+        if (userFromDb.Role == user.Role)
         {
-            UserRole.Teacher when teacher is not null => await SetTeacherId(user, teacher),
-            UserRole.Student when student is not null => await SetStudentId(user, student),
-            _ => user
+            return await UpdateWhenRoleNotChanged(userFromDb, user, token);
+        }
+
+        return user.Role switch
+        {
+            UserRole.Admin or UserRole.Guest => await UpdateAsAdminOrGuest(userFromDb, user, token),
+            UserRole.Student => await UpdateAsStudent(userFromDb, user, entity, token),
+            UserRole.Teacher => await UpdateAsTeacher(userFromDb, user, token),
+            _ => throw new UnreachableException("", new ArgumentOutOfRangeException(nameof(entity)))
         };
-        await _dataAccessFactory.Primitive.SaveChangesAsync(token);
-        return result;
     }
 
-    private async Task<User> UpdateAsync(User user, CancellationToken token = default)
+    private async Task<UserDto> UpdateWhenRoleNotChanged(User userFromDb, User user, CancellationToken token)
     {
-        await ChangeUserRelationships(user);
-        await _dataAccessFactory.Primitive.SaveChangesAsync(token);
-        return user;
+        return userFromDb.Role switch
+        {
+            UserRole.Admin or UserRole.Guest => await EndUpdateAsync(userFromDb, user.Role, token),
+            UserRole.Student => await UpdateWhenRoleStudentNotChanged(userFromDb, user, token),
+            UserRole.Teacher => await UpdateWhenRoleTeacherNotChanged(userFromDb, user, token),
+            _ => throw new UnreachableException("", new ArgumentOutOfRangeException(nameof(user)))
+        };
     }
 
-    private async Task<User> SetStudentId(User user, Student student)
+    private async Task<UserDto> UpdateWhenRoleTeacherNotChanged(User userFromDb, User user, CancellationToken token)
     {
-        student.UserEmail = user.Email;
-        user.StudentId = student.Id;
-        await _dataAccessFactory.Primitive.UpdateAsync(student);
-        return user;
+        if (userFromDb.TeacherId == user.TeacherId)
+        {
+            return await EndUpdateAsync(userFromDb, user.Role, token);
+        }
+        
+        var newTeacher = await _dataAccess.PureByIdAsync<Teacher>((int)user.TeacherId!, token);
+        newTeacher.UserEmail = userFromDb.Email;
+        userFromDb.Teacher!.UserEmail = null;
+        userFromDb.TeacherId = newTeacher.Id;
+        return await EndUpdateAsync(userFromDb, user.Role, token);
     }
 
-    private async Task<User> SetTeacherId(User user, Teacher teacher)
+    private async Task<UserDto> UpdateWhenRoleStudentNotChanged(User userFromDb, User user, CancellationToken token)
     {
-        teacher.UserEmail = user.Email;
-        user.TeacherId = teacher.Id;
-        await _dataAccessFactory.Primitive.UpdateAsync(teacher);
-        return user;
+        if (userFromDb.StudentId == user.StudentId)
+        {
+            return await EndUpdateAsync(userFromDb, user.Role, token);
+        }
+
+        var newStudent = await _dataAccess.PureByIdAsync<Student>((int)user.StudentId!, token);
+        newStudent.UserEmail = userFromDb.Email;
+        userFromDb.Student!.UserEmail = null;
+        userFromDb.StudentId = newStudent.Id;
+        userFromDb.Student = null;
+        return await EndUpdateAsync(userFromDb, user.Role, token);
     }
 
-    private Task ChangeUserRelationships(User user) => user.Role switch
+    private async Task<UserDto> UpdateAsTeacher(User userFromDb, User user, CancellationToken token)
     {
-        UserRole.Student => UpdateAsStudent(user),
-        UserRole.Teacher => UpdateAsTeacher(user),
-        _ => UpdateAsAdminOrGuest(user)
-    };
+        ClearStudentData(userFromDb);
 
+        userFromDb.TeacherId = user.TeacherId;
+        var selectedTeacher = await _dataAccess.PureByIdAsync<Teacher>((int)user.TeacherId!, token);
+        selectedTeacher.UserEmail = userFromDb.Email;
+        return await EndUpdateAsync(userFromDb, user.Role, token);
+    }
 
-    private async Task ClearTeacherData(User model)
+    private static void ClearStudentData(User userFromDb)
     {
-        model.TeacherId = null;
-        if (model.Teacher is null)
+        if (userFromDb.Student is null)
         {
             return;
         }
-
-        model.Teacher.UserEmail = null;
-        await _dataAccessFactory.Primitive.UpdateAsync(model.Teacher);
-        model.Teacher = null;
+        userFromDb.Student.UserEmail = null;
+        userFromDb.StudentId = null;
+        userFromDb.Student = null;
     }
 
-    private async Task ClearStudentData(User model)
+    private async Task<UserDto> UpdateAsStudent(User userFromDb, User user, UserDto entity, CancellationToken token)
     {
-        model.StudentId = null;
-        if (model.Student is null)
+        CreateTeacherData(userFromDb);
+
+        userFromDb.StudentId = entity.StudentId;
+        var selectedStudent = await _dataAccess.PureByIdAsync<Student>((int)user.StudentId!, token);
+        selectedStudent.UserEmail = userFromDb.Email;
+        return await EndUpdateAsync(userFromDb, user.Role, token);
+    }
+
+    private static void CreateTeacherData(User userFromDb)
+    {
+        if (userFromDb.Teacher is null)
         {
             return;
         }
-
-        model.Student.UserEmail = null;
-        await _dataAccessFactory.Primitive.UpdateAsync(model.Student);
-        model.Student = null;
+        userFromDb.Teacher.UserEmail = null;
+        userFromDb.TeacherId = null;
+        userFromDb.Teacher = null;
     }
 
-    private async Task UpdateAsStudent(User model)
+    private async Task<UserDto> UpdateAsAdminOrGuest(User userFromDb, User user, CancellationToken token)
     {
-        await ClearTeacherData(model);
-        if (model.Student is null)
-        {
-            return;
-        }
-
-        model.Student.UserEmail = model.Email;
-        model.StudentId = model.Student.Id;
-        await _dataAccessFactory.Primitive.UpdateAsync(model);
+        ClearStudentData(userFromDb);
+        CreateTeacherData(userFromDb);
+        return await EndUpdateAsync(user, user.Role, token);
     }
 
-    private async Task UpdateAsTeacher(User model)
+    private async Task<UserDto> EndUpdateAsync(User user, UserRole newRole, CancellationToken token)
     {
-        await ClearStudentData(model);
-        if (model.Teacher is null)
-        {
-            return;
-        }
-
-        model.Teacher.UserEmail = model.Email;
-        model.TeacherId = model.Teacher.Id;
-        await _dataAccessFactory.Primitive.UpdateAsync(model);
+        user.Role = newRole;
+        await _dataAccess.SaveChangesAsync(token);
+        return _mapper.Map<UserDto>(user);
     }
 
-    private async Task UpdateAsAdminOrGuest(User model)
+    private async Task<UserDto> CreateAsTeacher(User user, CancellationToken token)
     {
-        await ClearStudentData(model);
-        await ClearTeacherData(model);
-        await _dataAccessFactory.Primitive.UpdateAsync(model);
+        user.StudentId = null;
+        user.Student = null;
+        user.Teacher = await _dataAccess.PureByIdAsync<Teacher>((int)user.TeacherId!, token);
+        return await EndCreateAsync(user, token);
+    }
+
+    private async Task<UserDto> CreateAsStudent(User user, CancellationToken token)
+    {
+        user.Teacher = null;
+        user.TeacherId = null;
+        user.Student = await _dataAccess.PureByIdAsync<Student>((int)user.StudentId!, token);
+        return await EndCreateAsync(user, token);
+    }
+
+    private async Task<UserDto> EndCreateAsync(User user, CancellationToken token)
+    {
+        await _dataAccess.CreateAsync(user, token);
+        await _dataAccess.SaveChangesAsync(token);
+        return _mapper.Map<UserDto>(user);
+    }
+
+    private Task<UserDto> CreateAsAdminOrGuest(User user, CancellationToken token)
+    {
+        user.Student = null;
+        user.StudentId = null;
+        user.Teacher = null;
+        user.TeacherId = null;
+        return EndCreateAsync(user, token);
     }
 }

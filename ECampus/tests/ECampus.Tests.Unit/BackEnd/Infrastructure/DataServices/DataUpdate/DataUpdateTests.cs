@@ -1,5 +1,5 @@
-﻿using ECampus.Infrastructure;
-using ECampus.Infrastructure.DataUpdateServices;
+﻿using ECampus.DataAccess.DataUpdateServices;
+using ECampus.Infrastructure;
 using ECampus.Shared.Models;
 
 namespace ECampus.Tests.Unit.BackEnd.Infrastructure.DataServices.DataUpdate;

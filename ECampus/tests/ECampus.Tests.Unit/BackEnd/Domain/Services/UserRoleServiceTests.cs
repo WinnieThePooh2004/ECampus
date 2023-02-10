@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+﻿using System.Diagnostics;
 using ECampus.Contracts.DataAccess;
 using ECampus.Contracts.DataSelectParameters;
 using ECampus.Services.Services;
@@ -7,173 +7,287 @@ using ECampus.Shared.Enums;
 using ECampus.Shared.Models;
 using ECampus.Tests.Shared.DataFactories;
 using ECampus.Tests.Shared.Mocks.EntityFramework;
-using Microsoft.EntityFrameworkCore;
+using ECampus.Tests.Unit.Extensions;
 
 namespace ECampus.Tests.Unit.BackEnd.Domain.Services;
 
 public class UserRoleServiceTests
 {
     private readonly UserRolesService _sut;
-    private readonly IMapper _mapper = MapperFactory.Mapper;
-    private readonly IDataAccessManager _complex = Substitute.For<IDataAccessManager>();
-
-    private readonly IDataAccessManager
-        _primitive = Substitute.For<IDataAccessManager>();
+    private readonly IDataAccessManager _dataAccess = Substitute.For<IDataAccessManager>();
 
     public UserRoleServiceTests()
     {
-        var factory = Substitute.For<IDataAccessManagerFactory>();
-        factory.Complex.Returns(_complex);
-        factory.Primitive.Returns(_primitive);
-        _sut = new UserRolesService(_mapper, factory);
-    }
-
-    [Fact]
-    public async Task GetById_ShouldReturnDataAccess_WhenDataAccessReturnsSingle()
-    {
-        var user = new User { Id = 128 };
-        var data = (DbSet<User>)new DbSetMock<User>(new List<User> { user });
-        _complex.GetByParameters<User, UserRolesParameters>(Arg.Any<UserRolesParameters>())
-            .Returns(data);
-
-        var result = await _sut.GetByIdAsync(1);
-
-        result.Id.Should().Be(128);
-    }
-
-    [Fact]
-    public async Task Create_ShouldSetCorrectTeacherId_WhenUserRoleIsTeacher()
-    {
-        var teacher = new TeacherDto { Id = 1 };
-        var user = new UserDto { Role = UserRole.Teacher, Teacher = teacher, Email = "email" };
-        _primitive.CreateAsync(Arg.Any<User>()).Returns(_mapper.Map<User>(user));
-
-        var result = await _sut.CreateAsync(user);
-
-        result.TeacherId.Should().Be(1);
-        await _primitive.Received(1).UpdateAsync(Arg.Is<Teacher>(s => s.UserEmail == "email"));
-        await _primitive.Received(1).SaveChangesAsync();
-    }
-
-    [Fact]
-    public async Task Create_ShouldSetCorrectStudentId_WhenUserRoleIsStudent()
-    {
-        var student = new StudentDto { Id = 1 };
-        var user = new UserDto { Role = UserRole.Student, Student = student, Email = "email" };
-        _primitive.CreateAsync(Arg.Any<User>()).Returns(_mapper.Map<User>(user));
-
-        var result = await _sut.CreateAsync(user);
-
-        result.StudentId.Should().Be(1);
-        await _primitive.Received(1).UpdateAsync(Arg.Is<Student>(s => s.UserEmail == "email"));
-        await _primitive.Received(1).SaveChangesAsync();
+        _sut = new UserRolesService(MapperFactory.Mapper, _dataAccess);
     }
 
     [Theory]
     [InlineData(UserRole.Guest)]
     [InlineData(UserRole.Admin)]
-    public async Task Create_ShouldJustCreate_WhenRoleIsAdminOrGuest(UserRole role)
+    public async Task Update_ShouldNotCallDbTwice_WhenRolesNotChangedAndIsAdminOrGuest(UserRole role)
     {
-        var user = new UserDto { Role = role, Id = 407 };
-        _primitive.CreateAsync(Arg.Any<User>()).Returns(_mapper.Map<User>(user));
+        var selectResult = new User { Role = role }.ToAsyncQueryable();
+        _dataAccess.GetByParameters<User, UserRolesParameters>(Arg.Any<UserRolesParameters>())
+            .Returns(selectResult);
 
-        var result = await _sut.CreateAsync(user);
+        await _sut.UpdateAsync(new UserDto { Id = 12, Role = role });
 
-        result.Id.Should().Be(407);
-        await _primitive.Received(1).CreateAsync(Arg.Any<User>());
-        await _primitive.Received(1).SaveChangesAsync();
-    }
-
-    [Theory]
-    [InlineData(UserRole.Guest)]
-    [InlineData(UserRole.Admin)]
-    public async Task Update_ShouldClearAllData_WhenUserRoleIsAdminOrGuest(UserRole role)
-    {
-        var teacher = new TeacherDto { UserEmail = "email", Id = 10 };
-        var student = new StudentDto { UserEmail = "email", Id = 10 };
-        var user = new UserDto
-        {
-            Student = student, Teacher = teacher, Role = role, Id = 10, Email = "email", StudentId = 10, TeacherId = 10
-        };
-        _primitive.UpdateAsync(Arg.Any<User>()).Returns(_mapper.Map<User>(user));
-
-        await _sut.UpdateAsync(user);
-
-        await _primitive.Received()
-            .UpdateAsync(Arg.Is<User>(s => s.StudentId == null));
-        await _primitive.Received()
-            .UpdateAsync(Arg.Is<User>(s => s.TeacherId == null));
+        _dataAccess.ReceivedCalls().Count().Should().Be(2);
     }
 
     [Fact]
-    public async Task Update_ShouldClearStudentData_WhenRoleIsTeacherAndStudentDataNotNull()
+    public async Task Update_ShouldCallDbTwice_WhenRoleIsStudentAndStudentIdNotChanged()
     {
-        var teacher = new TeacherDto { Id = 10 };
-        var student = new StudentDto { UserEmail = "email", Id = 10 };
+        var selectResult = new User { Role = UserRole.Student, StudentId = 10 }.ToAsyncQueryable();
+        _dataAccess.GetByParameters<User, UserRolesParameters>(Arg.Any<UserRolesParameters>())
+            .Returns(selectResult);
+
+        await _sut.UpdateAsync(new UserDto { Id = 12, Role = UserRole.Student, StudentId = 10 });
+
+        _dataAccess.ReceivedCalls().Count().Should().Be(2);
+    }
+
+    [Fact]
+    public async Task Update_ShouldCallDbTwice_WhenRoleIsTeacherAndTeacherIdNotChanged()
+    {
+        var selectResult = new User { Role = UserRole.Teacher, TeacherId = 10 }.ToAsyncQueryable();
+        _dataAccess.GetByParameters<User, UserRolesParameters>(Arg.Any<UserRolesParameters>())
+            .Returns(selectResult);
+
+        await _sut.UpdateAsync(new UserDto { Id = 12, Role = UserRole.Teacher, TeacherId = 10 });
+
+        _dataAccess.ReceivedCalls().Count().Should().Be(2);
+    }
+
+    [Fact]
+    public async Task Update_ShouldUpdateStudentEmail_WhenRoleIsStudentAndStudentIdChanged()
+    {
+        var oldStudent = new Student { UserEmail = "oldEmail" };
+        var userFromDb = new User
+            { Role = UserRole.Student, StudentId = 10, Student = oldStudent, Email = "newEmail" };
+        var selectResult = userFromDb.ToAsyncQueryable();
+        var newStudent = new Student { Id = 1, UserEmail = null };
+        _dataAccess.SetReturnById(12, userFromDb);
+        _dataAccess.SetReturnById(1, newStudent);
+        _dataAccess.GetByParameters<User, UserRolesParameters>(Arg.Any<UserRolesParameters>())
+            .Returns(selectResult);
+
+        await _sut.UpdateAsync(new UserDto { Id = 12, Role = UserRole.Student, StudentId = 1 });
+
+        oldStudent.UserEmail.Should().BeNull();
+        userFromDb.StudentId.Should().Be(1);
+        newStudent.UserEmail.Should().Be(userFromDb.Email);
+    }
+
+    [Fact]
+    public async Task Update_ShouldUpdateStudentEmail_WhenRoleIsTeacherAndTeacherIdChanged()
+    {
+        var oldTeacher = new Teacher { UserEmail = "oldEmail" };
+        var userFromDb = new User
+            { Role = UserRole.Teacher, StudentId = 10, Teacher = oldTeacher, Email = "newEmail" };
+        var selectResult = userFromDb.ToAsyncQueryable();
+        var newTeacher = new Teacher { Id = 1, UserEmail = null };
+        _dataAccess.SetReturnById(12, userFromDb);
+        _dataAccess.SetReturnById(1, newTeacher);
+        _dataAccess.GetByParameters<User, UserRolesParameters>(Arg.Any<UserRolesParameters>())
+            .Returns(selectResult);
+
+        await _sut.UpdateAsync(new UserDto { Id = 12, Role = UserRole.Teacher, TeacherId = 1 });
+
+        oldTeacher.UserEmail.Should().BeNull();
+        userFromDb.TeacherId.Should().Be(1);
+        newTeacher.UserEmail.Should().Be(userFromDb.Email);
+    }
+
+    [Fact]
+    public async Task Update_ShouldThrowException_WhenRoleNotChangedAndIsOutOfRange()
+    {
+        var userFromDb = new User { Role = (UserRole)10 }.ToAsyncQueryable();
+        _dataAccess.GetByParameters<User, UserRolesParameters>(Arg.Any<UserRolesParameters>())
+            .Returns(userFromDb);
+
+        await new Func<Task>(() => _sut.UpdateAsync(new UserDto { Role = (UserRole)10 })).Should()
+            .ThrowAsync<UnreachableException>()
+            .WithInnerExceptionExactly<UnreachableException, ArgumentOutOfRangeException>();
+    }
+
+    [Theory]
+    [InlineData(UserRole.Admin)]
+    [InlineData(UserRole.Guest)]
+    public async Task Update_ShouldClearStudentAndTeacherData_WhenRoleIsAdminOrGuest(UserRole role)
+    {
+        var teacher = new Teacher { UserEmail = "email" };
+        var student = new Student { UserEmail = "email" };
+        var userFromDb = new User { Student = student, Teacher = teacher, Role = UserRole.Student };
+        var selected = userFromDb.ToAsyncQueryable();
+        _dataAccess.GetByParameters<User, UserRolesParameters>(Arg.Any<UserRolesParameters>())
+            .Returns(selected);
+
+        await _sut.UpdateAsync(new UserDto { Id = 14, Role = role });
+
+        student.UserEmail.Should().BeNull();
+        teacher.UserEmail.Should().BeNull();
+        userFromDb.StudentId.Should().BeNull();
+        userFromDb.TeacherId.Should().BeNull();
+        userFromDb.Teacher.Should().BeNull();
+        userFromDb.Student.Should().BeNull();
+    }
+
+    [Theory]
+    [InlineData(UserRole.Admin)]
+    [InlineData(UserRole.Guest)]
+    public async Task Update_ShouldNotClearStudentAndTeacherData_WhenRoleIsAdminOrGuestAndRelationsAreNull(
+        UserRole role)
+    {
+        var userFromDb = new User { Role = UserRole.Student };
+        var selected = userFromDb.ToAsyncQueryable();
+        _dataAccess.GetByParameters<User, UserRolesParameters>(Arg.Any<UserRolesParameters>())
+            .Returns(selected);
+
+        await _sut.UpdateAsync(new UserDto { Id = 14, Role = role });
+
+        userFromDb.StudentId.Should().BeNull();
+        userFromDb.TeacherId.Should().BeNull();
+        userFromDb.Teacher.Should().BeNull();
+        userFromDb.Student.Should().BeNull();
+    }
+
+    [Fact]
+    public async Task Update_ShouldUpdateEmail_WhenRoleChangedToStudent()
+    {
+        var userFromDb = new User { Role = UserRole.Guest, Email = "email" };
+        var student = new Student { Id = 10 };
+        var selected = userFromDb.ToAsyncQueryable();
+        _dataAccess.GetByParameters<User, UserRolesParameters>(Arg.Any<UserRolesParameters>())
+            .Returns(selected);
+        _dataAccess.SetReturnById(10, student);
+
+        await _sut.UpdateAsync(new UserDto { Id = 14, Role = UserRole.Student, StudentId = 10 });
+
+        userFromDb.StudentId.Should().Be(10);
+        student.UserEmail.Should().Be(userFromDb.Email);
+    }
+
+    [Fact]
+    public async Task Update_ShouldUpdateEmail_WhenRoleChangedToTeacher()
+    {
+        var userFromDb = new User { Role = UserRole.Guest, Email = "email" };
+        var teacher = new Teacher { Id = 10 };
+        var selected = userFromDb.ToAsyncQueryable();
+        _dataAccess.GetByParameters<User, UserRolesParameters>(Arg.Any<UserRolesParameters>())
+            .Returns(selected);
+        _dataAccess.SetReturnById(10, teacher);
+
+        await _sut.UpdateAsync(new UserDto { Id = 14, Role = UserRole.Teacher, TeacherId = 10 });
+
+        userFromDb.TeacherId.Should().Be(10);
+        teacher.UserEmail.Should().Be(userFromDb.Email);
+    }
+    
+    [Fact]
+    public async Task Update_ShouldThrow_WhenRoleIsOutOfRange()
+    {
+        var userFromDb = new User { Role = (UserRole)1, Email = "email" };
+        var teacher = new Teacher { Id = 10 };
+        var selected = userFromDb.ToAsyncQueryable();
+        _dataAccess.GetByParameters<User, UserRolesParameters>(Arg.Any<UserRolesParameters>())
+            .Returns(selected);
+        _dataAccess.SetReturnById(10, teacher);
+
+        await new Func<Task>(() => _sut.UpdateAsync(new UserDto { Role = (UserRole)10 })).Should()
+            .ThrowAsync<UnreachableException>()
+            .WithInnerExceptionExactly<UnreachableException, ArgumentOutOfRangeException>();
+    }
+    
+    [Fact]
+    public async Task Update_ShouldThrow_WhenRoleAreEqualAndIsOutOfRange()
+    {
+        var userFromDb = new User { Role = (UserRole)10, Email = "email" };
+        var teacher = new Teacher { Id = 10 };
+        var selected = userFromDb.ToAsyncQueryable();
+        _dataAccess.GetByParameters<User, UserRolesParameters>(Arg.Any<UserRolesParameters>())
+            .Returns(selected);
+        _dataAccess.SetReturnById(10, teacher);
+
+        await new Func<Task>(() => _sut.UpdateAsync(new UserDto { Role = (UserRole)10 })).Should()
+            .ThrowAsync<UnreachableException>()
+            .WithInnerExceptionExactly<UnreachableException, ArgumentOutOfRangeException>();
+    }
+
+    [Fact]
+    public async Task GetById_ShouldReturnFromDataAccess()
+    {
+        var user = new User().ToAsyncQueryable();
+        _dataAccess.GetByParameters<User, UserRolesParameters>(Arg.Any<UserRolesParameters>()).Returns(user);
+
+        await _sut.GetByIdAsync(10);
+
+        _dataAccess.Received(1)
+            .GetByParameters<User, UserRolesParameters>(Arg.Is<UserRolesParameters>(u => u.UserId == 10));
+    }
+
+    [Fact]
+    public async Task Delete_ShouldDeleteFromDb_WhenUserExist()
+    {
+        var user = new User();
+        var userQuery = user.ToAsyncQueryable();
+        _dataAccess.GetByParameters<User, UserRolesParameters>(Arg.Any<UserRolesParameters>()).Returns(userQuery);
+
+        await _sut.DeleteAsync(10);
+
+        _dataAccess.Received(1).Delete(user);
+    }
+
+    [Theory]
+    [InlineData(UserRole.Admin)]
+    [InlineData(UserRole.Guest)]
+    public async Task Create_ShouldOnlyCreateAndSave_WhenRoleIsAdminOrGuest(UserRole role)
+    {
         var user = new UserDto
-        {
-            Student = student, Teacher = teacher, Role = UserRole.Teacher, Id = 10, Email = "email", StudentId = 10
-        };
-        _complex.UpdateAsync(Arg.Any<User>()).Returns(_mapper.Map<User>(user));
+            { Role = role, StudentId = 0, Student = new StudentDto(), Teacher = new TeacherDto(), TeacherId = 0 };
 
-        var result = await _sut.UpdateAsync(user);
+        var result = await _sut.CreateAsync(user);
 
+        _dataAccess.ReceivedCalls().Count().Should().Be(2);
         result.StudentId.Should().BeNull();
-        result.TeacherId.Should().Be(10);
-        await _primitive.Received()
-            .UpdateAsync(Arg.Is<User>(s => s.StudentId == null && s.Teacher!.UserEmail == "email"));
-    }
-
-    [Fact]
-    public async Task Update_ShouldClearTeacherData_WhenRoleIsStudentAndTeacherDataNotNull()
-    {
-        var teacher = new TeacherDto { UserEmail = "email", Id = 10 };
-        var student = new StudentDto { Id = 10 };
-        var user = new UserDto
-        {
-            Student = student, Teacher = teacher, Role = UserRole.Student, Id = 10, Email = "email", TeacherId = 10
-        };
-        _primitive.UpdateAsync(Arg.Any<User>()).Returns(_mapper.Map<User>(user));
-
-        var result = await _sut.UpdateAsync(user);
-
+        result.Student.Should().BeNull();
+        result.Teacher.Should().BeNull();
         result.TeacherId.Should().BeNull();
-        result.StudentId.Should().Be(10);
-        await _primitive.Received()
-            .UpdateAsync(Arg.Is<User>(s => s.TeacherId == null && s.Student!.UserEmail == "email"));
     }
 
     [Fact]
-    public async Task Update_ShouldNotClearTeacherData_WhenRoleIsStudentAndDataIsNull()
+    public async Task Create_ShouldAddTeacher_WhenRoleIsTeacher()
     {
-        var user = new UserDto { Role = UserRole.Student };
-        _primitive.UpdateAsync(Arg.Any<User>()).Returns(_mapper.Map<User>(user));
+        var teacher = new Teacher { Id = 19, FirstName = "needed teacher" };
+        _dataAccess.SetReturnById(19, teacher);
 
-        await _sut.UpdateAsync(user);
+        var result = await _sut.CreateAsync(new UserDto
+            { TeacherId = 19, Role = UserRole.Teacher, Student = new StudentDto(), StudentId = 9 });
 
-        _primitive.ReceivedCalls().Count().Should().Be(1);
+        result.Student.Should().BeNull();
+        result.StudentId.Should().BeNull();
+        result.Teacher!.Id.Should().Be(19);
     }
 
     [Fact]
-    public async Task Update_ShouldNotClearStudentData_WhenRoleIsTeacherAndDataIsNull()
+    public async Task Create_ShouldAddStudent_WhenRoleIsStudent()
     {
-        var user = new UserDto { Role = UserRole.Teacher };
-        _primitive.UpdateAsync(Arg.Any<User>()).Returns(_mapper.Map<User>(user));
+        var student = new Student { Id = 19, FirstName = "needed teacher" };
+        _dataAccess.SetReturnById(19, student);
 
-        await _sut.UpdateAsync(user);
+        var result = await _sut.CreateAsync(new UserDto
+            { StudentId = 19, Role = UserRole.Student, Teacher = new TeacherDto(), TeacherId = 9 });
 
-        _primitive.ReceivedCalls().Count().Should().Be(1);
+        result.Teacher.Should().BeNull();
+        result.TeacherId.Should().BeNull();
+        result.Student!.Id.Should().Be(19);
     }
 
     [Fact]
-    public async Task Delete_ShouldCall_DeleteService()
+    public async Task Create_ShouldThrowException_WhenRoleIsOutOfEnum()
     {
-        var user = new User { Id = 1 };
-        _complex.DeleteAsync<User>(1).Returns(user);
-
-        var model = await _sut.DeleteAsync(1);
-
-        model.Id.Should().Be(1);
-        await _complex.Received().DeleteAsync<User>(1);
+        await new Func<Task>(() => _sut.CreateAsync(new UserDto { Role = (UserRole)10 })).Should()
+            .ThrowAsync<UnreachableException>()
+            .WithInnerExceptionExactly<UnreachableException, ArgumentOutOfRangeException>();
     }
 }

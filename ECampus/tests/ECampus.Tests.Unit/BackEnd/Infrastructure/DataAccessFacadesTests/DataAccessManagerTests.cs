@@ -1,6 +1,6 @@
-﻿using ECampus.Infrastructure;
-using ECampus.Infrastructure.DataAccessFacades;
-using ECampus.Infrastructure.Interfaces;
+﻿using ECampus.DataAccess.DataAccessFacades;
+using ECampus.DataAccess.Interfaces;
+using ECampus.Infrastructure;
 using ECampus.Shared.Exceptions.InfrastructureExceptions;
 using ECampus.Shared.Models;
 using ECampus.Tests.Shared.DataFactories;
@@ -94,14 +94,14 @@ public class DataAccessManagerTests
     }
 
     [Fact]
-    public async Task Delete_ShouldCall_DeleteService()
+    public void Delete_ShouldCall_DeleteService()
     {
         var item = CreateModel();
         var deleteService = Substitute.For<IDataDeleteService<Auditory>>();
         _serviceProvider.GetService(typeof(IDataDeleteService<Auditory>)).Returns(deleteService);
-        deleteService.DeleteAsync(1, _context).Returns(item);
+        deleteService.Delete(item, _context).Returns(item);
 
-        var model = await _sut.DeleteAsync<Auditory>(1);
+        var model = _sut.Delete(item);
 
         model.Should().Be(item);
     }

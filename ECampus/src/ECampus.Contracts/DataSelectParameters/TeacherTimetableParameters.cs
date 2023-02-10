@@ -3,7 +3,12 @@ using ECampus.Shared.QueryParameters;
 
 namespace ECampus.Contracts.DataSelectParameters;
 
-public class TeacherTimetableParameters : IDataSelectParameters<Class>
+public readonly struct TeacherTimetableParameters : IDataSelectParameters<Class>
 {
-    public int TeacherId { get; set; }
+    public readonly int TeacherId;
+
+    public TeacherTimetableParameters(int teacherId)
+    {
+        TeacherId = teacherId;
+    }
 }

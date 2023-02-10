@@ -28,7 +28,7 @@ public class BaseService<TDto, TRepositoryModel> : IBaseService<TDto>
 
     public async Task<TDto> DeleteAsync(int id, CancellationToken token = default)
     {
-        var deleted = await _dataAccess.DeleteAsync<TRepositoryModel>(id, token);
+        var deleted = _dataAccess.Delete(new TRepositoryModel { Id = id });
         await _dataAccess.SaveChangesAsync(token);
         return _mapper.Map<TDto>(deleted);
     }

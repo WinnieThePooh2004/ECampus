@@ -30,8 +30,8 @@ public class TimetableService : ITimetableService
     {
         var auditory = await _dataAccess.GetByIdAsync<Auditory>(auditoryId, token);
         return new Timetable(_mapper.Map<List<ClassDto>>(await _dataAccess
-            .GetByParameters<Class, AuditoryTimetableParameters>(new AuditoryTimetableParameters
-                { AuditoryId = auditoryId }).ToListAsync(cancellationToken: token)))
+            .GetByParameters<Class, AuditoryTimetableParameters>(new AuditoryTimetableParameters(auditoryId))
+            .ToListAsync(token)))
         {
             Auditory = _mapper.Map<AuditoryDto>(auditory)
         };
@@ -41,8 +41,8 @@ public class TimetableService : ITimetableService
     {
         var group = await _dataAccess.GetByIdAsync<Group>(groupId, token);
         return new Timetable(_mapper.Map<List<ClassDto>>(await _dataAccess
-            .GetByParameters<Class, GroupTimetableParameters>(new GroupTimetableParameters { GroupId = groupId })
-            .ToListAsync(cancellationToken: token)))
+            .GetByParameters<Class, GroupTimetableParameters>(new GroupTimetableParameters(groupId))
+            .ToListAsync(token)))
         {
             Group = _mapper.Map<GroupDto>(group)
         };
@@ -53,7 +53,7 @@ public class TimetableService : ITimetableService
         var teacher = await _dataAccess.GetByIdAsync<Group>(teacherId, token);
         return new Timetable(_mapper.Map<List<ClassDto>>(await _dataAccess
             .GetByParameters<Class, TeacherTimetableParameters>(
-                new TeacherTimetableParameters { TeacherId = teacherId }).ToListAsync(cancellationToken: token)))
+                new TeacherTimetableParameters(teacherId)).ToListAsync(token)))
         {
             Teacher = _mapper.Map<TeacherDto>(teacher)
         };

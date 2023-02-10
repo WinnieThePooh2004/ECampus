@@ -1,5 +1,5 @@
-﻿using ECampus.Infrastructure;
-using ECampus.Infrastructure.DataDeleteServices;
+﻿using ECampus.DataAccess.DataDeleteServices;
+using ECampus.Infrastructure;
 using ECampus.Shared.Models;
 
 namespace ECampus.Tests.Unit.BackEnd.Infrastructure.DataServices.DataDelete;
@@ -14,15 +14,13 @@ public class DataDeleteTests
     }
 
     [Fact]
-    public async Task Delete_ModelRemovedFromContext()
+    public void Delete_ModelRemovedFromContext()
     {
-        Auditory? deleted = null;
+        var auditory = new Auditory();
         var context = Substitute.For<ApplicationDbContext>();
-        context.Remove(Arg.Do<Auditory>(model => deleted = model));
+        
+        _sut.Delete(auditory, context);
 
-        await _sut.DeleteAsync(10, context);
-
-        context.Received(1).Remove(Arg.Any<Auditory>());
-        deleted?.Id.Should().Be(10);
+        context.Received(1).Remove(auditory);
     }
 }

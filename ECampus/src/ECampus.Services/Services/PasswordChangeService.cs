@@ -18,11 +18,11 @@ public class PasswordChangeService : IPasswordChangeService
     private readonly IMapper _mapper;
 
     public PasswordChangeService(IUpdateValidator<PasswordChangeDto> passwordChangeValidator, IMapper mapper,
-        IDataAccessManagerFactory dataAccessManagerFactory)
+        IDataAccessManager dataAccessManagerFactory)
     {
         _passwordChangeValidator = passwordChangeValidator;
         _mapper = mapper;
-        _dataAccess = dataAccessManagerFactory.Primitive;
+        _dataAccess = dataAccessManagerFactory;
     }
 
     public async Task<UserDto> ChangePassword(PasswordChangeDto passwordChange, CancellationToken token = default)
@@ -33,7 +33,7 @@ public class PasswordChangeService : IPasswordChangeService
             throw new ValidationException(typeof(PasswordChangeDto), errors);
         }
 
-        var user = await _dataAccess.GetByIdAsync<User>(passwordChange.UserId, token);
+        var user = await _dataAccess.PureByIdAsync<User>(passwordChange.UserId, token);
         user.Password = passwordChange.NewPassword;
         await _dataAccess.SaveChangesAsync(token);
         return _mapper.Map<UserDto>(user);

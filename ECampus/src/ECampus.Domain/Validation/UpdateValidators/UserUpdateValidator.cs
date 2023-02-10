@@ -2,6 +2,7 @@
 using ECampus.Contracts.DataAccess;
 using ECampus.Contracts.DataSelectParameters;
 using ECampus.Domain.Interfaces.Validation;
+using ECampus.Domain.Validation.UniversalValidators;
 using ECampus.Shared.DataTransferObjects;
 using ECampus.Shared.Enums;
 using ECampus.Shared.Extensions;
@@ -12,7 +13,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ECampus.Domain.Validation.UpdateValidators;
 
-public class UserUpdateValidator : IUpdateValidator<UserDto>
+public class UserUpdateValidator : UserValidatorBase, IUpdateValidator<UserDto>
 {
     private readonly IUpdateValidator<UserDto> _updateValidator;
     private readonly IHttpContextAccessor _httpContextAccessor;
@@ -20,22 +21,26 @@ public class UserUpdateValidator : IUpdateValidator<UserDto>
 
     public UserUpdateValidator(IUpdateValidator<UserDto> updateValidator,
         IHttpContextAccessor httpContextAccessor,
-        IDataAccessManagerFactory dataAccess)
+        IDataAccessManager dataAccess) : base(dataAccess)
     {
         _updateValidator = updateValidator;
         _httpContextAccessor = httpContextAccessor;
-        _dataAccess = dataAccess.Primitive;
+        _dataAccess = dataAccess;
     }
 
     public async Task<ValidationResult> ValidateAsync(UserDto dataTransferObject, CancellationToken token = default)
     {
         var errors = await _updateValidator.ValidateAsync(dataTransferObject, token);
-        var userFromDb = await _dataAccess.GetByIdAsync<User>(dataTransferObject.Id, token);
+        if (!errors.IsValid)
+        {
+            return errors;
+        }
+        var userFromDb = await _dataAccess.PureByIdAsync<User>(dataTransferObject.Id, token);
         ValidateRole(dataTransferObject, userFromDb, errors);
         await ValidateUsernameUniqueness(dataTransferObject, errors, token);
-        
-        ValidateChanges(dataTransferObject, userFromDb, errors);
 
+        ValidateChanges(dataTransferObject, userFromDb, errors);
+        errors.MergeResults(await base.ValidateRole(dataTransferObject, token));
         return errors;
     }
 
@@ -53,11 +58,12 @@ public class UserUpdateValidator : IUpdateValidator<UserDto>
         }
     }
 
-    private async Task ValidateUsernameUniqueness(UserDto dataTransferObject, ValidationResult errors, CancellationToken token = default)
+    private async Task ValidateUsernameUniqueness(UserDto dataTransferObject, ValidationResult errors,
+        CancellationToken token = default)
     {
         var usersWithSaveUsername =
-            _dataAccess.GetByParameters<User, UserUsernameParameters>(new UserUsernameParameters
-                { Username = dataTransferObject.Username });
+            _dataAccess.GetByParameters<User, UserUsernameParameters>(
+                new UserUsernameParameters(dataTransferObject.Username));
         if (await usersWithSaveUsername.AnyAsync(user => user.Id != dataTransferObject.Id, token))
         {
             errors.AddError(new ValidationError(nameof(dataTransferObject.Username),

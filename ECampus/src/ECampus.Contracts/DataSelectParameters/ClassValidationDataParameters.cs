@@ -6,7 +6,7 @@ namespace ECampus.Contracts.DataSelectParameters;
 
 public class ClassValidationDataParameters : IDataSelectParameters<Class>
 {
-    public int Number { get; set; }
-    public int DayOfWeek { get; set; }
-    public WeekDependency WeekDependency { get; set; }
+    public int Number { get; init; }
+    public int DayOfWeek { get; init; }
+    public WeekDependency WeekDependency { get; init; }
 }

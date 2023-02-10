@@ -1,5 +1,5 @@
-﻿using ECampus.Infrastructure;
-using ECampus.Infrastructure.DataSelectors.MultipleItemSelectors;
+﻿using ECampus.DataAccess.DataSelectors.MultipleItemSelectors;
+using ECampus.Infrastructure;
 using ECampus.Shared.Models;
 using ECampus.Shared.QueryParameters;
 using ECampus.Tests.Shared.Mocks.EntityFramework;

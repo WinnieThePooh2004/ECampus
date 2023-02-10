@@ -36,8 +36,8 @@ public class AuthorizationService : IAuthorizationService
             throw new HttpContextNotFoundExceptions();
         }
 
-        var user = await _parametersDataAccess.GetSingleAsync<User, UserEmailParameters>(new UserEmailParameters
-            { Email = login.Email }, token: token);
+        var user = await _parametersDataAccess.GetSingleAsync<User, UserEmailParameters>(
+            new UserEmailParameters(login.Email), token);
         if (user.Password != login.Password)
         {
             throw new DomainException(HttpStatusCode.BadRequest, "Wrong password or email");

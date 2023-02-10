@@ -1,4 +1,5 @@
 ﻿using ECampus.Contracts.DataAccess;
+using ECampus.Contracts.DataSelectParameters;
 using ECampus.Domain.Interfaces.Validation;
 using ECampus.Services.Services;
 using ECampus.Shared.DataTransferObjects;
@@ -7,6 +8,7 @@ using ECampus.Shared.Exceptions.DomainExceptions;
 using ECampus.Shared.Models;
 using ECampus.Shared.Validation;
 using ECampus.Tests.Shared.DataFactories;
+using ECampus.Tests.Shared.Mocks.EntityFramework;
 
 namespace ECampus.Tests.Unit.BackEnd.Domain.Services;
 
@@ -23,9 +25,7 @@ public class PasswordChangeServiceTests
 
     public PasswordChangeServiceTests()
     {
-        var dataAccessFactory = Substitute.For<IDataAccessManagerFactory>();
-        dataAccessFactory.Primitive.Returns(_dataAccess);
-        _sut = new PasswordChangeService(_validator, MapperFactory.Mapper, dataAccessFactory);
+        _sut = new PasswordChangeService(_validator, MapperFactory.Mapper, _dataAccess);
     }
 
     [Fact]
@@ -60,7 +60,8 @@ public class PasswordChangeServiceTests
         var errors = new ValidationResult();
         var user = new User { Id = new Random().Next() };
         var passwordChange = _fixture.Create<PasswordChangeDto>();
-        _dataAccess.GetByIdAsync<User>(passwordChange.UserId).Returns(user);
+        var users = new DbSetMock<User>(user).Object;
+        _dataAccess.GetByParameters<User, PureByIdParameters<User>>(Arg.Any<PureByIdParameters<User>>()).Returns(users);
         _validator.ValidateAsync(passwordChange).Returns(errors);
 
         var result = await _sut.ChangePassword(passwordChange);

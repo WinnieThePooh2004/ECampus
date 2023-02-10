@@ -3,7 +3,12 @@ using ECampus.Shared.QueryParameters;
 
 namespace ECampus.Contracts.DataSelectParameters;
 
-public class UserRolesParameters : IDataSelectParameters<User>
+public readonly struct UserRolesParameters : IDataSelectParameters<User>
 {
-    public int UserId { get; init; }
+    public readonly int UserId;
+
+    public UserRolesParameters(int userId)
+    {
+        UserId = userId;
+    }
 }
