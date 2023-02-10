@@ -36,4 +36,10 @@ public class UserRolesController : ControllerBase
     {
         return Ok(await _service.CreateAsync(user, token));
     }
+
+    [HttpDelete("{id:int}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        return Ok(await _service.DeleteAsync(id));
+    }
 }

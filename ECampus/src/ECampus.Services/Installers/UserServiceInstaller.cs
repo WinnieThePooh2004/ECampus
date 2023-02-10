@@ -14,6 +14,7 @@ public class UserServiceInstaller : IInstaller
 
     public void Install(IServiceCollection services, IConfiguration configuration)
     {
+        services.AddScoped<UserRolesService>();
         services.AddLazy<UserRolesService>();
         services.Decorate<IBaseService<UserDto>, UserBaseService>();
     }

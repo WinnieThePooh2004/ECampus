@@ -55,7 +55,7 @@ public class UserRolesService : IBaseService<UserDto>
         userFromDb.Username = user.Username;
         if (userFromDb.Role == user.Role)
         {
-            return await EndUpdateAsync(userFromDb, token);
+            return await UpdateWhenRoleNotChanged(userFromDb, user, token);
         }
 
         return user.Role switch
@@ -65,6 +65,45 @@ public class UserRolesService : IBaseService<UserDto>
             UserRole.Teacher => await UpdateAsTeacher(entity, userFromDb, user, token),
             _ => throw new ArgumentOutOfRangeException(nameof(entity))
         };
+    }
+
+    private async Task<UserDto> UpdateWhenRoleNotChanged(User userFromDb, User user, CancellationToken token)
+    {
+        return userFromDb.Role switch
+        {
+            UserRole.Admin or UserRole.Guest => await EndUpdateAsync(userFromDb, token),
+            UserRole.Student => await UpdateWhenRoleStudentNotChanged(userFromDb, user, token),
+            UserRole.Teacher => await UpdateWhenRoleTeacherNotChanged(userFromDb, user, token),
+            _ => throw new ArgumentOutOfRangeException(nameof(user))
+        };
+    }
+
+    private async Task<UserDto> UpdateWhenRoleTeacherNotChanged(User userFromDb, User user, CancellationToken token)
+    {
+        if (userFromDb.TeacherId == user.TeacherId)
+        {
+            return await EndUpdateAsync(userFromDb, token);
+        }
+        
+        var newTeacher = await _dataAccess.GetPureByIdAsync<Teacher>((int)user.TeacherId!, token);
+        newTeacher.UserEmail = user.Email;
+        userFromDb.Teacher!.UserEmail = null;
+        userFromDb.TeacherId = newTeacher.Id;
+        return await EndUpdateAsync(userFromDb, token);
+    }
+
+    private async Task<UserDto> UpdateWhenRoleStudentNotChanged(User userFromDb, User user, CancellationToken token)
+    {
+        if (userFromDb.StudentId == user.StudentId)
+        {
+            return await EndUpdateAsync(userFromDb, token);
+        }
+
+        var newStudent = await _dataAccess.GetPureByIdAsync<Student>((int)user.StudentId!, token);
+        newStudent.UserEmail = user.Email;
+        userFromDb.Student!.UserEmail = null;
+        userFromDb.StudentId = newStudent.Id;
+        return await EndUpdateAsync(userFromDb, token);
     }
 
     private async Task<UserDto> UpdateAsTeacher(UserDto entity, User userFromDb, User user, CancellationToken token)
