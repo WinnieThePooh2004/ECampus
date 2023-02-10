@@ -85,7 +85,7 @@ public class UserRolesService : IBaseService<UserDto>
             return await EndUpdateAsync(userFromDb, token);
         }
         
-        var newTeacher = await _dataAccess.GetPureByIdAsync<Teacher>((int)user.TeacherId!, token);
+        var newTeacher = await _dataAccess.PureByIdAsync<Teacher>((int)user.TeacherId!, token);
         newTeacher.UserEmail = user.Email;
         userFromDb.Teacher!.UserEmail = null;
         userFromDb.TeacherId = newTeacher.Id;
@@ -99,7 +99,7 @@ public class UserRolesService : IBaseService<UserDto>
             return await EndUpdateAsync(userFromDb, token);
         }
 
-        var newStudent = await _dataAccess.GetPureByIdAsync<Student>((int)user.StudentId!, token);
+        var newStudent = await _dataAccess.PureByIdAsync<Student>((int)user.StudentId!, token);
         newStudent.UserEmail = user.Email;
         userFromDb.Student!.UserEmail = null;
         userFromDb.StudentId = newStudent.Id;
@@ -116,7 +116,7 @@ public class UserRolesService : IBaseService<UserDto>
         }
 
         userFromDb.TeacherId = entity.TeacherId;
-        var selectedTeacher = await _dataAccess.GetPureByIdAsync<Teacher>((int)user.TeacherId!, token);
+        var selectedTeacher = await _dataAccess.PureByIdAsync<Teacher>((int)user.TeacherId!, token);
         selectedTeacher.UserEmail = user.Email;
         return await EndUpdateAsync(userFromDb, token);
     }
@@ -131,7 +131,7 @@ public class UserRolesService : IBaseService<UserDto>
         }
 
         userFromDb.StudentId = entity.StudentId;
-        var selectedStudent = await _dataAccess.GetPureByIdAsync<Student>((int)user.StudentId!, token);
+        var selectedStudent = await _dataAccess.PureByIdAsync<Student>((int)user.StudentId!, token);
         selectedStudent.UserEmail = user.Email;
         return await EndUpdateAsync(userFromDb, token);
     }
@@ -166,7 +166,7 @@ public class UserRolesService : IBaseService<UserDto>
     {
         user.StudentId = null;
         user.Student = null;
-        var teacherFromDb = await _dataAccess.GetPureByIdAsync<Teacher>((int)user.TeacherId!, token);
+        var teacherFromDb = await _dataAccess.PureByIdAsync<Teacher>((int)user.TeacherId!, token);
         teacherFromDb.UserEmail = user.Email;
         return await EndCreateAsync(user, token);
     }
@@ -175,7 +175,7 @@ public class UserRolesService : IBaseService<UserDto>
     {
         user.Teacher = null;
         user.TeacherId = null;
-        var studentFromDb = await _dataAccess.GetPureByIdAsync<Student>((int)user.StudentId!, token);
+        var studentFromDb = await _dataAccess.PureByIdAsync<Student>((int)user.StudentId!, token);
         studentFromDb.UserEmail = user.Email;
         return await EndCreateAsync(user, token);
     }

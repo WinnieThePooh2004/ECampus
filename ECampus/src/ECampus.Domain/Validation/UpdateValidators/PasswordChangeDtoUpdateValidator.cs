@@ -32,7 +32,7 @@ public class PasswordChangeDtoUpdateValidator : IUpdateValidator<PasswordChangeD
             return claimValidationResults;
         }
         var errors = await _baseValidator.ValidateAsync(dataTransferObject, token);
-        var user = await _dataAccess.GetPureByIdAsync<User>(dataTransferObject.UserId, token);
+        var user = await _dataAccess.PureByIdAsync<User>(dataTransferObject.UserId, token);
         if (user.Password != dataTransferObject.OldPassword)
         {
             errors.AddError(new ValidationError(nameof(dataTransferObject.OldPassword), "Invalid old password"));

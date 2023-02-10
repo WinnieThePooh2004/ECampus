@@ -2,6 +2,7 @@
 using ECampus.Contracts.DataAccess;
 using ECampus.Contracts.DataSelectParameters;
 using ECampus.Domain.Interfaces.Validation;
+using ECampus.Domain.Validation.UniversalValidators;
 using ECampus.Shared.DataTransferObjects;
 using ECampus.Shared.Enums;
 using ECampus.Shared.Extensions;
@@ -12,7 +13,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ECampus.Domain.Validation.UpdateValidators;
 
-public class UserUpdateValidator : IUpdateValidator<UserDto>
+public class UserUpdateValidator : UserValidatorBase, IUpdateValidator<UserDto>
 {
     private readonly IUpdateValidator<UserDto> _updateValidator;
     private readonly IHttpContextAccessor _httpContextAccessor;
@@ -20,7 +21,7 @@ public class UserUpdateValidator : IUpdateValidator<UserDto>
 
     public UserUpdateValidator(IUpdateValidator<UserDto> updateValidator,
         IHttpContextAccessor httpContextAccessor,
-        IDataAccessManager dataAccess)
+        IDataAccessManager dataAccess) : base(dataAccess)
     {
         _updateValidator = updateValidator;
         _httpContextAccessor = httpContextAccessor;
@@ -30,12 +31,12 @@ public class UserUpdateValidator : IUpdateValidator<UserDto>
     public async Task<ValidationResult> ValidateAsync(UserDto dataTransferObject, CancellationToken token = default)
     {
         var errors = await _updateValidator.ValidateAsync(dataTransferObject, token);
-        var userFromDb = await _dataAccess.GetPureByIdAsync<User>(dataTransferObject.Id, token);
+        var userFromDb = await _dataAccess.PureByIdAsync<User>(dataTransferObject.Id, token);
         ValidateRole(dataTransferObject, userFromDb, errors);
         await ValidateUsernameUniqueness(dataTransferObject, errors, token);
 
         ValidateChanges(dataTransferObject, userFromDb, errors);
-
+        errors.MergeResults(await base.ValidateRole(dataTransferObject, token));
         return errors;
     }
 

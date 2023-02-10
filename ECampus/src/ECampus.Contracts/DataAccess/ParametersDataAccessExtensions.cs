@@ -29,11 +29,19 @@ public static class ParametersDataAccessExtensions
     /// <typeparam name="TModel">Db model you are searching for</typeparam>
     /// <returns>Object without any navigation properties values</returns>
     /// <exception cref="ObjectNotFoundByIdException">When object with provided id not found</exception>
-    public static async Task<TModel> GetPureByIdAsync<TModel>(this IDataAccessManager dataAccess, int id,
+    public static async Task<TModel> PureByIdAsync<TModel>(this IDataAccessManager dataAccess, int id,
         CancellationToken token)
         where TModel : class, IModel
     {
         return await dataAccess.GetByParameters<TModel, PureByIdParameters<TModel>>(new PureByIdParameters<TModel>(id))
             .SingleOrDefaultAsync(token) ?? throw new ObjectNotFoundByIdException(typeof(TModel), id);
+    }
+    
+    public static async Task<TModel?> PureOrDefaultByIdAsync<TModel>(this IDataAccessManager dataAccess, int id,
+        CancellationToken token)
+        where TModel : class, IModel
+    {
+        return await dataAccess.GetByParameters<TModel, PureByIdParameters<TModel>>(new PureByIdParameters<TModel>(id))
+            .SingleOrDefaultAsync(token);
     }
 }

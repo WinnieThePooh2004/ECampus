@@ -56,7 +56,7 @@ public class CourseTaskService : IBaseService<CourseTaskDto>
             return;
         }
 
-        var course = await _dataAccessFactory.GetPureByIdAsync<Course>(entity.CourseId, token);
+        var course = await _dataAccessFactory.PureByIdAsync<Course>(entity.CourseId, token);
         var message = new TaskCreated
         {
             StudentEmails = studentEmails,
