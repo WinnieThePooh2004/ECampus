@@ -26,12 +26,13 @@ public class PasswordChangeDtoUpdateValidator : IUpdateValidator<PasswordChangeD
 
     public async Task<ValidationResult> ValidateAsync(PasswordChangeDto dataTransferObject, CancellationToken token = default)
     {
-        var claimValidationResults = ValidateRole(dataTransferObject.UserId);
-        if (!claimValidationResults.IsValid)
-        {
-            return claimValidationResults;
-        }
         var errors = await _baseValidator.ValidateAsync(dataTransferObject, token);
+        var idValidationResults = ValidateRole(dataTransferObject.UserId);
+        errors.MergeResults(idValidationResults);
+        if (!idValidationResults.IsValid)
+        {
+            return errors;
+        }
         var user = await _dataAccess.PureByIdAsync<User>(dataTransferObject.UserId, token);
         if (user.Password != dataTransferObject.OldPassword)
         {
@@ -43,9 +44,7 @@ public class PasswordChangeDtoUpdateValidator : IUpdateValidator<PasswordChangeD
     private ValidationResult ValidateRole(int userId)
     {
         var userIdValidation = _user.ValidateParsableClaim<int>(CustomClaimTypes.Id);
-        var roleValidation = _user.ValidateEnumClaim<UserRole>(ClaimTypes.Role);
-        userIdValidation.Result.MergeResults(roleValidation.Result);
-        if (userIdValidation.ClaimValue != userId || roleValidation.ClaimValue != UserRole.Admin)
+        if (userIdValidation.ClaimValue != userId)
         {
             userIdValidation.Result.AddError(new ValidationError(nameof(PasswordChangeDto.UserId), 
                 "You must be account owner or admin to change this user`s password"));

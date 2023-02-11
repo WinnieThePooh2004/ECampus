@@ -3,6 +3,7 @@ using ECampus.Contracts.DataAccess;
 using ECampus.Contracts.DataSelectParameters;
 using ECampus.Core.Installers;
 using ECampus.Domain.Interfaces.Validation;
+using ECampus.Domain.Validation.UniversalValidators;
 using ECampus.Shared.Auth;
 using ECampus.Shared.DataTransferObjects;
 using ECampus.Shared.Exceptions.DomainExceptions;
@@ -15,28 +16,25 @@ using Microsoft.EntityFrameworkCore;
 namespace ECampus.Domain.Validation.UpdateValidators;
 
 [Inject(typeof(ITaskSubmissionValidator))]
-public class TaskSubmissionValidator : ITaskSubmissionValidator
+public class TaskSubmissionValidator : FluentValidatorWrapper<TaskSubmissionDto>, ITaskSubmissionValidator
 {
     private readonly ClaimsPrincipal _user;
-    private readonly IValidator<TaskSubmissionDto> _validator;
     private readonly IDataAccessManager _parametersDataAccess;
 
     public TaskSubmissionValidator(IHttpContextAccessor httpContextAccessor, IValidator<TaskSubmissionDto> validator,
-        IDataAccessManager parametersDataAccess)
+        IDataAccessManager parametersDataAccess) : base(validator)
     {
         _user = httpContextAccessor.HttpContext?.User ?? throw new HttpContextNotFoundExceptions();
-        _validator = validator;
         _parametersDataAccess = parametersDataAccess;
     }
 
     public async Task<ValidationResult> ValidateUpdateContentAsync(int submissionId, string content)
     {
         var errorsFromFluentValidator =
-            await _validator.ValidateAsync(new TaskSubmissionDto { SubmissionContent = content });
+            await ValidateAsync(new TaskSubmissionDto { SubmissionContent = content });
         if (!errorsFromFluentValidator.IsValid)
         {
-            return new ValidationResult(
-                errorsFromFluentValidator.Errors.Select(e => new ValidationError(e.PropertyName, e.ErrorMessage)));
+            return errorsFromFluentValidator;
         }
 
         return await ValidateStudentId(submissionId);

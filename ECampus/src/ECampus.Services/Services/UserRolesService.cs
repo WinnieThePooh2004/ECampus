@@ -182,7 +182,7 @@ public class UserRolesService : IBaseService<UserDto>
 
     private async Task<UserDto> EndCreateAsync(User user, CancellationToken token)
     {
-        await _dataAccess.CreateAsync(user, token);
+        _dataAccess.CreateAsync(user);
         await _dataAccess.SaveChangesAsync(token);
         return _mapper.Map<UserDto>(user);
     }

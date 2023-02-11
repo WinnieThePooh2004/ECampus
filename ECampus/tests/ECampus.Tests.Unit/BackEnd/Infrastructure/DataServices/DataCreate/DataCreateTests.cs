@@ -16,12 +16,12 @@ public class DataCreateTests
     }
 
     [Fact]
-    protected async Task Create_AddedToContext()
+    protected void Create_AddedToContext()
     {
         var model = new Auditory();
 
-        await _sut.CreateAsync(model, _context);
+        _sut.Create(model, _context);
 
-        await _context.Received(1).AddAsync(model);
+        _context.Received(1).Add(model);
     }
 }

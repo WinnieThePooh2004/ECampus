@@ -21,7 +21,7 @@ public class BaseService<TDto, TRepositoryModel> : IBaseService<TDto>
     public async Task<TDto> CreateAsync(TDto entity, CancellationToken token = default)
     {
         var model = _mapper.Map<TRepositoryModel>(entity);
-        var createdModel = await _dataAccess.CreateAsync(model, token);
+        var createdModel = _dataAccess.CreateAsync(model);
         await _dataAccess.SaveChangesAsync(token);
         return _mapper.Map<TDto>(createdModel);
     }

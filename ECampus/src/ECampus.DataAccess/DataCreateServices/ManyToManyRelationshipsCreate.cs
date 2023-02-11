@@ -21,12 +21,12 @@ public class ManyToManyRelationshipsCreate<TModel, TRelatedModel, TRelations> : 
         _relationshipsHandler = relationshipsHandler;
     }
 
-    public async Task<TModel> CreateAsync(TModel model, ApplicationDbContext context, CancellationToken token = default)
+    public TModel Create(TModel model, ApplicationDbContext context)
     {
         var relatedModels = _relationshipsHandler.RelatedModels.GetFromProperty<IEnumerable<TRelatedModel>>(model);
         if (relatedModels is null)
         {
-            return await _baseCreateService.CreateAsync(model, context, token);
+            return _baseCreateService.Create(model, context);
         }
 
         var relationModels = relatedModels.Select(m =>
@@ -34,6 +34,6 @@ public class ManyToManyRelationshipsCreate<TModel, TRelatedModel, TRelations> : 
         
         _relationshipsHandler.RelationModels.SetFromProperty(model, relationModels);
         _relationshipsHandler.RelatedModels.SetPropertyAsNull(model);
-        return await _baseCreateService.CreateAsync(model, context, token);
+        return _baseCreateService.Create(model, context);
     }
 }

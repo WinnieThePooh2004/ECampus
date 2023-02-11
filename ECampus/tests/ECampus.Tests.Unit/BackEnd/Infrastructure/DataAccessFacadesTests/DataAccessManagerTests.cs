@@ -26,15 +26,15 @@ public class DataAccessManagerTests
     }
 
     [Fact]
-    public async Task Create_AddedToDb_CreateCalled()
+    public void Create_AddedToDb_CreateCalled()
     {
         var model = CreateModel();
         var createService = Substitute.For<IDataCreateService<Auditory>>();
         _serviceProvider.GetService(typeof(IDataCreateService<Auditory>)).Returns(createService);
 
-        await _sut.CreateAsync(model);
+        _sut.CreateAsync(model);
 
-        await createService.Received(1).CreateAsync(model, _context);
+        createService.Received(1).Create(model, _context);
     }
 
     [Fact]

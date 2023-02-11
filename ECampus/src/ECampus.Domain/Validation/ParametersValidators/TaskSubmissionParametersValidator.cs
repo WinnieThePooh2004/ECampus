@@ -31,7 +31,7 @@ public class TaskSubmissionParametersValidator : IParametersValidator<TaskSubmis
         var roleClaimValidation = _user.ValidateEnumClaim<UserRole>(ClaimTypes.Role);
         if (!roleClaimValidation.Result.IsValid)
         {
-            return roleClaimValidation.Result;
+            throw new DomainException(HttpStatusCode.Unauthorized, "Role claim not found or it is not number");
         }
 
         return roleClaimValidation.ClaimValue switch
@@ -39,7 +39,7 @@ public class TaskSubmissionParametersValidator : IParametersValidator<TaskSubmis
             UserRole.Admin => new ValidationResult(),
             UserRole.Teacher => await ValidateAsTeacher(parameters, token),
             _ => throw new DomainException(HttpStatusCode.Forbidden,
-                "You must be at least teacher to call this action"),
+                "You must be at least teacher to call this action")
         };
     }
 
@@ -62,8 +62,7 @@ public class TaskSubmissionParametersValidator : IParametersValidator<TaskSubmis
                 new TeacherRelatedToTaskParameters(parameters.CourseTaskId));
 
         if (!await teachersRelatedToCourseTask.AnyAsync(teacher =>
-                teacher.Id == teacherIdClaimValidation.ClaimValue &&
-                teacher.Courses!.Any(course => course.Tasks!.Any()), cancellationToken: token))
+                teacher.Id == teacherIdClaimValidation.ClaimValue, cancellationToken: token))
         {
             return new ValidationResult(new ValidationError(nameof(parameters.CourseTaskId),
                 "You are not teaching this course, so you can`t view its task"));

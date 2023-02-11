@@ -29,7 +29,7 @@ public sealed class BaseServiceTests
 
         await _sut.CreateAsync(item);
 
-        await _dataAccess.Received(1).CreateAsync(Arg.Is<Auditory>(a => a.Id == item.Id));
+        _dataAccess.Received(1).CreateAsync(Arg.Is<Auditory>(a => a.Id == item.Id));
         await _dataAccess.Received().SaveChangesAsync();
     }
 
