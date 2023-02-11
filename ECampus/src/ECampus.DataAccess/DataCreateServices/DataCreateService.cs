@@ -7,9 +7,9 @@ namespace ECampus.DataAccess.DataCreateServices;
 public class DataCreateService<TModel> : IDataCreateService<TModel> 
     where TModel : class, IModel, new()
 {
-    public async Task<TModel> CreateAsync(TModel model, ApplicationDbContext context, CancellationToken token = default)
+    public TModel Create(TModel model, ApplicationDbContext context)
     {
-        await context.AddAsync(model, token);
+        context.Add(model);
         return model;
     }
 }

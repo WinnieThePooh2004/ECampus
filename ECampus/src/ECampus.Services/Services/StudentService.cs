@@ -34,7 +34,7 @@ public class StudentService : IBaseService<StudentDto>
             .Select(task => new TaskSubmission { CourseTaskId = task.Id })
             .ToListAsync(token);
 
-        var createdStudent = await _dataAccess.CreateAsync(student, token);
+        var createdStudent = _dataAccess.CreateAsync(student);
         await _dataAccess.SaveChangesAsync(token);
         return _mapper.Map<StudentDto>(createdStudent);
     }

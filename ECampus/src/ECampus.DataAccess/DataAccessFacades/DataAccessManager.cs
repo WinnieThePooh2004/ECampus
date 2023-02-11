@@ -21,11 +21,11 @@ public class DataAccessManager : IDataAccessManager
         _serviceProvider = serviceProvider;
     }
 
-    public Task<TModel> CreateAsync<TModel>(TModel model, CancellationToken token = default)
+    public TModel CreateAsync<TModel>(TModel model)
         where TModel : class, IModel
     {
         var service = _serviceProvider.GetServiceOfType<IDataCreateService<TModel>>();
-        return service.CreateAsync(model, _context, token);
+        return service.Create(model, _context);
     }
 
     public Task<TModel> UpdateAsync<TModel>(TModel model, CancellationToken token = default)

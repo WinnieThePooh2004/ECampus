@@ -22,7 +22,7 @@ public class DataCreateWithRelationshipsTests
     }
 
     [Fact]
-    public async Task CreateRelationModels_ShouldAddToModel()
+    public void CreateRelationModels_ShouldAddToModel()
     {
         var model = new User
         {
@@ -34,7 +34,7 @@ public class DataCreateWithRelationshipsTests
             }
         };
 
-        await _sut.CreateAsync(model, _context);
+        _sut.Create(model, _context);
 
         model.SavedAuditoriesIds.Should().BeEquivalentTo(new List<UserAuditory>
         {
@@ -42,15 +42,15 @@ public class DataCreateWithRelationshipsTests
             new() { UserId = 3, AuditoryId = 2 }
         }, opt => opt.ComparingByMembers<UserAuditory>());
         model.SavedAuditories.Should().BeNull();
-        await _baseCreateService.Received(1).CreateAsync(model, _context);
+        _baseCreateService.Received(1).Create(model, _context);
     }
 
     [Fact]
-    public async Task CreateRelationModels_ShouldAddEmptyArray_WhenRelatedModelsIsnull()
+    public void CreateRelationModels_ShouldAddEmptyArray_WhenRelatedModelsIsnull()
     {
         var model = new User { SavedAuditories = null };
 
-        await _sut.CreateAsync(model, _context);
+        _sut.Create(model, _context);
 
         model.SavedAuditoriesIds.Should().BeNull();
     }
