@@ -1,6 +1,5 @@
 ﻿using ECampus.Api.Metadata;
 using ECampus.Contracts.Services;
-using ECampus.Services.Services.Auth;
 using ECampus.Shared.DataTransferObjects;
 using ECampus.Shared.Enums;
 using ECampus.Shared.QueryParameters;
