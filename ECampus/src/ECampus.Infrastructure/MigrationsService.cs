@@ -27,7 +27,8 @@ public class MigrationsService : BackgroundService
 
         catch (Exception e)
         {
-            _logger.Error(e, "Unhandled exceptions occured while migrating database");
+            _logger.Fatal(e, "Unhandled exceptions occured while migrating database\n" +
+                             "Database connections string is {ConnectionString}", context.Database.GetConnectionString());
         }
     }
 }
