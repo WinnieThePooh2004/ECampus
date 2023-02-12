@@ -16,7 +16,8 @@
     <ValidationMessage For="@(() => Model.TeacherId)"/>
     <SingleItemSelect TData="TeacherDto" TParameters="TeacherParameters" Title="Select teacher"
                       ParameterOptions="@(parameters => parameters.UserIdCanBeNull = false)"
-                      SelectedId="Model.TeacherId" SelectChanged="@(teacher => Model.Teacher = teacher)"/>
+                      SelectedId="Model.TeacherId"
+                      SelectedIdChanged="@(id => Model.TeacherId = id)"/>
     <button class="btn btn-success" type="submit">Save</button>
     return;
 }
@@ -25,7 +26,7 @@
     <ValidationMessage For="@(() => Model.StudentId)"/>
     <SingleItemSelect TData="StudentDto" TParameters="StudentParameters" Title="Select student"
                       ParameterOptions="@(parameters => parameters.UserIdCanBeNull = false)"
-                      SelectedId="Model.StudentId" SelectChanged="@(student => Model.Student = student)"/>
+                      SelectedId="Model.StudentId" SelectedIdChanged="@(id => Model.StudentId = id)"/>
     <button class="btn btn-success" type="submit">Save</button>
     return;
 }
