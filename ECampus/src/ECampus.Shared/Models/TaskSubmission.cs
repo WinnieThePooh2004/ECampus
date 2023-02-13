@@ -1,5 +1,4 @@
 ﻿using ECampus.Shared.Data;
-using Newtonsoft.Json;
 
 namespace ECampus.Shared.Models;
 

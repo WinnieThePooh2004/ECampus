@@ -3,7 +3,6 @@ using ECampus.Contracts.DataSelectParameters;
 using ECampus.Domain.Interfaces.Validation;
 using ECampus.Services.Services;
 using ECampus.Shared.DataTransferObjects;
-using ECampus.Shared.Enums;
 using ECampus.Shared.Exceptions.DomainExceptions;
 using ECampus.Shared.Models;
 using ECampus.Shared.Validation;

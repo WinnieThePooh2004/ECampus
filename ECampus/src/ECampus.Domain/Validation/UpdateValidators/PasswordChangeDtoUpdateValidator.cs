@@ -3,7 +3,6 @@ using ECampus.Contracts.DataAccess;
 using ECampus.Domain.Interfaces.Validation;
 using ECampus.Shared.Auth;
 using ECampus.Shared.DataTransferObjects;
-using ECampus.Shared.Enums;
 using ECampus.Shared.Models;
 using ECampus.Shared.Validation;
 using Microsoft.AspNetCore.Http;

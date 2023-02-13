@@ -1,5 +1,4 @@
 ﻿using ECampus.Api.Metadata;
-using ECampus.Services.Services.Auth;
 using ECampus.Shared.Enums;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 

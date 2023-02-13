@@ -1,10 +1,4 @@
-﻿using ECampus.DataAccess.DataCreateServices;
-using ECampus.DataAccess.Interfaces;
-using ECampus.Infrastructure;
-using ECampus.Shared.Models;
-using ECampus.Tests.Shared.Mocks.EntityFramework;
-
-namespace ECampus.Tests.Unit.BackEnd.Infrastructure.DataServices.DataCreate;
+﻿namespace ECampus.Tests.Unit.BackEnd.Infrastructure.DataServices.DataCreate;
 
 public class StudentCreateServiceTests
 {

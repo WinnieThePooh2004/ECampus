@@ -1,11 +1,8 @@
 ﻿using ECampus.Contracts.DataAccess;
-using ECampus.DataAccess.Interfaces;
 using ECampus.DataAccess.Relationships;
 using ECampus.Infrastructure;
-using ECampus.Shared.Exceptions.InfrastructureExceptions;
 using ECampus.Shared.Models;
 using ECampus.Shared.Models.RelationModels;
-using Microsoft.EntityFrameworkCore;
 
 namespace ECampus.Tests.Unit.BackEnd.Infrastructure.DataServices.Relationships;
 

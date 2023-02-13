@@ -1,6 +1,5 @@
 ﻿using ECampus.Api.Controllers;
 using ECampus.Domain.Interfaces.Auth;
-using ECampus.Shared.Auth;
 using ECampus.Shared.DataTransferObjects;
 using Microsoft.AspNetCore.Mvc;
 
