@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using ECampus.Shared.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
@@ -28,7 +29,13 @@ public class MigrationsService : BackgroundService
         catch (Exception e)
         {
             _logger.Fatal(e, "Unhandled exceptions occured while migrating database\n" +
-                             "Database connections string is {ConnectionString}", context.Database.GetConnectionString());
+                             "Database connections string is {ConnectionString}",
+                context.Database.GetConnectionString());
+        }
+
+        if (!await context.Users.AnyAsync(stoppingToken))
+        {
+            context.Add(new User { Username = "SuperAdmin", Email = "super@admin.com", Password = "AdminAdmin1"});
         }
     }
 }
