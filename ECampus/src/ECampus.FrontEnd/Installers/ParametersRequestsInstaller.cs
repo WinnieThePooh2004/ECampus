@@ -19,7 +19,7 @@ public class ParametersRequestsInstaller : IInstaller
         {
             var dtoParametersTypes = typeof(SharedAssemblyMarker).Assembly.GetTypes().Where(type =>
                 type.IsAssignableTo(typeof(IDataSelectParameters<>).MakeGenericType(dataTransferObject
-                    .GetCustomAttributes(typeof(DtoAttribute), false).OfType<DtoAttribute>().Single().ModelType)) &&
+                    .GetCustomAttributes(typeof(DtoAttribute), true).OfType<DtoAttribute>().Single().ModelType)) &&
                 type.IsAssignableTo(typeof(IQueryParameters)));
 
             foreach (var dtoParametersType in dtoParametersTypes)
