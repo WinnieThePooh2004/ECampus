@@ -4,7 +4,7 @@ using ECampus.Shared.Models;
 
 namespace ECampus.Shared.DataTransferObjects;
 
-[Dto(typeof(Faculty))]
+[Dto<Faculty>]
 [Validation]
 public class FacultyDto : IDataTransferObject
 {
