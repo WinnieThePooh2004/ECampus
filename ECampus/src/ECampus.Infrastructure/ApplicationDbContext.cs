@@ -37,6 +37,8 @@ public class ApplicationDbContext : DbContext
     public DbSet<CourseGroup> CourseGroups { get; set; } = default!;
     public DbSet<CourseTeacher> CourseTeachers { get; set; } = default!;
 
+    public DbSet<TeacherRate> TeacherRates { get; set; } = default!;
+
     public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
     {
         ChangeTracker.UpdateDeleteStatus();

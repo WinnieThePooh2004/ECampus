@@ -1,7 +1,6 @@
-﻿namespace ECampus.Shared.Data
+﻿namespace ECampus.Shared.Data;
+
+public interface IModel
 {
-    public interface IModel
-    {
-        public int Id { get; set; }
-    }
+    public int Id { get; set; }
 }

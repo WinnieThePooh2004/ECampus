@@ -1,7 +1,6 @@
-﻿namespace ECampus.FrontEnd.Pages.Subjects
+﻿namespace ECampus.FrontEnd.Pages.Subjects;
+
+public partial class Edit
 {
-    public partial class Edit
-    {
-        protected override string PageAfterSave => "subjects";
-    }
+    protected override string PageAfterSave => "subjects";
 }

@@ -17,4 +17,5 @@ public class Student : IModel, IIsDeleted
     public User? User { get; set; }
     
     public List<TaskSubmission>? Submissions { get; set; }
+    public List<TeacherRate>? Rates { get; set; }
 }

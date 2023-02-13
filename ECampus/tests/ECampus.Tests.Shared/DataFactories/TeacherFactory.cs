@@ -16,5 +16,6 @@ public class TeacherFactory : IAbstractFactory<Teacher>
             .Without(t => t.SubjectIds)
             .Without(t => t.Courses)
             .Without(t => t.CourseTeachers)
+            .Without(t => t.Rates)
             .Create();
 }

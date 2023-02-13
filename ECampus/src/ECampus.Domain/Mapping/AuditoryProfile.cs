@@ -2,13 +2,12 @@
 using ECampus.Shared.DataTransferObjects;
 using ECampus.Shared.Models;
 
-namespace ECampus.Domain.Mapping
+namespace ECampus.Domain.Mapping;
+
+public class AuditoryProfile : Profile
 {
-    public class AuditoryProfile : Profile
+    public AuditoryProfile()
     {
-        public AuditoryProfile()
-        {
-            CreateMap<Auditory, AuditoryDto>().ReverseMap();
-        }
+        CreateMap<Auditory, AuditoryDto>().ReverseMap();
     }
 }

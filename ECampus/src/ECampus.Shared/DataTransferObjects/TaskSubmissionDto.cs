@@ -4,7 +4,7 @@ using ECampus.Shared.Models;
 
 namespace ECampus.Shared.DataTransferObjects;
 
-[Dto(typeof(TaskSubmission))]
+[Dto<TaskSubmission>]
 public class TaskSubmissionDto : IDataTransferObject
 {
     public int Id { get; set; }

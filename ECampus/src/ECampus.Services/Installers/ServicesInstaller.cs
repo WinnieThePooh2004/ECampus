@@ -20,7 +20,7 @@ public class ServicesInstaller : IInstaller
 
         foreach (var dataTransferObject in dataTransferObjects)
         {
-            var metadata = dataTransferObject.GetCustomAttributes(typeof(DtoAttribute), false).OfType<DtoAttribute>()
+            var metadata = dataTransferObject.GetCustomAttributes(typeof(DtoAttribute), true).OfType<DtoAttribute>()
                 .Single();
 
             if (metadata.InjectBaseService)

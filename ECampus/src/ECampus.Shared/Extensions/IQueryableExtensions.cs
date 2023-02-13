@@ -40,14 +40,12 @@ public static class QueryableExtensions
     {
         if (string.IsNullOrWhiteSpace(propertyName))
         {
-            return source;
+            propertyName = "Id";
         }
 
-        var property = typeof(T).GetProperty(propertyName);
-        if (property is null)
-        {
-            return source;
-        }
+        var property = typeof(T).GetProperties().SingleOrDefault(property =>
+                           string.Equals(property.Name, propertyName, StringComparison.CurrentCultureIgnoreCase)) ??
+                       typeof(T).GetProperty("Id")!;
 
         var parameter = Expression.Parameter(typeof(T), "param");
         var propertyExpression = Expression.MakeMemberAccess(parameter, property);

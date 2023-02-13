@@ -99,8 +99,7 @@ public class UserEditFormTests
 
         checkbox.Change(new ChangeEventArgs { Value = true });
 
-        user.Student.Should().NotBeNull();
-        user.Student!.Id.Should().Be(1);
+        user.StudentId.Should().Be(1);
     }
     
     [Fact]
@@ -116,8 +115,7 @@ public class UserEditFormTests
 
         checkbox.Change(new ChangeEventArgs { Value = true });
 
-        user.Teacher.Should().NotBeNull();
-        user.Teacher!.Id.Should().Be(1);
+        user.TeacherId.Should().Be(1);
     }
 
     private IRenderedComponent<UserRoleEditForm> RenderedComponent(UserDto user)

@@ -5,7 +5,7 @@ using Serilog.Events;
 
 namespace ECampus.Shared.DataTransferObjects;
 
-[Dto(typeof(Log))]
+[Dto<Log>]
 public class LogDto : IDataTransferObject
 {
     public int Id { get; set; }

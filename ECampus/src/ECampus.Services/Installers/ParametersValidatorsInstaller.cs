@@ -32,7 +32,7 @@ public class ParametersValidatorsInstaller : IInstaller
             var parametersModel = parametersType.GetInterfaces()
                 .Single(i => i.IsGenericOfType(typeof(IDataSelectParameters<>))).GenericTypeArguments[0];
             var validatorDtoTypes = dataTransferObjects.Where(dto =>
-                dto.GetCustomAttributes(typeof(DtoAttribute), false).OfType<DtoAttribute>().Single().ModelType ==
+                dto.GetCustomAttributes(typeof(DtoAttribute), true).OfType<DtoAttribute>().Single().ModelType ==
                 parametersModel);
             
             foreach (var validatorDtoType in validatorDtoTypes)

@@ -25,4 +25,6 @@ public class Course : IModel, IIsDeleted
     public List<CourseGroup>? CourseGroups { get; set; }
     public List<CourseTeacher>? CourseTeachers { get; set; }
     public List<CourseTask>? Tasks { get; set; }
+    
+    public List<TeacherRate>? Rates { get; set; }
 }

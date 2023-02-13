@@ -6,7 +6,7 @@ using ECampus.Shared.Models;
 
 namespace ECampus.Shared.DataTransferObjects;
 
-[Dto(typeof(Course), InjectBaseService = false)]
+[Dto<Course>(InjectBaseService = false)]
 public class CourseSummary : IDataTransferObject
 {
     [NotDisplay] public int CourseId { get; set; }

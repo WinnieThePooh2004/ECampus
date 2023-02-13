@@ -2,13 +2,12 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace ECampus.Infrastructure.ModelConfigurations
+namespace ECampus.Infrastructure.ModelConfigurations;
+
+public class AuditoryConfiguration : IEntityTypeConfiguration<Auditory>
 {
-    public class AuditoryConfiguration : IEntityTypeConfiguration<Auditory>
+    public void Configure(EntityTypeBuilder<Auditory> builder)
     {
-        public void Configure(EntityTypeBuilder<Auditory> builder)
-        {
-            builder.HasQueryFilter(a => !a.IsDeleted);
-        }
+        builder.HasQueryFilter(a => !a.IsDeleted);
     }
 }

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 using ILogger = Serilog.ILogger;
@@ -36,6 +37,12 @@ public class ApplicationWithoutDatabase : WebApplicationFactory<Program>
             services.Remove(loggerDescriptor);
             services.AddSingleton(Substitute.For<ILogger>());
             services.AddSingleton(Context);
+            var backGroundDescriptors = services
+                .Where(serviceDescriptor => serviceDescriptor.ServiceType == typeof(IHostedService)).ToList();
+            foreach (var backGroundDescriptor in backGroundDescriptors)
+            {
+                services.Remove(backGroundDescriptor);
+            }
         });
     }
 }
