@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Components;
 
-namespace ECampus.FrontEnd.Pages.Departments
+namespace ECampus.FrontEnd.Pages.Departments;
+
+public partial class Create
 {
-    public partial class Create
-    {
-        [Parameter] public int FacultyId { get; set; }
-        protected override string PageAfterSave => $"/departments/{FacultyId}";
-    }
+    [Parameter] public int FacultyId { get; set; }
+    protected override string PageAfterSave => $"/departments/{FacultyId}";
 }

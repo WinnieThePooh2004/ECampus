@@ -3,18 +3,17 @@ using ECampus.Shared.DataTransferObjects;
 using ECampus.Shared.Extensions;
 using ECampus.Shared.Models;
 
-namespace ECampus.Domain.Mapping
+namespace ECampus.Domain.Mapping;
+
+public class ClassProfile : Profile
 {
-    public class ClassProfile : Profile
+    public ClassProfile()
     {
-        public ClassProfile()
-        {
-            CreateMap<Class, ClassDto>();
-            CreateMap<ClassDto, Class>()
-                .IgnoreMember(dest => dest.Group)
-                .IgnoreMember(dest => dest.Auditory)
-                .IgnoreMember(dest => dest.Teacher)
-                .IgnoreMember(dest => dest.Subject);
-        }
+        CreateMap<Class, ClassDto>();
+        CreateMap<ClassDto, Class>()
+            .IgnoreMember(dest => dest.Group)
+            .IgnoreMember(dest => dest.Auditory)
+            .IgnoreMember(dest => dest.Teacher)
+            .IgnoreMember(dest => dest.Subject);
     }
 }

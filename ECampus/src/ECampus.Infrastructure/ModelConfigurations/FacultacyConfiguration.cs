@@ -2,13 +2,12 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace ECampus.Infrastructure.ModelConfigurations
+namespace ECampus.Infrastructure.ModelConfigurations;
+
+public class FacultacyConfiguration : IEntityTypeConfiguration<Faculty>
 {
-    public class FacultacyConfiguration : IEntityTypeConfiguration<Faculty>
+    public void Configure(EntityTypeBuilder<Faculty> builder)
     {
-        public void Configure(EntityTypeBuilder<Faculty> builder)
-        {
-            builder.HasQueryFilter(f => !f.IsDeleted);
-        }
+        builder.HasQueryFilter(f => !f.IsDeleted);
     }
 }

@@ -1,7 +1,6 @@
-﻿namespace ECampus.Shared.Data
+﻿namespace ECampus.Shared.Data;
+
+public interface IIsDeleted
 {
-    public interface IIsDeleted
-    {
-        bool IsDeleted { get; set; }
-    }
+    bool IsDeleted { get; set; }
 }
