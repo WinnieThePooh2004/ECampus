@@ -3,7 +3,6 @@ using ECampus.Infrastructure;
 using ECampus.Shared.Models;
 using ECampus.Shared.QueryParameters;
 using ECampus.Tests.Shared.Mocks.EntityFramework;
-using Microsoft.EntityFrameworkCore;
 
 namespace ECampus.Tests.Unit.BackEnd.Infrastructure.DataServices.ParametersSelector;
 

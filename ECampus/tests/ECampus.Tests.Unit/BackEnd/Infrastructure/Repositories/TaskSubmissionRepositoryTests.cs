@@ -1,8 +1,4 @@
-﻿using ECampus.Infrastructure;
-using ECampus.Shared.Models;
-using ECampus.Tests.Shared.Mocks.EntityFramework;
-
-namespace ECampus.Tests.Unit.BackEnd.Infrastructure.Repositories;
+﻿namespace ECampus.Tests.Unit.BackEnd.Infrastructure.Repositories;
 
 public class TaskSubmissionRepositoryTests
 {

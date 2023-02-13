@@ -11,7 +11,6 @@ public class DtoAttribute: Attribute
 {
     public Type ModelType { get; }
     public bool InjectBaseService { get; init; } = true;
-    public bool InjectParametersService { get; init; } = true;
 
     protected DtoAttribute(Type modelType)
     {

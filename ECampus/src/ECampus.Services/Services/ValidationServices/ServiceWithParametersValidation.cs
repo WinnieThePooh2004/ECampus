@@ -8,7 +8,7 @@ using ECampus.Shared.QueryParameters;
 namespace ECampus.Services.Services.ValidationServices;
 
 public class ServiceWithParametersValidation<TDto, TParameters> : IParametersService<TDto, TParameters>
-    where TParameters : IQueryParameters
+    where TParameters : IQueryParameters<TDto>
     where TDto : class, IDataTransferObject
 {
     private readonly IParametersService<TDto, TParameters> _baseService;

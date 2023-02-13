@@ -1,6 +1,5 @@
 ﻿using ECampus.FrontEnd.Auth;
 using ECampus.FrontEnd.Requests.Interfaces;
-using ECampus.Shared.Auth;
 using ECampus.Shared.DataTransferObjects;
 using ECampus.Shared.Exceptions.DomainExceptions;
 using Microsoft.AspNetCore.Authentication;

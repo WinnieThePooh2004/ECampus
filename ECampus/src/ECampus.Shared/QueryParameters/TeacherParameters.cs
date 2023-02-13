@@ -1,8 +1,9 @@
-﻿using ECampus.Shared.Models;
+﻿using ECampus.Shared.DataTransferObjects;
+using ECampus.Shared.Models;
 
 namespace ECampus.Shared.QueryParameters;
 
-public class TeacherParameters : QueryParameters, IDataSelectParameters<Teacher>
+public class TeacherParameters : QueryParameters<TeacherDto>, IDataSelectParameters<Teacher>
 {
     public int DepartmentId { get; set; }
     public string? FirstName { get; init; }

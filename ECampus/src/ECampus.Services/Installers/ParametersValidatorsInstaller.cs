@@ -3,11 +3,7 @@ using ECampus.Core.Extensions;
 using ECampus.Core.Installers;
 using ECampus.Domain;
 using ECampus.Domain.Interfaces.Validation;
-using ECampus.Services.Services;
 using ECampus.Services.Services.ValidationServices;
-using ECampus.Shared;
-using ECampus.Shared.Extensions;
-using ECampus.Shared.Metadata;
 using ECampus.Shared.QueryParameters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,25 +19,17 @@ public class ParametersValidatorsInstaller : IInstaller
         var parametersValidators = typeof(DomainAssemblyMarker).Assembly.GetTypes().Where(type =>
             type.GetInterfaces().Any(i => i.IsGenericOfType(typeof(IParametersValidator<>))));
 
-        var dataTransferObjects = typeof(SharedAssemblyMarker).Assembly.GetDataTransferObjects().ToList();
-
         foreach (var parametersValidator in parametersValidators)
         {
             var parametersType = parametersValidator.GetInterfaces()
                 .Single(i => i.IsGenericOfType(typeof(IParametersValidator<>))).GetGenericArguments()[0];
-            var parametersModel = parametersType.GetInterfaces()
-                .Single(i => i.IsGenericOfType(typeof(IDataSelectParameters<>))).GenericTypeArguments[0];
-            var validatorDtoTypes = dataTransferObjects.Where(dto =>
-                dto.GetCustomAttributes(typeof(DtoAttribute), true).OfType<DtoAttribute>().Single().ModelType ==
-                parametersModel);
+            var parametersDto = parametersType.GetInterfaces()
+                .Single(i => i.IsGenericOfType(typeof(IQueryParameters<>))).GenericTypeArguments[0];
             
-            foreach (var validatorDtoType in validatorDtoTypes)
-            {
-                services.AddScoped(typeof(IParametersValidator<>).MakeGenericType(parametersType),
-                    parametersValidator);
-                services.Decorate(typeof(IParametersService<,>).MakeGenericType(validatorDtoType, parametersType),
-                    typeof(ServiceWithParametersValidation<,>).MakeGenericType(validatorDtoType, parametersType));
-            }
+            services.AddScoped(typeof(IParametersValidator<>).MakeGenericType(parametersType),
+                parametersValidator);
+            services.Decorate(typeof(IParametersService<,>).MakeGenericType(parametersDto, parametersType),
+                typeof(ServiceWithParametersValidation<,>).MakeGenericType(parametersDto, parametersType));
         }
     }
 }

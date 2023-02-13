@@ -1,8 +1,10 @@
-﻿using ECampus.Shared.Enums;
+﻿using ECampus.Shared.Data;
+using ECampus.Shared.Enums;
 
 namespace ECampus.Shared.QueryParameters;
 
-public abstract class QueryParameters : IQueryParameters
+public abstract class QueryParameters<TDto> : IQueryParameters<TDto> 
+    where TDto : IDataTransferObject
 {
     private const int MaxPageSize = 100;
     private int _pageSize = 5;

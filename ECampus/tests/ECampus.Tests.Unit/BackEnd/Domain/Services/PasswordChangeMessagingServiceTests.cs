@@ -1,7 +1,6 @@
 ﻿using ECampus.Contracts.Services;
 using ECampus.Core.Messages;
 using ECampus.Domain.Interfaces;
-using ECampus.Domain.Messaging;
 using ECampus.Services.Services.Messaging;
 using ECampus.Shared.DataTransferObjects;
 using ECampus.Shared.Validation;

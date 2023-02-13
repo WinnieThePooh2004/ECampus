@@ -1,15 +1,4 @@
-﻿using AutoMapper;
-using ECampus.Contracts.DataAccess;
-using ECampus.Domain.Interfaces.Validation;
-using ECampus.Services.Services;
-using ECampus.Shared.DataContainers;
-using ECampus.Shared.DataTransferObjects;
-using ECampus.Shared.Models;
-using ECampus.Tests.Shared.DataFactories;
-using ECampus.Tests.Shared.Extensions;
-using Microsoft.Extensions.Logging;
-
-namespace ECampus.Tests.Unit.BackEnd.Domain.Services;
+﻿namespace ECampus.Tests.Unit.BackEnd.Domain.Services;
 
 public class ClassServiceTests
 {

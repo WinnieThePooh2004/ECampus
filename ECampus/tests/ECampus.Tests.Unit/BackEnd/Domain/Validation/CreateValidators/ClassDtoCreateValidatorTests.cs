@@ -1,11 +1,4 @@
-﻿using ECampus.Domain.Interfaces.Validation;
-using ECampus.Domain.Validation.CreateValidators;
-using ECampus.Shared.DataTransferObjects;
-using ECampus.Shared.Models;
-using ECampus.Shared.Models.RelationModels;
-using ECampus.Tests.Shared.DataFactories;
-
-namespace ECampus.Tests.Unit.BackEnd.Domain.Validation.CreateValidators;
+﻿namespace ECampus.Tests.Unit.BackEnd.Domain.Validation.CreateValidators;
 
 public class ClassDtoCreateValidatorTests
 {

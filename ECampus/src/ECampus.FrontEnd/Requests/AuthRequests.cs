@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using ECampus.FrontEnd.Requests.Interfaces;
 using ECampus.FrontEnd.Requests.Options;
-using ECampus.Shared.Auth;
 using ECampus.Shared.DataTransferObjects;
 using Newtonsoft.Json;
 

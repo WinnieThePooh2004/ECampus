@@ -6,6 +6,7 @@ using ECampus.Shared.Models;
 namespace ECampus.Shared.DataTransferObjects;
 
 [Dto<TeacherRate>]
+[Validation]
 public class TeacherRateDto : IDataTransferObject
 {
     public int Id { get; set; }
@@ -17,4 +18,6 @@ public class TeacherRateDto : IDataTransferObject
     public byte TotalRate { get; set; }
     public bool TeacherIsAcceptable { get; set; }
     public byte KnowledgeEsteem { get; set; }
+    public string TeachersName { get; set; } = string.Empty;
+    public string CourseName { get; set; } = string.Empty;
 }

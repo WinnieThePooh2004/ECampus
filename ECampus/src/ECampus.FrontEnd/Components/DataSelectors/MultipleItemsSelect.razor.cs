@@ -7,7 +7,7 @@ namespace ECampus.FrontEnd.Components.DataSelectors;
 
 public sealed partial class MultipleItemsSelect<TData, TParameters>
     where TData : class, IDataTransferObject, new()
-    where TParameters : class, IQueryParameters, new()
+    where TParameters : class, IQueryParameters<TData>, new()
 {
     [Parameter] public string Title { get; set; } = string.Empty;
     [Parameter] public EventCallback OnChanged { get; set; }
