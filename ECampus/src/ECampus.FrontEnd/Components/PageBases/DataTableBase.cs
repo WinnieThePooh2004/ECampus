@@ -1,6 +1,7 @@
 ﻿using System.Linq.Expressions;
 using ECampus.FrontEnd.PropertySelectors;
 using ECampus.FrontEnd.Requests.Interfaces;
+using ECampus.Shared.Data;
 using ECampus.Shared.DataContainers;
 using ECampus.Shared.Enums;
 using ECampus.Shared.QueryParameters;
@@ -9,8 +10,8 @@ using Microsoft.AspNetCore.Components;
 namespace ECampus.FrontEnd.Components.PageBases;
 
 public class DataTableBase<TData, TParameters> : ComponentBase
-    where TData : class
-    where TParameters : class, IQueryParameters, new()
+    where TData : class, IDataTransferObject
+    where TParameters : class, IQueryParameters<TData>, new()
 {
     [Parameter] public Action<TParameters> ParameterOptions { get; set; } = _ => { };
 

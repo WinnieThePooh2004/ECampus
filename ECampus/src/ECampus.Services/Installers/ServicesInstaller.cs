@@ -4,7 +4,6 @@ using ECampus.Services.Services;
 using ECampus.Shared;
 using ECampus.Shared.Extensions;
 using ECampus.Shared.Metadata;
-using ECampus.Shared.QueryParameters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -28,25 +27,6 @@ public class ServicesInstaller : IInstaller
                 services.AddScoped(typeof(IBaseService<>).MakeGenericType(dataTransferObject),
                     typeof(BaseService<,>).MakeGenericType(dataTransferObject, metadata.ModelType));
             }
-
-            if (metadata.InjectParametersService)
-            {
-                InjectParametersFacadeIfExists(services, dataTransferObject, metadata.ModelType);
-            }
-        }
-    }
-
-    private static void InjectParametersFacadeIfExists(IServiceCollection services, Type dataTransferObject, Type model)
-    {
-        var modelParametersTypes = typeof(SharedAssemblyMarker).Assembly.GetTypes().Where(type =>
-            !type.GetCustomAttributes(typeof(InstallerIgnoreAttribute), false).Any() &&
-            type.IsAssignableTo(typeof(IDataSelectParameters<>).MakeGenericType(model)) &&
-            type.IsAssignableTo(typeof(IQueryParameters)));
-
-        foreach (var modelParametersType in modelParametersTypes)
-        {
-            services.AddScoped(typeof(IParametersService<,>).MakeGenericType(dataTransferObject, modelParametersType),
-                typeof(ParametersService<,,>).MakeGenericType(dataTransferObject, modelParametersType, model));
         }
     }
 }

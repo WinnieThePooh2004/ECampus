@@ -7,7 +7,7 @@ namespace ECampus.FrontEnd.Components.PageModels;
 
 public partial class IndexPageModel<TData, TParameters>
     where TData : class, IDataTransferObject
-    where TParameters : class, IQueryParameters, new()
+    where TParameters : class, IQueryParameters<TData>, new()
 {
     [Parameter] public string? CreateLink { get; set; }
     
