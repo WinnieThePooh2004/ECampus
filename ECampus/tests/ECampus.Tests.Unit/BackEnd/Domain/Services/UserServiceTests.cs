@@ -1,4 +1,6 @@
-﻿using ECampus.Contracts.Services;
+﻿using AutoMapper;
+using ECampus.Contracts.DataAccess;
+using ECampus.Contracts.Services;
 using ECampus.Domain.Interfaces.Validation;
 using ECampus.Services.Services;
 using ECampus.Shared.DataTransferObjects;
@@ -16,7 +18,8 @@ public class UserServiceTests
     public UserServiceTests()
     {
         Substitute.For<IBaseService<UserDto>>();
-        _sut = new UserService(_updateValidator, _createValidator);
+        _sut = new UserService(_updateValidator, _createValidator, Substitute.For<IMapper>(),
+            Substitute.For<IDataAccessManager>());
     }
 
     [Fact]

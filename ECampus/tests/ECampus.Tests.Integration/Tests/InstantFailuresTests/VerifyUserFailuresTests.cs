@@ -23,7 +23,7 @@ public class VerifyUserFailuresTests : IClassFixture<ApplicationWithoutDatabase>
     [Fact]
     public async Task UserAuditoryPost_ShouldReturn400_WhenUserIsNotAdminAndIdsNotSame()
     {
-        var response = await _client.SendAsync(new HttpRequestMessage(HttpMethod.Post, "api/Users/auditory?userId=1"));
+        var response = await _client.SendAsync(new HttpRequestMessage(HttpMethod.Post, "api/UserProfile/auditory?userId=1"));
         response.StatusCode.Should().Be(HttpStatusCode.Forbidden);
     }
 
@@ -31,35 +31,35 @@ public class VerifyUserFailuresTests : IClassFixture<ApplicationWithoutDatabase>
     public async Task UserAuditoryDelete_ShouldReturn400_WhenUserIsNotAdminAndIdsNotSame()
     {
         var response =
-            await _client.SendAsync(new HttpRequestMessage(HttpMethod.Delete, "api/Users/auditory?userId=1"));
+            await _client.SendAsync(new HttpRequestMessage(HttpMethod.Delete, "api/UserProfile/auditory?userId=1"));
         response.StatusCode.Should().Be(HttpStatusCode.Forbidden);
     }
 
     [Fact]
     public async Task UserGroupPost_ShouldReturn400_WhenUserIsNotAdminAndIdsNotSame()
     {
-        var response = await _client.SendAsync(new HttpRequestMessage(HttpMethod.Post, "api/Users/group?userId=1"));
+        var response = await _client.SendAsync(new HttpRequestMessage(HttpMethod.Post, "api/UserProfile/group?userId=1"));
         response.StatusCode.Should().Be(HttpStatusCode.Forbidden);
     }
 
     [Fact]
     public async Task UserGroupDelete_ShouldReturn400_WhenUserIsNotAdminAndIdsNotSame()
     {
-        var response = await _client.SendAsync(new HttpRequestMessage(HttpMethod.Delete, "api/Users/group?userId=1"));
+        var response = await _client.SendAsync(new HttpRequestMessage(HttpMethod.Delete, "api/UserProfile/group?userId=1"));
         response.StatusCode.Should().Be(HttpStatusCode.Forbidden);
     }
 
     [Fact]
     public async Task UserTeacherPost_ShouldReturn400_WhenUserIsNotAdminAndIdsNotSame()
     {
-        var response = await _client.SendAsync(new HttpRequestMessage(HttpMethod.Post, "api/Users/teacher?userId=1"));
+        var response = await _client.SendAsync(new HttpRequestMessage(HttpMethod.Post, "api/UserProfile/teacher?userId=1"));
         response.StatusCode.Should().Be(HttpStatusCode.Forbidden);
     }
 
     [Fact]
     public async Task UserTeacherDelete_ShouldReturn400_WhenUserIsNotAdminAndIdsNotSame()
     {
-        var response = await _client.SendAsync(new HttpRequestMessage(HttpMethod.Delete, "api/Users/teacher?userId=1"));
+        var response = await _client.SendAsync(new HttpRequestMessage(HttpMethod.Delete, "api/UserProfile/teacher?userId=1"));
         response.StatusCode.Should().Be(HttpStatusCode.Forbidden);
     }
 }

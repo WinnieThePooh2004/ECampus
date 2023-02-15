@@ -9,9 +9,9 @@ namespace ECampus.FrontEnd.Components.PageBases;
 public abstract class TimetablePageBase : ComponentBase
 {
     [Inject] protected IUserRelationshipsRequests RelationsRequests { get; set; } = default!;
-    [Inject] private IBaseRequests<UserDto> UserRequests { get; set; } = default!;
+    [Inject] private IBaseRequests<UserProfile> UserRequests { get; set; } = default!;
     [Inject] protected IHttpContextAccessor HttpContextAccessor { get; set; } = default!;
-    protected UserDto? User { get; private set; }
+    protected UserProfile? User { get; private set; }
 
     protected override async Task OnInitializedAsync()
     {

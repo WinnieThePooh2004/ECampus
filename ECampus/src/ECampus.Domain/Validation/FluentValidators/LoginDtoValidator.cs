@@ -1,16 +1,14 @@
 ﻿using ECampus.Shared.DataTransferObjects;
-using ECampus.Shared.Enums;
 using FluentValidation;
 
 namespace ECampus.Domain.Validation.FluentValidators;
 
-public class UserDtoValidator : AbstractValidator<UserDto>
+public class LoginDtoValidator : AbstractValidator<LoginDto>
 {
-    public UserDtoValidator()
+    public LoginDtoValidator()
     {
-        RuleFor(u => u.Email)
-            .EmailAddress()
-            .WithMessage("Enter valid email");
+        RuleFor(l => l.Email)
+            .EmailAddress();
         
         RuleFor(u => u.Password)
             .MinimumLength(8)
@@ -27,15 +25,5 @@ public class UserDtoValidator : AbstractValidator<UserDto>
             .WithMessage("Password must contain at least one lowercase letter.")
             .Matches(@"[0-9]+")
             .WithMessage("Password must contain at least one number.");
-
-        RuleFor(u => u.StudentId)
-            .NotNull()
-            .When(u => u.Role == UserRole.Student)
-            .WithMessage("You must bind user to student to set role as student");
-        
-        RuleFor(u => u.TeacherId)
-            .NotNull()
-            .When(u => u.Role == UserRole.Teacher)
-            .WithMessage("You must bind user to teacher to set role as teacher");
     }
 }

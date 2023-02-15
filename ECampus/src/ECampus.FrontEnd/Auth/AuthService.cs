@@ -27,7 +27,7 @@ public class AuthService : IAuthService
         }
         var login = new LoginDto { Email = email, Password = password };
         var user = await _requests.LoginAsync(login);
-        var claims = HttpContextExtensions.CreateClaims(user);
+        var claims = user.CreateClaims();
 
         var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 

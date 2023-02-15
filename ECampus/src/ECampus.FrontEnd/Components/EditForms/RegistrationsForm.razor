@@ -1,25 +1,26 @@
 ﻿@using Microsoft.AspNetCore.Components
-<EditForm Model="_model" OnValidSubmit="Submit">
-    <FluentValidationValidator Validator="_validator"/>
+@inherits ModelEditForm<RegistrationDto>
+<EditForm Model="Model" OnValidSubmit="Submit">
+    <FluentValidationValidator Validator="Validator"/>
     <div class="col-md-3">
         <label class="form-label">Email</label><br/>
-        <InputText class="form-control" @bind-Value="@_model.Email"/>
-        <ValidationMessage For="() => _model.Email"/>
+        <InputText class="form-control" @bind-Value="@Model.Email"/>
+        <ValidationMessage For="() => Model.Email"/>
     </div>
     <div class="col-md-3">
         <label class="form-label">Password</label><br/>
-        <InputText class="form-control" @bind-Value="@_model.Password"/>
-        <ValidationMessage For="() => _model.Password"/>
+        <InputText class="form-control" @bind-Value="@Model.Password"/>
+        <ValidationMessage For="() => Model.Password"/>
     </div>
     <div class="col-md-3">
         <label class="form-label">Password confirm</label><br/>
-        <InputText class="form-control" @bind-Value="@_model.PasswordConfirm"/>
-        <ValidationMessage For="() => _model.PasswordConfirm"/>
+        <InputText class="form-control" @bind-Value="@Model.PasswordConfirm"/>
+        <ValidationMessage For="() => Model.PasswordConfirm"/>
     </div>
     <div class="col-md-3">
         <label class="form-label">Username</label><br/>
-        <InputText class="form-control" @bind-Value="@_model.Username"/>
-        <ValidationMessage For="() => _model.Username"/>
+        <InputText class="form-control" @bind-Value="@Model.Username"/>
+        <ValidationMessage For="() => Model.Username"/>
     </div>
     <button type="submit">Sign up!</button>
 </EditForm>

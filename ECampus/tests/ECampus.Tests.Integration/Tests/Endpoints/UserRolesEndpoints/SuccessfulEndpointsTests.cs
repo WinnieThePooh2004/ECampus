@@ -36,7 +36,7 @@ public class SuccessfulEndpointsTests : IClassFixture<ApplicationFactory>, IAsyn
     [Fact]
     public async Task Delete_ShouldSetTeacherTeachersUserEmailAsNull_WhenDeletedUserIsTeacher()
     {
-        var response = await _client.DeleteAsync("/api/userRoles/702");
+        var response = await _client.DeleteAsync("/api/users/702");
 
         response.EnsureSuccessStatusCode();
         await using var context = ApplicationFactory.Context;
@@ -47,7 +47,7 @@ public class SuccessfulEndpointsTests : IClassFixture<ApplicationFactory>, IAsyn
     [Fact]
     public async Task Delete_ShouldSetStudentsUserEmailAsNull_WhenDeletedUserIsTeacher()
     {
-        var response = await _client.DeleteAsync("/api/userRoles/703");
+        var response = await _client.DeleteAsync("/api/users/703");
 
         response.EnsureSuccessStatusCode();
         await using var context = ApplicationFactory.Context;
@@ -61,10 +61,10 @@ public class SuccessfulEndpointsTests : IClassFixture<ApplicationFactory>, IAsyn
         var newUser = new UserDto
         {
             Id = 704, Email = "user704@email.com", Username = "user704", Role = UserRole.Student,
-            Password = "Password1", StudentId = 701, PasswordConfirm = "Password1"
+            Password = "Password1", StudentId = 701
         };
 
-        var response = await _client.PostAsJsonAsync("api/UserRoles", newUser);
+        var response = await _client.PostAsJsonAsync("api/Users", newUser);
 
         response.EnsureSuccessStatusCode();
         await using var context = ApplicationFactory.Context;
@@ -78,10 +78,10 @@ public class SuccessfulEndpointsTests : IClassFixture<ApplicationFactory>, IAsyn
         var newUser = new UserDto
         {
             Id = 705, Email = "user705@email.com", Username = "user705", Role = UserRole.Teacher,
-            Password = "Password1", TeacherId = 701, PasswordConfirm = "Password1"
+            Password = "Password1", TeacherId = 701
         };
 
-        var response = await _client.PostAsJsonAsync("api/UserRoles", newUser);
+        var response = await _client.PostAsJsonAsync("api/Users", newUser);
 
         response.EnsureSuccessStatusCode();
         await using var context = ApplicationFactory.Context;
@@ -95,10 +95,10 @@ public class SuccessfulEndpointsTests : IClassFixture<ApplicationFactory>, IAsyn
         var updatedUser = new UserDto
         {
             Id = 701, Email = "user701@email.com", Username = "user701", Role = UserRole.Teacher,
-            Password = "Password1", TeacherId = 703, PasswordConfirm = "Password1"
+            Password = "Password1", TeacherId = 703
         };
 
-        var response = await _client.PutAsJsonAsync("api/UserRoles", updatedUser);
+        var response = await _client.PutAsJsonAsync("api/Users", updatedUser);
 
         response.EnsureSuccessStatusCode();
         await using var context = ApplicationFactory.Context;
@@ -117,10 +117,10 @@ public class SuccessfulEndpointsTests : IClassFixture<ApplicationFactory>, IAsyn
         var updatedUser = new UserDto
         {
             Id = 700, Email = "user700@email.com", Username = "user700", Role = UserRole.Student,
-            Password = "Password1", StudentId = 703, PasswordConfirm = "Password1"
+            Password = "Password1", StudentId = 703
         };
 
-        var response = await _client.PutAsJsonAsync("api/UserRoles", updatedUser);
+        var response = await _client.PutAsJsonAsync("api/Users", updatedUser);
 
         response.EnsureSuccessStatusCode();
         await using var context = ApplicationFactory.Context;
@@ -139,10 +139,10 @@ public class SuccessfulEndpointsTests : IClassFixture<ApplicationFactory>, IAsyn
         var updatedUser = new UserDto
         {
             Id = 707, Email = "user707@email.com", Username = "user707", Role = UserRole.Teacher,
-            Password = "Password1", TeacherId = 705, PasswordConfirm = "Password1"
+            Password = "Password1", TeacherId = 705
         };
 
-        var response = await _client.PutAsJsonAsync("api/UserRoles", updatedUser);
+        var response = await _client.PutAsJsonAsync("api/Users", updatedUser);
 
         response.EnsureSuccessStatusCode();
         await using var context = ApplicationFactory.Context;
@@ -160,10 +160,10 @@ public class SuccessfulEndpointsTests : IClassFixture<ApplicationFactory>, IAsyn
         var updatedUser = new UserDto
         {
             Id = 706, Email = "user706@email.com", Username = "user706", Role = UserRole.Student,
-            Password = "Password1", StudentId = 705, PasswordConfirm = "Password1"
+            Password = "Password1", StudentId = 705
         };
 
-        var response = await _client.PutAsJsonAsync("api/UserRoles", updatedUser);
+        var response = await _client.PutAsJsonAsync("api/Users", updatedUser);
 
         response.EnsureSuccessStatusCode();
         await using var context = ApplicationFactory.Context;

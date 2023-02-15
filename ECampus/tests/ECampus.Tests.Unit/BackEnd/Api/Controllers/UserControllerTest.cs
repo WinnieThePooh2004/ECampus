@@ -1,8 +1,6 @@
 ﻿using ECampus.Api.Controllers;
 using ECampus.Contracts.Services;
-using ECampus.Shared.DataContainers;
 using ECampus.Shared.DataTransferObjects;
-using ECampus.Shared.QueryParameters;
 using ECampus.Shared.Validation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,51 +10,21 @@ namespace ECampus.Tests.Unit.BackEnd.Api.Controllers;
 public class UserControllerTest
 {
     private readonly IUserService _service;
-    private readonly IBaseService<UserDto> _baseService = Substitute.For<IBaseService<UserDto>>();
-
-    private readonly IParametersService<UserDto, UserParameters> _parametersService =
-        Substitute.For<IParametersService<UserDto, UserParameters>>();
 
     private readonly IUserRelationsService _userRelationsService = Substitute.For<IUserRelationsService>();
     private readonly IPasswordChangeService _passwordChangeService = Substitute.For<IPasswordChangeService>();
 
-    private readonly UsersController _sut;
+    private readonly UserProfileController _sut;
     private readonly Fixture _fixture = new();
     
     public UserControllerTest()
     {
         _service = Substitute.For<IUserService>();
-        _sut = new UsersController(_service, _baseService, _parametersService, _userRelationsService);
+        _sut = new UserProfileController(_service, _userRelationsService);
         _fixture.Behaviors.Add(new OmitOnRecursionBehavior());
         _sut.ControllerContext.HttpContext = Substitute.For<HttpContext>();
     }
-
-    [Fact]
-    public async Task GetById_ReturnsFromService_ServiceCalled()
-    {
-        var data = _fixture.Build<UserDto>().With(t => t.Id, 10).Create();
-        _baseService.GetByIdAsync(10).Returns(data);
-
-        var actionResult = await _sut.Get(10);
-
-        actionResult.Should().BeOfType<OkObjectResult>();
-        actionResult.As<OkObjectResult>().Value.Should().Be(data);
-        await _baseService.Received().GetByIdAsync(10);
-    }
-
-    [Fact]
-    public async Task Delete_ReturnsIdFromService_ServiceCalled()
-    {
-        var data = _fixture.Build<UserDto>().With(t => t.Id, 10).Create();
-        _baseService.DeleteAsync(10).Returns(data);
-
-        var actionResult = await _sut.Delete(10);
-
-        actionResult.Should().BeOfType<OkObjectResult>();
-        actionResult.As<OkObjectResult>().Value.Should().Be(data);
-        await _baseService.Received().DeleteAsync(10);
-    }
-
+    
     [Fact]
     public async Task ValidateCreate_ReturnsFromService_ServiceCalled()
     {
@@ -83,48 +51,6 @@ public class UserControllerTest
         actionResult.Should().BeOfType<OkObjectResult>();
         actionResult.As<OkObjectResult>().Value.Should().Be(errors);
         await _service.Received().ValidateUpdateAsync(data);
-    }
-
-    [Fact]
-    public async Task GetByParameters_ReturnsFromService_ServiceCalled()
-    {
-        var data = _fixture.Build<ListWithPaginationData<UserDto>>()
-            .With(l => l.Data, Enumerable.Range(0, 5)
-                .Select(_ => _fixture.Create<UserDto>()).ToList())
-            .Create();
-
-        _parametersService.GetByParametersAsync(Arg.Any<UserParameters>()).Returns(data);
-        var actionResult = await _sut.Get(new UserParameters());
-
-        actionResult.Should().BeOfType<OkObjectResult>();
-        actionResult.As<OkObjectResult>().Value.Should().Be(data);
-        await _parametersService.Received().GetByParametersAsync(Arg.Any<UserParameters>());
-    }
-
-    [Fact]
-    public async Task Create_ReturnsFromService_ServiceCalled()
-    {
-        var data = _fixture.Create<UserDto>();
-        _baseService.CreateAsync(data).Returns(data);
-
-        var actionResult = await _sut.Post(data);
-
-        actionResult.Should().BeOfType<OkObjectResult>();
-        actionResult.As<OkObjectResult>().Value.Should().Be(data);
-        await _baseService.Received().CreateAsync(data);
-    }
-
-    [Fact]
-    public async Task Update_ReturnsFromService_ServiceCalled()
-    {
-        var data = _fixture.Create<UserDto>();
-        _baseService.UpdateAsync(data).Returns(data);
-
-        var actionResult = await _sut.Put(data);
-
-        actionResult.Should().BeOfType<OkObjectResult>();
-        actionResult.As<OkObjectResult>().Value.Should().Be(data);
-        await _baseService.Received().UpdateAsync(data);
     }
 
     [Fact]

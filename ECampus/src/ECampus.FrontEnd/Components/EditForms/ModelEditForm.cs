@@ -8,7 +8,7 @@ public class ModelEditForm<TModel> : ComponentBase where TModel : class
 {
     [Parameter] public TModel Model { get; set; } = default!;
     [Parameter] public EventCallback<TModel> OnSubmit { get; set; }
-    [Inject] protected IValidator<TModel> Validator { get; set; } = default!;
+    [Inject] protected IValidator<TModel> Validator { get; private set; } = default!;
 
     [CascadingParameter] protected EditContext EditContext { get; set; } = default!;
 

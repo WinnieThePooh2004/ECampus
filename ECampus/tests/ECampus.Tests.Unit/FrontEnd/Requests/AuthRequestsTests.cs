@@ -40,14 +40,4 @@ public class AuthRequestsTests
             .ThrowAsync<HttpRequestException>()
             .WithMessage("Response status code does not indicate success: 502 (Bad Gateway).");
     }
-    
-    [Fact]
-    public async Task Logout_ShouldLogout()
-    {
-        var response = new HttpResponseMessage { StatusCode = HttpStatusCode.BadGateway };
-        _clientFactory.MessageHandler.Responses.Add(
-            new HttpRequestMessage(HttpMethod.Delete, "https://google.com/api/Auth/logout"), response);
-
-        await _sut.LogoutAsync();
-    }
 }

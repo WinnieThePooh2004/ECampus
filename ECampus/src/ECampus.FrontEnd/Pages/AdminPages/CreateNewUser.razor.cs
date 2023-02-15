@@ -8,7 +8,7 @@ namespace ECampus.FrontEnd.Pages.AdminPages;
 
 public partial class CreateNewUser
 {
-    [Inject] private IUserRolesRequests UserRolesRequests { get; set; } = default!;
+    [Inject] private IBaseRequests<UserDto> UserRolesRequests { get; set; } = default!;
     [Inject] private IUserValidatorFactory UserValidatorFactory { get; set; } = default!;
     [Inject] private NavigationManager NavigationManager { get; set; } = default!;
     
@@ -19,13 +19,7 @@ public partial class CreateNewUser
     {
         _validator = UserValidatorFactory.CreateValidator();
     }
-
-    private void OnPasswordChanges(string? password)
-    {
-        _model.Password = password ?? "";
-        _model.PasswordConfirm = _model.Password;
-    }
-
+    
     private async Task Save()
     {
         await UserRolesRequests.CreateAsync(_model);

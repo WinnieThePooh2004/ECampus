@@ -1,6 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using ECampus.Contracts.DataAccess;
 using ECampus.Contracts.DataSelectParameters;
+using ECampus.Contracts.Services;
 using ECampus.Services.Services.Auth;
 using ECampus.Shared.Auth;
 using ECampus.Shared.DataTransferObjects;
@@ -28,7 +29,7 @@ public class AuthorizationServiceTests
     public AuthorizationServiceTests()
     {
         _httpContextAccessor.HttpContext.Returns(_httpContext);
-        _sut = new AuthorizationService(_httpContextAccessor, _authOptions, _parametersDataAccess);
+        _sut = new AuthorizationService(_httpContextAccessor, _authOptions, _parametersDataAccess, Substitute.For<IUserService>());
     }
 
     [Fact]
@@ -85,7 +86,7 @@ public class AuthorizationServiceTests
         var jwt = new JwtSecurityToken(
             issuer: _authOptions.Issuer,
             audience: _authOptions.Audience,
-            claims: HttpContextExtensions.CreateClaims(loginResult),
+            claims: loginResult.CreateClaims(),
             expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(2)),
             signingCredentials: new SigningCredentials(_authOptions.GetSymmetricSecurityKey(),
                 SecurityAlgorithms.HmacSha256));

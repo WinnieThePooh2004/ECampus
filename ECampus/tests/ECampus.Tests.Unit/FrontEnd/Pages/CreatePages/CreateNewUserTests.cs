@@ -11,7 +11,7 @@ namespace ECampus.Tests.Unit.FrontEnd.Pages.CreatePages;
 public class CreateNewUserTests
 {
     private readonly TestContext _context = new();
-    private readonly IUserRolesRequests _userRolesRequests = Substitute.For<IUserRolesRequests>();
+    private readonly IBaseRequests<UserDto> _userRolesRequests = Substitute.For<IBaseRequests<UserDto>>();
     private readonly IUserValidatorFactory _userValidatorFactory = Substitute.For<IUserValidatorFactory>();
     private readonly IValidator<UserDto> _validator = Substitute.For<IValidator<UserDto>>();
 

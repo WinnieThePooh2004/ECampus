@@ -161,60 +161,46 @@ public class UnauthorizedResultTests : IClassFixture<ApplicationWithoutDatabase>
         var response = await _client.DeleteAsync($"api/Subjects/{100}");
         response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
     }
-    
-    [Fact]
-    public async Task PutToUsers_ShouldReturn401_WhenUnauthorized()
-    {
-        var response = await _client.PutAsJsonAsync("api/Users", new ClassDto());
-        response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
-    }
-    
-    [Fact]
-    public async Task DeleteFromUsers_ShouldReturn401_WhenUnauthorized()
-    {
-        var response = await _client.DeleteAsync($"api/Users/{100}");
-        response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
-    }
-    
+
     [Fact]
     public async Task SaveAuditoryUsers_ShouldReturn401_WhenUnauthorized()
     {
-        var response = await _client.DeleteAsync($"api/Users/auditory");
+        var response = await _client.DeleteAsync($"api/UserProfile/auditory");
         response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
     }
     
     [Fact]
     public async Task SaveGroupUsers_ShouldReturn401_WhenUnauthorized()
     {
-        var response = await _client.DeleteAsync($"api/Users/group");
+        var response = await _client.DeleteAsync($"api/UserProfile/group");
         response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
     }
     
     [Fact]
     public async Task SaveTeacherUsers_ShouldReturn401_WhenUnauthorized()
     {
-        var response = await _client.DeleteAsync($"api/Users/teacher");
+        var response = await _client.DeleteAsync($"api/UserProfile/teacher");
         response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
     }
     
     [Fact]
     public async Task RemoveSavedAuditoryUsers_ShouldReturn401_WhenUnauthorized()
     {
-        var response = await _client.DeleteAsync($"api/Users/auditory");
+        var response = await _client.DeleteAsync($"api/UserProfile/auditory");
         response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
     }
     
     [Fact]
     public async Task RemoveSavedGroupUsers_ShouldReturn401_WhenUnauthorized()
     {
-        var response = await _client.DeleteAsync($"api/Users/group");
+        var response = await _client.DeleteAsync($"api/UserProfile/group");
         response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
     }
     
     [Fact]
     public async Task RemoveSavedTeacherUsers_ShouldReturn401_WhenUnauthorized()
     {
-        var response = await _client.DeleteAsync($"api/Users/teacher");
+        var response = await _client.DeleteAsync($"api/UserProfile/teacher");
         response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
     }
 }

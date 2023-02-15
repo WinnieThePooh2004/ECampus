@@ -32,7 +32,7 @@ public class DataAccessManagerTests
         var createService = Substitute.For<IDataCreateService<Auditory>>();
         _serviceProvider.GetService(typeof(IDataCreateService<Auditory>)).Returns(createService);
 
-        _sut.CreateAsync(model);
+        _sut.Create(model);
 
         createService.Received(1).Create(model, _context);
     }

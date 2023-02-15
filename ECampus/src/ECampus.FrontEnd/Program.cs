@@ -47,7 +47,6 @@ builder.Services.AddScoped<IUserRelationshipsRequests, UserRelationshipsRequests
 builder.Services.AddScoped<IAuthRequests, AuthRequests>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserValidatorFactory, UserValidatorFactory>();
-builder.Services.AddScoped<IUserRolesRequests, UserRolesRequests>();
 builder.Services.AddScoped<IPasswordChangeRequests, PasswordChangeRequests>();
 
 builder.Services.AddScoped<IUpdateValidationRequests<UserDto>, UserUpdateValidationRequests>();
@@ -66,6 +65,11 @@ builder.Services.Decorate<IPropertySelector<TaskSubmissionDto>, TaskSubmissionPr
 
 builder.Services.AddSingleton(typeof(IPropertySelector<>), typeof(PropertySelector<>));
 builder.Services.AddSingleton(typeof(ISearchTermsSelector<>), typeof(SearchTermsSelector<>));
+
+builder.Services.AddScoped<IValidationRequests<RegistrationDto>, AuthRequests>();
+builder.Services.AddScoped<IValidationRequests<LoginDto>, AuthRequests>();
+builder.Services.Decorate<IValidator<RegistrationDto>, HttpCallingValidator<RegistrationDto>>();
+builder.Services.Decorate<IValidator<LoginDto>, HttpCallingValidator<LoginDto>>();
 
 builder.Services.AddScoped<ITaskSubmissionRequests, TaskSubmissionRequests>();
 

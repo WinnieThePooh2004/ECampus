@@ -6,7 +6,7 @@ namespace ECampus.Shared.Extensions;
 
 public static class HttpContextExtensions
 {
-    public static IEnumerable<Claim> CreateClaims(LoginResult loginResult)
+    public static IEnumerable<Claim> CreateClaims(this LoginResult loginResult)
         => new List<Claim>
         {
             new(ClaimTypes.Email, loginResult.Email),
