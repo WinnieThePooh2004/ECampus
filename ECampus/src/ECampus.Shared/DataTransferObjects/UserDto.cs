@@ -5,7 +5,7 @@ using ECampus.Shared.Models;
 
 namespace ECampus.Shared.DataTransferObjects;
 
-[Dto<User>]
+[Dto<User>(InjectBaseService = false)]
 [Validation]
 public class UserDto : IDataTransferObject
 {

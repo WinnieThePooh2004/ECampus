@@ -1,6 +1,5 @@
 ﻿using Bunit;
 using ECampus.FrontEnd.Components.EditForms;
-using ECampus.FrontEnd.Validation.Interfaces;
 using ECampus.Shared.DataTransferObjects;
 using FluentValidation;
 using FluentValidation.Results;
@@ -11,20 +10,18 @@ namespace ECampus.Tests.Unit.FrontEnd.Components.EditForms;
 public class RegistrationFormTests
 {
     private readonly TestContext _context = new();
-    private readonly IValidator<UserDto> _validator = Substitute.For<IValidator<UserDto>>();
+    private readonly IValidator<RegistrationDto> _validator = Substitute.For<IValidator<RegistrationDto>>();
     private bool _onSubmitInvoked;
 
     public RegistrationFormTests()
     {
-        var validatorFactory = Substitute.For<IUserValidatorFactory>();
-        validatorFactory.CreateValidator().Returns(_validator);
-        _context.Services.AddSingleton(validatorFactory);
+        _context.Services.AddSingleton(_validator);
     }
 
     [Fact]
     public void SubmitForm_ShouldNotInvokeOnSubmit_WhenFormIsInvalid()
     {
-        _validator.ValidateAsync(Arg.Any<UserDto>()).Returns(new ValidationResult(
+        _validator.ValidateAsync(Arg.Any<RegistrationDto>()).Returns(new ValidationResult(
             new[] { new ValidationFailure("Name", "abc") }));
         var form = RenderedComponent();
         var button = form.Find("button");
@@ -37,7 +34,7 @@ public class RegistrationFormTests
     [Fact]
     public void SubmitForm_ShouldNotInvokeOnSubmit_WhenFormInvalid()
     {
-        _validator.ValidateAsync(Arg.Any<UserDto>()).Returns(new ValidationResult());
+        _validator.ValidateAsync(Arg.Any<RegistrationDto>()).Returns(new ValidationResult());
         var form = RenderedComponent();
         var button = form.Find("button");
         
@@ -48,7 +45,8 @@ public class RegistrationFormTests
 
     private IRenderedComponent<RegistrationsForm> RenderedComponent()
         => _context.RenderComponent<RegistrationsForm>(opt => opt
-            .Add(r => r.OnSubmit, InvokeSubmit));
+            .Add(r => r.OnSubmit, InvokeSubmit)
+            .Add(r => r.Model, new RegistrationDto()));
 
     private void InvokeSubmit()
     {
