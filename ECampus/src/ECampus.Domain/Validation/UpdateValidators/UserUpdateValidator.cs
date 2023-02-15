@@ -50,12 +50,6 @@ public class UserUpdateValidator : UserValidatorBase, IUpdateValidator<UserDto>
         {
             errors.AddError(new ValidationError(nameof(model.Email), "You cannot change email"));
         }
-
-        if (model.Password != userFromDb.Password)
-        {
-            errors.AddError(new ValidationError(nameof(model.Password),
-                "To change password use action 'Users/ChangePassword'"));
-        }
     }
 
     private async Task ValidateUsernameUniqueness(UserDto dataTransferObject, ValidationResult errors,

@@ -86,7 +86,7 @@ public class AuthorizationService : IAuthorizationService
         _userService.ValidateCreateAsync(
             new UserDto
             {
-                Email = registrationDto.Email, Username = registrationDto.Username, Password = registrationDto.Password
+                Email = registrationDto.Email, Username = registrationDto.Username
             }, token);
 
     public async Task<ValidationResult> ValidateLogin(LoginDto login, CancellationToken token = default)

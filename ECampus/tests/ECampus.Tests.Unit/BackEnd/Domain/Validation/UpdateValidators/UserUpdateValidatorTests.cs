@@ -36,7 +36,7 @@ public class UserUpdateValidatorTests
     public async Task Validate_ReturnsFromBaseValidator_WhenBaseErrorsNotValid()
     {
         var baseErrors = _fixture.CreateMany<ValidationError>(10).ToList();
-        var user = new UserDto { Email = "abc@example.com", Password = "Password" };
+        var user = new UserDto { Email = "abc@example.com" };
         _baseValidator.ValidateAsync(user).Returns(new ValidationResult(baseErrors));
 
         var actualErrors = (await _sut.ValidateAsync(user)).ToList();
@@ -48,7 +48,7 @@ public class UserUpdateValidatorTests
     public async Task Validate_ShouldAddError_WhenAdminTryToChangeHisRole()
     {
         var user = new UserDto
-            { Id = 10, Role = UserRole.Guest, Email = "email", Password = "password", Username = "username" };
+            { Id = 10, Role = UserRole.Guest, Email = "email", Username = "username" };
         _dataAccess.SetReturnById(10, new User { Role = UserRole.Admin });
         var userByUsername = new DbSetMock<User>(new User()).Object;
         _dataAccess.GetByParameters<User, UserUsernameParameters>(
@@ -61,7 +61,6 @@ public class UserUpdateValidatorTests
             new(nameof(user.Role), "Admin cannon change role for him/herself"),
             new(nameof(user.Username), "User with this username already exists"),
             new(nameof(user.Email), "You cannot change email"),
-            new(nameof(user.Password), "To change password use action 'Users/ChangePassword'")
         };
 
         var result = await _sut.ValidateAsync(user);
@@ -73,7 +72,7 @@ public class UserUpdateValidatorTests
     public async Task Validate_ShouldAddError_WhenNotAdminTryToChangeRole()
     {
         var user = new UserDto
-            { Id = 10, Role = UserRole.Admin, Email = "email", Password = "password", Username = "username" };
+            { Id = 10, Role = UserRole.Admin, Email = "email", Username = "username" };
         _dataAccess.SetReturnById(10, new User { Role = UserRole.Guest });
         var userByUsername = new DbSetMock<User>(new User()).Object;
         _dataAccess.GetByParameters<User, UserUsernameParameters>(
@@ -85,8 +84,7 @@ public class UserUpdateValidatorTests
         {
             new(nameof(user.Role), "Only admins can change user`s role"),
             new(nameof(user.Username), "User with this username already exists"),
-            new(nameof(user.Email), "You cannot change email"),
-            new(nameof(user.Password), "To change password use action 'Users/ChangePassword'")
+            new(nameof(user.Email), "You cannot change email")
         };
 
         var result = await _sut.ValidateAsync(user);

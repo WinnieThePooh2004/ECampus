@@ -12,11 +12,6 @@
         <ValidationMessage For="@(() => _model.Username)"/>
         <InputText @bind-Value="@_model.Username"/>
     </div>
-    <div class="col-md-3">
-        <label>Password</label>
-        <ValidationMessage For="@(() => _model.Password)"/>
-        <InputText @bind-Value="@_model.Password"/>
-    </div>
     <br/>
     <UserRoleEditForm Model="_model"/>
 </EditForm>

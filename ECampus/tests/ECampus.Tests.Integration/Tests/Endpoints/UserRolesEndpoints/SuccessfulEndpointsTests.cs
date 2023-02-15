@@ -61,7 +61,7 @@ public class SuccessfulEndpointsTests : IClassFixture<ApplicationFactory>, IAsyn
         var newUser = new UserDto
         {
             Id = 704, Email = "user704@email.com", Username = "user704", Role = UserRole.Student,
-            Password = "Password1", StudentId = 701
+            StudentId = 701
         };
 
         var response = await _client.PostAsJsonAsync("api/Users", newUser);
@@ -78,7 +78,7 @@ public class SuccessfulEndpointsTests : IClassFixture<ApplicationFactory>, IAsyn
         var newUser = new UserDto
         {
             Id = 705, Email = "user705@email.com", Username = "user705", Role = UserRole.Teacher,
-            Password = "Password1", TeacherId = 701
+            TeacherId = 701
         };
 
         var response = await _client.PostAsJsonAsync("api/Users", newUser);
@@ -95,7 +95,7 @@ public class SuccessfulEndpointsTests : IClassFixture<ApplicationFactory>, IAsyn
         var updatedUser = new UserDto
         {
             Id = 701, Email = "user701@email.com", Username = "user701", Role = UserRole.Teacher,
-            Password = "Password1", TeacherId = 703
+            TeacherId = 703
         };
 
         var response = await _client.PutAsJsonAsync("api/Users", updatedUser);
@@ -117,7 +117,7 @@ public class SuccessfulEndpointsTests : IClassFixture<ApplicationFactory>, IAsyn
         var updatedUser = new UserDto
         {
             Id = 700, Email = "user700@email.com", Username = "user700", Role = UserRole.Student,
-            Password = "Password1", StudentId = 703
+            StudentId = 703
         };
 
         var response = await _client.PutAsJsonAsync("api/Users", updatedUser);
@@ -139,7 +139,7 @@ public class SuccessfulEndpointsTests : IClassFixture<ApplicationFactory>, IAsyn
         var updatedUser = new UserDto
         {
             Id = 707, Email = "user707@email.com", Username = "user707", Role = UserRole.Teacher,
-            Password = "Password1", TeacherId = 705
+            TeacherId = 705
         };
 
         var response = await _client.PutAsJsonAsync("api/Users", updatedUser);
@@ -160,7 +160,7 @@ public class SuccessfulEndpointsTests : IClassFixture<ApplicationFactory>, IAsyn
         var updatedUser = new UserDto
         {
             Id = 706, Email = "user706@email.com", Username = "user706", Role = UserRole.Student,
-            Password = "Password1", StudentId = 705
+            StudentId = 705
         };
 
         var response = await _client.PutAsJsonAsync("api/Users", updatedUser);
