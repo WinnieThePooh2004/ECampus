@@ -12,15 +12,13 @@ namespace ECampus.Api.Controllers;
 public class UsersController : ControllerBase
 {
     private readonly IUserService _service;
-    private readonly IBaseService<UserDto> _baseService;
     private readonly IParametersService<UserDto, UserParameters> _parametersService;
     private readonly IUserRelationsService _userRelationsService;
 
-    public UsersController(IUserService service, IBaseService<UserDto> baseService,
+    public UsersController(IUserService service,
         IParametersService<UserDto, UserParameters> parametersService, IUserRelationsService userRelationsService)
     {
         _service = service;
-        _baseService = baseService;
         _parametersService = parametersService;
         _userRelationsService = userRelationsService;
     }
@@ -29,7 +27,7 @@ public class UsersController : ControllerBase
     [AllowAnonymous]
     public async Task<IActionResult> Get(int id, CancellationToken token = default)
     {
-        return Ok(await _baseService.GetByIdAsync(id));
+        return Ok(await _service.GetByIdAsync(id, token));
     }
 
     [HttpGet]
@@ -43,21 +41,21 @@ public class UsersController : ControllerBase
     [AllowAnonymous]
     public async Task<IActionResult> Post(UserDto user, CancellationToken token = default)
     {
-        return Ok(await _baseService.CreateAsync(user, token));
+        return Ok(await _service.CreateAsync(user, token));
     }
 
     [HttpPut]
     [Authorized]
     public async Task<IActionResult> Put(UserDto user, CancellationToken token = default)
     {
-        return Ok(await _baseService.UpdateAsync(user, token));
+        return Ok(await _service.UpdateAsync(user, token));
     }
 
     [HttpDelete("{id:int?}")]
     [Authorized]
     public async Task<IActionResult> Delete(int id, CancellationToken token = default)
     {
-        return Ok(await _baseService.DeleteAsync(id, token));
+        return Ok(await _service.DeleteAsync(id, token));
     }
 
     [HttpPut("Validate/Create")]

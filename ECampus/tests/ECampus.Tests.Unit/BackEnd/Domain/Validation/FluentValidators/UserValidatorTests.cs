@@ -8,7 +8,7 @@ public class UserValidatorTests
     [Fact]
     public void Validate_InvalidItemPasses_ShouldHaveValidationError()
     {
-        var invalidItem = new UserDto { Username = "", Email = "", Password = "", PasswordConfirm = "a" };
+        var invalidItem = new UserDto { Username = "", Email = "", Password = "" };
         var validator = new UserDtoValidator();
 
         var errors = validator.Validate(invalidItem).Errors.Select(e => e.ErrorMessage).ToList();
@@ -20,8 +20,7 @@ public class UserValidatorTests
             "Password length must be at least 8 characters.",
             "Password must contain at least one uppercase letter.",
             "Password must contain at least one lowercase letter.",
-            "Password must contain at least one number.",
-            "Passwords don't match"
+            "Password must contain at least one number."
         };
         errors.Should().BeEquivalentTo(expectedErrors);
     }

@@ -1,20 +1,25 @@
-﻿using ECampus.FrontEnd.Auth;
+﻿using System.Security.Claims;
 using ECampus.FrontEnd.Requests.Interfaces;
 using ECampus.Shared.DataTransferObjects;
 using Microsoft.AspNetCore.Components;
+using ECampus.Shared.Extensions;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace ECampus.FrontEnd.Pages.Auth;
 
 public partial class SignUp
 {
-    protected override string PageAfterSave => "~/";
-
-    [Inject] private IAuthService AuthService { get; set; } = default!;
-    [Inject] private IBaseRequests<UserDto> Requests { get; set; } = default!;
-
-    protected override async Task Save(UserDto model)
+    [Inject] private IAuthRequests Requests { get; set; } = default!;
+    [Inject] private IHttpContextAccessor HttpContextAccessor { get; set; } = default!;
+    [Inject] private NavigationManager NavigationManager { get; set; } = default!;
+    private async Task Save(RegistrationDto model)
     {
-        await Requests.CreateAsync(model);
-        await AuthService.Login(model.Email, model.Password);
+        var result = await Requests.SignUpAsync(model);
+        var claims = result.CreateClaims();
+        var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+        await HttpContextAccessor.HttpContext!.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
+            new ClaimsPrincipal(identity), new AuthenticationProperties());    
+        NavigationManager.NavigateTo("~/");
     }
 }

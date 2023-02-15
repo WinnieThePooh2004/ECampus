@@ -21,7 +21,6 @@ public sealed partial class EditProfile
     {
         _validator = UserValidatorFactory.UpdateValidator();
         _model = await UserRequests.GetByIdAsync(HttpContextAccessor.HttpContext?.User.GetId() ?? throw new Exception());
-        _model.PasswordConfirm = _model.Password;
     }
 
     private async Task Save()

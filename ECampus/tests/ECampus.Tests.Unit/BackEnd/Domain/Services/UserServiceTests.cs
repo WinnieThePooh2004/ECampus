@@ -16,7 +16,7 @@ public class UserServiceTests
     public UserServiceTests()
     {
         Substitute.For<IBaseService<UserDto>>();
-        _sut = new UserService(_updateValidator, _createValidator);
+        _sut = new UserService(_updateValidator, _createValidator, Substitute.For<IBaseService<UserDto>>());
     }
 
     [Fact]

@@ -16,7 +16,7 @@ using ILogger = Serilog.ILogger;
 namespace ECampus.Tests.Integration.AppFactories;
 
 /// <summary>
-/// current id is 700, next group of endpoints should use object with ids 800+
+/// current id is 800, next group of endpoints should use object with ids 900+
 /// </summary>
 public class ApplicationFactory : WebApplicationFactory<Program>
 {

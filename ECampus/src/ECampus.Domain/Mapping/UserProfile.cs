@@ -8,11 +8,7 @@ public class UserProfile : Profile
 {
     public UserProfile()
     {
-        CreateMap<User, UserDto>().ForMember(
-            dest => dest.PasswordConfirm,
-            opt => opt.MapFrom(c => c.Password)
-        );
-
-        CreateMap<UserDto, User>();
+        CreateMap<UserDto, User>().ReverseMap();
+        CreateMap<RegistrationDto, UserDto>();
     }
 }

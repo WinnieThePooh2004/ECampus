@@ -15,7 +15,7 @@
     <div class="col-md-3">
         <label>Password</label>
         <ValidationMessage For="@(() => _model.Password)"/>
-        <InputText Value="@_model.Password" ValueExpression="@(() => _model.Password)" ValueChanged="@(OnPasswordChanges)"/>
+        <InputText @bind-Value="@_model.Password"/>
     </div>
     <br/>
     <UserRoleEditForm Model="_model"/>

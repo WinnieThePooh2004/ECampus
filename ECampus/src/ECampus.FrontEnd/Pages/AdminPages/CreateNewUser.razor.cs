@@ -19,13 +19,7 @@ public partial class CreateNewUser
     {
         _validator = UserValidatorFactory.CreateValidator();
     }
-
-    private void OnPasswordChanges(string? password)
-    {
-        _model.Password = password ?? "";
-        _model.PasswordConfirm = _model.Password;
-    }
-
+    
     private async Task Save()
     {
         await UserRolesRequests.CreateAsync(_model);

@@ -12,7 +12,6 @@ namespace ECampus.Tests.Unit.BackEnd.Api.Controllers;
 public class UserControllerTest
 {
     private readonly IUserService _service;
-    private readonly IBaseService<UserDto> _baseService = Substitute.For<IBaseService<UserDto>>();
 
     private readonly IParametersService<UserDto, UserParameters> _parametersService =
         Substitute.For<IParametersService<UserDto, UserParameters>>();
@@ -26,7 +25,7 @@ public class UserControllerTest
     public UserControllerTest()
     {
         _service = Substitute.For<IUserService>();
-        _sut = new UsersController(_service, _baseService, _parametersService, _userRelationsService);
+        _sut = new UsersController(_service, _parametersService, _userRelationsService);
         _fixture.Behaviors.Add(new OmitOnRecursionBehavior());
         _sut.ControllerContext.HttpContext = Substitute.For<HttpContext>();
     }
@@ -35,26 +34,26 @@ public class UserControllerTest
     public async Task GetById_ReturnsFromService_ServiceCalled()
     {
         var data = _fixture.Build<UserDto>().With(t => t.Id, 10).Create();
-        _baseService.GetByIdAsync(10).Returns(data);
+        _service.GetByIdAsync(10).Returns(data);
 
         var actionResult = await _sut.Get(10);
 
         actionResult.Should().BeOfType<OkObjectResult>();
         actionResult.As<OkObjectResult>().Value.Should().Be(data);
-        await _baseService.Received().GetByIdAsync(10);
+        await _service.Received().GetByIdAsync(10);
     }
 
     [Fact]
     public async Task Delete_ReturnsIdFromService_ServiceCalled()
     {
         var data = _fixture.Build<UserDto>().With(t => t.Id, 10).Create();
-        _baseService.DeleteAsync(10).Returns(data);
+        _service.DeleteAsync(10).Returns(data);
 
         var actionResult = await _sut.Delete(10);
 
         actionResult.Should().BeOfType<OkObjectResult>();
         actionResult.As<OkObjectResult>().Value.Should().Be(data);
-        await _baseService.Received().DeleteAsync(10);
+        await _service.Received().DeleteAsync(10);
     }
 
     [Fact]
@@ -105,26 +104,26 @@ public class UserControllerTest
     public async Task Create_ReturnsFromService_ServiceCalled()
     {
         var data = _fixture.Create<UserDto>();
-        _baseService.CreateAsync(data).Returns(data);
+        _service.CreateAsync(data).Returns(data);
 
         var actionResult = await _sut.Post(data);
 
         actionResult.Should().BeOfType<OkObjectResult>();
         actionResult.As<OkObjectResult>().Value.Should().Be(data);
-        await _baseService.Received().CreateAsync(data);
+        await _service.Received().CreateAsync(data);
     }
 
     [Fact]
     public async Task Update_ReturnsFromService_ServiceCalled()
     {
         var data = _fixture.Create<UserDto>();
-        _baseService.UpdateAsync(data).Returns(data);
+        _service.UpdateAsync(data).Returns(data);
 
         var actionResult = await _sut.Put(data);
 
         actionResult.Should().BeOfType<OkObjectResult>();
         actionResult.As<OkObjectResult>().Value.Should().Be(data);
-        await _baseService.Received().UpdateAsync(data);
+        await _service.Received().UpdateAsync(data);
     }
 
     [Fact]
