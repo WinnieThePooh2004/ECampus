@@ -1,7 +1,10 @@
-﻿using ECampus.Contracts.Services;
+﻿using AutoMapper;
+using ECampus.Contracts.DataAccess;
+using ECampus.Contracts.Services;
 using ECampus.Core.Installers;
 using ECampus.Domain.Interfaces.Validation;
 using ECampus.Shared.DataTransferObjects;
+using ECampus.Shared.Models;
 using ECampus.Shared.Validation;
 
 namespace ECampus.Services.Services;
@@ -11,14 +14,16 @@ public class UserService : IUserService
 {
     private readonly ICreateValidator<UserDto> _createValidator;
     private readonly IUpdateValidator<UserDto> _updateValidator;
-    private readonly IBaseService<UserDto> _baseService;
+    private readonly IDataAccessManager _dataAccess;
+    private readonly IMapper _mapper;
 
-    public UserService(IUpdateValidator<UserDto> updateValidator,
-        ICreateValidator<UserDto> createValidator, IBaseService<UserDto> baseService)
+    public UserService(IUpdateValidator<UserDto> updateValidator, ICreateValidator<UserDto> createValidator,
+        IMapper mapper, IDataAccessManager dataAccess)
     {
         _updateValidator = updateValidator;
         _createValidator = createValidator;
-        _baseService = baseService;
+        _mapper = mapper;
+        _dataAccess = dataAccess;
     }
 
     public async Task<ValidationResult> ValidateCreateAsync(UserDto user, CancellationToken token = default)
@@ -31,14 +36,16 @@ public class UserService : IUserService
         return await _updateValidator.ValidateAsync(user, token);
     }
 
-    public Task<UserDto> GetByIdAsync(int id, CancellationToken token = default) =>
-        _baseService.GetByIdAsync(id, token);
+    public async Task<UserProfile> UpdateProfileAsync(UserProfile user, CancellationToken token)
+    {
+        var entity = _mapper.Map<User>(user);
+        var updated = await _dataAccess.UpdateAsync(entity, token);
+        return _mapper.Map<UserProfile>(updated);
+    }
 
-    public Task<UserDto> CreateAsync(UserDto entity, CancellationToken token = default) =>
-        _baseService.CreateAsync(entity, token);
-
-    public Task<UserDto> UpdateAsync(UserDto entity, CancellationToken token = default) =>
-        _baseService.UpdateAsync(entity, token);
-
-    public Task<UserDto> DeleteAsync(int id, CancellationToken token = default) => _baseService.DeleteAsync(id, token);
+    public async Task<UserProfile> GetByIdAsync(int id, CancellationToken token = default)
+    {
+        var user = await _dataAccess.GetByIdAsync<User>(id, token);
+        return _mapper.Map<UserProfile>(user);
+    }
 }

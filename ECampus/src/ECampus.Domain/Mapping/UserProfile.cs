@@ -10,5 +10,6 @@ public class UserProfile : Profile
     {
         CreateMap<UserDto, User>().ReverseMap();
         CreateMap<RegistrationDto, UserDto>();
+        CreateMap<Shared.DataTransferObjects.UserProfile, User>().ReverseMap();
     }
 }

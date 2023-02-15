@@ -63,12 +63,13 @@ public class AuthorizationService : IAuthorizationService
 
     public async Task<LoginResult> SignUp(RegistrationDto registrationDto, CancellationToken token = default)
     {
-        var userToCreate = new UserDto
+        var userToCreate = new User
         {
             Email = registrationDto.Email, Username = registrationDto.Username, Password = registrationDto.Password
         };
 
-        var user = await _userService.CreateAsync(userToCreate, token);
+        var user = _parametersDataAccess.Create(userToCreate);
+        await _parametersDataAccess.SaveChangesAsync(token);
         
         var result = new LoginResult
         {
@@ -108,7 +109,7 @@ public class AuthorizationService : IAuthorizationService
         var jwt = new JwtSecurityToken(
             issuer: _authOptions.Issuer,
             audience: _authOptions.Audience,
-            claims: HttpContextExtensions.CreateClaims(result),
+            claims: result.CreateClaims(),
             expires: DateTime.UtcNow.Add(TimeSpan.FromHours(2)),
             signingCredentials: new SigningCredentials(_authOptions.GetSymmetricSecurityKey(),
                 SecurityAlgorithms.HmacSha256));

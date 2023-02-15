@@ -1,18 +1,26 @@
 ﻿using ECampus.Api.Controllers;
 using ECampus.Contracts.Services;
+using ECampus.Shared.DataContainers;
 using ECampus.Shared.DataTransferObjects;
+using ECampus.Shared.QueryParameters;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECampus.Tests.Unit.BackEnd.Api.Controllers;
 
 public class UserRoleControllerTests
 {
-    private readonly UserRolesController _sut;
+    private readonly UsersController _sut;
     private readonly IBaseService<UserDto> _service = Substitute.For<IBaseService<UserDto>>();
+
+    private readonly IParametersService<UserDto, UserParameters> _parametersService =
+        Substitute.For<IParametersService<UserDto, UserParameters>>();
+
+    private readonly Fixture _fixture = new();
 
     public UserRoleControllerTests()
     {
-        _sut = new UserRolesController(_service);
+        _sut = new UsersController(_service, _parametersService);
+        _fixture.Behaviors.Add(new OmitOnRecursionBehavior());
     }
 
     [Fact]
@@ -27,7 +35,7 @@ public class UserRoleControllerTests
         result.As<OkObjectResult>().Value.Should().Be(user);
         await _service.Received(1).UpdateAsync(user);
     }
-    
+
     [Fact]
     public async Task Post_ShouldReturnFromService()
     {
@@ -52,5 +60,20 @@ public class UserRoleControllerTests
         result.Should().BeOfType<OkObjectResult>();
         result.As<OkObjectResult>().Value.Should().Be(user);
         await _service.Received(1).GetByIdAsync(10);
+    }
+
+    [Fact]
+    public async Task GetByParameters_ReturnsFromService_ServiceCalled()
+    {
+        var data = _fixture.Build<ListWithPaginationData<UserDto>>()
+            .With(l => l.Data, Enumerable.Range(0, 5)
+                .Select(_ => _fixture.Create<UserDto>()).ToList()).Create();
+
+        _parametersService.GetByParametersAsync(Arg.Any<UserParameters>()).Returns(data);
+        var actionResult = await _sut.Get(new UserParameters());
+
+        actionResult.Should().BeOfType<OkObjectResult>();
+        actionResult.As<OkObjectResult>().Value.Should().Be(data);
+        await _parametersService.Received().GetByParametersAsync(Arg.Any<UserParameters>());
     }
 }

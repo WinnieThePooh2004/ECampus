@@ -7,9 +7,9 @@ namespace ECampus.FrontEnd.Pages.User;
 
 public partial class UserPage
 {
-    [Inject] private IBaseRequests<UserDto> Requests { get; set; } = default!;
+    [Inject] private IBaseRequests<UserProfile> Requests { get; set; } = default!;
     [Inject] private IHttpContextAccessor HttpContextAccessor { get; set; } = default!;
-    private UserDto? _user;
+    private UserProfile? _user;
 
     protected override async Task OnInitializedAsync()
     {

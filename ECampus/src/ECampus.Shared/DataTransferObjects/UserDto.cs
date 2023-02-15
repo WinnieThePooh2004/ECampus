@@ -21,8 +21,4 @@ public class UserDto : IDataTransferObject
 
     public TeacherDto? Teacher { get; set; }
     public StudentDto? Student { get; set; }
-
-    public List<AuditoryDto>? SavedAuditories { get; set; }
-    public List<GroupDto>? SavedGroups { get; set; }
-    public List<TeacherDto>? SavedTeachers { get; set; }
 }

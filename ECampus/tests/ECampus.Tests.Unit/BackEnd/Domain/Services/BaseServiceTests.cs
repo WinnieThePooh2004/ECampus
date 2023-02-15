@@ -25,11 +25,11 @@ public sealed class BaseServiceTests
     private async Task Create_ReturnsFromService_ServiceCalled_WhenNoValidationExceptions()
     {
         var item = _fixture.Create<AuditoryDto>();
-        _dataAccess.CreateAsync(Arg.Any<Auditory>()).Returns(_mapper.Map<Auditory>(item));
+        _dataAccess.Create(Arg.Any<Auditory>()).Returns(_mapper.Map<Auditory>(item));
 
         await _sut.CreateAsync(item);
 
-        _dataAccess.Received(1).CreateAsync(Arg.Is<Auditory>(a => a.Id == item.Id));
+        _dataAccess.Received(1).Create(Arg.Is<Auditory>(a => a.Id == item.Id));
         await _dataAccess.Received().SaveChangesAsync();
     }
 

@@ -7,7 +7,7 @@ namespace ECampus.FrontEnd.Pages.AdminPages;
 public sealed partial class EditUserRole
 {
     [Parameter] public int Id { get; set; }
-    [Inject] private IUserRolesRequests UserRolesService { get; set; } = default!;
+    [Inject] private IBaseRequests<UserDto> UserRolesService { get; set; } = default!;
 
     [Inject] private NavigationManager NavigationManager { get; set; } = default!;
     

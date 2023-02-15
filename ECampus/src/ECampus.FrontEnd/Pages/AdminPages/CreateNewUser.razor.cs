@@ -8,7 +8,7 @@ namespace ECampus.FrontEnd.Pages.AdminPages;
 
 public partial class CreateNewUser
 {
-    [Inject] private IUserRolesRequests UserRolesRequests { get; set; } = default!;
+    [Inject] private IBaseRequests<UserDto> UserRolesRequests { get; set; } = default!;
     [Inject] private IUserValidatorFactory UserValidatorFactory { get; set; } = default!;
     [Inject] private NavigationManager NavigationManager { get; set; } = default!;
     

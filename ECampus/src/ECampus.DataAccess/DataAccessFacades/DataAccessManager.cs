@@ -21,7 +21,7 @@ public class DataAccessManager : IDataAccessManager
         _serviceProvider = serviceProvider;
     }
 
-    public TModel CreateAsync<TModel>(TModel model)
+    public TModel Create<TModel>(TModel model)
         where TModel : class, IModel
     {
         var service = _serviceProvider.GetServiceOfType<IDataCreateService<TModel>>();

@@ -47,7 +47,6 @@ builder.Services.AddScoped<IUserRelationshipsRequests, UserRelationshipsRequests
 builder.Services.AddScoped<IAuthRequests, AuthRequests>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserValidatorFactory, UserValidatorFactory>();
-builder.Services.AddScoped<IUserRolesRequests, UserRolesRequests>();
 builder.Services.AddScoped<IPasswordChangeRequests, PasswordChangeRequests>();
 
 builder.Services.AddScoped<IUpdateValidationRequests<UserDto>, UserUpdateValidationRequests>();

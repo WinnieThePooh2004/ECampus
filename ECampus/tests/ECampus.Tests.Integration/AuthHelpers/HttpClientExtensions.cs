@@ -27,7 +27,7 @@ public static class HttpClientExtensions
         var jwt = new JwtSecurityToken(
             issuer: options.Issuer,
             audience: options.Audience,
-            claims: HttpContextExtensions.CreateClaims(loginResult),
+            claims: loginResult.CreateClaims(),
             expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(2)),
             signingCredentials: new SigningCredentials(options.GetSymmetricSecurityKey(),
                 SecurityAlgorithms.HmacSha256));

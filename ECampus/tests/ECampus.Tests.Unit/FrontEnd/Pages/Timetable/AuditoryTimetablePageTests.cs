@@ -16,7 +16,7 @@ public class AuditoryTimetablePageTests
 {
     private readonly TestContext _context = new();
     private readonly IHttpContextAccessor _httpContextAccessor = Substitute.For<IHttpContextAccessor>();
-    private readonly IBaseRequests<UserDto> _userRequests = Substitute.For<IBaseRequests<UserDto>>();
+    private readonly IBaseRequests<UserProfile> _userRequests = Substitute.For<IBaseRequests<UserProfile>>();
     private readonly IClassRequests _classRequests = Substitute.For<IClassRequests>();
     private readonly IUserRelationshipsRequests _relationshipsRequests = Substitute.For<IUserRelationshipsRequests>();
     private readonly IBaseRequests<ClassDto> _baseClassRequests = Substitute.For<IBaseRequests<ClassDto>>();
@@ -94,13 +94,12 @@ public class AuditoryTimetablePageTests
     public async Task Render_ShouldShowButtonSave_WhenCurrentUserDoesNotHaveSaveAuditory()
     {
         _user.FindFirst(CustomClaimTypes.Id).Returns(new Claim("", "10"));
-        var user = new UserDto { SavedAuditories = new List<AuditoryDto>() };
+        var user = new UserProfile { SavedAuditories = new List<AuditoryDto>() };
         _user.Identity.Returns(Substitute.For<IIdentity>());
         _user.Identity!.IsAuthenticated.Returns(true);
         _userRequests.GetByIdAsync(10).Returns(user);
         var component = RenderedComponent(11);
         var saveButton = component.Find("a");
-        var markup = component.Markup;
 
         saveButton.Click();
 
@@ -111,13 +110,12 @@ public class AuditoryTimetablePageTests
     public async Task Render_ShouldShowButtonRemoveSave_WhenCurrentUserDoesNotHaveSaveAuditory()
     {
         _user.FindFirst(CustomClaimTypes.Id).Returns(new Claim("", "10"));
-        var user = new UserDto { SavedAuditories = new List<AuditoryDto> { new() { Id = 11 } } };
+        var user = new UserProfile { SavedAuditories = new List<AuditoryDto> { new() { Id = 11 } } };
         _user.Identity.Returns(Substitute.For<IIdentity>());
         _user.Identity!.IsAuthenticated.Returns(true);
         _userRequests.GetByIdAsync(10).Returns(user);
         var component = RenderedComponent(11);
         var saveButton = component.Find("a");
-        var markup = component.Markup;
 
         saveButton.Click();
 

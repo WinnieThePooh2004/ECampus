@@ -86,7 +86,7 @@ public class AuthorizationServiceTests
         var jwt = new JwtSecurityToken(
             issuer: _authOptions.Issuer,
             audience: _authOptions.Audience,
-            claims: HttpContextExtensions.CreateClaims(loginResult),
+            claims: loginResult.CreateClaims(),
             expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(2)),
             signingCredentials: new SigningCredentials(_authOptions.GetSymmetricSecurityKey(),
                 SecurityAlgorithms.HmacSha256));

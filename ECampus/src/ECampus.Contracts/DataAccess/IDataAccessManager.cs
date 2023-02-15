@@ -5,7 +5,7 @@ namespace ECampus.Contracts.DataAccess;
 
 public interface IDataAccessManager
 {
-    TModel CreateAsync<TModel>(TModel model) where TModel : class, IModel;
+    TModel Create<TModel>(TModel model) where TModel : class, IModel;
     Task<TModel> UpdateAsync<TModel>(TModel model, CancellationToken token = default) where TModel : class, IModel;
     TModel Delete<TModel>(TModel model) where TModel : class, IModel, new();
     Task<TModel> GetByIdAsync<TModel>(int id, CancellationToken token = default) where TModel : class, IModel;

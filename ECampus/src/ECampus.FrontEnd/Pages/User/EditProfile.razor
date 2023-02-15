@@ -1,5 +1,6 @@
 ﻿@page "/profile/edit"
 @using Microsoft.AspNetCore.Components
+@inherits ModelEditForm<UserProfile>
 @if (_model is null)
 {
     <p>
@@ -10,21 +11,21 @@
 
 <div class="row">
     <div class="col-md-4">
-        <EditForm Model="_model" OnValidSubmit="@Save">
-            <FluentValidationValidator Validator="_validator"/>
+        <EditForm Model="_model" OnValidSubmit="Submit">
+            <FluentValidationValidator Validator="Validator"/>
             <button class="btn btn-success" type="submit">Save</button>
             <p>
-                <label for="@_model.Username">Username</label>
-                <InputText @bind-Value="@_model.Username"/>
-                <ValidationMessage For="@(() => _model.Username)"/>
+                <label for="@Model.Username">Username</label>
+                <InputText @bind-Value="@Model.Username"/>
+                <ValidationMessage For="@(() => Model.Username)"/>
             </p>
-            <MultipleItemsSelect TData="AuditoryDto" TParameters="AuditoryParameters" SelectTo="_model.SavedAuditories"
+            <MultipleItemsSelect TData="AuditoryDto" TParameters="AuditoryParameters" SelectTo="Model.SavedAuditories"
                                  Title="Auditories"/>
             <br/>
-            <MultipleItemsSelect TData="GroupDto" TParameters="GroupParameters" SelectTo="_model.SavedGroups"
+            <MultipleItemsSelect TData="GroupDto" TParameters="GroupParameters" SelectTo="Model.SavedGroups"
                                  Title="Groups"/>
             <br/>
-            <MultipleItemsSelect TData="TeacherDto" TParameters="TeacherParameters" SelectTo="_model.SavedTeachers"
+            <MultipleItemsSelect TData="TeacherDto" TParameters="TeacherParameters" SelectTo="Model.SavedTeachers"
                                  Title="Teachers"/>
             <br/>
         </EditForm>

@@ -10,7 +10,7 @@ namespace ECampus.Tests.Unit.FrontEnd.Pages.EditPages;
 public class UserEditPageTests
 {
     private readonly TestContext _context = new();
-    private readonly IUserRolesRequests _requests = Substitute.For<IUserRolesRequests>();
+    private readonly IBaseRequests<UserDto> _requests = Substitute.For<IBaseRequests<UserDto>>();
 
     public UserEditPageTests()
     {
