@@ -10,7 +10,7 @@ namespace ECampus.Tests.Unit.BackEnd.Domain.Services;
 
 public class UserServiceTests
 {
-    private readonly UserService _sut;
+    private readonly UserProfileService _sut;
     private readonly Fixture _fixture = new();
     private readonly ICreateValidator<UserDto> _createValidator = Substitute.For<ICreateValidator<UserDto>>();
     private readonly IUpdateValidator<UserDto> _updateValidator = Substitute.For<IUpdateValidator<UserDto>>();
@@ -18,7 +18,7 @@ public class UserServiceTests
     public UserServiceTests()
     {
         Substitute.For<IBaseService<UserDto>>();
-        _sut = new UserService(_updateValidator, _createValidator, Substitute.For<IMapper>(),
+        _sut = new UserProfileService(_updateValidator, _createValidator, Substitute.For<IMapper>(),
             Substitute.For<IDataAccessManager>());
     }
 

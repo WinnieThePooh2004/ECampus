@@ -29,7 +29,7 @@ public class AuthorizationServiceTests
     public AuthorizationServiceTests()
     {
         _httpContextAccessor.HttpContext.Returns(_httpContext);
-        _sut = new AuthorizationService(_httpContextAccessor, _authOptions, _parametersDataAccess, Substitute.For<IUserService>());
+        _sut = new AuthorizationService(_httpContextAccessor, _authOptions, _parametersDataAccess, Substitute.For<IUserProfileService>());
     }
 
     [Fact]

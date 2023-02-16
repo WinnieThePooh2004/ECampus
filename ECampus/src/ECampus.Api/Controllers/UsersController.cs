@@ -9,7 +9,6 @@ namespace ECampus.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorized(UserRole.Admin)]
 public class UsersController : ControllerBase
 {
     private readonly IBaseService<UserDto> _service;
@@ -21,8 +20,9 @@ public class UsersController : ControllerBase
         _service = service;
         _parametersService = parametersService;
     }
-
+    
     [HttpGet("{id:int}")]
+    [Authorized(UserRole.Admin)]
     public async Task<IActionResult> Get(int id, CancellationToken token = default)
     {
         return Ok(await _service.GetByIdAsync(id, token));
@@ -36,18 +36,21 @@ public class UsersController : ControllerBase
     }
 
     [HttpPut]
+    [Authorized(UserRole.Admin)]
     public async Task<IActionResult> Put(UserDto user, CancellationToken token = default)
     {
         return Ok(await _service.UpdateAsync(user, token));
     }
 
     [HttpPost]
+    [Authorized(UserRole.Admin)]
     public async Task<IActionResult> Post(UserDto user, CancellationToken token = default)
     {
         return Ok(await _service.CreateAsync(user, token));
     }
 
     [HttpDelete("{id:int}")]
+    [Authorized(UserRole.Admin)]
     public async Task<IActionResult> Delete(int id)
     {
         return Ok(await _service.DeleteAsync(id));

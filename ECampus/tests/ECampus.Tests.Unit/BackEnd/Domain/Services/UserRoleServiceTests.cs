@@ -13,12 +13,12 @@ namespace ECampus.Tests.Unit.BackEnd.Domain.Services;
 
 public class UserRoleServiceTests
 {
-    private readonly UserRolesService _sut;
+    private readonly UserService _sut;
     private readonly IDataAccessManager _dataAccess = Substitute.For<IDataAccessManager>();
 
     public UserRoleServiceTests()
     {
-        _sut = new UserRolesService(MapperFactory.Mapper, _dataAccess);
+        _sut = new UserService(MapperFactory.Mapper, _dataAccess);
     }
 
     [Theory]

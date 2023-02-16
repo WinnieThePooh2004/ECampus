@@ -3,7 +3,7 @@ using ECampus.Shared.Validation;
 
 namespace ECampus.Contracts.Services;
 
-public interface IUserService
+public interface IUserProfileService
 {
     Task<ValidationResult> ValidateCreateAsync(UserDto user, CancellationToken token = default);
     Task<ValidationResult> ValidateUpdateAsync(UserDto user, CancellationToken token = default);

@@ -10,12 +10,12 @@ namespace ECampus.Api.Controllers;
 [Route("/api/[controller]")]
 public class UserProfileController : ControllerBase
 {
-    private readonly IUserService _service;
+    private readonly IUserProfileService _profileService;
     private readonly IUserRelationsService _userRelationsService;
 
-    public UserProfileController(IUserService service, IUserRelationsService userRelationsService)
+    public UserProfileController(IUserProfileService profileService, IUserRelationsService userRelationsService)
     {
-        _service = service;
+        _profileService = profileService;
         _userRelationsService = userRelationsService;
     }
 
@@ -23,21 +23,21 @@ public class UserProfileController : ControllerBase
     [AllowAnonymous]
     public async Task<IActionResult> Get(int id, CancellationToken token = default)
     {
-        return Ok(await _service.GetByIdAsync(id, token));
+        return Ok(await _profileService.GetByIdAsync(id, token));
     }
     
     [HttpPut]
     [Authorized]
     public async Task<IActionResult> Put(UserProfile user, CancellationToken token = default)
     {
-        return Ok(await _service.UpdateProfileAsync(user, token));
+        return Ok(await _profileService.UpdateProfileAsync(user, token));
     }
 
     [HttpPut("Validate/Create")]
     [AllowAnonymous]
     public async Task<IActionResult> ValidateCreate(UserDto user, CancellationToken token = default)
     {
-        return Ok(await _service.ValidateCreateAsync(user, token));
+        return Ok(await _profileService.ValidateCreateAsync(user, token));
     }
 
     [HttpPut("changePassword")]
@@ -58,7 +58,7 @@ public class UserProfileController : ControllerBase
     [AllowAnonymous]
     public async Task<IActionResult> ValidateUpdate(UserDto user, CancellationToken token = default)
     {
-        return Ok(await _service.ValidateUpdateAsync(user, token));
+        return Ok(await _profileService.ValidateUpdateAsync(user, token));
     }
 
     [HttpPost("auditory")]
