@@ -1,4 +1,5 @@
-﻿using Amazon.SimpleNotificationService;
+﻿using Amazon;
+using Amazon.SimpleNotificationService;
 using ECampus.Core.Installers;
 using ECampus.Domain.Interfaces;
 using ECampus.Domain.Messaging;
@@ -15,6 +16,12 @@ public class MessengersInstaller : IInstaller
     {
         services.AddSingleton<ISnsMessenger, SnsMessenger>();
         services.Configure<NotificationsSettings>(configuration.GetSection(NotificationsSettings.Key));
-        services.AddSingleton<IAmazonSimpleNotificationService, AmazonSimpleNotificationServiceClient>();
+        services.Configure<AwsCredentialsSetting>(configuration.GetSection(AwsCredentialsSetting.Key));
+        services.AddSingleton<IAmazonSimpleNotificationService>(_ =>
+        {
+            var settings = configuration.GetSection(AwsCredentialsSetting.Key).Get<AwsCredentialsSetting>()!;
+            return new AmazonSimpleNotificationServiceClient(settings.AccessKeyId, settings.SecretKey,
+                RegionEndpoint.EUCentral1);
+        });
     }
 }
