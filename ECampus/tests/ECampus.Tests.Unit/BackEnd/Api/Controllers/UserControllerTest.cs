@@ -9,7 +9,7 @@ namespace ECampus.Tests.Unit.BackEnd.Api.Controllers;
 
 public class UserControllerTest
 {
-    private readonly IUserService _service;
+    private readonly IUserProfileService _profileService;
 
     private readonly IUserRelationsService _userRelationsService = Substitute.For<IUserRelationsService>();
     private readonly IPasswordChangeService _passwordChangeService = Substitute.For<IPasswordChangeService>();
@@ -19,8 +19,8 @@ public class UserControllerTest
     
     public UserControllerTest()
     {
-        _service = Substitute.For<IUserService>();
-        _sut = new UserProfileController(_service, _userRelationsService);
+        _profileService = Substitute.For<IUserProfileService>();
+        _sut = new UserProfileController(_profileService, _userRelationsService);
         _fixture.Behaviors.Add(new OmitOnRecursionBehavior());
         _sut.ControllerContext.HttpContext = Substitute.For<HttpContext>();
     }
@@ -30,13 +30,13 @@ public class UserControllerTest
     {
         var data = _fixture.Create<UserDto>();
         var errors = new ValidationResult(_fixture.CreateMany<ValidationError>(10).ToList());
-        _service.ValidateCreateAsync(data).Returns(errors);
+        _profileService.ValidateCreateAsync(data).Returns(errors);
 
         var actionResult = await _sut.ValidateCreate(data);
 
         actionResult.Should().BeOfType<OkObjectResult>();
         actionResult.As<OkObjectResult>().Value.Should().Be(errors);
-        await _service.Received().ValidateCreateAsync(data);
+        await _profileService.Received().ValidateCreateAsync(data);
     }
 
     [Fact]
@@ -44,13 +44,13 @@ public class UserControllerTest
     {
         var data = _fixture.Create<UserDto>();
         var errors = new ValidationResult(_fixture.CreateMany<ValidationError>(10).ToList());
-        _service.ValidateUpdateAsync(data).Returns(errors);
+        _profileService.ValidateUpdateAsync(data).Returns(errors);
 
         var actionResult = await _sut.ValidateUpdate(data);
 
         actionResult.Should().BeOfType<OkObjectResult>();
         actionResult.As<OkObjectResult>().Value.Should().Be(errors);
-        await _service.Received().ValidateUpdateAsync(data);
+        await _profileService.Received().ValidateUpdateAsync(data);
     }
 
     [Fact]

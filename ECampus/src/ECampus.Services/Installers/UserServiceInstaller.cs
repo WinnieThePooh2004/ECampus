@@ -14,6 +14,6 @@ public class UserServiceInstaller : IInstaller
 
     public void Install(IServiceCollection services, IConfiguration configuration)
     {
-        services.AddScoped<IBaseService<UserDto>, UserRolesService>();
+        services.AddScoped<IBaseService<UserDto>, UserService>();
     }
 }

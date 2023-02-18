@@ -22,15 +22,15 @@ public class AuthorizationService : IAuthorizationService
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly JwtAuthOptions _authOptions;
     private readonly IDataAccessManager _parametersDataAccess;
-    private readonly IUserService _userService;
+    private readonly IUserProfileService _userProfileService;
 
     public AuthorizationService(IHttpContextAccessor httpContextAccessor, JwtAuthOptions authOptions,
-        IDataAccessManager parametersDataAccess, IUserService userService)
+        IDataAccessManager parametersDataAccess, IUserProfileService userProfileService)
     {
         _httpContextAccessor = httpContextAccessor;
         _authOptions = authOptions;
         _parametersDataAccess = parametersDataAccess;
-        _userService = userService;
+        _userProfileService = userProfileService;
     }
 
     public async Task<LoginResult> Login(LoginDto login, CancellationToken token = default)
@@ -83,10 +83,10 @@ public class AuthorizationService : IAuthorizationService
     }
 
     public Task<ValidationResult> ValidateSignUp(RegistrationDto registrationDto, CancellationToken token = default) =>
-        _userService.ValidateCreateAsync(
+        _userProfileService.ValidateCreateAsync(
             new UserDto
             {
-                Email = registrationDto.Email, Username = registrationDto.Username, Password = registrationDto.Password
+                Email = registrationDto.Email, Username = registrationDto.Username
             }, token);
 
     public async Task<ValidationResult> ValidateLogin(LoginDto login, CancellationToken token = default)
