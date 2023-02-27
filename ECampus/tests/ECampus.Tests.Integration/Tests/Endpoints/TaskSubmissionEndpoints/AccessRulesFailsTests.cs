@@ -1,5 +1,7 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
+using System.Text.Json;
+using ECampus.Shared.DataTransferObjects;
 using ECampus.Shared.Enums;
 using ECampus.Tests.Integration.AppFactories;
 using ECampus.Tests.Integration.AuthHelpers;
@@ -21,7 +23,8 @@ public class AccessRulesFailsTests : IClassFixture<ApplicationFactory>
     {
         _client.Login(UserRole.Teacher);
 
-        var response = await _client.PutAsJsonAsync($"/api/TaskSubmissions/content/10", "abc");
+        var response = await _client.PutAsJsonAsync($"/api/TaskSubmissions/content",
+            JsonSerializer.Serialize(new UpdateSubmissionContentDto()));
 
         response.StatusCode.Should().Be(HttpStatusCode.Forbidden);
     }

@@ -21,7 +21,7 @@ public class TaskSubmissionControllerTests
     {
         _sut = new TaskSubmissionsController(_parametersService, _service);
     }
-    
+
     [Fact]
     public async Task GetByParameters_ReturnsFromService_ServiceCalled()
     {
@@ -37,7 +37,7 @@ public class TaskSubmissionControllerTests
         actionResult.As<OkObjectResult>().Value.Should().Be(data);
         await _parametersService.Received().GetByParametersAsync(Arg.Any<TaskSubmissionParameters>());
     }
-    
+
     [Fact]
     public async Task GetById_ReturnsFromService_ServiceCalled()
     {
@@ -61,22 +61,23 @@ public class TaskSubmissionControllerTests
 
         actionResult.Should().BeOfType<OkObjectResult>();
         actionResult.As<OkObjectResult>().Value.Should().Be(data);
-        await _service.Received().GetByCourseAsync(10);    
+        await _service.Received().GetByCourseAsync(10);
     }
-    
+
     [Fact]
     public async Task UpdateMark_ShouldReturnFromService()
     {
-        var actionResult = await _sut.UpdateMark(10, 20);
+        var actionResult = await _sut.UpdateMark(new UpdateSubmissionMarkDto { SubmissionId = 10, Mark = 20 });
 
         actionResult.Should().BeOfType<OkObjectResult>();
         await _service.Received(1).UpdateMarkAsync(10, 20);
     }
-    
+
     [Fact]
     public async Task UpdateContent_ShouldReturnFromService()
     {
-        var actionResult = await _sut.UpdateContent(10, "New content");
+        var actionResult = await _sut.UpdateContent(new UpdateSubmissionContentDto
+            { SubmissionId = 10, Content = "New content" });
 
         actionResult.Should().BeOfType<OkObjectResult>();
         await _service.Received(1).UpdateContentAsync(10, "New content");
