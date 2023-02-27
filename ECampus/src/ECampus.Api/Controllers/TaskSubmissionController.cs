@@ -25,7 +25,7 @@ public class TaskSubmissionsController : ControllerBase
     [Authorized(UserRole.Teacher)]
     public async Task<IActionResult> Get([FromQuery] TaskSubmissionParameters parameters, CancellationToken token = default)
     {
-        return Ok(await _parametersService.GetByParametersAsync(parameters));
+        return Ok(await _parametersService.GetByParametersAsync(parameters, token));
     }
 
     [HttpGet("{id:int}")]
@@ -42,17 +42,17 @@ public class TaskSubmissionsController : ControllerBase
         return Ok(await _taskSubmissionService.GetByCourseAsync(courseTaskId, token));
     }
 
-    [HttpPut("content/{taskSubmissionId:int}")]
+    [HttpPut("content")]
     [Authorized(UserRole.Student)]
-    public async Task<IActionResult> UpdateContent([FromRoute] int taskSubmissionId, [FromBody] string content, CancellationToken token = default)
+    public async Task<IActionResult> UpdateContent(UpdateSubmissionContentDto dto, CancellationToken token = default)
     {
-        return Ok(await _taskSubmissionService.UpdateContentAsync(taskSubmissionId, content, token));
+        return Ok(await _taskSubmissionService.UpdateContentAsync(dto.SubmissionId, dto.Content, token));
     }
     
-    [HttpPut("mark/{taskSubmissionId:int}")]
+    [HttpPut("mark")]
     [Authorized(UserRole.Teacher)]
-    public async Task<IActionResult> UpdateMark([FromRoute] int taskSubmissionId, [FromBody] int mark, CancellationToken token = default)
+    public async Task<IActionResult> UpdateMark(UpdateSubmissionMarkDto dto, CancellationToken token = default)
     {
-        return Ok(await _taskSubmissionService.UpdateMarkAsync(taskSubmissionId, mark, token));
+        return Ok(await _taskSubmissionService.UpdateMarkAsync(dto.SubmissionId, dto.Mark, token));
     }
 }

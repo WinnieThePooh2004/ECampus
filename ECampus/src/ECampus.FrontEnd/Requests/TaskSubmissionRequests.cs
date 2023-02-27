@@ -19,14 +19,16 @@ public class TaskSubmissionRequests : ITaskSubmissionRequests
     public async Task UpdateMarkAsync(int taskSubmissionId, int mark)
     {
         var response = await _client.CreateClient(RequestOptions.ClientName)
-            .PutAsJsonAsync($"/api/{_controllerName}/mark/{taskSubmissionId}", mark);
+            .PutAsJsonAsync($"/api/{_controllerName}/mark",
+                new UpdateSubmissionMarkDto { SubmissionId = taskSubmissionId, Mark = mark });
         response.EnsureSuccessStatusCode();
     }
 
     public async Task UpdateContextAsync(int taskSubmissionId, string content)
     {
         var response = await _client.CreateClient(RequestOptions.ClientName)
-            .PutAsJsonAsync($"/api/{_controllerName}/content/{taskSubmissionId}", content);
+            .PutAsJsonAsync($"/api/{_controllerName}/content",
+                new UpdateSubmissionContentDto { SubmissionId = taskSubmissionId, Content = content });
         response.EnsureSuccessStatusCode();
     }
 
