@@ -10,8 +10,8 @@ using ECampus.FrontEnd.Requests.Options;
 using ECampus.FrontEnd.Requests.ValidationRequests;
 using ECampus.FrontEnd.Validation;
 using ECampus.FrontEnd.Validation.Interfaces;
-using ECampus.Services;
-using ECampus.Shared.DataTransferObjects;
+using ECampus.Domain.DataTransferObjects;
+using ECampus.Validation;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Serilog;
@@ -34,7 +34,7 @@ builder.Services.Configure<RequestOptions>(builder.Configuration.GetSection("Req
 
 builder.Services.UserInstallersFromAssemblyContaining<FrontEndAssemblyMarker>(builder.Configuration);
 
-builder.Services.AddValidatorsFromAssemblyContaining<ServicesAssemblyMarker>();
+builder.Services.AddValidatorsFromAssemblyContaining<ValidatorsAssemblyMarker>();
 
 builder.Services.Decorate<IValidator<ClassDto>, HttpCallingValidator<ClassDto>>();
 builder.Services.AddScoped<IClassRequests, ClassRequests>();

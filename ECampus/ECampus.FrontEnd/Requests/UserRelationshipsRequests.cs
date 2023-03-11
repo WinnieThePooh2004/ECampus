@@ -1,6 +1,6 @@
 ﻿using ECampus.FrontEnd.Requests.Interfaces;
 using ECampus.FrontEnd.Requests.Options;
-using ECampus.Shared.Extensions;
+using ECampus.Domain.Extensions;
 
 namespace ECampus.FrontEnd.Requests;
 

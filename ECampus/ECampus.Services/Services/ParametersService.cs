@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using ECampus.DataAccess.Contracts.DataAccess;
+using ECampus.Domain.Data;
+using ECampus.Domain.DataContainers;
+using ECampus.Domain.Extensions;
+using ECampus.Domain.QueryParameters;
 using ECampus.Services.Contracts.Services;
-using ECampus.Shared.Data;
-using ECampus.Shared.DataContainers;
-using ECampus.Shared.Extensions;
-using ECampus.Shared.QueryParameters;
 using Microsoft.EntityFrameworkCore;
 
 namespace ECampus.Services.Services;

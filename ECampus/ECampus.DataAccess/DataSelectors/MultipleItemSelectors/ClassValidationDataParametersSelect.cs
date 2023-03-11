@@ -1,9 +1,9 @@
 ﻿using System.Linq.Expressions;
-using ECampus.Contracts.DataSelectParameters;
+using ECampus.DataAccess.Contracts.DataSelectParameters;
 using ECampus.DataAccess.Interfaces;
+using ECampus.Domain.Enums;
+using ECampus.Domain.Models;
 using ECampus.Infrastructure;
-using ECampus.Shared.Enums;
-using ECampus.Shared.Models;
 
 namespace ECampus.DataAccess.DataSelectors.MultipleItemSelectors;
 

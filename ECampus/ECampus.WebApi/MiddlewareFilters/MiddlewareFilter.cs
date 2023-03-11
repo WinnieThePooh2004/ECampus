@@ -1,4 +1,4 @@
-﻿using ECampus.Shared.Exceptions;
+﻿using ECampus.Domain.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using ILogger = Serilog.ILogger;

@@ -1,8 +1,8 @@
-﻿using ECampus.Contracts.DataSelectParameters;
-using ECampus.DataAccess.Contracts.DataAccess;
-using ECampus.Shared.DataTransferObjects;
-using ECampus.Shared.Models;
-using ECampus.Shared.Validation;
+﻿using ECampus.DataAccess.Contracts.DataAccess;
+using ECampus.DataAccess.Contracts.DataSelectParameters;
+using ECampus.Domain.DataTransferObjects;
+using ECampus.Domain.Models;
+using ECampus.Domain.Validation;
 using Microsoft.EntityFrameworkCore;
 
 namespace ECampus.Services.Validation.UniversalValidators;

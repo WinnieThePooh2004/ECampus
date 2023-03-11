@@ -1,7 +1,7 @@
-﻿using ECampus.Contracts.DataSelectParameters;
+﻿using ECampus.DataAccess.Contracts.DataSelectParameters;
 using ECampus.DataAccess.Interfaces;
+using ECampus.Domain.Models;
 using ECampus.Infrastructure;
-using ECampus.Shared.Models;
 
 namespace ECampus.DataAccess.DataSelectors.MultipleItemSelectors;
 

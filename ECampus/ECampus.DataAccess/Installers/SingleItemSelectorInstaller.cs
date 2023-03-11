@@ -1,8 +1,8 @@
 ﻿using ECampus.Core.Installers;
 using ECampus.DataAccess.DataSelectors.SingleItemSelectors;
 using ECampus.DataAccess.Interfaces;
-using ECampus.Shared;
-using ECampus.Shared.Extensions;
+using ECampus.Domain;
+using ECampus.Domain.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -18,7 +18,7 @@ public class SingleItemSelectorInstaller : IInstaller
             type.GetInterfaces().Any(i =>
                 i.IsGenericType && i.GetGenericTypeDefinition() == typeof(ISingleItemSelector<>))).ToList();
 
-        var models = typeof(SharedAssemblyMarker).Assembly.GetModels();
+        var models = typeof(DomainAssemblyMarker).Assembly.GetModels();
         foreach (var modelType in models)
         {
             var modelSelector = selectors.SingleOrDefault(selector => selector.GetInterfaces()

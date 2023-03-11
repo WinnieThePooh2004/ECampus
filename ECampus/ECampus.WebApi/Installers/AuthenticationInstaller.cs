@@ -1,5 +1,5 @@
 ﻿using ECampus.Core.Installers;
-using ECampus.Shared.Auth;
+using ECampus.Domain.Auth;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

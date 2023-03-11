@@ -1,10 +1,10 @@
 ﻿using System.Linq.Expressions;
 using ECampus.FrontEnd.PropertySelectors;
 using ECampus.FrontEnd.Requests.Interfaces;
-using ECampus.Shared.Data;
-using ECampus.Shared.DataContainers;
-using ECampus.Shared.Enums;
-using ECampus.Shared.QueryParameters;
+using ECampus.Domain.Data;
+using ECampus.Domain.DataContainers;
+using ECampus.Domain.Enums;
+using ECampus.Domain.QueryParameters;
 using Microsoft.AspNetCore.Components;
 
 namespace ECampus.FrontEnd.Components.PageBases;

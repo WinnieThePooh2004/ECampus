@@ -2,8 +2,8 @@
 using ECampus.FrontEnd.Requests.Interfaces;
 using ECampus.FrontEnd.Requests.Interfaces.Validation;
 using ECampus.FrontEnd.Requests.Options;
-using ECampus.Shared.DataTransferObjects;
-using ECampus.Shared.Validation;
+using ECampus.Domain.DataTransferObjects;
+using ECampus.Domain.Validation;
 using Newtonsoft.Json;
 
 namespace ECampus.FrontEnd.Requests;

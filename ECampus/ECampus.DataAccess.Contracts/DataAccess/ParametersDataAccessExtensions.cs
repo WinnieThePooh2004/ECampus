@@ -1,8 +1,8 @@
 ﻿using System.Net;
-using ECampus.Contracts.DataSelectParameters;
-using ECampus.Shared.Data;
-using ECampus.Shared.Exceptions.InfrastructureExceptions;
-using ECampus.Shared.QueryParameters;
+using ECampus.DataAccess.Contracts.DataSelectParameters;
+using ECampus.Domain.Data;
+using ECampus.Domain.Exceptions.InfrastructureExceptions;
+using ECampus.Domain.QueryParameters;
 using Microsoft.EntityFrameworkCore;
 
 namespace ECampus.DataAccess.Contracts.DataAccess;

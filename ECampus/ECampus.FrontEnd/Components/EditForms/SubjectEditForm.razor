@@ -1,6 +1,6 @@
-﻿@using ECampus.Shared.DataTransferObjects
-@using ECampus.Shared.QueryParameters
-@inherits ModelEditForm<ECampus.Shared.DataTransferObjects.SubjectDto>
+﻿@using ECampus.Domain.DataTransferObjects
+@using ECampus.Domain.QueryParameters
+@inherits ModelEditForm<ECampus.Domain.DataTransferObjects.SubjectDto>
 <EditForm EditContext="EditContext" OnValidSubmit="Submit">
     <FluentValidationValidator Validator="Validator"/>
     <div class="row">

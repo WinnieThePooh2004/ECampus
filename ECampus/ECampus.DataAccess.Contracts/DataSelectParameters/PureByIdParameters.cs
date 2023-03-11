@@ -1,7 +1,7 @@
-﻿using ECampus.Shared.Data;
-using ECampus.Shared.QueryParameters;
+﻿using ECampus.Domain.Data;
+using ECampus.Domain.QueryParameters;
 
-namespace ECampus.Contracts.DataSelectParameters;
+namespace ECampus.DataAccess.Contracts.DataSelectParameters;
 
 public readonly struct PureByIdParameters<TModel> : IDataSelectParameters<TModel>
     where TModel : class, IModel

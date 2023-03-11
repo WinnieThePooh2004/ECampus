@@ -5,8 +5,8 @@ using ECampus.DataAccess.DataCreateServices;
 using ECampus.DataAccess.DataDeleteServices;
 using ECampus.DataAccess.DataUpdateServices;
 using ECampus.DataAccess.Interfaces;
-using ECampus.Shared;
-using ECampus.Shared.Extensions;
+using ECampus.Domain;
+using ECampus.Domain.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -18,7 +18,7 @@ public class DataServicesInstaller : IInstaller
 
     public void Install(IServiceCollection services, IConfiguration configuration)
     {
-        var models = typeof(SharedAssemblyMarker).Assembly.GetModels();
+        var models = typeof(DomainAssemblyMarker).Assembly.GetModels();
 
         foreach (var model in models)
         {

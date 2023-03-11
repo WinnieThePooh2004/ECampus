@@ -2,8 +2,8 @@
 using ECampus.Core.Installers;
 using ECampus.FrontEnd.Requests;
 using ECampus.FrontEnd.Requests.Interfaces;
-using ECampus.Shared;
-using ECampus.Shared.QueryParameters;
+using ECampus.Domain;
+using ECampus.Domain.QueryParameters;
 
 namespace ECampus.FrontEnd.Installers;
 
@@ -13,7 +13,7 @@ public class ParametersRequestsInstaller : IInstaller
 
     public void Install(IServiceCollection services, IConfiguration configuration)
     {
-        var parametersTypes = typeof(SharedAssemblyMarker)
+        var parametersTypes = typeof(DomainAssemblyMarker)
             .Assembly.GetTypes().Where(type => type.IsAssignableTo(typeof(IQueryParameters)) &&
                                                type is {IsAbstract: false, IsClass: true});
 

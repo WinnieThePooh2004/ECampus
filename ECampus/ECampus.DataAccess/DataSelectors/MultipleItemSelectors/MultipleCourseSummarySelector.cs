@@ -1,7 +1,7 @@
 ﻿using ECampus.DataAccess.Interfaces;
+using ECampus.Domain.Models;
+using ECampus.Domain.QueryParameters;
 using ECampus.Infrastructure;
-using ECampus.Shared.Models;
-using ECampus.Shared.QueryParameters;
 using Microsoft.EntityFrameworkCore;
 
 namespace ECampus.DataAccess.DataSelectors.MultipleItemSelectors;

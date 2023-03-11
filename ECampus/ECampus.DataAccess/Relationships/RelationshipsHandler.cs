@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using ECampus.DataAccess.Contracts.DataAccess;
-using ECampus.Shared.Data;
-using ECampus.Shared.Metadata.Relationships;
+using ECampus.Domain.Data;
+using ECampus.Domain.Metadata.Relationships;
 
 namespace ECampus.DataAccess.Relationships;
 

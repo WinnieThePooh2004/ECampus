@@ -1,6 +1,6 @@
-﻿using ECampus.Shared.Extensions;
-using ECampus.Shared.Models;
-using ECampus.Shared.Models.RelationModels;
+﻿using ECampus.Domain.Extensions;
+using ECampus.Domain.Models;
+using ECampus.Domain.Models.RelationModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace ECampus.Infrastructure;

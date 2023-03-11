@@ -1,4 +1,4 @@
-﻿using ECampus.Shared.Models;
+﻿using ECampus.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;

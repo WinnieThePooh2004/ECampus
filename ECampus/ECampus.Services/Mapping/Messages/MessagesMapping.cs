@@ -1,5 +1,5 @@
 ﻿using ECampus.Core.Messages;
-using ECampus.Shared.DataTransferObjects;
+using ECampus.Domain.DataTransferObjects;
 
 namespace ECampus.Services.Mapping.Messages;
 

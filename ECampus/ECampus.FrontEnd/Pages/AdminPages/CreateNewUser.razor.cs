@@ -1,6 +1,6 @@
 ﻿using ECampus.FrontEnd.Requests.Interfaces;
 using ECampus.FrontEnd.Validation.Interfaces;
-using ECampus.Shared.DataTransferObjects;
+using ECampus.Domain.DataTransferObjects;
 using FluentValidation;
 using Microsoft.AspNetCore.Components;
 

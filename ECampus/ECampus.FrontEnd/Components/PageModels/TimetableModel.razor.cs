@@ -1,6 +1,6 @@
 ﻿using ECampus.FrontEnd.Requests.Interfaces;
-using ECampus.Shared.DataContainers;
-using ECampus.Shared.DataTransferObjects;
+using ECampus.Domain.DataContainers;
+using ECampus.Domain.DataTransferObjects;
 using Microsoft.AspNetCore.Components;
 
 namespace ECampus.FrontEnd.Components.PageModels;

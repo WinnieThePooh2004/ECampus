@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
 using ECampus.Core.Installers;
 using ECampus.DataAccess.Contracts.DataAccess;
+using ECampus.Domain.DataTransferObjects;
+using ECampus.Domain.Exceptions.DomainExceptions;
+using ECampus.Domain.Models;
+using ECampus.Domain.Validation;
 using ECampus.Services.Contracts.Services;
 using ECampus.Services.Contracts.Validation;
-using ECampus.Shared.DataTransferObjects;
-using ECampus.Shared.Exceptions.DomainExceptions;
-using ECampus.Shared.Models;
-using ECampus.Shared.Validation;
 
 namespace ECampus.Services.Services;
 

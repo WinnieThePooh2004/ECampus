@@ -1,4 +1,4 @@
-﻿using ECampus.Shared.DataTransferObjects;
+﻿using ECampus.Domain.DataTransferObjects;
 using FluentValidation;
 
 namespace ECampus.FrontEnd.Validation.Interfaces;

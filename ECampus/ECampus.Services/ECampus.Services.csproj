@@ -10,12 +10,17 @@
     <ItemGroup>
         <ProjectReference Include="..\ECampus.DataAccess.Contracts\ECampus.DataAccess.Contracts.csproj" />
         <ProjectReference Include="..\ECampus.Services.Contracts\ECampus.Services.Contracts.csproj" />
+        <ProjectReference Include="..\ECampus.Validation\ECampus.Validation.csproj" />
     </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="IdentityServer4" Version="4.1.2" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.3" />
         <PackageReference Include="Serilog" Version="3.0.0-dev-01862" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Validation\FluentValidators" />
     </ItemGroup>
 
 </Project>

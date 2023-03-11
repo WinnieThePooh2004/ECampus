@@ -1,6 +1,6 @@
-﻿using ECampus.Shared.Data;
-using ECampus.Shared.DataContainers;
-using ECampus.Shared.QueryParameters;
+﻿using ECampus.Domain.Data;
+using ECampus.Domain.DataContainers;
+using ECampus.Domain.QueryParameters;
 
 namespace ECampus.Services.Contracts.Services;
 

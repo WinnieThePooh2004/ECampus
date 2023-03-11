@@ -1,5 +1,5 @@
-﻿using ECampus.Shared.QueryParameters;
-using ECampus.Shared.Validation;
+﻿using ECampus.Domain.QueryParameters;
+using ECampus.Domain.Validation;
 
 namespace ECampus.Services.Contracts.Validation;
 

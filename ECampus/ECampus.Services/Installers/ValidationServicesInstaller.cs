@@ -1,8 +1,8 @@
 ﻿using ECampus.Core.Installers;
+using ECampus.Domain;
+using ECampus.Domain.Metadata;
 using ECampus.Services.Contracts.Services;
 using ECampus.Services.Services.ValidationServices;
-using ECampus.Shared;
-using ECampus.Shared.Metadata;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -14,7 +14,7 @@ public class ValidationServicesInstaller : IInstaller
 
     public void Install(IServiceCollection services, IConfiguration configuration)
     {
-        var typesWithValidation = typeof(SharedAssemblyMarker).Assembly.GetTypes()
+        var typesWithValidation = typeof(DomainAssemblyMarker).Assembly.GetTypes()
             .Where(type => type.GetCustomAttributes(typeof(ValidationAttribute), false).Any() &&
                            !type.GetCustomAttributes(typeof(InstallerIgnoreAttribute), false).Any());
 

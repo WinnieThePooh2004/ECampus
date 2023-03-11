@@ -1,7 +1,7 @@
-﻿using ECampus.Services.Contracts.Services;
+﻿using ECampus.Domain.Data;
+using ECampus.Domain.Exceptions.DomainExceptions;
+using ECampus.Services.Contracts.Services;
 using ECampus.Services.Contracts.Validation;
-using ECampus.Shared.Data;
-using ECampus.Shared.Exceptions.DomainExceptions;
 
 namespace ECampus.Services.Services.ValidationServices;
 
@@ -23,7 +23,7 @@ public class ServiceWithCreateValidation<TDto> : IBaseService<TDto>
 
     public async Task<TDto> CreateAsync(TDto entity, CancellationToken token = default)
     {
-        var errors = await _validator.ValidateAsync(entity);
+        var errors = await _validator.ValidateAsync(entity, token);
         if (!errors.IsValid)
         {
             throw new ValidationException(typeof(TDto), errors);

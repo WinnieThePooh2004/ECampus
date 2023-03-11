@@ -1,5 +1,5 @@
-﻿using ECampus.Services.Contracts.Services;
-using ECampus.Shared.Data;
+﻿using ECampus.Domain.Data;
+using ECampus.Services.Contracts.Services;
 using Serilog;
 
 namespace ECampus.Services.Services;

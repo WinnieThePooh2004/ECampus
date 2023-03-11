@@ -1,6 +1,6 @@
-﻿using ECampus.Shared.Data;
-using ECampus.Shared.Enums;
-using ECampus.Shared.QueryParameters;
+﻿using ECampus.Domain.Data;
+using ECampus.Domain.Enums;
+using ECampus.Domain.QueryParameters;
 using Microsoft.AspNetCore.Components;
 
 namespace ECampus.FrontEnd.Components.PageModels;

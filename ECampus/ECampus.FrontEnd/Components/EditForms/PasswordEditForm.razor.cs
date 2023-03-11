@@ -1,4 +1,4 @@
-﻿using ECampus.Shared.Extensions;
+﻿using ECampus.Domain.Extensions;
 using Microsoft.AspNetCore.Components;
 
 namespace ECampus.FrontEnd.Components.EditForms;

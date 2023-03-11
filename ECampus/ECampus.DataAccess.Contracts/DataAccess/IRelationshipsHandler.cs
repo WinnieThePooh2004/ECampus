@@ -1,5 +1,5 @@
 ﻿using System.Reflection;
-using ECampus.Shared.Data;
+using ECampus.Domain.Data;
 
 // ReSharper disable UnusedTypeParameter
 

@@ -1,6 +1,6 @@
 ﻿using ECampus.FrontEnd.Requests.Interfaces;
-using ECampus.Shared.DataTransferObjects;
-using ECampus.Shared.Extensions;
+using ECampus.Domain.DataTransferObjects;
+using ECampus.Domain.Extensions;
 
 namespace ECampus.FrontEnd.Extensions;
 

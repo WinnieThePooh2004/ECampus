@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 using System.Reflection;
-using ECampus.Shared.Extensions;
-using ECampus.Shared.Metadata;
+using ECampus.Domain.Extensions;
+using ECampus.Domain.Metadata;
 
 namespace ECampus.FrontEnd.PropertySelectors;
 

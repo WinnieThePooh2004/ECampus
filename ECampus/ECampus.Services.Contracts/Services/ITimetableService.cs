@@ -1,6 +1,6 @@
-﻿using ECampus.Shared.DataContainers;
-using ECampus.Shared.DataTransferObjects;
-using ECampus.Shared.Validation;
+﻿using ECampus.Domain.DataContainers;
+using ECampus.Domain.DataTransferObjects;
+using ECampus.Domain.Validation;
 
 namespace ECampus.Services.Contracts.Services;
 

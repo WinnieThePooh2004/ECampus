@@ -1,8 +1,8 @@
 ﻿using ECampus.DataAccess.Contracts.DataAccess;
+using ECampus.Domain.DataTransferObjects;
+using ECampus.Domain.Validation;
 using ECampus.Services.Contracts.Validation;
 using ECampus.Services.Validation.UniversalValidators;
-using ECampus.Shared.DataTransferObjects;
-using ECampus.Shared.Validation;
 
 namespace ECampus.Services.Validation.CreateValidators;
 

@@ -25,7 +25,7 @@ namespace ECampus.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("ECampus.Shared.Models.Auditory", b =>
+            modelBuilder.Entity("ECampus.Domain.Models.Auditory", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -49,7 +49,7 @@ namespace ECampus.Infrastructure.Migrations
                     b.ToTable("Auditories");
                 });
 
-            modelBuilder.Entity("ECampus.Shared.Models.Class", b =>
+            modelBuilder.Entity("ECampus.Domain.Models.Class", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -97,7 +97,7 @@ namespace ECampus.Infrastructure.Migrations
                     b.ToTable("Classes");
                 });
 
-            modelBuilder.Entity("ECampus.Shared.Models.Course", b =>
+            modelBuilder.Entity("ECampus.Domain.Models.Course", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -128,7 +128,7 @@ namespace ECampus.Infrastructure.Migrations
                     b.ToTable("Courses");
                 });
 
-            modelBuilder.Entity("ECampus.Shared.Models.CourseTask", b =>
+            modelBuilder.Entity("ECampus.Domain.Models.CourseTask", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -169,7 +169,7 @@ namespace ECampus.Infrastructure.Migrations
                     b.ToTable("CourseTasks");
                 });
 
-            modelBuilder.Entity("ECampus.Shared.Models.Department", b =>
+            modelBuilder.Entity("ECampus.Domain.Models.Department", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -194,7 +194,7 @@ namespace ECampus.Infrastructure.Migrations
                     b.ToTable("Departments");
                 });
 
-            modelBuilder.Entity("ECampus.Shared.Models.Faculty", b =>
+            modelBuilder.Entity("ECampus.Domain.Models.Faculty", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -214,7 +214,7 @@ namespace ECampus.Infrastructure.Migrations
                     b.ToTable("Faculties");
                 });
 
-            modelBuilder.Entity("ECampus.Shared.Models.Group", b =>
+            modelBuilder.Entity("ECampus.Domain.Models.Group", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -239,7 +239,7 @@ namespace ECampus.Infrastructure.Migrations
                     b.ToTable("Groups");
                 });
 
-            modelBuilder.Entity("ECampus.Shared.Models.Log", b =>
+            modelBuilder.Entity("ECampus.Domain.Models.Log", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -274,7 +274,7 @@ namespace ECampus.Infrastructure.Migrations
                     b.ToTable("Logs", (string)null);
                 });
 
-            modelBuilder.Entity("ECampus.Shared.Models.RelationModels.CourseGroup", b =>
+            modelBuilder.Entity("ECampus.Domain.Models.RelationModels.CourseGroup", b =>
                 {
                     b.Property<int>("CourseId")
                         .HasColumnType("int");
@@ -289,7 +289,7 @@ namespace ECampus.Infrastructure.Migrations
                     b.ToTable("CourseGroups");
                 });
 
-            modelBuilder.Entity("ECampus.Shared.Models.RelationModels.CourseTeacher", b =>
+            modelBuilder.Entity("ECampus.Domain.Models.RelationModels.CourseTeacher", b =>
                 {
                     b.Property<int>("CourseId")
                         .HasColumnType("int");
@@ -304,7 +304,7 @@ namespace ECampus.Infrastructure.Migrations
                     b.ToTable("CourseTeachers");
                 });
 
-            modelBuilder.Entity("ECampus.Shared.Models.RelationModels.SubjectTeacher", b =>
+            modelBuilder.Entity("ECampus.Domain.Models.RelationModels.SubjectTeacher", b =>
                 {
                     b.Property<int>("TeacherId")
                         .HasColumnType("int");
@@ -319,7 +319,7 @@ namespace ECampus.Infrastructure.Migrations
                     b.ToTable("SubjectTeachers");
                 });
 
-            modelBuilder.Entity("ECampus.Shared.Models.RelationModels.UserAuditory", b =>
+            modelBuilder.Entity("ECampus.Domain.Models.RelationModels.UserAuditory", b =>
                 {
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -334,7 +334,7 @@ namespace ECampus.Infrastructure.Migrations
                     b.ToTable("UserAuditories", (string)null);
                 });
 
-            modelBuilder.Entity("ECampus.Shared.Models.RelationModels.UserGroup", b =>
+            modelBuilder.Entity("ECampus.Domain.Models.RelationModels.UserGroup", b =>
                 {
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -349,7 +349,7 @@ namespace ECampus.Infrastructure.Migrations
                     b.ToTable("UserGroups", (string)null);
                 });
 
-            modelBuilder.Entity("ECampus.Shared.Models.RelationModels.UserTeacher", b =>
+            modelBuilder.Entity("ECampus.Domain.Models.RelationModels.UserTeacher", b =>
                 {
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -364,7 +364,7 @@ namespace ECampus.Infrastructure.Migrations
                     b.ToTable("UserTeachers", (string)null);
                 });
 
-            modelBuilder.Entity("ECampus.Shared.Models.Student", b =>
+            modelBuilder.Entity("ECampus.Domain.Models.Student", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -400,7 +400,7 @@ namespace ECampus.Infrastructure.Migrations
                     b.ToTable("Students");
                 });
 
-            modelBuilder.Entity("ECampus.Shared.Models.Subject", b =>
+            modelBuilder.Entity("ECampus.Domain.Models.Subject", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -420,7 +420,7 @@ namespace ECampus.Infrastructure.Migrations
                     b.ToTable("Subjects");
                 });
 
-            modelBuilder.Entity("ECampus.Shared.Models.TaskSubmission", b =>
+            modelBuilder.Entity("ECampus.Domain.Models.TaskSubmission", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -455,7 +455,7 @@ namespace ECampus.Infrastructure.Migrations
                     b.ToTable("TaskSubmissions");
                 });
 
-            modelBuilder.Entity("ECampus.Shared.Models.Teacher", b =>
+            modelBuilder.Entity("ECampus.Domain.Models.Teacher", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -494,7 +494,7 @@ namespace ECampus.Infrastructure.Migrations
                     b.ToTable("Teachers");
                 });
 
-            modelBuilder.Entity("ECampus.Shared.Models.User", b =>
+            modelBuilder.Entity("ECampus.Domain.Models.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -537,27 +537,27 @@ namespace ECampus.Infrastructure.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("ECampus.Shared.Models.Class", b =>
+            modelBuilder.Entity("ECampus.Domain.Models.Class", b =>
                 {
-                    b.HasOne("ECampus.Shared.Models.Auditory", "Auditory")
+                    b.HasOne("ECampus.Domain.Models.Auditory", "Auditory")
                         .WithMany("Classes")
                         .HasForeignKey("AuditoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ECampus.Shared.Models.Group", "Group")
+                    b.HasOne("ECampus.Domain.Models.Group", "Group")
                         .WithMany("Classes")
                         .HasForeignKey("GroupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ECampus.Shared.Models.Subject", "Subject")
+                    b.HasOne("ECampus.Domain.Models.Subject", "Subject")
                         .WithMany("Classes")
                         .HasForeignKey("SubjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ECampus.Shared.Models.Teacher", "Teacher")
+                    b.HasOne("ECampus.Domain.Models.Teacher", "Teacher")
                         .WithMany("Classes")
                         .HasForeignKey("TeacherId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -572,9 +572,9 @@ namespace ECampus.Infrastructure.Migrations
                     b.Navigation("Teacher");
                 });
 
-            modelBuilder.Entity("ECampus.Shared.Models.Course", b =>
+            modelBuilder.Entity("ECampus.Domain.Models.Course", b =>
                 {
-                    b.HasOne("ECampus.Shared.Models.Subject", "Subject")
+                    b.HasOne("ECampus.Domain.Models.Subject", "Subject")
                         .WithMany("Courses")
                         .HasForeignKey("SubjectId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -583,9 +583,9 @@ namespace ECampus.Infrastructure.Migrations
                     b.Navigation("Subject");
                 });
 
-            modelBuilder.Entity("ECampus.Shared.Models.CourseTask", b =>
+            modelBuilder.Entity("ECampus.Domain.Models.CourseTask", b =>
                 {
-                    b.HasOne("ECampus.Shared.Models.Course", "Course")
+                    b.HasOne("ECampus.Domain.Models.Course", "Course")
                         .WithMany("Tasks")
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -594,9 +594,9 @@ namespace ECampus.Infrastructure.Migrations
                     b.Navigation("Course");
                 });
 
-            modelBuilder.Entity("ECampus.Shared.Models.Department", b =>
+            modelBuilder.Entity("ECampus.Domain.Models.Department", b =>
                 {
-                    b.HasOne("ECampus.Shared.Models.Faculty", "Faculty")
+                    b.HasOne("ECampus.Domain.Models.Faculty", "Faculty")
                         .WithMany("Departments")
                         .HasForeignKey("FacultyId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -605,9 +605,9 @@ namespace ECampus.Infrastructure.Migrations
                     b.Navigation("Faculty");
                 });
 
-            modelBuilder.Entity("ECampus.Shared.Models.Group", b =>
+            modelBuilder.Entity("ECampus.Domain.Models.Group", b =>
                 {
-                    b.HasOne("ECampus.Shared.Models.Department", "Department")
+                    b.HasOne("ECampus.Domain.Models.Department", "Department")
                         .WithMany("Groups")
                         .HasForeignKey("DepartmentId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -616,15 +616,15 @@ namespace ECampus.Infrastructure.Migrations
                     b.Navigation("Department");
                 });
 
-            modelBuilder.Entity("ECampus.Shared.Models.RelationModels.CourseGroup", b =>
+            modelBuilder.Entity("ECampus.Domain.Models.RelationModels.CourseGroup", b =>
                 {
-                    b.HasOne("ECampus.Shared.Models.Course", "Course")
+                    b.HasOne("ECampus.Domain.Models.Course", "Course")
                         .WithMany("CourseGroups")
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ECampus.Shared.Models.Group", "Group")
+                    b.HasOne("ECampus.Domain.Models.Group", "Group")
                         .WithMany("CourseGroups")
                         .HasForeignKey("GroupId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -635,15 +635,15 @@ namespace ECampus.Infrastructure.Migrations
                     b.Navigation("Group");
                 });
 
-            modelBuilder.Entity("ECampus.Shared.Models.RelationModels.CourseTeacher", b =>
+            modelBuilder.Entity("ECampus.Domain.Models.RelationModels.CourseTeacher", b =>
                 {
-                    b.HasOne("ECampus.Shared.Models.Course", "Course")
+                    b.HasOne("ECampus.Domain.Models.Course", "Course")
                         .WithMany("CourseTeachers")
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ECampus.Shared.Models.Teacher", "Teacher")
+                    b.HasOne("ECampus.Domain.Models.Teacher", "Teacher")
                         .WithMany("CourseTeachers")
                         .HasForeignKey("TeacherId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -654,15 +654,15 @@ namespace ECampus.Infrastructure.Migrations
                     b.Navigation("Teacher");
                 });
 
-            modelBuilder.Entity("ECampus.Shared.Models.RelationModels.SubjectTeacher", b =>
+            modelBuilder.Entity("ECampus.Domain.Models.RelationModels.SubjectTeacher", b =>
                 {
-                    b.HasOne("ECampus.Shared.Models.Subject", "Subject")
+                    b.HasOne("ECampus.Domain.Models.Subject", "Subject")
                         .WithMany("TeacherIds")
                         .HasForeignKey("SubjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ECampus.Shared.Models.Teacher", "Teacher")
+                    b.HasOne("ECampus.Domain.Models.Teacher", "Teacher")
                         .WithMany("SubjectIds")
                         .HasForeignKey("TeacherId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -673,15 +673,15 @@ namespace ECampus.Infrastructure.Migrations
                     b.Navigation("Teacher");
                 });
 
-            modelBuilder.Entity("ECampus.Shared.Models.RelationModels.UserAuditory", b =>
+            modelBuilder.Entity("ECampus.Domain.Models.RelationModels.UserAuditory", b =>
                 {
-                    b.HasOne("ECampus.Shared.Models.Auditory", "Auditory")
+                    b.HasOne("ECampus.Domain.Models.Auditory", "Auditory")
                         .WithMany("UsersIds")
                         .HasForeignKey("AuditoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ECampus.Shared.Models.User", "User")
+                    b.HasOne("ECampus.Domain.Models.User", "User")
                         .WithMany("SavedAuditoriesIds")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -692,15 +692,15 @@ namespace ECampus.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ECampus.Shared.Models.RelationModels.UserGroup", b =>
+            modelBuilder.Entity("ECampus.Domain.Models.RelationModels.UserGroup", b =>
                 {
-                    b.HasOne("ECampus.Shared.Models.Group", "Group")
+                    b.HasOne("ECampus.Domain.Models.Group", "Group")
                         .WithMany("UsersIds")
                         .HasForeignKey("GroupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ECampus.Shared.Models.User", "User")
+                    b.HasOne("ECampus.Domain.Models.User", "User")
                         .WithMany("SavedGroupsIds")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -711,15 +711,15 @@ namespace ECampus.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ECampus.Shared.Models.RelationModels.UserTeacher", b =>
+            modelBuilder.Entity("ECampus.Domain.Models.RelationModels.UserTeacher", b =>
                 {
-                    b.HasOne("ECampus.Shared.Models.Teacher", "Teacher")
+                    b.HasOne("ECampus.Domain.Models.Teacher", "Teacher")
                         .WithMany("UsersIds")
                         .HasForeignKey("TeacherId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ECampus.Shared.Models.User", "User")
+                    b.HasOne("ECampus.Domain.Models.User", "User")
                         .WithMany("SavedTeachersIds")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -730,18 +730,18 @@ namespace ECampus.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ECampus.Shared.Models.Student", b =>
+            modelBuilder.Entity("ECampus.Domain.Models.Student", b =>
                 {
-                    b.HasOne("ECampus.Shared.Models.Group", "Group")
+                    b.HasOne("ECampus.Domain.Models.Group", "Group")
                         .WithMany("Students")
                         .HasForeignKey("GroupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ECampus.Shared.Models.User", "User")
+                    b.HasOne("ECampus.Domain.Models.User", "User")
                         .WithOne("Student")
-                        .HasForeignKey("ECampus.Shared.Models.Student", "UserEmail")
-                        .HasPrincipalKey("ECampus.Shared.Models.User", "Email")
+                        .HasForeignKey("ECampus.Domain.Models.Student", "UserEmail")
+                        .HasPrincipalKey("ECampus.Domain.Models.User", "Email")
                         .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Group");
@@ -749,15 +749,15 @@ namespace ECampus.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ECampus.Shared.Models.TaskSubmission", b =>
+            modelBuilder.Entity("ECampus.Domain.Models.TaskSubmission", b =>
                 {
-                    b.HasOne("ECampus.Shared.Models.CourseTask", "CourseTask")
+                    b.HasOne("ECampus.Domain.Models.CourseTask", "CourseTask")
                         .WithMany("Submissions")
                         .HasForeignKey("CourseTaskId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ECampus.Shared.Models.Student", "Student")
+                    b.HasOne("ECampus.Domain.Models.Student", "Student")
                         .WithMany("Submissions")
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -768,18 +768,18 @@ namespace ECampus.Infrastructure.Migrations
                     b.Navigation("Student");
                 });
 
-            modelBuilder.Entity("ECampus.Shared.Models.Teacher", b =>
+            modelBuilder.Entity("ECampus.Domain.Models.Teacher", b =>
                 {
-                    b.HasOne("ECampus.Shared.Models.Department", "Department")
+                    b.HasOne("ECampus.Domain.Models.Department", "Department")
                         .WithMany("Teachers")
                         .HasForeignKey("DepartmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ECampus.Shared.Models.User", "User")
+                    b.HasOne("ECampus.Domain.Models.User", "User")
                         .WithOne("Teacher")
-                        .HasForeignKey("ECampus.Shared.Models.Teacher", "UserEmail")
-                        .HasPrincipalKey("ECampus.Shared.Models.User", "Email")
+                        .HasForeignKey("ECampus.Domain.Models.Teacher", "UserEmail")
+                        .HasPrincipalKey("ECampus.Domain.Models.User", "Email")
                         .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Department");
@@ -787,14 +787,14 @@ namespace ECampus.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ECampus.Shared.Models.Auditory", b =>
+            modelBuilder.Entity("ECampus.Domain.Models.Auditory", b =>
                 {
                     b.Navigation("Classes");
 
                     b.Navigation("UsersIds");
                 });
 
-            modelBuilder.Entity("ECampus.Shared.Models.Course", b =>
+            modelBuilder.Entity("ECampus.Domain.Models.Course", b =>
                 {
                     b.Navigation("CourseGroups");
 
@@ -803,24 +803,24 @@ namespace ECampus.Infrastructure.Migrations
                     b.Navigation("Tasks");
                 });
 
-            modelBuilder.Entity("ECampus.Shared.Models.CourseTask", b =>
+            modelBuilder.Entity("ECampus.Domain.Models.CourseTask", b =>
                 {
                     b.Navigation("Submissions");
                 });
 
-            modelBuilder.Entity("ECampus.Shared.Models.Department", b =>
+            modelBuilder.Entity("ECampus.Domain.Models.Department", b =>
                 {
                     b.Navigation("Groups");
 
                     b.Navigation("Teachers");
                 });
 
-            modelBuilder.Entity("ECampus.Shared.Models.Faculty", b =>
+            modelBuilder.Entity("ECampus.Domain.Models.Faculty", b =>
                 {
                     b.Navigation("Departments");
                 });
 
-            modelBuilder.Entity("ECampus.Shared.Models.Group", b =>
+            modelBuilder.Entity("ECampus.Domain.Models.Group", b =>
                 {
                     b.Navigation("Classes");
 
@@ -831,12 +831,12 @@ namespace ECampus.Infrastructure.Migrations
                     b.Navigation("UsersIds");
                 });
 
-            modelBuilder.Entity("ECampus.Shared.Models.Student", b =>
+            modelBuilder.Entity("ECampus.Domain.Models.Student", b =>
                 {
                     b.Navigation("Submissions");
                 });
 
-            modelBuilder.Entity("ECampus.Shared.Models.Subject", b =>
+            modelBuilder.Entity("ECampus.Domain.Models.Subject", b =>
                 {
                     b.Navigation("Classes");
 
@@ -845,7 +845,7 @@ namespace ECampus.Infrastructure.Migrations
                     b.Navigation("TeacherIds");
                 });
 
-            modelBuilder.Entity("ECampus.Shared.Models.Teacher", b =>
+            modelBuilder.Entity("ECampus.Domain.Models.Teacher", b =>
                 {
                     b.Navigation("Classes");
 
@@ -856,7 +856,7 @@ namespace ECampus.Infrastructure.Migrations
                     b.Navigation("UsersIds");
                 });
 
-            modelBuilder.Entity("ECampus.Shared.Models.User", b =>
+            modelBuilder.Entity("ECampus.Domain.Models.User", b =>
                 {
                     b.Navigation("SavedAuditoriesIds");
 

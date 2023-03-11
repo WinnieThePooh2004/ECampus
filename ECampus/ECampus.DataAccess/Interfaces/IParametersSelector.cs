@@ -1,6 +1,6 @@
-﻿using ECampus.Infrastructure;
-using ECampus.Shared.Data;
-using ECampus.Shared.QueryParameters;
+﻿using ECampus.Domain.Data;
+using ECampus.Domain.QueryParameters;
+using ECampus.Infrastructure;
 
 namespace ECampus.DataAccess.Interfaces;
 

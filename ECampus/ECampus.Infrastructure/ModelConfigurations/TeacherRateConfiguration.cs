@@ -1,5 +1,5 @@
-﻿using ECampus.Shared.Enums;
-using ECampus.Shared.Models;
+﻿using ECampus.Domain.Enums;
+using ECampus.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Newtonsoft.Json;

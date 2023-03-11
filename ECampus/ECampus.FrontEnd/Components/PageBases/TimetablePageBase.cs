@@ -1,6 +1,6 @@
 ﻿using ECampus.FrontEnd.Extensions;
 using ECampus.FrontEnd.Requests.Interfaces;
-using ECampus.Shared.DataTransferObjects;
+using ECampus.Domain.DataTransferObjects;
 using IdentityServer4.Extensions;
 using Microsoft.AspNetCore.Components;
 

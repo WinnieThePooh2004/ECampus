@@ -1,9 +1,9 @@
 ﻿using System.Diagnostics;
 using ECampus.FrontEnd.Requests.Interfaces;
 using ECampus.FrontEnd.Requests.Options;
-using ECampus.Shared.DataContainers;
-using ECampus.Shared.Extensions;
-using ECampus.Shared.QueryParameters;
+using ECampus.Domain.DataContainers;
+using ECampus.Domain.Extensions;
+using ECampus.Domain.QueryParameters;
 using Newtonsoft.Json;
 
 namespace ECampus.FrontEnd.Requests;

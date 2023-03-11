@@ -1,7 +1,7 @@
 ﻿using ECampus.Core.Installers;
 using ECampus.DataAccess.DataUpdateServices;
 using ECampus.DataAccess.Interfaces;
-using ECampus.Shared.Models;
+using ECampus.Domain.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

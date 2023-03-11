@@ -1,8 +1,8 @@
 ﻿using System.Security.Claims;
 using ECampus.FrontEnd.Requests.Interfaces;
-using ECampus.Shared.DataTransferObjects;
-using ECampus.Shared.Exceptions.DomainExceptions;
-using ECampus.Shared.Extensions;
+using ECampus.Domain.DataTransferObjects;
+using ECampus.Domain.Exceptions.DomainExceptions;
+using ECampus.Domain.Extensions;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 

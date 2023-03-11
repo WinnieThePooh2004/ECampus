@@ -1,4 +1,4 @@
-﻿using ECampus.Shared.Enums;
+﻿using ECampus.Domain.Enums;
 using Microsoft.AspNetCore.Components;
 
 namespace ECampus.FrontEnd.Components.EditForms;

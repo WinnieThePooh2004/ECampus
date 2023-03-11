@@ -1,8 +1,9 @@
 ﻿using ECampus.Core.Messages;
+using ECampus.Domain.DataTransferObjects;
+using ECampus.Domain.Validation;
+using ECampus.Services.Contracts.Messaging;
 using ECampus.Services.Contracts.Services;
 using ECampus.Services.Messaging;
-using ECampus.Shared.DataTransferObjects;
-using ECampus.Shared.Validation;
 
 namespace ECampus.Services.Services.Messaging;
 

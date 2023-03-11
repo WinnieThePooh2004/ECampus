@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 using System.Security.Claims;
-using ECampus.Shared.Validation;
+using ECampus.Domain.Validation;
 
 namespace ECampus.Services.Validation;
 

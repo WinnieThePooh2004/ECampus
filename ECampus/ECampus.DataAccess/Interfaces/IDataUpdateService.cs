@@ -1,5 +1,5 @@
-﻿using ECampus.Infrastructure;
-using ECampus.Shared.Data;
+﻿using ECampus.Domain.Data;
+using ECampus.Infrastructure;
 
 namespace ECampus.DataAccess.Interfaces;
 

@@ -1,5 +1,5 @@
-﻿using ECampus.Shared.Data;
-using ECampus.Shared.QueryParameters;
+﻿using ECampus.Domain.Data;
+using ECampus.Domain.QueryParameters;
 
 namespace ECampus.DataAccess.Contracts.DataAccess;
 

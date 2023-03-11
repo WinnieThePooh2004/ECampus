@@ -1,8 +1,8 @@
 ﻿using ECampus.DataAccess.Contracts.DataAccess;
 using ECampus.DataAccess.Interfaces;
+using ECampus.Domain.Data;
+using ECampus.Domain.Extensions;
 using ECampus.Infrastructure;
-using ECampus.Shared.Data;
-using ECampus.Shared.Extensions;
 
 namespace ECampus.DataAccess.DataCreateServices;
 

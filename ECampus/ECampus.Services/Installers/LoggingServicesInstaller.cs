@@ -1,8 +1,8 @@
 ﻿using ECampus.Core.Installers;
+using ECampus.Domain;
+using ECampus.Domain.Extensions;
 using ECampus.Services.Contracts.Services;
 using ECampus.Services.Services;
-using ECampus.Shared;
-using ECampus.Shared.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -13,7 +13,7 @@ public class LoggingServicesInstaller : IInstaller
     public int InstallOrder => int.MaxValue;
     public void Install(IServiceCollection services, IConfiguration configuration)
     {
-        var dataTransferObjects = typeof(SharedAssemblyMarker).Assembly.GetDataTransferObjects();
+        var dataTransferObjects = typeof(DomainAssemblyMarker).Assembly.GetDataTransferObjects();
 
         foreach (var dto in dataTransferObjects)
         {

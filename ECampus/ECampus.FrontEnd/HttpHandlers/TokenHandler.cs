@@ -1,5 +1,5 @@
 ﻿using System.Net.Http.Headers;
-using ECampus.Shared.Auth;
+using ECampus.Domain.Auth;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace ECampus.FrontEnd.HttpHandlers;

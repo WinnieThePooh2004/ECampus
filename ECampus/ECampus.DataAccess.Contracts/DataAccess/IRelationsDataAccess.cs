@@ -1,4 +1,4 @@
-﻿using ECampus.Shared.Data;
+﻿using ECampus.Domain.Data;
 
 namespace ECampus.DataAccess.Contracts.DataAccess;
 
