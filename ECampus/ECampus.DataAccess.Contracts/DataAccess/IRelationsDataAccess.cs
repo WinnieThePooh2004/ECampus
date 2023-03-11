@@ -5,12 +5,12 @@ namespace ECampus.DataAccess.Contracts.DataAccess;
 public interface IRelationsDataAccess
 {
     void CreateRelation<TLeftTable, TRightTable, TRelations>(int leftTableId, int rightTableId)
-        where TLeftTable : IModel
-        where TRightTable : IModel
+        where TLeftTable : IEntity
+        where TRightTable : IEntity
         where TRelations : class, new();
 
     void DeleteRelation<TLeftTable, TRightTable, TRelations>(int leftTableId, int rightTableId)
-        where TLeftTable : IModel
-        where TRightTable : IModel
+        where TLeftTable : IEntity
+        where TRightTable : IEntity
         where TRelations : class, new();
 }

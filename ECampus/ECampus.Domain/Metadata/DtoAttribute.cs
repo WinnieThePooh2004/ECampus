@@ -19,7 +19,7 @@ public class DtoAttribute: Attribute
 }
 
 public class DtoAttribute<TModel> : DtoAttribute
-    where TModel : class, IModel
+    where TModel : class, IEntity
 {
     public DtoAttribute() : base(typeof(TModel))
     {

@@ -2,8 +2,8 @@
 using ECampus.DataAccess.Contracts.DataAccess;
 using ECampus.DataAccess.Contracts.DataSelectParameters;
 using ECampus.Domain.DataTransferObjects;
+using ECampus.Domain.Entities;
 using ECampus.Domain.Enums;
-using ECampus.Domain.Models;
 using ECampus.Services.Contracts.Messaging;
 using ECampus.Services.Contracts.Services;
 using ECampus.Services.Services.Messaging;
@@ -29,7 +29,7 @@ public class CourseTaskMessagingServiceTests
     {
         var task = new CourseTaskDto { CourseId = 10 };
         _baseService.CreateAsync(task).Returns(task);
-        _dataAccess.GetByIdAsync<Course>(10).Returns(new Course());
+        _dataAccess.GetByIdOrDefaultAsync<Course>(10).Returns(new Course());
         var returnData = new DbSetMock<Student>().Object;
         _dataAccess.GetByParameters<Student, StudentsByCourseParameters>(Arg.Any<StudentsByCourseParameters>())
             .Returns(returnData);

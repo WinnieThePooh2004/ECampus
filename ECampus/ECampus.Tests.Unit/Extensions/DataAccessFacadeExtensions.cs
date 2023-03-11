@@ -11,7 +11,7 @@ namespace ECampus.Tests.Unit.Extensions;
 public static class DataAccessFacadeExtensions
 {
     public static void SetReturnById<TModel>(this IDataAccessFacade facade, int id, TModel model)
-        where TModel : class, IModel
+        where TModel : class, IEntity
     {
         var mockedSet = new DbSetMock<TModel>(model).Object;
         facade.GetByParameters<TModel, PureByIdParameters<TModel>>(
@@ -20,7 +20,7 @@ public static class DataAccessFacadeExtensions
     }
     
     public static void SetReturnNullById<TModel>(this IDataAccessFacade facade, int id)
-        where TModel : class, IModel
+        where TModel : class, IEntity
     {
         var mockedSet = new DbSetMock<TModel>().Object;
         facade.GetByParameters<TModel, PureByIdParameters<TModel>>(

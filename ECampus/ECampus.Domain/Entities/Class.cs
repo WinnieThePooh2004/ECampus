@@ -1,9 +1,9 @@
 ﻿using ECampus.Domain.Data;
 using ECampus.Domain.Enums;
 
-namespace ECampus.Domain.Models;
+namespace ECampus.Domain.Entities;
 
-public class Class : IIsDeleted, IModel
+public class Class : IIsDeleted, IEntity
 {
     public int Id { get; set; }
     public ClassType ClassType { get; set; }

@@ -8,43 +8,43 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ECampus.DataAccess.DataUpdateServices;
 
-public class ManyToManyRelationshipsUpdate<TModel, TRelatedModel, TRelations> : IDataUpdateService<TModel>
-    where TModel : class, IModel
-    where TRelatedModel : class, IModel
+public class ManyToManyRelationshipsUpdate<TEntity, TRelatedEntity, TRelations> : IDataUpdateService<TEntity>
+    where TEntity : class, IEntity
+    where TRelatedEntity : class, IEntity
     where TRelations : class, new()
 {
-    private readonly IDataUpdateService<TModel> _baseUpdateService;
-    private readonly IRelationshipsHandler<TModel, TRelatedModel, TRelations> _relationshipsHandler;
+    private readonly IDataUpdateService<TEntity> _baseUpdateService;
+    private readonly IRelationshipsHandler<TEntity, TRelatedEntity, TRelations> _relationshipsHandler;
 
-    public ManyToManyRelationshipsUpdate(IDataUpdateService<TModel> baseUpdateService,
-        IRelationshipsHandler<TModel, TRelatedModel, TRelations> relationshipsHandler,
+    public ManyToManyRelationshipsUpdate(IDataUpdateService<TEntity> baseUpdateService,
+        IRelationshipsHandler<TEntity, TRelatedEntity, TRelations> relationshipsHandler,
         CancellationToken token = default)
     {
         _baseUpdateService = baseUpdateService;
         _relationshipsHandler = relationshipsHandler;
     }
 
-    public async Task<TModel> UpdateAsync(TModel model, ApplicationDbContext context, CancellationToken token = default)
+    public async Task<TEntity> UpdateAsync(TEntity entity, ApplicationDbContext context, CancellationToken token = default)
     {
-        var relatedModels = _relationshipsHandler.RelatedModels.GetFromProperty<ICollection<TRelatedModel>>(model);
+        var relatedModels = _relationshipsHandler.RelatedModels.GetFromProperty<ICollection<TRelatedEntity>>(entity);
         if (relatedModels is null)
         {
-            return await _baseUpdateService.UpdateAsync(model, context, token);
+            return await _baseUpdateService.UpdateAsync(entity, context, token);
         }
 
-        await RemoveLostRelations(model, context, relatedModels, token);
-        await AddNewRelations(model, context, relatedModels, token);
+        await RemoveLostRelations(entity, context, relatedModels, token);
+        await AddNewRelations(entity, context, relatedModels, token);
 
-        _relationshipsHandler.RelatedModels.SetPropertyAsNull(model);
+        _relationshipsHandler.RelatedModels.SetPropertyAsNull(entity);
 
-        return await _baseUpdateService.UpdateAsync(model, context, token);
+        return await _baseUpdateService.UpdateAsync(entity, context, token);
     }
 
-    private async Task AddNewRelations(TModel model, DbContext context, ICollection<TRelatedModel> relatedModels,
+    private async Task AddNewRelations(TEntity model, DbContext context, ICollection<TRelatedEntity> relatedModels,
         CancellationToken token = default)
     {
         var relatedModelsIdsList = relatedModels.Select(m => m.Id.ToString()).ToList();
-        var rightTableName = context.Model.FindEntityType(typeof(TRelatedModel))!.GetTableName();
+        var rightTableName = context.Model.FindEntityType(typeof(TRelatedEntity))!.GetTableName();
         var relationTableName = context.Model.FindEntityType(typeof(TRelations))!.GetTableName();
         var rightTableIdName = _relationshipsHandler.RightTableId.Name;
         var leftTableIdName = _relationshipsHandler.LeftTableId.Name;
@@ -54,7 +54,7 @@ public class ManyToManyRelationshipsUpdate<TModel, TRelatedModel, TRelations> : 
             rightTableIdName);
 
         var rightTableIds =
-            await context.Set<TRelatedModel>()
+            await context.Set<TRelatedEntity>()
                 .FromSqlRaw(sqlQuery).ToListAsync(token);
 
         var modelsToAdd = rightTableIds.Select(relatedModel =>
@@ -63,7 +63,7 @@ public class ManyToManyRelationshipsUpdate<TModel, TRelatedModel, TRelations> : 
         context.AddRange(modelsToAdd);
     }
 
-    private static string CreateSqlQuery(TModel model, string? rightTableName, string relatedModelsIds,
+    private static string CreateSqlQuery(TEntity model, string? rightTableName, string relatedModelsIds,
         string leftTableIdName, string? relationTableName, string rightTableIdName)
     {
         var sqlQuery = $"""
@@ -75,7 +75,7 @@ public class ManyToManyRelationshipsUpdate<TModel, TRelatedModel, TRelations> : 
         return sqlQuery;
     }
 
-    private async Task RemoveLostRelations(TModel model, DbContext context, ICollection<TRelatedModel> relatedModels,
+    private async Task RemoveLostRelations(TEntity model, DbContext context, ICollection<TRelatedEntity> relatedModels,
         CancellationToken token)
     {
         var relationsToDelete = await context
@@ -87,8 +87,8 @@ public class ManyToManyRelationshipsUpdate<TModel, TRelatedModel, TRelations> : 
         context.RemoveRange(relationsToDelete);
     }
 
-    private Expression<Func<TRelations, bool>> DeletedFromModelExpression(TModel model,
-        ICollection<TRelatedModel> relatedModels)
+    private Expression<Func<TRelations, bool>> DeletedFromModelExpression(TEntity model,
+        ICollection<TRelatedEntity> relatedModels)
     {
         var parameter = Expression.Parameter(typeof(TRelations), "relationModel");
         var rightIdExpression = Expression.MakeMemberAccess(parameter, _relationshipsHandler.RightTableId);

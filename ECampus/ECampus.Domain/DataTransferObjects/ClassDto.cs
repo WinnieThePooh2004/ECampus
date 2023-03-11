@@ -1,7 +1,7 @@
 ﻿using ECampus.Domain.Data;
+using ECampus.Domain.Entities;
 using ECampus.Domain.Enums;
 using ECampus.Domain.Metadata;
-using ECampus.Domain.Models;
 
 namespace ECampus.Domain.DataTransferObjects;
 

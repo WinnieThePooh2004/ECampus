@@ -6,7 +6,7 @@ using ECampus.Infrastructure;
 namespace ECampus.DataAccess.DataSelectors.MultipleItemSelectors;
 
 public class PureObjectByIdSelect<TModel> : IParametersSelector<TModel, PureByIdParameters<TModel>>
-    where TModel : class, IModel
+    where TModel : class, IEntity
 {
     public IQueryable<TModel> SelectData(ApplicationDbContext context, PureByIdParameters<TModel> parameters)
     {

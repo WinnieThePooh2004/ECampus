@@ -1,6 +1,6 @@
 ﻿using ECampus.DataAccess.Contracts.DataAccess;
-using ECampus.Domain.Models;
-using ECampus.Domain.Models.RelationModels;
+using ECampus.Domain.Entities;
+using ECampus.Domain.Entities.RelationEntities;
 using ECampus.Services.Contracts.Services;
 using ECampus.Services.Services;
 

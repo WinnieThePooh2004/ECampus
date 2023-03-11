@@ -3,8 +3,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ECampus.DataAccess.Interfaces;
 
-public interface ISingleItemSelector<TModel>
-    where TModel : class, IModel
+public interface ISingleItemSelector<TEntity>
+    where TEntity : class, IEntity
 {
-    Task<TModel?> SelectModel(int id, DbSet<TModel> dataSource, CancellationToken token = default);
+    Task<TEntity?> SelectModel(int id, DbSet<TEntity> dataSource, CancellationToken token = default);
 }

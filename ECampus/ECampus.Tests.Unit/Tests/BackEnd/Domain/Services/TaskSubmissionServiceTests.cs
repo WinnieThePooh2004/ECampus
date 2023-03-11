@@ -3,8 +3,8 @@ using AutoMapper;
 using ECampus.DataAccess.Contracts.DataAccess;
 using ECampus.DataAccess.Contracts.DataSelectParameters;
 using ECampus.Domain.Auth;
+using ECampus.Domain.Entities;
 using ECampus.Domain.Exceptions.InfrastructureExceptions;
-using ECampus.Domain.Models;
 using ECampus.Services.Services;
 using ECampus.Tests.Shared.DataFactories;
 using ECampus.Tests.Shared.Mocks.EntityFramework;
@@ -31,7 +31,7 @@ public class TaskSubmissionServiceTests
     public async Task GetById_ShouldReturnFromDataAccess()
     {
         var submission = new TaskSubmission { Id = new Random().Next() };
-        _dataAccessFacade.GetByIdAsync<TaskSubmission>(1).Returns(submission);
+        _dataAccessFacade.GetByIdOrDefaultAsync<TaskSubmission>(1).Returns(submission);
 
         var result = await _sut.GetByIdAsync(1);
 
@@ -42,7 +42,7 @@ public class TaskSubmissionServiceTests
     public async Task UpdateContext_ShouldUpdateContent()
     {
         var submission = new TaskSubmission { Id = new Random().Next(), SubmissionContent = "old" };
-        _dataAccessFacade.GetByIdAsync<TaskSubmission>(1).Returns(submission);
+        _dataAccessFacade.GetByIdOrDefaultAsync<TaskSubmission>(1).Returns(submission);
 
         await _sut.UpdateContentAsync(1, "new");
 
@@ -54,7 +54,7 @@ public class TaskSubmissionServiceTests
     public async Task UpdateMark_ShouldUpdateMark()
     {
         var submission = new TaskSubmission { Id = new Random().Next(), TotalPoints = 0 };
-        _dataAccessFacade.GetByIdAsync<TaskSubmission>(1).Returns(submission);
+        _dataAccessFacade.GetByIdOrDefaultAsync<TaskSubmission>(1).Returns(submission);
 
         await _sut.UpdateMarkAsync(1, 20);
 

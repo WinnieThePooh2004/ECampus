@@ -1,7 +1,7 @@
 ﻿using ECampus.DataAccess.Contracts.DataAccess;
 using ECampus.Domain.DataContainers;
 using ECampus.Domain.DataTransferObjects;
-using ECampus.Domain.Models;
+using ECampus.Domain.Entities;
 using ECampus.Domain.QueryParameters;
 using ECampus.Services.Contracts.Services;
 using ECampus.Services.Services;

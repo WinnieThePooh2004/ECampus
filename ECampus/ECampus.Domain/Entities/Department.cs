@@ -1,8 +1,8 @@
 ﻿using ECampus.Domain.Data;
 
-namespace ECampus.Domain.Models;
+namespace ECampus.Domain.Entities;
 
-public class Department : IIsDeleted, IModel
+public class Department : IIsDeleted, IEntity
 {
     public int Id { get; set; }
     public string Name { get; set; } = default!;

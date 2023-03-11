@@ -1,14 +1,14 @@
 ﻿using ECampus.Domain.Data;
+using ECampus.Domain.Entities.RelationEntities;
 using ECampus.Domain.Enums;
 using ECampus.Domain.Metadata.Relationships;
-using ECampus.Domain.Models.RelationModels;
 
-namespace ECampus.Domain.Models;
+namespace ECampus.Domain.Entities;
 
 [ManyToMany(typeof(Auditory), typeof(UserAuditory))]
 [ManyToMany(typeof(Group), typeof(UserGroup))]
 [ManyToMany(typeof(Teacher), typeof(UserTeacher))]
-public class User : IModel, IIsDeleted
+public class User : IEntity, IIsDeleted
 {
     public int Id { get; set; }
     public string Email { get; set; } = string.Empty;

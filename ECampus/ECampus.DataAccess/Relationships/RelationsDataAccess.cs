@@ -18,16 +18,16 @@ public class RelationsDataAccess : IRelationsDataAccess
 
     public void CreateRelation<TLeftTable, TRightTable, TRelations>(int leftTableId, int rightTableId) 
         where TRelations : class, new()
-        where TRightTable : IModel 
-        where TLeftTable : IModel
+        where TRightTable : IEntity 
+        where TLeftTable : IEntity
     {
         var relation = GetHandler<TLeftTable, TRightTable, TRelations>().CreateRelationModel(leftTableId, rightTableId);
         _context.Add(relation);
     }
 
     public void DeleteRelation<TLeftTable, TRightTable, TRelations>(int leftTableId, int rightTableId) 
-        where TLeftTable : IModel 
-        where TRightTable : IModel 
+        where TLeftTable : IEntity 
+        where TRightTable : IEntity 
         where TRelations : class, new()
     {
         var relation = GetHandler<TLeftTable, TRightTable, TRelations>().CreateRelationModel(leftTableId, rightTableId);
@@ -36,8 +36,8 @@ public class RelationsDataAccess : IRelationsDataAccess
 
     private IRelationshipsHandler<TLeftTable, TRightTable, TRelations> GetHandler
         <TLeftTable, TRightTable, TRelations>() 
-        where TLeftTable : IModel 
-        where TRightTable : IModel 
+        where TLeftTable : IEntity 
+        where TRightTable : IEntity 
         where TRelations : class, new()
     {
         return _provider.GetServiceOfType<IRelationshipsHandler<TLeftTable, TRightTable, TRelations>>();

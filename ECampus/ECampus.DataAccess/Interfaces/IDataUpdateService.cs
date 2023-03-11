@@ -3,8 +3,8 @@ using ECampus.Infrastructure;
 
 namespace ECampus.DataAccess.Interfaces;
 
-public interface IDataUpdateService<TModel>
-    where TModel : class, IModel
+public interface IDataUpdateService<TEntity>
+    where TEntity : class, IEntity
 {
-    Task<TModel> UpdateAsync(TModel model, ApplicationDbContext context, CancellationToken token = default);
+    Task<TEntity> UpdateAsync(TEntity entity, ApplicationDbContext context, CancellationToken token = default);
 }

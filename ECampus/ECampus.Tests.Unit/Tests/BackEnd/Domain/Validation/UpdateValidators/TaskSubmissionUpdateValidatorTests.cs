@@ -3,7 +3,7 @@ using ECampus.DataAccess.Contracts.DataAccess;
 using ECampus.DataAccess.Contracts.DataSelectParameters;
 using ECampus.Domain.Auth;
 using ECampus.Domain.DataTransferObjects;
-using ECampus.Domain.Models;
+using ECampus.Domain.Entities;
 using ECampus.Domain.Validation;
 using ECampus.Services.Validation.UpdateValidators;
 using ECampus.Tests.Shared.Mocks.EntityFramework;

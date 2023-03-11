@@ -3,8 +3,8 @@ using ECampus.Infrastructure;
 
 namespace ECampus.DataAccess.Interfaces;
 
-public interface IDataCreateService<TModel>
-    where TModel : class, IModel
+public interface IDataCreateService<TEntity>
+    where TEntity : class, IEntity
 {
-    TModel Create(TModel model, ApplicationDbContext context);
+    TEntity Create(TEntity model, ApplicationDbContext context);
 }

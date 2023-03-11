@@ -7,8 +7,8 @@ namespace ECampus.DataAccess.Relationships;
 
 public class RelationshipsHandler<TLeftTable, TRightTable, TRelationModel>
     : IRelationshipsHandler<TLeftTable, TRightTable, TRelationModel>
-    where TLeftTable : IModel
-    where TRightTable : IModel
+    where TLeftTable : IEntity
+    where TRightTable : IEntity
     where TRelationModel : class, new()
 
 {

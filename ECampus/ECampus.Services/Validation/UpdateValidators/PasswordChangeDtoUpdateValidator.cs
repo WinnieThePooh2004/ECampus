@@ -2,7 +2,7 @@
 using ECampus.DataAccess.Contracts.DataAccess;
 using ECampus.Domain.Auth;
 using ECampus.Domain.DataTransferObjects;
-using ECampus.Domain.Models;
+using ECampus.Domain.Entities;
 using ECampus.Domain.Validation;
 using ECampus.Services.Contracts.Validation;
 using Microsoft.AspNetCore.Http;

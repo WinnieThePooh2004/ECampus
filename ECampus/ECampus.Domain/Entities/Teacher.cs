@@ -1,12 +1,12 @@
 ﻿using ECampus.Domain.Data;
+using ECampus.Domain.Entities.RelationEntities;
 using ECampus.Domain.Enums;
 using ECampus.Domain.Metadata.Relationships;
-using ECampus.Domain.Models.RelationModels;
 
-namespace ECampus.Domain.Models;
+namespace ECampus.Domain.Entities;
 
 [ManyToMany(typeof(Subject), typeof(SubjectTeacher))]
-public class Teacher : IIsDeleted, IModel
+public class Teacher : IIsDeleted, IEntity
 {
     public int Id { get; set; }
     public string FirstName { get; set; } = string.Empty;

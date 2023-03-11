@@ -1,8 +1,8 @@
 ﻿using ECampus.Domain.Data;
 
-namespace ECampus.Domain.Models;
+namespace ECampus.Domain.Entities;
 
-public class Student : IModel, IIsDeleted
+public class Student : IEntity, IIsDeleted
 {
     public int Id { get; set; }
 

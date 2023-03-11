@@ -19,16 +19,16 @@ public class UserMessagingService : IBaseService<UserDto>
 
     public Task<UserDto> GetByIdAsync(int id, CancellationToken token = default) => _baseService.GetByIdAsync(id, token);
 
-    public async Task<UserDto> CreateAsync(UserDto entity, CancellationToken token = default)
+    public async Task<UserDto> CreateAsync(UserDto dto, CancellationToken token = default)
     {
-        var createdUser = await _baseService.CreateAsync(entity, token);
+        var createdUser = await _baseService.CreateAsync(dto, token);
         await _snsMessenger.PublishMessageAsync(createdUser.ToCreatedUserMessage());
         return createdUser;
     }
 
-    public async Task<UserDto> UpdateAsync(UserDto entity, CancellationToken token = default)
+    public async Task<UserDto> UpdateAsync(UserDto dto, CancellationToken token = default)
     {
-        var createdUser = await _baseService.UpdateAsync(entity, token);
+        var createdUser = await _baseService.UpdateAsync(dto, token);
         await _snsMessenger.PublishMessageAsync(createdUser.ToUserUpdatedMessage());
         return createdUser;
     }

@@ -21,40 +21,28 @@ public class DataAccessFacade : IDataAccessFacade
         _serviceProvider = serviceProvider;
     }
 
-    public TModel Create<TModel>(TModel model)
-        where TModel : class, IModel
-    {
-        var service = _serviceProvider.GetServiceOfType<IDataCreateService<TModel>>();
-        return service.Create(model, _context);
-    }
+    public TEntity Create<TEntity>(TEntity entity)
+        where TEntity : class, IEntity
+        => _serviceProvider.GetServiceOfType<IDataCreateService<TEntity>>().Create(entity, _context);
 
-    public Task<TModel> UpdateAsync<TModel>(TModel model, CancellationToken token = default)
-        where TModel : class, IModel
-    {
-        return _serviceProvider.GetServiceOfType<IDataUpdateService<TModel>>().UpdateAsync(model, _context, token);
-    }
+    public Task<TEntity> UpdateAsync<TEntity>(TEntity entity, CancellationToken token = default)
+        where TEntity : class, IEntity
+        => _serviceProvider.GetServiceOfType<IDataUpdateService<TEntity>>().UpdateAsync(entity, _context, token);
 
-    public TModel Delete<TModel>(TModel model)
-        where TModel : class, IModel, new()
-    {
-        return _serviceProvider.GetServiceOfType<IDataDeleteService<TModel>>().Delete(model, _context);
-    }
+    public TEntity Delete<TEntity>(TEntity entity)
+        where TEntity : class, IEntity, new()
+        => _serviceProvider.GetServiceOfType<IDataDeleteService<TEntity>>().Delete(entity, _context);
 
-    public async Task<TModel> GetByIdAsync<TModel>(int id, CancellationToken token = default)
-        where TModel : class, IModel
-    {
-        return await _serviceProvider.GetServiceOfType<ISingleItemSelector<TModel>>()
-                   .SelectModel(id, _context.Set<TModel>(), token)
-               ?? throw new ObjectNotFoundByIdException(typeof(TModel), id);
-    }
+    public async Task<TEntity?> GetByIdOrDefaultAsync<TEntity>(int id, CancellationToken token = default)
+        where TEntity : class, IEntity
+        => await _serviceProvider.GetServiceOfType<ISingleItemSelector<TEntity>>()
+            .SelectModel(id, _context.Set<TEntity>(), token);
 
-    public IQueryable<TModel> GetByParameters<TModel, TParameters>(TParameters parameters)
-        where TModel : class, IModel
-        where TParameters : IDataSelectParameters<TModel>
-    {
-        var selector = _serviceProvider.GetServiceOfType<IParametersSelector<TModel, TParameters>>();
-        return selector.SelectData(_context, parameters);
-    }
+    public IQueryable<TEntity> GetByParameters<TEntity, TParameters>(TParameters parameters)
+        where TEntity : class, IEntity
+        where TParameters : IDataSelectParameters<TEntity> 
+        => _serviceProvider.GetServiceOfType<IParametersSelector<TEntity, TParameters>>()
+            .SelectData(_context, parameters);
 
     public async Task<bool> SaveChangesAsync(CancellationToken token = default)
     {

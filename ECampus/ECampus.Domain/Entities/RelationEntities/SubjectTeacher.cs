@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using ECampus.Domain.Metadata.Relationships;
 
-namespace ECampus.Domain.Models.RelationModels;
+namespace ECampus.Domain.Entities.RelationEntities;
 
 public class SubjectTeacher
 {

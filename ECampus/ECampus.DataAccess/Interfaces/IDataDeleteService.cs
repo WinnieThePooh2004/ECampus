@@ -3,8 +3,8 @@ using ECampus.Infrastructure;
 
 namespace ECampus.DataAccess.Interfaces;
 
-public interface IDataDeleteService<TModel>
-    where TModel : class, IModel
+public interface IDataDeleteService<TEntity>
+    where TEntity : class, IEntity
 {
-    TModel Delete(TModel model, ApplicationDbContext context);
+    TEntity Delete(TEntity model, ApplicationDbContext context);
 }

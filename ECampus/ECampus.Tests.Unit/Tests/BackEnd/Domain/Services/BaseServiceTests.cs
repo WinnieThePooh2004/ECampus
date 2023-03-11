@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using ECampus.DataAccess.Contracts.DataAccess;
 using ECampus.Domain.DataTransferObjects;
-using ECampus.Domain.Models;
+using ECampus.Domain.Entities;
 using ECampus.Services.Services;
 using ECampus.Tests.Shared.DataFactories;
 
@@ -62,12 +62,12 @@ public sealed class BaseServiceTests
     private async Task GetById_ShouldReturnFromRepository_WhenIdIsNotNull()
     {
         var item = _fixture.Create<AuditoryDto>();
-        _dataAccess.GetByIdAsync<Auditory>(10).Returns(_mapper.Map<Auditory>(item));
+        _dataAccess.GetByIdOrDefaultAsync<Auditory>(10).Returns(_mapper.Map<Auditory>(item));
 
         var result = await _sut.GetByIdAsync(10);
 
         result.Should().BeEquivalentTo(_mapper.Map<AuditoryDto>(_mapper.Map<Auditory>(item)),
             opt => opt.ComparingByMembers<AuditoryDto>());
-        await _dataAccess.Received(1).GetByIdAsync<Auditory>(10);
+        await _dataAccess.Received(1).GetByIdOrDefaultAsync<Auditory>(10);
     }
 }

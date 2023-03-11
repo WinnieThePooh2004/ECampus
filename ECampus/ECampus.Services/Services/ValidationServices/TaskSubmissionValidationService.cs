@@ -2,9 +2,9 @@
 using System.Security.Claims;
 using ECampus.Domain.Auth;
 using ECampus.Domain.DataTransferObjects;
+using ECampus.Domain.Entities;
 using ECampus.Domain.Enums;
 using ECampus.Domain.Exceptions.DomainExceptions;
-using ECampus.Domain.Models;
 using ECampus.Domain.Validation;
 using ECampus.Services.Contracts.Services;
 using ECampus.Services.Contracts.Validation;

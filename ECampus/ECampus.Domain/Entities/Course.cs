@@ -1,12 +1,12 @@
 ﻿using ECampus.Domain.Data;
+using ECampus.Domain.Entities.RelationEntities;
 using ECampus.Domain.Metadata.Relationships;
-using ECampus.Domain.Models.RelationModels;
 
-namespace ECampus.Domain.Models;
+namespace ECampus.Domain.Entities;
 
 [ManyToMany(typeof(Teacher), typeof(CourseTeacher))]
 [ManyToMany(typeof(Group), typeof(CourseGroup))]
-public class Course : IModel, IIsDeleted
+public class Course : IEntity, IIsDeleted
 {
     public int Id { get; set; }
     public bool IsDeleted { get; set; }

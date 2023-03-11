@@ -4,9 +4,9 @@ using ECampus.Infrastructure;
 
 namespace ECampus.DataAccess.Interfaces;
 
-public interface IParametersSelector<out TModel, in TParameters>
-    where TModel : class, IModel
-    where TParameters : IDataSelectParameters<TModel>
+public interface IParametersSelector<out TEntity, in TParameters>
+    where TEntity : class, IEntity
+    where TParameters : IDataSelectParameters<TEntity>
 {
-    IQueryable<TModel> SelectData(ApplicationDbContext context, TParameters parameters);
+    IQueryable<TEntity> SelectData(ApplicationDbContext context, TParameters parameters);
 }

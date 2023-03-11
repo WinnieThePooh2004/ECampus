@@ -1,9 +1,9 @@
 ﻿using ECampus.Domain.Data;
 using ECampus.Domain.Enums;
 
-namespace ECampus.Domain.Models;
+namespace ECampus.Domain.Entities;
 
-public class CourseTask : IModel, IIsDeleted
+public class CourseTask : IEntity, IIsDeleted
 {
     public int Id { get; set; }
     public string Name { get; set; } = default!;

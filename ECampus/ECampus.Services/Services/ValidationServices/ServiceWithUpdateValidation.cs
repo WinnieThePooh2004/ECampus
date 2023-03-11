@@ -19,17 +19,17 @@ public class ServiceWithUpdateValidation<TDto> : IBaseService<TDto>
 
     public Task<TDto> GetByIdAsync(int id, CancellationToken token = default) => _baseService.GetByIdAsync(id, token);
 
-    public Task<TDto> CreateAsync(TDto entity, CancellationToken token = default) => _baseService.CreateAsync(entity, token);
+    public Task<TDto> CreateAsync(TDto dto, CancellationToken token = default) => _baseService.CreateAsync(dto, token);
 
-    public async Task<TDto> UpdateAsync(TDto entity, CancellationToken token = default)
+    public async Task<TDto> UpdateAsync(TDto dto, CancellationToken token = default)
     {
-        var errors = await _validator.ValidateAsync(entity, token);
+        var errors = await _validator.ValidateAsync(dto, token);
         if (!errors.IsValid)
         {
             throw new ValidationException(typeof(TDto), errors);
         }
 
-        return await _baseService.UpdateAsync(entity, token);
+        return await _baseService.UpdateAsync(dto, token);
     }
 
     public Task<TDto> DeleteAsync(int id, CancellationToken token = default) => _baseService.DeleteAsync(id, token);
