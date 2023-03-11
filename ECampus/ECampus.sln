@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECampus.Shared", "ECampus.S
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECampus.Infrastructure", "ECampus.Infrastructure\ECampus.Infrastructure.csproj", "{C3BE9554-1940-47E8-89A8-C1CF4D31BAD7}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "6. tests", "6. tests", "{BF044F28-7BD1-406A-8A9F-CFFDD00C419F}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "6. Tests", "6. Tests", "{BF044F28-7BD1-406A-8A9F-CFFDD00C419F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECampus.Tests.Shared", "ECampus.Tests.Shared\ECampus.Tests.Shared.csproj", "{693D7204-7790-404F-B589-612E0239D19B}"
 EndProject
