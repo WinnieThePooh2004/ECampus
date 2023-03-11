@@ -27,16 +27,16 @@
   </ItemGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\..\ECampus.WebApi\ECampus.WebApi.csproj" />
-    <ProjectReference Include="..\..\src\ECampus.DataAccess\ECampus.DataAccess.csproj" />
-    <ProjectReference Include="..\..\src\ECampus.FrontEnd\ECampus.FrontEnd.csproj" />
-    <ProjectReference Include="..\..\src\ECampus.Messaging\ECampus.Messaging.csproj" />
-    <ProjectReference Include="..\..\src\ECampus.Shared\ECampus.Shared.csproj" />
-    <ProjectReference Include="..\ECampus.Tests.Shared\ECampus.Tests.Shared.csproj" />
+    <Folder Include="Tests" />
   </ItemGroup>
   
   <ItemGroup>
-    <Folder Include="Tests" />
+    <ProjectReference Include="..\ECampus.DataAccess\ECampus.DataAccess.csproj" />
+    <ProjectReference Include="..\ECampus.FrontEnd\ECampus.FrontEnd.csproj" />
+    <ProjectReference Include="..\ECampus.Infrastructure\ECampus.Infrastructure.csproj" />
+    <ProjectReference Include="..\ECampus.Messaging\ECampus.Messaging.csproj" />
+    <ProjectReference Include="..\ECampus.Tests.Shared\ECampus.Tests.Shared.csproj" />
+    <ProjectReference Include="..\ECampus.WebApi\ECampus.WebApi.csproj" />
   </ItemGroup>
   
 </Project>

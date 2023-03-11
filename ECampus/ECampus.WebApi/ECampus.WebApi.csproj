@@ -17,7 +17,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\ECampus.Services.Contracts\ECampus.Services.Contracts.csproj" />
-      <ProjectReference Include="..\src\ECampus.Infrastructure\ECampus.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>

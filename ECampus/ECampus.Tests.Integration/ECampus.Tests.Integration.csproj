@@ -24,8 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\ECampus.Host\ECampus.Host.csproj" />
-    <ProjectReference Include="..\..\src\ECampus.Infrastructure\ECampus.Infrastructure.csproj" />
+    <ProjectReference Include="..\ECampus.Host\ECampus.Host.csproj" />
     <ProjectReference Include="..\ECampus.Tests.Shared\ECampus.Tests.Shared.csproj" />
   </ItemGroup>
   

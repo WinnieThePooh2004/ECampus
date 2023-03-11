@@ -3,27 +3,27 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33015.44
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECampus.Shared", "src\ECampus.Shared\ECampus.Shared.csproj", "{17D1A6AB-4B91-4E8C-91B9-9F8D1F4F711D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECampus.Shared", "ECampus.Shared\ECampus.Shared.csproj", "{17D1A6AB-4B91-4E8C-91B9-9F8D1F4F711D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECampus.Infrastructure", "src\ECampus.Infrastructure\ECampus.Infrastructure.csproj", "{C3BE9554-1940-47E8-89A8-C1CF4D31BAD7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECampus.Infrastructure", "ECampus.Infrastructure\ECampus.Infrastructure.csproj", "{C3BE9554-1940-47E8-89A8-C1CF4D31BAD7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "6. tests", "6. tests", "{BF044F28-7BD1-406A-8A9F-CFFDD00C419F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECampus.Tests.Shared", "tests\ECampus.Tests.Shared\ECampus.Tests.Shared.csproj", "{693D7204-7790-404F-B589-612E0239D19B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECampus.Tests.Shared", "ECampus.Tests.Shared\ECampus.Tests.Shared.csproj", "{693D7204-7790-404F-B589-612E0239D19B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECampus.Tests.Unit", "tests\ECampus.Tests.Unit\ECampus.Tests.Unit.csproj", "{14612C61-126B-4A60-8456-0225D021E85C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECampus.Tests.Unit", "ECampus.Tests.Unit\ECampus.Tests.Unit.csproj", "{14612C61-126B-4A60-8456-0225D021E85C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECampus.Tests.Integration", "tests\ECampus.Tests.Integration\ECampus.Tests.Integration.csproj", "{99301C1C-C5CE-4B13-97D5-706250C6506C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECampus.Tests.Integration", "ECampus.Tests.Integration\ECampus.Tests.Integration.csproj", "{99301C1C-C5CE-4B13-97D5-706250C6506C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECampus.FrontEnd", "src\ECampus.FrontEnd\ECampus.FrontEnd.csproj", "{3145D277-D931-47AE-9A09-51B8D63544DB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECampus.FrontEnd", "ECampus.FrontEnd\ECampus.FrontEnd.csproj", "{3145D277-D931-47AE-9A09-51B8D63544DB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECampus.Messaging", "src\ECampus.Messaging\ECampus.Messaging.csproj", "{0BD1C1D5-BF8D-4CFA-A12D-047E16DE9A9E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECampus.Messaging", "ECampus.Messaging\ECampus.Messaging.csproj", "{0BD1C1D5-BF8D-4CFA-A12D-047E16DE9A9E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECampus.Services", "src\ECampus.Services\ECampus.Services.csproj", "{8415C620-D0A4-4E1C-8985-9A1B4F27DC6F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECampus.Services", "ECampus.Services\ECampus.Services.csproj", "{8415C620-D0A4-4E1C-8985-9A1B4F27DC6F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECampus.Core", "src\ECampus.Core\ECampus.Core.csproj", "{DA22A3F4-F7C1-4E25-82C7-495B61699BE5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECampus.Core", "ECampus.Core\ECampus.Core.csproj", "{DA22A3F4-F7C1-4E25-82C7-495B61699BE5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECampus.DataAccess", "src\ECampus.DataAccess\ECampus.DataAccess.csproj", "{A4C79F71-4F76-4005-80C6-D412756F94AB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECampus.DataAccess", "ECampus.DataAccess\ECampus.DataAccess.csproj", "{A4C79F71-4F76-4005-80C6-D412756F94AB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1. Core", "1. Core", "{0F129382-FB39-49C0-A249-7F9D9839B0AC}"
 EndProject

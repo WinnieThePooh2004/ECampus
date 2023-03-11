@@ -1,5 +1,4 @@
 ﻿using ECampus.Core.Installers;
-using ECampus.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
@@ -18,7 +17,7 @@ public class LoggerInstaller : IInstaller
             .ReadFrom.Configuration(configuration)
             .WriteTo.Console()
             .WriteTo.MSSqlServer(
-                configuration.GetConnectionString(ApplicationDbContext.ConnectionKey),
+                configuration.GetConnectionString("ApplicationDbContext"),
                 sinkOptions: new MSSqlServerSinkOptions
                 {
                     TableName = "Logs",

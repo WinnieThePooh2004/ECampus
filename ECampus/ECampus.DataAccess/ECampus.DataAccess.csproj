@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\ECampus.DataAccess.Contracts\ECampus.DataAccess.Contracts.csproj" />
+      <ProjectReference Include="..\ECampus.DataAccess.Contracts\ECampus.DataAccess.Contracts.csproj" />
       <ProjectReference Include="..\ECampus.Infrastructure\ECampus.Infrastructure.csproj" />
     </ItemGroup>
 
