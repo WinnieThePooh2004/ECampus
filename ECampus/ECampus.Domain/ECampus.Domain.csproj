@@ -9,28 +9,18 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="12.0.1" />
-    <PackageReference Include="AWSSDK.SimpleNotificationService" Version="3.7.100.61" />
     <PackageReference Include="FluentValidation" Version="11.4.0" />
+    <PackageReference Include="IdentityServer4" Version="4.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.2">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.2">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.26.0" />
-    <PackageReference Include="Microsoft.Office.Interop.Word" Version="15.0.4797.1004" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
-    <PackageReference Include="Scrutor" Version="4.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.2" />
     <PackageReference Include="Serilog" Version="3.0.0-dev-01862" />
+    <PackageReference Include="Serilog.AspNetCore" Version="6.1.1-dev-00295" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ECampus.Core\ECampus.Core.csproj" />
+    <ProjectReference Include="..\..\ECampus.DataAccess.Contracts\ECampus.DataAccess.Contracts.csproj" />
+    <ProjectReference Include="..\ECampus.Contracts\ECampus.Contracts.csproj" />
+    <ProjectReference Include="..\ECampus.Shared\ECampus.Shared.csproj" />
   </ItemGroup>
 
 </Project>
