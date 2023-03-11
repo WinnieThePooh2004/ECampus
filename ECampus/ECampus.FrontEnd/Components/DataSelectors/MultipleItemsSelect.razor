@@ -1,0 +1,44 @@
+﻿@inherits DataTableBase<TData, TParameters>
+@typeparam TData
+@typeparam TParameters
+
+@if (Data is null)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+    return;
+}
+<table>
+    <thead>
+    @if (!string.IsNullOrWhiteSpace(Title))
+    {
+        <h3>@Title</h3>
+    }
+    <SearchTermsGroup OnBlur="RefreshData" SearchTerms="SearchTerms"/>
+    <tr>
+        @foreach (var propertyName in TableHeaders)
+        {
+            <th width="@(90 / TotalColumns)%" onclick="@(() => OnTableHeaderClicked(propertyName.propertyName))">@propertyName.header</th>
+        }
+        <th width="10%"></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Data.Data)
+    {
+        <tr>
+            @foreach (var property in GetAllPropertiesValues(item))
+            {
+                <td width="@(90 / TotalColumns)%">@property</td>
+            }
+            <td width="10%">
+                <Checkbox Value="@this[item]" ValueChanged="@(isChecked => ValueChecked(isChecked, item))"/>
+            </td>
+        </tr>
+    }
+    </tbody>
+    <DataPageSelect TotalPages="Data.Metadata.MaxPageNumber" OnPageNumberChanged="@(PageNumberChanged)"/>
+    <br/>
+    <DataPageSizeSelect OnPageSizeChanged="@(PageSizeChanged)" PageSize="Parameters.PageSize"/>
+</table>

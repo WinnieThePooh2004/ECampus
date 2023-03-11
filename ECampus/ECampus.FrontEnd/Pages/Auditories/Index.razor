@@ -1,0 +1,8 @@
+﻿@page "/auditories"
+<h3>Auditories</h3>
+<br/>
+<IndexPageModel TData="AuditoryDto" TParameters="AuditoryParameters"
+           CreateLink="/auditories/create"
+           EditLink="/auditories/edit"
+           ActionLinks="@(new List<(string, Func<AuditoryDto, string>)> { ("Timetable", a => $"/Timetable/auditory/{a.Id}") })"
+           ParameterOptions="@(p => p.OrderBy = "Building")"/>

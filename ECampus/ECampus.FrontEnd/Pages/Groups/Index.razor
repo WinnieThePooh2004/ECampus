@@ -1,0 +1,7 @@
+﻿@page "/groups/{DepartmentId:int}"
+<IndexPageModel TData="GroupDto" TParameters="GroupParameters"
+           ParameterOptions="@(p => { p.DepartmentId = DepartmentId; p.OrderBy = "Name"; })"
+           CreateLink="@($"/groups/Create/{DepartmentId}")"
+           EditLink="/groups/edit"
+           ActionLinks="@(new List<(string, Func<GroupDto, string>)> { ("Timetable", g => $"/timetable/group/{g.Id}"),
+                            ("students", g => $"/students/{g.Id}") })"/>

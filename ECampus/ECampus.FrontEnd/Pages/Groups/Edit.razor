@@ -1,0 +1,14 @@
+﻿@page "/groups/edit/{Id:int}"
+@inherits EditPageBase<GroupDto>
+
+@if(Model is null)
+{
+    <p><em>Loading</em></p>
+    return;
+}
+
+<GroupEditForm Model="Model" OnSubmit="Save" />
+
+@code{
+    protected override string PageAfterSave => $"/groups/{Model?.DepartmentId}";
+}

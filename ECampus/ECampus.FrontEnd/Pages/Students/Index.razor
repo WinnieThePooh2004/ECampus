@@ -1,0 +1,12 @@
+﻿@page "/Students/{GroupId:int}"
+<IndexPageModel TData="StudentDto" TParameters="StudentParameters"
+           ParameterOptions="@(p => { p.GroupId = GroupId; p.OrderBy = "LastName"; })"
+           CreateLink="@($"/students/Create/{GroupId}")"
+           EditLink="/students/edit"/>
+
+@code{
+
+    [Parameter]
+    public int GroupId { get; set; }
+
+}

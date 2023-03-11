@@ -1,0 +1,30 @@
+﻿<text>Page @("   ")</text>
+@if (_pageNumber < PagesInLine)
+{
+    @foreach (var i in Enumerable.Range(1, Math.Min(PagesInLine, TotalPages)))
+    {
+        <a onclick="@(async () => await PageNumberChanged(i))"><u>@i</u>@(" ")</a>
+    }
+    @if (TotalPages > PagesInLine)
+    {
+        <a onclick="@(async () => await PageNumberChanged(TotalPages))"><u>@("...")@TotalPages</u></a>
+    }
+    return;
+}
+@if (_pageNumber >= TotalPages - PagesInLine - 1)
+{
+    <a onclick="@(async () => await PageNumberChanged(1))"><u>1@("...")</u></a>
+    foreach (var i in Enumerable.Range(TotalPages - PagesInLine - 2, PagesInLine + 3))
+    {
+        <a onclick="@(async () => await PageNumberChanged(i))"><u>@i</u>@(" ")</a>
+    }
+    return;
+}
+<a onclick="@(async () => await PageNumberChanged(1))"><u>1@("...")</u></a>
+@foreach (var i in Enumerable.Range(_pageNumber - PagesInLine + 2, PagesInLine + 2))
+{
+    <a onclick="@(async () => await PageNumberChanged(i))"><u>@i</u>@(" ")</a>
+}
+<a onclick="@(async () => await PageNumberChanged(TotalPages))">
+    <u>@("...")@TotalPages</u>
+</a>

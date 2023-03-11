@@ -1,0 +1,24 @@
+﻿@page "/timetable/group/{GroupId:int}"
+@inherits TimetablePageBase
+<h1>Timetable</h1>
+<TimetableModel CreateLink="@($"timetable/Create/{(int)TimetableMode.Group}/{GroupId}")"
+                EditLink="@($"timetable/edit/{(int)TimetableMode.Group}")"
+                DescriptionList="@(new List<Func<ClassDto, string>>{ c => $"{c.Subject?.Name} {c.ClassType}", c => $"Teacher: {c.Teacher?.LastName}",
+                                     c => $"Building: {c.Auditory?.Building}, aud: {c.Auditory?.Name}" })"
+                RefreshData="@(requests => requests.GroupTimetable(GroupId))"
+                                Title="@(timetable => $"Timetable for group {timetable.Group?.Name}")"/>
+
+
+<br />
+@if (User is null)
+{
+    return;
+}
+@if (!_isSaved)
+{
+    <a role="button" class="bnt btn-success" @onclick="async () => await OnSave()">Save</a>
+}
+else
+{
+    <a role="button" class="bnt btn-danger" @onclick="async () => await OnSaveRemoved()">Remove save</a>
+}

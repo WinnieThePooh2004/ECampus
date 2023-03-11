@@ -1,0 +1,11 @@
+﻿@page "/teachers/create/{DepartmentId:int}"
+@inherits CreatePageBase<TeacherDto>
+
+<TeacherEditForm Model="new TeacherDto{ DepartmentId = DepartmentId }" OnSubmit="Save" />
+
+@code{
+    [Parameter]
+    public int DepartmentId { get; set; }
+
+    protected override string PageAfterSave => $"/teachers/{DepartmentId}";
+}

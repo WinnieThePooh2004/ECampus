@@ -1,0 +1,17 @@
+﻿@page "/users/create"
+<h3>Create new user</h3>
+<EditForm Model="_model" OnValidSubmit="Save">
+    <FluentValidationValidator Validator="_validator"/>
+    <div class="col-md-3">
+        <label>Email</label>
+        <ValidationMessage For="@(() => _model.Email)"/>
+        <InputText @bind-Value="@_model.Email"/>
+    </div>
+    <div class="col-md-3">
+        <label>Username</label>
+        <ValidationMessage For="@(() => _model.Username)"/>
+        <InputText @bind-Value="@_model.Username"/>
+    </div>
+    <br/>
+    <UserRoleEditForm Model="_model"/>
+</EditForm>
