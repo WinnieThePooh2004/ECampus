@@ -1,5 +1,0 @@
-﻿@page "/logs"
-
-<IndexPageModel TData="LogDto" TParameters="LogParameters" 
-                ParameterOptions="@(parameters => { parameters.OrderBy = nameof(LogDto.TimeStamp); parameters.PageSize = 20; })"
-                />

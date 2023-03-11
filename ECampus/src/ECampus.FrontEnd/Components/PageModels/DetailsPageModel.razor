@@ -1,8 +1,0 @@
-﻿@typeparam TData
-
-@foreach (var property in PropertySelector.GetAllProperties(Model))
-{
-    <div class="col-md-3">
-        <label class="form-label">@property.DisplayName: @property.Value</label>
-    </div>
-}

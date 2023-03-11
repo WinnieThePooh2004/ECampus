@@ -1,8 +1,0 @@
-﻿@page "/courses/create"
-@inherits CreatePageBase<CourseDto>
-
-<CourseEditForm Model="new CourseDto { Groups = new List<GroupDto>(), Teachers = new List<TeacherDto>() }" OnSubmit="Save"/>
-
-@code {
-    protected override string PageAfterSave => "/courses";
-}

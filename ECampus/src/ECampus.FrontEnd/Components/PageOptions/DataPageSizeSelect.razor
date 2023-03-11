@@ -1,7 +1,0 @@
-﻿<text>Page size @("   ")</text>
-<InputSelect TValue="int" ValueExpression="@(() => PageSize)" Value="PageSize" ValueChanged="@(async pageSize => await PageSizeChanged(pageSize))">
-    @foreach(var pageSize in PageSizes)
-    {
-        <option value="@pageSize" label="@pageSize" />
-    }
-</InputSelect>
