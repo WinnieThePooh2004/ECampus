@@ -13,14 +13,13 @@
     <PackageReference Include="IdentityServer4" Version="4.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.3" />
     <PackageReference Include="Serilog" Version="3.0.0-dev-01862" />
     <PackageReference Include="Serilog.AspNetCore" Version="6.1.1-dev-00295" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\ECampus.DataAccess.Contracts\ECampus.DataAccess.Contracts.csproj" />
-    <ProjectReference Include="..\ECampus.Contracts\ECampus.Contracts.csproj" />
-    <ProjectReference Include="..\ECampus.Shared\ECampus.Shared.csproj" />
+    <ProjectReference Include="..\ECampus.Core\ECampus.Core.csproj" />
   </ItemGroup>
-
+  
 </Project>

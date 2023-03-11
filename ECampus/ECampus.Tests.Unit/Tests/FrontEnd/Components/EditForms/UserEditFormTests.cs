@@ -1,11 +1,11 @@
 ﻿using Bunit;
+using ECampus.Domain.DataContainers;
+using ECampus.Domain.DataTransferObjects;
+using ECampus.Domain.Enums;
+using ECampus.Domain.QueryParameters;
 using ECampus.FrontEnd.Components.EditForms;
 using ECampus.FrontEnd.PropertySelectors;
 using ECampus.FrontEnd.Requests.Interfaces;
-using ECampus.Shared.DataContainers;
-using ECampus.Shared.DataTransferObjects;
-using ECampus.Shared.Enums;
-using ECampus.Shared.QueryParameters;
 using FluentValidation;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;

@@ -1,7 +1,7 @@
-﻿using ECampus.FrontEnd.Auth;
+﻿using ECampus.Domain.DataTransferObjects;
+using ECampus.Domain.Exceptions.DomainExceptions;
+using ECampus.FrontEnd.Auth;
 using ECampus.FrontEnd.Requests.Interfaces;
-using ECampus.Shared.DataTransferObjects;
-using ECampus.Shared.Exceptions.DomainExceptions;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;

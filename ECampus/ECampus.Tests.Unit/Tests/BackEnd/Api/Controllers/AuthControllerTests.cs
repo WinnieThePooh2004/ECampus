@@ -1,5 +1,5 @@
-﻿using ECampus.Services.Contracts.Services;
-using ECampus.Shared.DataTransferObjects;
+﻿using ECampus.Domain.DataTransferObjects;
+using ECampus.Services.Contracts.Services;
 using ECampus.WebApi.Controllers;
 using Microsoft.AspNetCore.Mvc;
 

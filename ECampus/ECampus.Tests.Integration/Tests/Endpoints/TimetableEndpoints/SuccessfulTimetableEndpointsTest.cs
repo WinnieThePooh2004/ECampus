@@ -1,8 +1,8 @@
 ﻿using System.Net;
 using System.Text.Json;
-using ECampus.Shared.Enums;
-using ECampus.Shared.Exceptions.InfrastructureExceptions;
-using ECampus.Shared.Models;
+using ECampus.Domain.Enums;
+using ECampus.Domain.Exceptions.InfrastructureExceptions;
+using ECampus.Domain.Models;
 using ECampus.Tests.Integration.AppFactories;
 using ECampus.Tests.Integration.AuthHelpers;
 using ECampus.Tests.Shared.Mocks.HttpRequests;

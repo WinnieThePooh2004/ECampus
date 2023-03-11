@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using ECampus.DataAccess.Contracts.DataAccess;
+using ECampus.Domain.DataTransferObjects;
+using ECampus.Domain.Models;
 using ECampus.Services.Services;
-using ECampus.Shared.DataTransferObjects;
-using ECampus.Shared.Models;
 using ECampus.Tests.Shared.DataFactories;
 
 namespace ECampus.Tests.Unit.Tests.BackEnd.Domain.Services;

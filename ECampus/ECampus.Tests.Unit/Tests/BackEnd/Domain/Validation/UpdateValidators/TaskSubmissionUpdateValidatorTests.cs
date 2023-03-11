@@ -1,16 +1,16 @@
 ﻿using System.Security.Claims;
-using ECampus.Contracts.DataSelectParameters;
 using ECampus.DataAccess.Contracts.DataAccess;
+using ECampus.DataAccess.Contracts.DataSelectParameters;
+using ECampus.Domain.Auth;
+using ECampus.Domain.DataTransferObjects;
+using ECampus.Domain.Models;
+using ECampus.Domain.Validation;
 using ECampus.Services.Validation.UpdateValidators;
-using ECampus.Shared.Auth;
-using ECampus.Shared.DataTransferObjects;
-using ECampus.Shared.Models;
-using ECampus.Shared.Validation;
 using ECampus.Tests.Shared.Mocks.EntityFramework;
 using ECampus.Tests.Unit.Extensions;
 using FluentValidation;
 using FluentValidation.Results;
-using ValidationResult = ECampus.Shared.Validation.ValidationResult;
+using ValidationResult = ECampus.Domain.Validation.ValidationResult;
 using FluentValidationResult = FluentValidation.Results.ValidationResult;
 
 namespace ECampus.Tests.Unit.Tests.BackEnd.Domain.Validation.UpdateValidators;

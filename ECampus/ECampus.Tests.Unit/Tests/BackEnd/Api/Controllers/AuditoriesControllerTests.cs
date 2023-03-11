@@ -1,7 +1,7 @@
-﻿using ECampus.Services.Contracts.Services;
-using ECampus.Shared.DataContainers;
-using ECampus.Shared.DataTransferObjects;
-using ECampus.Shared.QueryParameters;
+﻿using ECampus.Domain.DataContainers;
+using ECampus.Domain.DataTransferObjects;
+using ECampus.Domain.QueryParameters;
+using ECampus.Services.Contracts.Services;
 using ECampus.WebApi.Controllers;
 using Microsoft.AspNetCore.Mvc;
 

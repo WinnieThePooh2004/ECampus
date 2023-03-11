@@ -1,9 +1,9 @@
 ﻿using ECampus.DataAccess.DataUpdateServices;
 using ECampus.DataAccess.Interfaces;
 using ECampus.DataAccess.Relationships;
+using ECampus.Domain.Models;
+using ECampus.Domain.Models.RelationModels;
 using ECampus.Infrastructure;
-using ECampus.Shared.Models;
-using ECampus.Shared.Models.RelationModels;
 using ECampus.Tests.Unit.InMemoryDb;
 using Microsoft.EntityFrameworkCore;
 

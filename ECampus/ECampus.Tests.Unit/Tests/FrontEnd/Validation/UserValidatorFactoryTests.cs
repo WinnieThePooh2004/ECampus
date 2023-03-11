@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
+using ECampus.Domain.DataTransferObjects;
 using ECampus.FrontEnd.Requests.Interfaces.Validation;
 using ECampus.FrontEnd.Validation;
-using ECampus.Shared.DataTransferObjects;
 using FluentValidation;
 
 namespace ECampus.Tests.Unit.Tests.FrontEnd.Validation;

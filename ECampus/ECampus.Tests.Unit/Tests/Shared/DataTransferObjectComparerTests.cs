@@ -1,5 +1,5 @@
-﻿using ECampus.Shared.Comparing;
-using ECampus.Shared.DataTransferObjects;
+﻿using ECampus.Domain.Comparing;
+using ECampus.Domain.DataTransferObjects;
 
 namespace ECampus.Tests.Unit.Tests.Shared;
 

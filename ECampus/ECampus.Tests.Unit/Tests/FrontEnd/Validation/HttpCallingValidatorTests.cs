@@ -1,7 +1,7 @@
-﻿using ECampus.FrontEnd.Requests.Interfaces.Validation;
+﻿using ECampus.Domain.DataTransferObjects;
+using ECampus.Domain.Validation;
+using ECampus.FrontEnd.Requests.Interfaces.Validation;
 using ECampus.FrontEnd.Validation;
-using ECampus.Shared.DataTransferObjects;
-using ECampus.Shared.Validation;
 using FluentValidation;
 using FluentValidation.Results;
 using ValidationResult = FluentValidation.Results.ValidationResult;
@@ -77,7 +77,7 @@ public class HttpCallingValidatorTests
         var expected = new ValidationResult();
         var expectedErrors = new List<ValidationError> { new("b", "a"), new("a", "b") };
         _validationRequests.ValidateAsync(instance)
-            .Returns(new ECampus.Shared.Validation.ValidationResult(expectedErrors));
+            .Returns(new Domain.Validation.ValidationResult(expectedErrors));
         _baseValidator.ValidateAsync(instance, Arg.Any<CancellationToken>()).Returns(expected);
 
         var actual = await _sut.ValidateAsync(instance);

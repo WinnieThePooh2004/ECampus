@@ -1,9 +1,9 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http.Headers;
-using ECampus.Shared.DataTransferObjects;
-using ECampus.Shared.Enums;
-using ECampus.Shared.Extensions;
-using ECampus.Shared.Models;
+using ECampus.Domain.DataTransferObjects;
+using ECampus.Domain.Enums;
+using ECampus.Domain.Extensions;
+using ECampus.Domain.Models;
 using ECampus.Tests.Shared;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;

@@ -1,7 +1,7 @@
 ﻿using System.Net;
+using ECampus.Domain.DataTransferObjects;
+using ECampus.Domain.Validation;
 using ECampus.FrontEnd.Requests.ValidationRequests;
-using ECampus.Shared.DataTransferObjects;
-using ECampus.Shared.Validation;
 using ECampus.Tests.Shared.Mocks.HttpRequests;
 using Newtonsoft.Json;
 

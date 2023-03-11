@@ -1,5 +1,5 @@
-﻿using ECampus.FrontEnd.Validation;
-using ECampus.Shared.DataTransferObjects;
+﻿using ECampus.Domain.DataTransferObjects;
+using ECampus.FrontEnd.Validation;
 using FluentValidation;
 using FluentValidation.Results;
 

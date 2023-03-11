@@ -1,14 +1,14 @@
 ﻿using System.Security.Claims;
 using System.Security.Principal;
 using Bunit;
+using ECampus.Domain.Auth;
+using ECampus.Domain.DataTransferObjects;
+using ECampus.Domain.Enums;
 using ECampus.FrontEnd.Pages.Timetable;
 using ECampus.FrontEnd.Requests.Interfaces;
-using ECampus.Shared.Auth;
-using ECampus.Shared.DataTransferObjects;
-using ECampus.Shared.Enums;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-using TimetableData = ECampus.Shared.DataContainers.Timetable;
+using TimetableData = ECampus.Domain.DataContainers.Timetable;
 
 namespace ECampus.Tests.Unit.Tests.FrontEnd.Pages.Timetable;
 

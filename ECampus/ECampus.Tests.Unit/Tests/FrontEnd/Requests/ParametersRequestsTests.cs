@@ -1,11 +1,11 @@
 ﻿using System.Net;
 using System.Text.Json;
+using ECampus.Domain.DataContainers;
+using ECampus.Domain.DataTransferObjects;
+using ECampus.Domain.Extensions;
+using ECampus.Domain.QueryParameters;
 using ECampus.FrontEnd.Requests;
 using ECampus.FrontEnd.Requests.Options;
-using ECampus.Shared.DataContainers;
-using ECampus.Shared.DataTransferObjects;
-using ECampus.Shared.Extensions;
-using ECampus.Shared.QueryParameters;
 using ECampus.Tests.Shared.Mocks.HttpRequests;
 
 namespace ECampus.Tests.Unit.Tests.FrontEnd.Requests;

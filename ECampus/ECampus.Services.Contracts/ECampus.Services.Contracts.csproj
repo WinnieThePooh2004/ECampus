@@ -10,4 +10,8 @@
       <ProjectReference Include="..\ECampus.Domain\ECampus.Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="AWSSDK.SimpleNotificationService" Version="3.7.101.24" />
+    </ItemGroup>
+
 </Project>

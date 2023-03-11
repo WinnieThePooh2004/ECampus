@@ -16,6 +16,7 @@
     <ItemGroup>
         <PackageReference Include="IdentityServer4" Version="4.1.2" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.3" />
+        <PackageReference Include="Scrutor" Version="4.2.1" />
         <PackageReference Include="Serilog" Version="3.0.0-dev-01862" />
     </ItemGroup>
 

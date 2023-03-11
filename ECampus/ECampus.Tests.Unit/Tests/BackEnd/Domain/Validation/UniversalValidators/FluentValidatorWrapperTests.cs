@@ -1,7 +1,7 @@
-﻿using ECampus.Services.Validation.UniversalValidators;
+﻿using ECampus.Domain.DataTransferObjects;
+using ECampus.Domain.Validation;
+using ECampus.Services.Validation.UniversalValidators;
 using ECampus.Services.Validation.UpdateValidators;
-using ECampus.Shared.DataTransferObjects;
-using ECampus.Shared.Validation;
 using FluentValidation;
 using FluentValidation.Results;
 using ValidationResult = FluentValidation.Results.ValidationResult;

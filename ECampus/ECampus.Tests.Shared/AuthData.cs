@@ -1,4 +1,4 @@
-﻿using ECampus.Shared.Auth;
+﻿using ECampus.Domain.Auth;
 
 namespace ECampus.Tests.Shared;
 

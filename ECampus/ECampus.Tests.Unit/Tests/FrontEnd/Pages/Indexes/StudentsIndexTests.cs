@@ -1,9 +1,9 @@
 ﻿using Bunit;
+using ECampus.Domain.DataContainers;
+using ECampus.Domain.DataTransferObjects;
+using ECampus.Domain.QueryParameters;
 using ECampus.FrontEnd.PropertySelectors;
 using ECampus.FrontEnd.Requests.Interfaces;
-using ECampus.Shared.DataContainers;
-using ECampus.Shared.DataTransferObjects;
-using ECampus.Shared.QueryParameters;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Index = ECampus.FrontEnd.Pages.Students.Index;

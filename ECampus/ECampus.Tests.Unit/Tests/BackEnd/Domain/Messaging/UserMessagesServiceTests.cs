@@ -1,9 +1,9 @@
 ﻿using ECampus.Core.Messages;
+using ECampus.Domain.DataTransferObjects;
+using ECampus.Domain.Enums;
+using ECampus.Services.Contracts.Messaging;
 using ECampus.Services.Contracts.Services;
-using ECampus.Services.Messaging;
 using ECampus.Services.Services.Messaging;
-using ECampus.Shared.DataTransferObjects;
-using ECampus.Shared.Enums;
 
 namespace ECampus.Tests.Unit.Tests.BackEnd.Domain.Messaging;
 

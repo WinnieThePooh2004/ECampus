@@ -1,5 +1,5 @@
-﻿using ECampus.Services.Validation.FluentValidators;
-using ECampus.Shared.DataTransferObjects;
+﻿using ECampus.Domain.DataTransferObjects;
+using ECampus.Validation;
 
 namespace ECampus.Tests.Unit.Tests.BackEnd.Domain.Validation.FluentValidators;
 

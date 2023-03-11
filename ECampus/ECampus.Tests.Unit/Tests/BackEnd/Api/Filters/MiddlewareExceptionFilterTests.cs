@@ -1,5 +1,5 @@
 ﻿using System.Net;
-using ECampus.Shared.Exceptions;
+using ECampus.Domain.Exceptions;
 using ECampus.WebApi.MiddlewareFilters;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

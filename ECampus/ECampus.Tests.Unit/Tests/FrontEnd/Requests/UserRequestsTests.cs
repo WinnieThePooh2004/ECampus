@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using System.Security.Claims;
+using ECampus.Domain.Auth;
 using ECampus.FrontEnd.Requests;
-using ECampus.Shared.Auth;
 using ECampus.Tests.Shared.Mocks.HttpRequests;
 using Microsoft.AspNetCore.Http;
 

@@ -1,5 +1,5 @@
-﻿using ECampus.FrontEnd.PropertySelectors;
-using ECampus.Shared.DataTransferObjects;
+﻿using ECampus.Domain.DataTransferObjects;
+using ECampus.FrontEnd.PropertySelectors;
 
 namespace ECampus.Tests.Unit.Tests.FrontEnd.PropertySelectors;
 

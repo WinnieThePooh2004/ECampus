@@ -1,10 +1,10 @@
-﻿using ECampus.Shared.DataContainers;
-using ECampus.Shared.DataTransferObjects;
-using ECampus.Shared.Enums;
-using ECampus.Shared.Extensions;
-using ECampus.Shared.Models;
-using ECampus.Shared.Models.RelationModels;
-using ECampus.Shared.QueryParameters;
+﻿using ECampus.Domain.DataContainers;
+using ECampus.Domain.DataTransferObjects;
+using ECampus.Domain.Enums;
+using ECampus.Domain.Extensions;
+using ECampus.Domain.Models;
+using ECampus.Domain.Models.RelationModels;
+using ECampus.Domain.QueryParameters;
 using ECampus.Tests.Integration.AppFactories;
 using ECampus.Tests.Integration.AuthHelpers;
 using FluentAssertions;

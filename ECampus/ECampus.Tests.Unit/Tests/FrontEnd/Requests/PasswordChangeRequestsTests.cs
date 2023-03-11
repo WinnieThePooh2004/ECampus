@@ -1,6 +1,6 @@
 ﻿using System.Net;
+using ECampus.Domain.DataTransferObjects;
 using ECampus.FrontEnd.Requests;
-using ECampus.Shared.DataTransferObjects;
 using ECampus.Tests.Shared.Mocks.HttpRequests;
 
 namespace ECampus.Tests.Unit.Tests.FrontEnd.Requests;

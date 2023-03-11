@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using ECampus.DataAccess.Contracts.DataAccess;
+using ECampus.Domain.DataTransferObjects;
+using ECampus.Domain.Validation;
 using ECampus.Services.Contracts.Services;
 using ECampus.Services.Contracts.Validation;
 using ECampus.Services.Services;
-using ECampus.Shared.DataTransferObjects;
-using ECampus.Shared.Validation;
 
 namespace ECampus.Tests.Unit.Tests.BackEnd.Domain.Services;
 

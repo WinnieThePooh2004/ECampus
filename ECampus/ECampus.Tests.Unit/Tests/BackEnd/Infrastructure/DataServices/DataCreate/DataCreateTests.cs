@@ -1,6 +1,6 @@
 ﻿using ECampus.DataAccess.DataCreateServices;
+using ECampus.Domain.Models;
 using ECampus.Infrastructure;
-using ECampus.Shared.Models;
 
 namespace ECampus.Tests.Unit.Tests.BackEnd.Infrastructure.DataServices.DataCreate;
 

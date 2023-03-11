@@ -1,8 +1,8 @@
 ﻿using System.Security.Claims;
 using Bunit;
+using ECampus.Domain.Auth;
+using ECampus.Domain.DataTransferObjects;
 using ECampus.FrontEnd.Components.EditForms;
-using ECampus.Shared.Auth;
-using ECampus.Shared.DataTransferObjects;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;

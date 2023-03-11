@@ -1,8 +1,8 @@
 ﻿using Bunit;
+using ECampus.Domain.DataTransferObjects;
 using ECampus.FrontEnd.Pages.AdminPages;
 using ECampus.FrontEnd.PropertySelectors;
 using ECampus.FrontEnd.Requests.Interfaces;
-using ECampus.Shared.DataTransferObjects;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ECampus.Tests.Unit.Tests.FrontEnd.Pages.EditPages;

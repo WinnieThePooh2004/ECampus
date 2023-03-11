@@ -1,5 +1,5 @@
-﻿using ECampus.Shared.Enums;
-using ECampus.Shared.Models;
+﻿using ECampus.Domain.Enums;
+using ECampus.Domain.Models;
 
 namespace ECampus.Tests.Integration.AuthHelpers;
 

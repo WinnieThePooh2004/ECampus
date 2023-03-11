@@ -1,6 +1,6 @@
-﻿using ECampus.Shared.DataContainers;
-using ECampus.Shared.DataTransferObjects;
-using ECampus.Shared.Enums;
+﻿using ECampus.Domain.DataContainers;
+using ECampus.Domain.DataTransferObjects;
+using ECampus.Domain.Enums;
 
 namespace ECampus.Tests.Unit.Tests.BackEnd.Domain;
 

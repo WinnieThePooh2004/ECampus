@@ -1,8 +1,8 @@
 ﻿using System.Security.Claims;
+using ECampus.Domain.Auth;
+using ECampus.Domain.Enums;
+using ECampus.Domain.Exceptions.DomainExceptions;
 using ECampus.Services.Services.Auth;
-using ECampus.Shared.Auth;
-using ECampus.Shared.Enums;
-using ECampus.Shared.Exceptions.DomainExceptions;
 using Microsoft.AspNetCore.Http;
 
 namespace ECampus.Tests.Unit.Tests.BackEnd.Domain.Auth;

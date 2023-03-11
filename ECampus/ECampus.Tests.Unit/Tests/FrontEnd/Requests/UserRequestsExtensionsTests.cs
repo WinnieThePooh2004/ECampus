@@ -1,9 +1,9 @@
 ﻿using System.Security.Claims;
 using System.Security.Principal;
+using ECampus.Domain.Auth;
+using ECampus.Domain.DataTransferObjects;
 using ECampus.FrontEnd.Extensions;
 using ECampus.FrontEnd.Requests.Interfaces;
-using ECampus.Shared.Auth;
-using ECampus.Shared.DataTransferObjects;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 

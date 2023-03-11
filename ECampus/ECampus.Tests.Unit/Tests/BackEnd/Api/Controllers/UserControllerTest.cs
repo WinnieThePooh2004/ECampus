@@ -1,6 +1,6 @@
-﻿using ECampus.Services.Contracts.Services;
-using ECampus.Shared.DataTransferObjects;
-using ECampus.Shared.Validation;
+﻿using ECampus.Domain.DataTransferObjects;
+using ECampus.Domain.Validation;
+using ECampus.Services.Contracts.Services;
 using ECampus.WebApi.Controllers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

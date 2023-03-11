@@ -1,11 +1,11 @@
-﻿using ECampus.Contracts.DataSelectParameters;
-using ECampus.DataAccess.Contracts.DataAccess;
+﻿using ECampus.DataAccess.Contracts.DataAccess;
+using ECampus.DataAccess.Contracts.DataSelectParameters;
+using ECampus.Domain.DataTransferObjects;
+using ECampus.Domain.Exceptions.DomainExceptions;
+using ECampus.Domain.Models;
+using ECampus.Domain.Validation;
 using ECampus.Services.Contracts.Validation;
 using ECampus.Services.Services;
-using ECampus.Shared.DataTransferObjects;
-using ECampus.Shared.Exceptions.DomainExceptions;
-using ECampus.Shared.Models;
-using ECampus.Shared.Validation;
 using ECampus.Tests.Shared.DataFactories;
 using ECampus.Tests.Shared.Mocks.EntityFramework;
 

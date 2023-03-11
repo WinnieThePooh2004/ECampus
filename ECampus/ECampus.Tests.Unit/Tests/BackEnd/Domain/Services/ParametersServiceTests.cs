@@ -1,10 +1,10 @@
 ﻿using ECampus.DataAccess.Contracts.DataAccess;
+using ECampus.Domain.DataContainers;
+using ECampus.Domain.DataTransferObjects;
+using ECampus.Domain.Models;
+using ECampus.Domain.QueryParameters;
 using ECampus.Services.Contracts.Services;
 using ECampus.Services.Services;
-using ECampus.Shared.DataContainers;
-using ECampus.Shared.DataTransferObjects;
-using ECampus.Shared.Models;
-using ECampus.Shared.QueryParameters;
 using ECampus.Tests.Shared.DataFactories;
 using ECampus.Tests.Shared.Extensions;
 using ECampus.Tests.Shared.Mocks.EntityFramework;

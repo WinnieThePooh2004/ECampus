@@ -1,11 +1,11 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
-using ECampus.Shared.DataTransferObjects;
-using ECampus.Shared.Enums;
-using ECampus.Shared.Exceptions.InfrastructureExceptions;
-using ECampus.Shared.Models;
-using ECampus.Shared.Models.RelationModels;
+using ECampus.Domain.DataTransferObjects;
+using ECampus.Domain.Enums;
+using ECampus.Domain.Exceptions.InfrastructureExceptions;
+using ECampus.Domain.Models;
+using ECampus.Domain.Models.RelationModels;
 using ECampus.Tests.Integration.AppFactories;
 using ECampus.Tests.Integration.AuthHelpers;
 using ECampus.Tests.Shared.Mocks.HttpRequests;

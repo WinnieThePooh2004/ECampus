@@ -1,7 +1,7 @@
 ﻿using Bunit;
+using ECampus.Domain.DataTransferObjects;
+using ECampus.Domain.Enums;
 using ECampus.FrontEnd.Components.EditForms;
-using ECampus.Shared.DataTransferObjects;
-using ECampus.Shared.Enums;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 

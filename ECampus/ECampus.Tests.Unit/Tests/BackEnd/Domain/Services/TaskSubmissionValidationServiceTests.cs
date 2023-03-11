@@ -1,12 +1,12 @@
 ﻿using System.Security.Claims;
+using ECampus.Domain.Auth;
+using ECampus.Domain.DataTransferObjects;
+using ECampus.Domain.Enums;
+using ECampus.Domain.Exceptions.DomainExceptions;
+using ECampus.Domain.Validation;
 using ECampus.Services.Contracts.Services;
 using ECampus.Services.Contracts.Validation;
 using ECampus.Services.Services.ValidationServices;
-using ECampus.Shared.Auth;
-using ECampus.Shared.DataTransferObjects;
-using ECampus.Shared.Enums;
-using ECampus.Shared.Exceptions.DomainExceptions;
-using ECampus.Shared.Validation;
 using Microsoft.AspNetCore.Http;
 
 namespace ECampus.Tests.Unit.Tests.BackEnd.Domain.Services;

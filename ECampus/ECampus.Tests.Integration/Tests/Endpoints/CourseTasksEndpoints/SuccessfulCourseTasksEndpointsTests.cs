@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
-using ECampus.Shared.Enums;
-using ECampus.Shared.Models;
+using ECampus.Domain.Enums;
+using ECampus.Domain.Models;
 using ECampus.Tests.Integration.AppFactories;
 using ECampus.Tests.Integration.AuthHelpers;
 using FluentAssertions;

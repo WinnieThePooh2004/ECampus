@@ -1,6 +1,6 @@
 ﻿using AutoFixture;
-using ECampus.Shared.DataContainers;
-using ECampus.Shared.DataTransferObjects;
+using ECampus.Domain.DataContainers;
+using ECampus.Domain.DataTransferObjects;
 
 namespace ECampus.Tests.Shared.DataFactories;
 

@@ -1,8 +1,8 @@
 ﻿using Amazon.SimpleNotificationService;
 using ECampus.Host;
 using ECampus.Core.Extensions;
+using ECampus.Domain.Models;
 using ECampus.Infrastructure;
-using ECampus.Shared.Models;
 using ECampus.Tests.Shared.TestDatabase;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;

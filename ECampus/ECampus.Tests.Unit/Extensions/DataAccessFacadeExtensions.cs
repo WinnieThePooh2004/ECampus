@@ -1,6 +1,6 @@
-﻿using ECampus.Contracts.DataSelectParameters;
-using ECampus.DataAccess.Contracts.DataAccess;
-using ECampus.Shared.Data;
+﻿using ECampus.DataAccess.Contracts.DataAccess;
+using ECampus.DataAccess.Contracts.DataSelectParameters;
+using ECampus.Domain.Data;
 using ECampus.Tests.Shared.Mocks.EntityFramework;
 
 namespace ECampus.Tests.Unit.Extensions;

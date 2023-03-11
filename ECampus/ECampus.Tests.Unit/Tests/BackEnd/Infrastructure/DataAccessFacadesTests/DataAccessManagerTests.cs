@@ -1,8 +1,8 @@
 ﻿using ECampus.DataAccess.DataAccessFacades;
 using ECampus.DataAccess.Interfaces;
+using ECampus.Domain.Exceptions.InfrastructureExceptions;
+using ECampus.Domain.Models;
 using ECampus.Infrastructure;
-using ECampus.Shared.Exceptions.InfrastructureExceptions;
-using ECampus.Shared.Models;
 using ECampus.Tests.Shared.DataFactories;
 using Microsoft.EntityFrameworkCore;
 
