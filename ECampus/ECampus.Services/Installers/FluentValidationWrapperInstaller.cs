@@ -4,6 +4,7 @@ using ECampus.Domain.Metadata;
 using ECampus.Services.Contracts.Validation;
 using ECampus.Services.Validation.CreateValidators;
 using ECampus.Services.Validation.UpdateValidators;
+using ECampus.Validation;
 using FluentValidation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,7 +17,7 @@ public class FluentValidationWrapperInstaller : IInstaller
 
     public void Install(IServiceCollection services, IConfiguration configuration)
     {
-        var fluentValidators = typeof(ServicesAssemblyMarker).Assembly.GetTypes()
+        var fluentValidators = typeof(ValidatorsAssemblyMarker).Assembly.GetTypes()
             .Where(type => type.BaseType is not null && type.BaseType.IsGenericOfType(typeof(AbstractValidator<>)) &&
                            !type.GetCustomAttributes(typeof(InstallerIgnoreAttribute), false).Any());
 

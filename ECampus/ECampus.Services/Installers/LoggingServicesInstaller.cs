@@ -13,7 +13,7 @@ public class LoggingServicesInstaller : IInstaller
     public int InstallOrder => int.MaxValue;
     public void Install(IServiceCollection services, IConfiguration configuration)
     {
-        var dataTransferObjects = typeof(SharedAssemblyMarker).Assembly.GetDataTransferObjects();
+        var dataTransferObjects = typeof(DomainAssemblyMarker).Assembly.GetDataTransferObjects();
 
         foreach (var dto in dataTransferObjects)
         {

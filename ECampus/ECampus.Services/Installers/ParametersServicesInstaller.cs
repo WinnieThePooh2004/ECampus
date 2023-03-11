@@ -15,7 +15,7 @@ public class ParametersServicesInstaller : IInstaller
 
     public void Install(IServiceCollection services, IConfiguration configuration)
     {
-        var allParameters = typeof(SharedAssemblyMarker).Assembly.GetTypes().Where(type =>
+        var allParameters = typeof(DomainAssemblyMarker).Assembly.GetTypes().Where(type =>
             type is { IsAbstract: false, IsClass: true } && type.IsAssignableTo(typeof(IQueryParameters)));
 
         foreach (var parameters in allParameters)

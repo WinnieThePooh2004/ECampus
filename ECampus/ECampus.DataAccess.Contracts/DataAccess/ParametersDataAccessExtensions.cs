@@ -1,5 +1,5 @@
 ﻿using System.Net;
-using ECampus.Contracts.DataSelectParameters;
+using ECampus.DataAccess.Contracts.DataSelectParameters;
 using ECampus.Domain.Data;
 using ECampus.Domain.Exceptions.InfrastructureExceptions;
 using ECampus.Domain.QueryParameters;

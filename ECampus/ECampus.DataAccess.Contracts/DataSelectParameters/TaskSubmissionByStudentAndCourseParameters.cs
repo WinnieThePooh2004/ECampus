@@ -1,7 +1,7 @@
 ﻿using ECampus.Domain.Models;
 using ECampus.Domain.QueryParameters;
 
-namespace ECampus.Contracts.DataSelectParameters;
+namespace ECampus.DataAccess.Contracts.DataSelectParameters;
 
 public readonly struct TaskSubmissionByStudentAndCourseParameters : IDataSelectParameters<TaskSubmission>
 {

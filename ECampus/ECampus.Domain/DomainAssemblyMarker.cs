@@ -2,7 +2,7 @@
 
 namespace ECampus.Domain;
 
-public class SharedAssemblyMarker : IAssemblyMarker
+public class DomainAssemblyMarker : IAssemblyMarker
 {
     
 }

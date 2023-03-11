@@ -13,7 +13,7 @@ public class ParametersRequestsInstaller : IInstaller
 
     public void Install(IServiceCollection services, IConfiguration configuration)
     {
-        var parametersTypes = typeof(SharedAssemblyMarker)
+        var parametersTypes = typeof(DomainAssemblyMarker)
             .Assembly.GetTypes().Where(type => type.IsAssignableTo(typeof(IQueryParameters)) &&
                                                type is {IsAbstract: false, IsClass: true});
 

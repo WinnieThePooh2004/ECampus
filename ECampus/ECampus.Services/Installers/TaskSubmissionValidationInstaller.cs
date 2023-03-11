@@ -1,8 +1,8 @@
 ﻿using ECampus.Core.Installers;
 using ECampus.Domain.DataTransferObjects;
 using ECampus.Services.Contracts.Validation;
-using ECampus.Services.Validation.FluentValidators;
 using ECampus.Services.Validation.UpdateValidators;
+using ECampus.Validation;
 using FluentValidation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

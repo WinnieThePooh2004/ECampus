@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using ECampus.Contracts.DataSelectParameters;
 using ECampus.DataAccess.Contracts.DataAccess;
+using ECampus.DataAccess.Contracts.DataSelectParameters;
 using ECampus.Domain.DataTransferObjects;
 using ECampus.Domain.Models;
 using ECampus.Services.Contracts.Services;

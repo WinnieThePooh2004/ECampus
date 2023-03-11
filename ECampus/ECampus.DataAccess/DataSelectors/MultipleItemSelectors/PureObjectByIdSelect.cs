@@ -1,4 +1,4 @@
-﻿using ECampus.Contracts.DataSelectParameters;
+﻿using ECampus.DataAccess.Contracts.DataSelectParameters;
 using ECampus.DataAccess.Interfaces;
 using ECampus.Domain.Data;
 using ECampus.Infrastructure;

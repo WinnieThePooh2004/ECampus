@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
-using ECampus.Contracts.DataSelectParameters;
 using ECampus.DataAccess.Contracts.DataAccess;
+using ECampus.DataAccess.Contracts.DataSelectParameters;
 using ECampus.Domain.DataTransferObjects;
 using ECampus.Domain.Enums;
 using ECampus.Domain.Extensions;

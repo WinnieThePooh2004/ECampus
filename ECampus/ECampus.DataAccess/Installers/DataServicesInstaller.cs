@@ -18,7 +18,7 @@ public class DataServicesInstaller : IInstaller
 
     public void Install(IServiceCollection services, IConfiguration configuration)
     {
-        var models = typeof(SharedAssemblyMarker).Assembly.GetModels();
+        var models = typeof(DomainAssemblyMarker).Assembly.GetModels();
 
         foreach (var model in models)
         {

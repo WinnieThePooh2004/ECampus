@@ -1,11 +1,11 @@
 ﻿using ECampus.Domain.DataTransferObjects;
 using FluentValidation;
 
-namespace ECampus.Services.Validation.FluentValidators;
+namespace ECampus.Validation;
 
-public class DepartmentDtoValidator : AbstractValidator<DepartmentDto>
+public class GroupDtoValidator : AbstractValidator<GroupDto>
 {
-    public DepartmentDtoValidator()
+    public GroupDtoValidator()
     {
         RuleFor(t => t.Name)
             .NotEmpty()

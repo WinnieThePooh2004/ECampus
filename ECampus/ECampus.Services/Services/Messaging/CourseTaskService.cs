@@ -1,9 +1,10 @@
 ﻿using AutoMapper;
-using ECampus.Contracts.DataSelectParameters;
 using ECampus.Core.Messages;
 using ECampus.DataAccess.Contracts.DataAccess;
+using ECampus.DataAccess.Contracts.DataSelectParameters;
 using ECampus.Domain.DataTransferObjects;
 using ECampus.Domain.Models;
+using ECampus.Services.Contracts.Messaging;
 using ECampus.Services.Contracts.Services;
 using ECampus.Services.Messaging;
 using Microsoft.EntityFrameworkCore;

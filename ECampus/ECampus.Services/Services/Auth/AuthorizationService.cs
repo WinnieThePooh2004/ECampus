@@ -1,8 +1,8 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Net;
-using ECampus.Contracts.DataSelectParameters;
 using ECampus.Core.Installers;
 using ECampus.DataAccess.Contracts.DataAccess;
+using ECampus.DataAccess.Contracts.DataSelectParameters;
 using ECampus.Domain.Auth;
 using ECampus.Domain.DataTransferObjects;
 using ECampus.Domain.Exceptions.DomainExceptions;

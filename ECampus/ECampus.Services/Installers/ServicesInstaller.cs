@@ -15,7 +15,7 @@ public class ServicesInstaller : IInstaller
 
     public void Install(IServiceCollection services, IConfiguration configuration)
     {
-        var dataTransferObjects = typeof(SharedAssemblyMarker).Assembly.GetDataTransferObjects();
+        var dataTransferObjects = typeof(DomainAssemblyMarker).Assembly.GetDataTransferObjects();
 
         foreach (var dataTransferObject in dataTransferObjects)
         {

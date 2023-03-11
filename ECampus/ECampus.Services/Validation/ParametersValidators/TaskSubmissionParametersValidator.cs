@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using System.Security.Claims;
-using ECampus.Contracts.DataSelectParameters;
 using ECampus.DataAccess.Contracts.DataAccess;
+using ECampus.DataAccess.Contracts.DataSelectParameters;
 using ECampus.Domain.Auth;
 using ECampus.Domain.Enums;
 using ECampus.Domain.Exceptions.DomainExceptions;

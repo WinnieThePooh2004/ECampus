@@ -1,5 +1,5 @@
 ﻿using System.Linq.Expressions;
-using ECampus.Contracts.DataSelectParameters;
+using ECampus.DataAccess.Contracts.DataSelectParameters;
 using ECampus.DataAccess.Interfaces;
 using ECampus.Domain.Enums;
 using ECampus.Domain.Models;

@@ -22,7 +22,7 @@ public class RelationshipsServicesInstaller : IInstaller
         services.AddScoped<IRelationsDataAccess>(provider =>
             new RelationsDataAccess(provider.GetServiceOfType<ApplicationDbContext>(), provider));
         
-        var relationModels = typeof(SharedAssemblyMarker).Assembly.GetTypes()
+        var relationModels = typeof(DomainAssemblyMarker).Assembly.GetTypes()
             .Where(type => type.GetCustomAttributes(typeof(ManyToManyAttribute), false).Any() &&
                            !type.GetCustomAttributes(typeof(InstallerIgnoreAttribute), false).Any()).ToList();
 

@@ -1,7 +1,7 @@
 ﻿using Amazon.SimpleNotificationService.Model;
 using ECampus.Core.Messages;
 
-namespace ECampus.Services.Messaging;
+namespace ECampus.Services.Contracts.Messaging;
 
 public interface ISnsMessenger
 {

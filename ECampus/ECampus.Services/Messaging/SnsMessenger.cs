@@ -1,6 +1,7 @@
 ﻿using Amazon.SimpleNotificationService;
 using Amazon.SimpleNotificationService.Model;
 using ECampus.Core.Messages;
+using ECampus.Services.Contracts.Messaging;
 using Microsoft.Extensions.Options;
 
 // ReSharper disable UnusedParameter.Local

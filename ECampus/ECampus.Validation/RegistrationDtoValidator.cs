@@ -1,7 +1,7 @@
 ﻿using ECampus.Domain.DataTransferObjects;
 using FluentValidation;
 
-namespace ECampus.Services.Validation.FluentValidators;
+namespace ECampus.Validation;
 
 public class RegistrationDtoValidator : AbstractValidator<RegistrationDto>
 {

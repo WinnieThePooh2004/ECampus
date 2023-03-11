@@ -1,5 +1,5 @@
-﻿using ECampus.Contracts.DataSelectParameters;
-using ECampus.Core.Installers;
+﻿using ECampus.Core.Installers;
+using ECampus.DataAccess.Contracts.DataSelectParameters;
 using ECampus.DataAccess.DataSelectors.MultipleItemSelectors;
 using ECampus.DataAccess.Interfaces;
 using ECampus.Domain;
@@ -14,7 +14,7 @@ public class PureIdSelectInstallers : IInstaller
     public int InstallOrder => -1;
     public void Install(IServiceCollection services, IConfiguration configuration)
     {
-        var models = typeof(SharedAssemblyMarker).Assembly.GetModels();
+        var models = typeof(DomainAssemblyMarker).Assembly.GetModels();
         foreach (var model in models)
         {
             var parametersType = typeof(PureByIdParameters<>).MakeGenericType(model);

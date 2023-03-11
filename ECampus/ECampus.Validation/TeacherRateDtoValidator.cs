@@ -2,7 +2,7 @@
 using ECampus.Domain.Enums;
 using FluentValidation;
 
-namespace ECampus.Services.Validation.FluentValidators;
+namespace ECampus.Validation;
 
 public class TeacherRateDtoValidator : AbstractValidator<TeacherRateDto>
 {
