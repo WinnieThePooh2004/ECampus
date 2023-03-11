@@ -1,6 +1,6 @@
 ﻿using System.Net.Http.Json;
 using ECampus.Domain.DataTransferObjects;
-using ECampus.Domain.Models;
+using ECampus.Domain.Entities;
 using ECampus.Tests.Integration.AppFactories;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;

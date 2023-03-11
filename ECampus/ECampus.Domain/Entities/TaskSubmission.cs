@@ -1,8 +1,8 @@
 ﻿using ECampus.Domain.Data;
 
-namespace ECampus.Domain.Models;
+namespace ECampus.Domain.Entities;
 
-public class TaskSubmission : IModel
+public class TaskSubmission : IEntity
 {
     public int Id { get; set; }
     public int TotalPoints { get; set; }

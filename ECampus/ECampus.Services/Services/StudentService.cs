@@ -2,7 +2,7 @@
 using ECampus.DataAccess.Contracts.DataAccess;
 using ECampus.DataAccess.Contracts.DataSelectParameters;
 using ECampus.Domain.DataTransferObjects;
-using ECampus.Domain.Models;
+using ECampus.Domain.Entities;
 using ECampus.Services.Contracts.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,11 +26,11 @@ public class StudentService : IBaseService<StudentDto>
         return _baseService.GetByIdAsync(id, token);
     }
 
-    public async Task<StudentDto> CreateAsync(StudentDto entity, CancellationToken token = default)
+    public async Task<StudentDto> CreateAsync(StudentDto dto, CancellationToken token = default)
     {
-        var student = _mapper.Map<Student>(entity);
+        var student = _mapper.Map<Student>(dto);
         student.Submissions = await _dataAccess
-            .GetByParameters<CourseTask, TasksByGroupParameters>(new TasksByGroupParameters(entity.GroupId))
+            .GetByParameters<CourseTask, TasksByGroupParameters>(new TasksByGroupParameters(dto.GroupId))
             .Select(task => new TaskSubmission { CourseTaskId = task.Id })
             .ToListAsync(token);
 
@@ -39,9 +39,9 @@ public class StudentService : IBaseService<StudentDto>
         return _mapper.Map<StudentDto>(createdStudent);
     }
 
-    public Task<StudentDto> UpdateAsync(StudentDto entity, CancellationToken token = default)
+    public Task<StudentDto> UpdateAsync(StudentDto dto, CancellationToken token = default)
     {
-        return _baseService.UpdateAsync(entity, token);
+        return _baseService.UpdateAsync(dto, token);
     }
 
     public Task<StudentDto> DeleteAsync(int id, CancellationToken token = default)

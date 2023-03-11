@@ -2,9 +2,9 @@
 using ECampus.DataAccess.Contracts.DataAccess;
 using ECampus.DataAccess.Contracts.DataSelectParameters;
 using ECampus.Domain.Auth;
+using ECampus.Domain.Entities;
 using ECampus.Domain.Enums;
 using ECampus.Domain.Exceptions.DomainExceptions;
-using ECampus.Domain.Models;
 using ECampus.Domain.QueryParameters;
 using ECampus.Domain.Validation;
 using ECampus.Services.Validation.ParametersValidators;

@@ -1,5 +1,5 @@
 ﻿using ECampus.DataAccess.DataSelectors.SingleItemSelectors;
-using ECampus.Domain.Models;
+using ECampus.Domain.Entities;
 using ECampus.Tests.Shared.DataFactories;
 using ECampus.Tests.Shared.Extensions;
 using ECampus.Tests.Shared.Mocks.EntityFramework;

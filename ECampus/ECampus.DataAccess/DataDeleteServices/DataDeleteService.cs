@@ -4,10 +4,10 @@ using ECampus.Infrastructure;
 
 namespace ECampus.DataAccess.DataDeleteServices;
 
-public class DataDeleteService<TModel> : IDataDeleteService<TModel>
-    where TModel : class, IModel, new()
+public class DataDeleteService<TEntity> : IDataDeleteService<TEntity>
+    where TEntity : class, IEntity, new()
 {
-    public TModel Delete(TModel model, ApplicationDbContext context)
+    public TEntity Delete(TEntity model, ApplicationDbContext context)
     {
         context.Remove(model);
         return model;

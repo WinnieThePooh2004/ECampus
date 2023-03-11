@@ -1,6 +1,6 @@
 ﻿using ECampus.Domain.Data;
+using ECampus.Domain.Entities;
 using ECampus.Domain.Metadata;
-using ECampus.Domain.Models;
 using Serilog.Events;
 
 namespace ECampus.Domain.DataTransferObjects;

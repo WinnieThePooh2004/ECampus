@@ -1,8 +1,8 @@
 ﻿using ECampus.DataAccess.Contracts.DataAccess;
 using ECampus.DataAccess.Contracts.DataSelectParameters;
 using ECampus.Domain.DataTransferObjects;
+using ECampus.Domain.Entities;
 using ECampus.Domain.Exceptions.DomainExceptions;
-using ECampus.Domain.Models;
 using ECampus.Domain.Validation;
 using ECampus.Services.Contracts.Validation;
 using ECampus.Services.Services;
@@ -49,7 +49,7 @@ public class PasswordChangeServiceTests
         await new Func<Task>(() => _sut.ChangePassword(passwordChange)).Should().ThrowAsync<ValidationException>()
             .WithMessage(new ValidationException(typeof(PasswordChangeDto), errors).Message);
 
-        await _dataAccess.DidNotReceive().GetByIdAsync<User>(Arg.Any<int>());
+        await _dataAccess.DidNotReceive().GetByIdOrDefaultAsync<User>(Arg.Any<int>());
         await _dataAccess.DidNotReceive().SaveChangesAsync();
     }
 

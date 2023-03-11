@@ -5,12 +5,12 @@ namespace ECampus.DataAccess.Contracts.DataAccess;
 
 public interface IDataAccessFacade
 {
-    TModel Create<TModel>(TModel model) where TModel : class, IModel;
-    Task<TModel> UpdateAsync<TModel>(TModel model, CancellationToken token = default) where TModel : class, IModel;
-    TModel Delete<TModel>(TModel model) where TModel : class, IModel, new();
-    Task<TModel> GetByIdAsync<TModel>(int id, CancellationToken token = default) where TModel : class, IModel;
+    TEntity Create<TEntity>(TEntity entity) where TEntity : class, IEntity;
+    Task<TEntity> UpdateAsync<TEntity>(TEntity entity, CancellationToken token = default) where TEntity : class, IEntity;
+    TEntity Delete<TEntity>(TEntity entity) where TEntity : class, IEntity, new();
+    Task<TEntity?> GetByIdOrDefaultAsync<TEntity>(int id, CancellationToken token = default) where TEntity : class, IEntity;
     IQueryable<TModel> GetByParameters<TModel, TParameters>(TParameters parameters)
-        where TModel : class, IModel
+        where TModel : class, IEntity
         where TParameters : IDataSelectParameters<TModel>;
 
     public Task<bool> SaveChangesAsync(CancellationToken token = default);

@@ -1,7 +1,7 @@
 ﻿using ECampus.DataAccess.DataAccessFacades;
 using ECampus.DataAccess.Interfaces;
+using ECampus.Domain.Entities;
 using ECampus.Domain.Exceptions.InfrastructureExceptions;
-using ECampus.Domain.Models;
 using ECampus.Infrastructure;
 using ECampus.Tests.Shared.DataFactories;
 using Microsoft.EntityFrameworkCore;
@@ -88,7 +88,7 @@ public class DataAccessManagerTests
         selector.SelectModel(1, Arg.Any<DbSet<Auditory>>()).Returns(item);
         _serviceProvider.GetService(typeof(ISingleItemSelector<Auditory>)).Returns(selector);
 
-        var model = await _sut.GetByIdAsync<Auditory>(1);
+        var model = await _sut.GetByIdOrDefaultAsync<Auditory>(1);
 
         model.Should().Be(item);
     }

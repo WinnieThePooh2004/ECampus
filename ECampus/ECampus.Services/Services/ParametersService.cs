@@ -9,10 +9,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ECampus.Services.Services;
 
-public class ParametersService<TDto, TParameters, TRepositoryModel> : IParametersService<TDto, TParameters>
+public class ParametersService<TDto, TParameters, TEntity> : IParametersService<TDto, TParameters>
     where TDto : class, IDataTransferObject, new()
-    where TRepositoryModel : class, IModel, new()
-    where TParameters : class, IDataSelectParameters<TRepositoryModel>, IQueryParameters<TDto>
+    where TEntity : class, IEntity, new()
+    where TParameters : class, IDataSelectParameters<TEntity>, IQueryParameters<TDto>
 {
     private readonly IDataAccessFacade _dataAccess;
     private readonly IMapper _mapper;
@@ -25,7 +25,7 @@ public class ParametersService<TDto, TParameters, TRepositoryModel> : IParameter
 
     public async Task<ListWithPaginationData<TDto>> GetByParametersAsync(TParameters parameters, CancellationToken token = default)
     {
-        var query = _dataAccess.GetByParameters<TRepositoryModel, TParameters>(parameters);
+        var query = _dataAccess.GetByParameters<TEntity, TParameters>(parameters);
         var totalCount = await query.CountAsync(token);
         var resultList = await query
             .Sort(parameters.OrderBy, parameters.SortOrder)

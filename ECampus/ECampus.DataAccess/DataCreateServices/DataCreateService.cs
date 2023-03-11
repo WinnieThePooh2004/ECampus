@@ -4,10 +4,10 @@ using ECampus.Infrastructure;
 
 namespace ECampus.DataAccess.DataCreateServices;
 
-public class DataCreateService<TModel> : IDataCreateService<TModel> 
-    where TModel : class, IModel, new()
+public class DataCreateService<TEntity> : IDataCreateService<TEntity> 
+    where TEntity : class, IEntity, new()
 {
-    public TModel Create(TModel model, ApplicationDbContext context)
+    public TEntity Create(TEntity model, ApplicationDbContext context)
     {
         context.Add(model);
         return model;

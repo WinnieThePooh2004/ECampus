@@ -1,8 +1,8 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
 using ECampus.Domain.DataTransferObjects;
+using ECampus.Domain.Entities;
 using ECampus.Domain.Enums;
-using ECampus.Domain.Models;
 using ECampus.Tests.Integration.AppFactories;
 using ECampus.Tests.Integration.AuthHelpers;
 using ECampus.Tests.Shared.Mocks.EntityFramework;

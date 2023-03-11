@@ -1,5 +1,5 @@
 ﻿using ECampus.DataAccess.Interfaces;
-using ECampus.Domain.Models;
+using ECampus.Domain.Entities;
 using ECampus.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,18 +14,18 @@ public class CourseUpdateService : IDataUpdateService<Course>
         _baseUpdate = baseUpdate;
     }
 
-    public async Task<Course> UpdateAsync(Course model, ApplicationDbContext context, CancellationToken token = default)
+    public async Task<Course> UpdateAsync(Course entity, ApplicationDbContext context, CancellationToken token = default)
     {
-        if (model.Groups is null)
+        if (entity.Groups is null)
         {
-            return await _baseUpdate.UpdateAsync(model, context, token);
+            return await _baseUpdate.UpdateAsync(entity, context, token);
         }
 
-        var submissionsToDelete = await SubmissionsToDelete(model, context, token);
-        var submissionsToCreate = await SubmissionsToCreate(model, context, token);
+        var submissionsToDelete = await SubmissionsToDelete(entity, context, token);
+        var submissionsToCreate = await SubmissionsToCreate(entity, context, token);
         context.RemoveRange(submissionsToDelete);
         context.AddRange(submissionsToCreate);
-        return await _baseUpdate.UpdateAsync(model, context, token);
+        return await _baseUpdate.UpdateAsync(entity, context, token);
     }
 
     private static async Task<List<TaskSubmission>> SubmissionsToDelete(Course model, ApplicationDbContext context,

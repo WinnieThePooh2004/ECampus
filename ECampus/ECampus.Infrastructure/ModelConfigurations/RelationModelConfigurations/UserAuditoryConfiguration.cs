@@ -1,4 +1,4 @@
-﻿using ECampus.Domain.Models.RelationModels;
+﻿using ECampus.Domain.Entities.RelationEntities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

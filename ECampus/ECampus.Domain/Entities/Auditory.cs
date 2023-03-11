@@ -1,9 +1,9 @@
 ﻿using ECampus.Domain.Data;
-using ECampus.Domain.Models.RelationModels;
+using ECampus.Domain.Entities.RelationEntities;
 
-namespace ECampus.Domain.Models;
+namespace ECampus.Domain.Entities;
 
-public class Auditory : IIsDeleted, IModel
+public class Auditory : IIsDeleted, IEntity
 {
     public int Id { get; set; }
     public string Name { get; set; } = string.Empty;

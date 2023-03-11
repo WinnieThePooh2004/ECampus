@@ -1,9 +1,9 @@
 ﻿using ECampus.Domain.Data;
 using Serilog.Events;
 
-namespace ECampus.Domain.Models;
+namespace ECampus.Domain.Entities;
 
-public class Log : IModel
+public class Log : IEntity
 {
     public int Id { get; set; }
     public string Message { get; set; } = string.Empty;

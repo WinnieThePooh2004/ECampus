@@ -1,5 +1,5 @@
 ﻿using ECampus.DataAccess.DataDeleteServices;
-using ECampus.Domain.Models;
+using ECampus.Domain.Entities;
 using ECampus.Infrastructure;
 
 namespace ECampus.Tests.Unit.Tests.BackEnd.Infrastructure.DataServices.DataDelete;

@@ -1,4 +1,4 @@
-﻿using ECampus.Domain.Models;
+﻿using ECampus.Domain.Entities;
 using ECampus.Domain.QueryParameters;
 
 namespace ECampus.DataAccess.Contracts.DataSelectParameters;

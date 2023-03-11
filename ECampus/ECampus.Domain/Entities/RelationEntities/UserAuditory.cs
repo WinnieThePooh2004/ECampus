@@ -1,18 +1,18 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using ECampus.Domain.Metadata.Relationships;
 
-namespace ECampus.Domain.Models.RelationModels;
+namespace ECampus.Domain.Entities.RelationEntities;
 
-public class UserTeacher
+public class UserAuditory
 {
     [Key]
     [LeftTableId(typeof(User))]
     public int UserId { get; set; }
     
-    [Key]
-    [RightTableId(typeof(Teacher))]
-    public int TeacherId { get; set; }
+    [Key] 
+    [RightTableId(typeof(Auditory))]
+    public int AuditoryId { get; set; }
 
+    public Auditory? Auditory { get; set; }
     public User? User { get; set; }
-    public Teacher? Teacher { get; set; }
 }

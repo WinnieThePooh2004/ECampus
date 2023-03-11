@@ -6,24 +6,24 @@ using ECampus.Infrastructure;
 
 namespace ECampus.DataAccess.DataCreateServices;
 
-public class ManyToManyRelationshipsCreate<TModel, TRelatedModel, TRelations> : IDataCreateService<TModel>
-    where TModel : class, IModel
-    where TRelatedModel : class, IModel
+public class ManyToManyRelationshipsCreate<TEntity, TRelatedEntity, TRelations> : IDataCreateService<TEntity>
+    where TEntity : class, IEntity
+    where TRelatedEntity : class, IEntity
     where TRelations : class, new()
 {
-    private readonly IDataCreateService<TModel> _baseCreateService;
-    private readonly IRelationshipsHandler<TModel, TRelatedModel, TRelations> _relationshipsHandler;
+    private readonly IDataCreateService<TEntity> _baseCreateService;
+    private readonly IRelationshipsHandler<TEntity, TRelatedEntity, TRelations> _relationshipsHandler;
 
-    public ManyToManyRelationshipsCreate(IDataCreateService<TModel> baseCreateService,
-        IRelationshipsHandler<TModel, TRelatedModel, TRelations> relationshipsHandler)
+    public ManyToManyRelationshipsCreate(IDataCreateService<TEntity> baseCreateService,
+        IRelationshipsHandler<TEntity, TRelatedEntity, TRelations> relationshipsHandler)
     {
         _baseCreateService = baseCreateService;
         _relationshipsHandler = relationshipsHandler;
     }
 
-    public TModel Create(TModel model, ApplicationDbContext context)
+    public TEntity Create(TEntity model, ApplicationDbContext context)
     {
-        var relatedModels = _relationshipsHandler.RelatedModels.GetFromProperty<IEnumerable<TRelatedModel>>(model);
+        var relatedModels = _relationshipsHandler.RelatedModels.GetFromProperty<IEnumerable<TRelatedEntity>>(model);
         if (relatedModels is null)
         {
             return _baseCreateService.Create(model, context);

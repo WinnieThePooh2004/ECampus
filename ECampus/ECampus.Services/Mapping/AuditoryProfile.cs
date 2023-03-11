@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using ECampus.Domain.DataTransferObjects;
-using ECampus.Domain.Models;
+using ECampus.Domain.Entities;
 
 namespace ECampus.Services.Mapping;
 

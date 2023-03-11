@@ -1,6 +1,6 @@
 ﻿namespace ECampus.Domain.Data;
 
-public interface IModel
+public interface IEntity
 {
     public int Id { get; set; }
 }

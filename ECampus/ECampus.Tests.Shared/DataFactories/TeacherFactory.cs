@@ -1,5 +1,5 @@
 ﻿using AutoFixture;
-using ECampus.Domain.Models;
+using ECampus.Domain.Entities;
 
 namespace ECampus.Tests.Shared.DataFactories;
 

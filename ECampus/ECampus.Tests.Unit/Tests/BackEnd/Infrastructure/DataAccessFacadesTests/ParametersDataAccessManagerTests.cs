@@ -1,7 +1,7 @@
 ﻿using ECampus.DataAccess.Contracts.DataAccess;
 using ECampus.DataAccess.DataAccessFacades;
 using ECampus.DataAccess.Interfaces;
-using ECampus.Domain.Models;
+using ECampus.Domain.Entities;
 using ECampus.Domain.QueryParameters;
 using ECampus.Infrastructure;
 using ECampus.Tests.Shared.Mocks.EntityFramework;

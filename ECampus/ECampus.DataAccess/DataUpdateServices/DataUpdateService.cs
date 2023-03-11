@@ -4,12 +4,12 @@ using ECampus.Infrastructure;
 
 namespace ECampus.DataAccess.DataUpdateServices;
 
-public class DataUpdateService<TModel> : IDataUpdateService<TModel>
-    where TModel : class, IModel, new()
+public class DataUpdateService<TEntity> : IDataUpdateService<TEntity>
+    where TEntity : class, IEntity, new()
 {
-    public Task<TModel> UpdateAsync(TModel model, ApplicationDbContext context, CancellationToken token = default)
+    public Task<TEntity> UpdateAsync(TEntity entity, ApplicationDbContext context, CancellationToken token = default)
     {
-        context.Update(model);
-        return Task.FromResult(model);
+        context.Update(entity);
+        return Task.FromResult(entity);
     }
 }

@@ -24,20 +24,20 @@ public class LoggingService<T> : IBaseService<T>
         return result;
     }
 
-    public async Task<T> CreateAsync(T entity, CancellationToken token = default)
+    public async Task<T> CreateAsync(T dto, CancellationToken token = default)
     {
         _logger.Information("Creating new object of type {Type}", typeof(T));
-        var createdEntity = await _baseService.CreateAsync(entity, token);
+        var createdEntity = await _baseService.CreateAsync(dto, token);
         _logger.Information("Successfully created object of type {Type}.\n Id of new object is {Id}", typeof(T),
-            entity.Id);
+            dto.Id);
         return createdEntity;
     }
 
-    public async Task<T> UpdateAsync(T entity, CancellationToken token = default)
+    public async Task<T> UpdateAsync(T dto, CancellationToken token = default)
     {
-        _logger.Information("Updating object of type {Type} with id = {Id}", typeof(T), entity.Id);
-        var updatedEntity = await _baseService.UpdateAsync(entity, token);
-        _logger.Information("Successfully updated object of type {Type} with id = {Id}", typeof(T), entity.Id);
+        _logger.Information("Updating object of type {Type} with id = {Id}", typeof(T), dto.Id);
+        var updatedEntity = await _baseService.UpdateAsync(dto, token);
+        _logger.Information("Successfully updated object of type {Type} with id = {Id}", typeof(T), dto.Id);
         return updatedEntity;
     }
 

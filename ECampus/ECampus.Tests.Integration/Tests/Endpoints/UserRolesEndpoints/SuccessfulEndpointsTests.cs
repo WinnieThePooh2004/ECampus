@@ -2,8 +2,8 @@
 using ECampus.DataAccess.Contracts.DataSelectParameters;
 using ECampus.DataAccess.DataSelectors.MultipleItemSelectors;
 using ECampus.Domain.DataTransferObjects;
+using ECampus.Domain.Entities;
 using ECampus.Domain.Enums;
-using ECampus.Domain.Models;
 using ECampus.Tests.Integration.AppFactories;
 using ECampus.Tests.Integration.AuthHelpers;
 using FluentAssertions;

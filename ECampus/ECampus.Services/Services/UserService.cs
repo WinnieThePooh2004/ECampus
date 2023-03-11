@@ -3,8 +3,8 @@ using AutoMapper;
 using ECampus.DataAccess.Contracts.DataAccess;
 using ECampus.DataAccess.Contracts.DataSelectParameters;
 using ECampus.Domain.DataTransferObjects;
+using ECampus.Domain.Entities;
 using ECampus.Domain.Enums;
-using ECampus.Domain.Models;
 using ECampus.Services.Contracts.Services;
 
 namespace ECampus.Services.Services;
@@ -27,15 +27,15 @@ public class UserService : IBaseService<UserDto>
         return _mapper.Map<UserDto>(user);
     }
 
-    public async Task<UserDto> CreateAsync(UserDto entity, CancellationToken token = default)
+    public async Task<UserDto> CreateAsync(UserDto dto, CancellationToken token = default)
     {
-        var user = _mapper.Map<User>(entity);
+        var user = _mapper.Map<User>(dto);
         return user.Role switch
         {
             UserRole.Admin or UserRole.Guest => await CreateAsAdminOrGuest(user, token),
             UserRole.Student => await CreateAsStudent(user, token),
             UserRole.Teacher => await CreateAsTeacher(user, token),
-            _ => throw new UnreachableException("", new ArgumentOutOfRangeException(nameof(entity)))
+            _ => throw new UnreachableException("", new ArgumentOutOfRangeException(nameof(dto)))
         };
     }
 
@@ -48,9 +48,9 @@ public class UserService : IBaseService<UserDto>
         return _mapper.Map<UserDto>(result);
     }
 
-    public async Task<UserDto> UpdateAsync(UserDto entity, CancellationToken token = default)
+    public async Task<UserDto> UpdateAsync(UserDto dto, CancellationToken token = default)
     {
-        var user = _mapper.Map<User>(entity);
+        var user = _mapper.Map<User>(dto);
         var userFromDb =
             await _dataAccess.GetSingleAsync<User, UserRolesParameters>(new UserRolesParameters(user.Id), token);
         userFromDb.Username = user.Username;
@@ -62,9 +62,9 @@ public class UserService : IBaseService<UserDto>
         return user.Role switch
         {
             UserRole.Admin or UserRole.Guest => await UpdateAsAdminOrGuest(userFromDb, user, token),
-            UserRole.Student => await UpdateAsStudent(userFromDb, user, entity, token),
+            UserRole.Student => await UpdateAsStudent(userFromDb, user, dto, token),
             UserRole.Teacher => await UpdateAsTeacher(userFromDb, user, token),
-            _ => throw new UnreachableException("", new ArgumentOutOfRangeException(nameof(entity)))
+            _ => throw new UnreachableException("", new ArgumentOutOfRangeException(nameof(dto)))
         };
     }
 

@@ -1,7 +1,7 @@
 ﻿using ECampus.DataAccess.Contracts.DataAccess;
 using ECampus.DataAccess.Relationships;
-using ECampus.Domain.Models;
-using ECampus.Domain.Models.RelationModels;
+using ECampus.Domain.Entities;
+using ECampus.Domain.Entities.RelationEntities;
 using ECampus.Infrastructure;
 
 namespace ECampus.Tests.Unit.Tests.BackEnd.Infrastructure.DataServices.Relationships;
