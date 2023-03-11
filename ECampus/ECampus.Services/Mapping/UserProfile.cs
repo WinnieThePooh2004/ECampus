@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using ECampus.Shared.DataTransferObjects;
-using ECampus.Shared.Models;
+using ECampus.Domain.DataTransferObjects;
+using ECampus.Domain.Models;
 
 namespace ECampus.Services.Mapping;
 
@@ -15,6 +15,6 @@ public class UserProfile : Profile
         );
         CreateMap<User, UserDto>();
         CreateMap<RegistrationDto, UserDto>();
-        CreateMap<Shared.DataTransferObjects.UserProfile, User>().ReverseMap();
+        CreateMap<UserProfile, User>().ReverseMap();
     }
 }

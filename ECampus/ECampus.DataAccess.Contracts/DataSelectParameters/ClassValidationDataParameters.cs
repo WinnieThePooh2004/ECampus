@@ -1,6 +1,6 @@
-﻿using ECampus.Shared.Enums;
-using ECampus.Shared.Models;
-using ECampus.Shared.QueryParameters;
+﻿using ECampus.Domain.Enums;
+using ECampus.Domain.Models;
+using ECampus.Domain.QueryParameters;
 
 namespace ECampus.Contracts.DataSelectParameters;
 

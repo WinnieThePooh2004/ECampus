@@ -1,5 +1,4 @@
-﻿using Amazon;
-using Amazon.SimpleNotificationService;
+﻿using Amazon.SimpleNotificationService;
 using ECampus.Core.Installers;
 using ECampus.Services.Messaging;
 using Microsoft.Extensions.Configuration;

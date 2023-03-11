@@ -1,7 +1,7 @@
 ﻿using ECampus.Core.Extensions;
 using ECampus.DataAccess.Contracts.DataAccess;
+using ECampus.Domain.Data;
 using ECampus.Infrastructure;
-using ECampus.Shared.Data;
 
 namespace ECampus.DataAccess.Relationships;
 

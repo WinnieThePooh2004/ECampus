@@ -1,6 +1,6 @@
 ﻿using ECampus.DataAccess.Interfaces;
+using ECampus.Domain.Models;
 using ECampus.Infrastructure;
-using ECampus.Shared.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace ECampus.DataAccess.DataUpdateServices;

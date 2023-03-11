@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using ECampus.DataAccess.Contracts.DataAccess;
+using ECampus.Domain.Data;
 using ECampus.Services.Contracts.Services;
-using ECampus.Shared.Data;
 
 namespace ECampus.Services.Services;
 

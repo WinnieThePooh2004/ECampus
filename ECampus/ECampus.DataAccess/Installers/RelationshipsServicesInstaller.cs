@@ -5,9 +5,9 @@ using ECampus.DataAccess.DataCreateServices;
 using ECampus.DataAccess.DataUpdateServices;
 using ECampus.DataAccess.Interfaces;
 using ECampus.DataAccess.Relationships;
+using ECampus.Domain;
+using ECampus.Domain.Metadata.Relationships;
 using ECampus.Infrastructure;
-using ECampus.Shared;
-using ECampus.Shared.Metadata.Relationships;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

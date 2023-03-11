@@ -1,4 +1,4 @@
-﻿using ECampus.Shared.Validation;
+﻿using ECampus.Domain.Validation;
 using FluentValidation;
 
 namespace ECampus.Services.Validation.UniversalValidators;

@@ -1,4 +1,4 @@
-﻿using ECampus.Shared.Models;
+﻿using ECampus.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Serilog.Events;

@@ -2,12 +2,12 @@
 using ECampus.Contracts.DataSelectParameters;
 using ECampus.Core.Installers;
 using ECampus.DataAccess.Contracts.DataAccess;
+using ECampus.Domain.DataContainers;
+using ECampus.Domain.DataTransferObjects;
+using ECampus.Domain.Models;
+using ECampus.Domain.Validation;
 using ECampus.Services.Contracts.Services;
 using ECampus.Services.Contracts.Validation;
-using ECampus.Shared.DataContainers;
-using ECampus.Shared.DataTransferObjects;
-using ECampus.Shared.Models;
-using ECampus.Shared.Validation;
 using Microsoft.EntityFrameworkCore;
 
 namespace ECampus.Services.Services;

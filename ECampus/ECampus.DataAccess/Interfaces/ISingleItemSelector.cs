@@ -1,4 +1,4 @@
-﻿using ECampus.Shared.Data;
+﻿using ECampus.Domain.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace ECampus.DataAccess.Interfaces;

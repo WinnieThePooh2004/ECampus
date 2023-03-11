@@ -1,5 +1,5 @@
-﻿using ECampus.Shared.DataTransferObjects;
-using ECampus.Shared.Enums;
+﻿using ECampus.Domain.DataTransferObjects;
+using ECampus.Domain.Enums;
 using FluentValidation;
 
 namespace ECampus.Services.Validation.FluentValidators;

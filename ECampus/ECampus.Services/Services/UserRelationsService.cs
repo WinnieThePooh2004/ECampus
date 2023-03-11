@@ -1,8 +1,8 @@
 ﻿using ECampus.Core.Installers;
 using ECampus.DataAccess.Contracts.DataAccess;
+using ECampus.Domain.Models;
+using ECampus.Domain.Models.RelationModels;
 using ECampus.Services.Contracts.Services;
-using ECampus.Shared.Models;
-using ECampus.Shared.Models.RelationModels;
 
 namespace ECampus.Services.Services;
 

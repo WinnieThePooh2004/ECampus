@@ -1,4 +1,4 @@
-﻿using ECampus.Shared.DataTransferObjects;
+﻿using ECampus.Domain.DataTransferObjects;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using IAuthorizationService = ECampus.Services.Contracts.Services.IAuthorizationService;

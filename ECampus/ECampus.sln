@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33015.44
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECampus.Shared", "ECampus.Shared\ECampus.Shared.csproj", "{17D1A6AB-4B91-4E8C-91B9-9F8D1F4F711D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECampus.Domain", "ECampus.Domain\ECampus.Domain.csproj", "{17D1A6AB-4B91-4E8C-91B9-9F8D1F4F711D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECampus.Infrastructure", "ECampus.Infrastructure\ECampus.Infrastructure.csproj", "{C3BE9554-1940-47E8-89A8-C1CF4D31BAD7}"
 EndProject

@@ -1,8 +1,8 @@
 ﻿using ECampus.Core.Installers;
 using ECampus.FrontEnd.Requests;
 using ECampus.FrontEnd.Requests.Interfaces;
-using ECampus.Shared;
-using ECampus.Shared.Extensions;
+using ECampus.Domain;
+using ECampus.Domain.Extensions;
 
 namespace ECampus.FrontEnd.Installers;
 

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using ECampus.Shared.DataTransferObjects;
-using ECampus.Shared.Extensions;
-using ECampus.Shared.Models;
+using ECampus.Domain.DataTransferObjects;
+using ECampus.Domain.Extensions;
+using ECampus.Domain.Models;
 
 namespace ECampus.Services.Mapping;
 

@@ -1,7 +1,7 @@
 ﻿using ECampus.Core.Messages;
+using ECampus.Domain.DataTransferObjects;
 using ECampus.Services.Contracts.Services;
 using ECampus.Services.Messaging;
-using ECampus.Shared.DataTransferObjects;
 
 namespace ECampus.Services.Services.Messaging;
 

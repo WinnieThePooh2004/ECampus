@@ -1,5 +1,5 @@
-﻿using ECampus.Services.Contracts.Services;
-using ECampus.Shared.DataTransferObjects;
+﻿using ECampus.Domain.DataTransferObjects;
+using ECampus.Services.Contracts.Services;
 using ECampus.WebApi.Metadata;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

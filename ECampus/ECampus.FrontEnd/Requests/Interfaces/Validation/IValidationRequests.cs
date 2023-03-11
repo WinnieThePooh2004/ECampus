@@ -1,4 +1,4 @@
-﻿using ECampus.Shared.Validation;
+﻿using ECampus.Domain.Validation;
 
 namespace ECampus.FrontEnd.Requests.Interfaces.Validation;
 

@@ -1,13 +1,13 @@
 ﻿using System.Security.Claims;
 using ECampus.Contracts.DataSelectParameters;
 using ECampus.DataAccess.Contracts.DataAccess;
+using ECampus.Domain.DataTransferObjects;
+using ECampus.Domain.Enums;
+using ECampus.Domain.Extensions;
+using ECampus.Domain.Models;
+using ECampus.Domain.Validation;
 using ECampus.Services.Contracts.Validation;
 using ECampus.Services.Validation.UniversalValidators;
-using ECampus.Shared.DataTransferObjects;
-using ECampus.Shared.Enums;
-using ECampus.Shared.Extensions;
-using ECampus.Shared.Models;
-using ECampus.Shared.Validation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 

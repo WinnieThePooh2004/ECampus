@@ -1,6 +1,6 @@
 ﻿using ECampus.FrontEnd.Requests.Interfaces;
-using ECampus.Shared.Data;
-using ECampus.Shared.QueryParameters;
+using ECampus.Domain.Data;
+using ECampus.Domain.QueryParameters;
 using Microsoft.AspNetCore.Components;
 
 namespace ECampus.FrontEnd.Components.PageBases;

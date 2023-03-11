@@ -1,9 +1,9 @@
 ﻿using ECampus.Core.Extensions;
 using ECampus.Core.Installers;
+using ECampus.Domain.QueryParameters;
 using ECampus.Services.Contracts.Services;
 using ECampus.Services.Contracts.Validation;
 using ECampus.Services.Services.ValidationServices;
-using ECampus.Shared.QueryParameters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

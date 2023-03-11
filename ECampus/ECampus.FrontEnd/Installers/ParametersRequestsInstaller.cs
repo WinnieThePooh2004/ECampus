@@ -2,8 +2,8 @@
 using ECampus.Core.Installers;
 using ECampus.FrontEnd.Requests;
 using ECampus.FrontEnd.Requests.Interfaces;
-using ECampus.Shared;
-using ECampus.Shared.QueryParameters;
+using ECampus.Domain;
+using ECampus.Domain.QueryParameters;
 
 namespace ECampus.FrontEnd.Installers;
 

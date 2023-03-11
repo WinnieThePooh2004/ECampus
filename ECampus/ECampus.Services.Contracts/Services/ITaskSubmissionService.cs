@@ -1,4 +1,4 @@
-﻿using ECampus.Shared.DataTransferObjects;
+﻿using ECampus.Domain.DataTransferObjects;
 
 namespace ECampus.Services.Contracts.Services;
 

@@ -1,9 +1,9 @@
 ﻿using System.Net;
 using ECampus.Core.Installers;
+using ECampus.Domain.Enums;
+using ECampus.Domain.Exceptions.DomainExceptions;
+using ECampus.Domain.Extensions;
 using ECampus.Services.Contracts.Services;
-using ECampus.Shared.Enums;
-using ECampus.Shared.Exceptions.DomainExceptions;
-using ECampus.Shared.Extensions;
 using IdentityServer4.Extensions;
 using Microsoft.AspNetCore.Http;
 

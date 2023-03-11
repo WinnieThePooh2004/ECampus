@@ -3,11 +3,11 @@ using System.Security.Claims;
 using AutoMapper;
 using ECampus.Contracts.DataSelectParameters;
 using ECampus.DataAccess.Contracts.DataAccess;
+using ECampus.Domain.Auth;
+using ECampus.Domain.DataTransferObjects;
+using ECampus.Domain.Exceptions.InfrastructureExceptions;
+using ECampus.Domain.Models;
 using ECampus.Services.Contracts.Services;
-using ECampus.Shared.Auth;
-using ECampus.Shared.DataTransferObjects;
-using ECampus.Shared.Exceptions.InfrastructureExceptions;
-using ECampus.Shared.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 

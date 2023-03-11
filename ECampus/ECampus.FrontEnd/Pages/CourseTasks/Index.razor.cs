@@ -1,10 +1,10 @@
 ﻿using System.Net;
 using System.Security.Claims;
 using ECampus.FrontEnd.Requests.Interfaces;
-using ECampus.Shared.Auth;
-using ECampus.Shared.DataTransferObjects;
-using ECampus.Shared.Enums;
-using ECampus.Shared.Exceptions;
+using ECampus.Domain.Auth;
+using ECampus.Domain.DataTransferObjects;
+using ECampus.Domain.Enums;
+using ECampus.Domain.Exceptions;
 using Microsoft.AspNetCore.Components;
 
 namespace ECampus.FrontEnd.Pages.CourseTasks;

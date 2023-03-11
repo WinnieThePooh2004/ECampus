@@ -9,7 +9,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\ECampus.Services\ECampus.Services.csproj" />
-      <ProjectReference Include="..\ECampus.Shared\ECampus.Shared.csproj" />
+      <ProjectReference Include="..\ECampus.Domain\ECampus.Domain.csproj" />
     </ItemGroup>
 
     <ItemGroup>

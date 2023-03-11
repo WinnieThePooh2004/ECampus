@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ECampus.Shared\ECampus.Shared.csproj" />
+    <ProjectReference Include="..\ECampus.Domain\ECampus.Domain.csproj" />
   </ItemGroup>
 
 </Project>

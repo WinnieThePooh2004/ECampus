@@ -1,7 +1,7 @@
-﻿using ECampus.Services.Contracts.Services;
+﻿using ECampus.Domain.Data;
+using ECampus.Domain.Exceptions.DomainExceptions;
+using ECampus.Services.Contracts.Services;
 using ECampus.Services.Contracts.Validation;
-using ECampus.Shared.Data;
-using ECampus.Shared.Exceptions.DomainExceptions;
 
 namespace ECampus.Services.Services.ValidationServices;
 

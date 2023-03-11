@@ -1,4 +1,4 @@
-﻿@using ECampus.Shared.Extensions
+﻿@using ECampus.Domain.Extensions
 @foreach (var searchTerm in SearchTerms)
 {
     <InputText Value="@searchTerm.Item1.Compile()()"
