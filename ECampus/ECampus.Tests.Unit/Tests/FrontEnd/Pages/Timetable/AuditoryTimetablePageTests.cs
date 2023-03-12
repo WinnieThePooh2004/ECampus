@@ -1,7 +1,6 @@
 ﻿using System.Security.Claims;
 using System.Security.Principal;
 using Bunit;
-using ECampus.Domain.Auth;
 using ECampus.Domain.DataTransferObjects;
 using ECampus.Domain.Enums;
 using ECampus.FrontEnd.Pages.Timetable;
@@ -93,7 +92,7 @@ public class AuditoryTimetablePageTests
     [Fact]
     public async Task Render_ShouldShowButtonSave_WhenCurrentUserDoesNotHaveSaveAuditory()
     {
-        _user.FindFirst(CustomClaimTypes.Id).Returns(new Claim("", "10"));
+        _user.FindFirst(ClaimTypes.Sid).Returns(new Claim("", "10"));
         var user = new UserProfile { SavedAuditories = new List<AuditoryDto>() };
         _user.Identity.Returns(Substitute.For<IIdentity>());
         _user.Identity!.IsAuthenticated.Returns(true);
@@ -109,7 +108,7 @@ public class AuditoryTimetablePageTests
     [Fact]
     public async Task Render_ShouldShowButtonRemoveSave_WhenCurrentUserDoesNotHaveSaveAuditory()
     {
-        _user.FindFirst(CustomClaimTypes.Id).Returns(new Claim("", "10"));
+        _user.FindFirst(ClaimTypes.Sid).Returns(new Claim("", "10"));
         var user = new UserProfile { SavedAuditories = new List<AuditoryDto> { new() { Id = 11 } } };
         _user.Identity.Returns(Substitute.For<IIdentity>());
         _user.Identity!.IsAuthenticated.Returns(true);

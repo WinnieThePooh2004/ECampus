@@ -1,6 +1,5 @@
 ﻿using System.Security.Claims;
 using Bunit;
-using ECampus.Domain.Auth;
 using ECampus.Domain.DataTransferObjects;
 using ECampus.FrontEnd.Components.EditForms;
 using FluentValidation;
@@ -43,7 +42,7 @@ public class PasswordEditFormTests
     public void Initialize_ShouldThrowException_WhenNoIdClaimIsNotNumber()
     {
         _httpContext.User.Returns(
-            new ClaimsPrincipal(new ClaimsIdentity(new List<Claim> { new(CustomClaimTypes.Id, "ms") })));
+            new ClaimsPrincipal(new ClaimsIdentity(new List<Claim> { new(ClaimTypes.Sid, "ms") })));
         new Action(() => _context.RenderComponent<PasswordEditForm>()).Should()
             .Throw<UnauthorizedAccessException>();
     }
@@ -53,7 +52,7 @@ public class PasswordEditFormTests
     {
         var model = new PasswordChangeDto();
         _httpContext.User.Returns(
-            new ClaimsPrincipal(new ClaimsIdentity(new List<Claim> { new(CustomClaimTypes.Id, "10") })));
+            new ClaimsPrincipal(new ClaimsIdentity(new List<Claim> { new(ClaimTypes.Sid, "10") })));
         new Action(() => _context.RenderComponent<PasswordEditForm>(options => 
                 options.Add(form => form.Model, model))).Should()
             .NotThrow();

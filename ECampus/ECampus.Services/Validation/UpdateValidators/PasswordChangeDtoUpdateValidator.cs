@@ -1,6 +1,5 @@
 ﻿using System.Security.Claims;
 using ECampus.DataAccess.Contracts.DataAccess;
-using ECampus.Domain.Auth;
 using ECampus.Domain.DataTransferObjects;
 using ECampus.Domain.Entities;
 using ECampus.Domain.Validation;
@@ -26,7 +25,7 @@ public class PasswordChangeDtoUpdateValidator : IUpdateValidator<PasswordChangeD
     public async Task<ValidationResult> ValidateAsync(PasswordChangeDto dataTransferObject, CancellationToken token = default)
     {
         var errors = await _baseValidator.ValidateAsync(dataTransferObject, token);
-        var idValidationResults = ValidateRole(dataTransferObject.UserId);
+        var idValidationResults = ValidateUserId(dataTransferObject.UserId);
         errors.MergeResults(idValidationResults);
         if (!idValidationResults.IsValid)
         {
@@ -40,9 +39,9 @@ public class PasswordChangeDtoUpdateValidator : IUpdateValidator<PasswordChangeD
         return errors;
     }
 
-    private ValidationResult ValidateRole(int userId)
+    private ValidationResult ValidateUserId(int userId)
     {
-        var userIdValidation = _user.ValidateParsableClaim<int>(CustomClaimTypes.Id);
+        var userIdValidation = _user.ValidateParsableClaim<int>(ClaimTypes.Sid);
         if (userIdValidation.ClaimValue != userId)
         {
             userIdValidation.Result.AddError(new ValidationError(nameof(PasswordChangeDto.UserId), 

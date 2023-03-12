@@ -1,5 +1,4 @@
 ﻿using System.Security.Claims;
-using ECampus.Domain.Auth;
 using ECampus.Domain.Enums;
 using ECampus.Domain.Exceptions.DomainExceptions;
 using ECampus.Services.Services.Auth;
@@ -50,7 +49,7 @@ public class AuthenticationServiceTests
     [Fact]
     public void VerifyUser_ShouldThrowException_WhenIdInClaimsIsNotNumber()
     {
-        var identity = new ClaimsIdentity(new List<Claim> { new(CustomClaimTypes.Id, "abc") },
+        var identity = new ClaimsIdentity(new List<Claim> { new(ClaimTypes.Sid, "abc") },
             "authType");
         _httpContextAccessor.HttpContext?.User.Returns(new ClaimsPrincipal(identity));
 
@@ -61,7 +60,7 @@ public class AuthenticationServiceTests
     [Fact]
     public void VerifyUser_ShouldThrowException_WhenIdIsNotSameAsProvidedAndUserIsNotAdmin()
     {
-        var identity = new ClaimsIdentity(new List<Claim> { new(CustomClaimTypes.Id, "1") },
+        var identity = new ClaimsIdentity(new List<Claim> { new(ClaimTypes.Sid, "1") },
             "authType");
         _httpContextAccessor.HttpContext?.User.Returns(new ClaimsPrincipal(identity));
 
@@ -75,7 +74,7 @@ public class AuthenticationServiceTests
     {
         var identity = new ClaimsIdentity(new List<Claim>
             {
-                new(CustomClaimTypes.Id, "1"),
+                new(ClaimTypes.Sid, "1"),
                 new(ClaimTypes.Role, nameof(UserRole.Admin))
             },
             "authType");
@@ -87,7 +86,7 @@ public class AuthenticationServiceTests
     [Fact]
     public void VerifyUser_ShouldNotThrowException_WhenIdIsSameAsProvided()
     {
-        var identity = new ClaimsIdentity(new List<Claim> { new(CustomClaimTypes.Id, "10") },
+        var identity = new ClaimsIdentity(new List<Claim> { new(ClaimTypes.Sid, "10") },
             "authType");
         _httpContextAccessor.HttpContext?.User.Returns(new ClaimsPrincipal(identity));
         

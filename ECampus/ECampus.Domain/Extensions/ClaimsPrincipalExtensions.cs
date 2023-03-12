@@ -1,5 +1,4 @@
 ﻿using System.Security.Claims;
-using ECampus.Domain.Auth;
 
 namespace ECampus.Domain.Extensions;
 
@@ -7,7 +6,7 @@ public static class ClaimsPrincipalExtensions
 {
     public static int? GetId(this ClaimsPrincipal user)
     {
-        var idClaim = user.FindFirst(CustomClaimTypes.Id);
+        var idClaim = user.FindFirst(ClaimTypes.Sid);
         if (idClaim is null)
         {
             return null;

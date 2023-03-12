@@ -1,7 +1,6 @@
 ﻿using System.Security.Claims;
 using ECampus.DataAccess.Contracts.DataAccess;
 using ECampus.DataAccess.Contracts.DataSelectParameters;
-using ECampus.Domain.Auth;
 using ECampus.Domain.DataTransferObjects;
 using ECampus.Domain.Entities;
 using ECampus.Domain.Enums;
@@ -54,7 +53,7 @@ public class UserUpdateValidatorTests
         _dataAccess.GetByParameters<User, UserUsernameParameters>(
                 Arg.Is<UserUsernameParameters>(parameters => parameters.Username == user.Username))
             .Returns(userByUsername);
-        _user.FindFirst(CustomClaimTypes.Id).Returns(new Claim("", "10"));
+        _user.FindFirst(ClaimTypes.Sid).Returns(new Claim("", "10"));
         _baseValidator.ValidateAsync(user).Returns(new ValidationResult());
         var expectedErrors = new List<ValidationError>
         {
@@ -78,7 +77,7 @@ public class UserUpdateValidatorTests
         _dataAccess.GetByParameters<User, UserUsernameParameters>(
                 Arg.Is<UserUsernameParameters>(parameters => parameters.Username == user.Username))
             .Returns(userByUsername);
-        _user.FindFirst(CustomClaimTypes.Id).Returns(new Claim("", "15"));
+        _user.FindFirst(ClaimTypes.Sid).Returns(new Claim("", "15"));
         _baseValidator.ValidateAsync(user).Returns(new ValidationResult());
         var expectedErrors = new List<ValidationError>
         {
@@ -219,7 +218,7 @@ public class UserUpdateValidatorTests
         var userByUsername = new DbSetMock<User>().Object;
         _dataAccess.GetByParameters<User, UserUsernameParameters>(
             Arg.Any<UserUsernameParameters>()).Returns(userByUsername);
-        _user.FindFirst(CustomClaimTypes.Id).Returns(new Claim("", "15"));
+        _user.FindFirst(ClaimTypes.Sid).Returns(new Claim("", "15"));
         _user.FindFirst(ClaimTypes.Role).Returns(new Claim("", nameof(UserRole.Admin)));
         _baseValidator.ValidateAsync(Arg.Any<UserDto>()).Returns(new ValidationResult());
     }

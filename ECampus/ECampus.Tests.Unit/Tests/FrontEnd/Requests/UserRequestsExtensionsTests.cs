@@ -1,6 +1,5 @@
 ﻿using System.Security.Claims;
 using System.Security.Principal;
-using ECampus.Domain.Auth;
 using ECampus.Domain.DataTransferObjects;
 using ECampus.FrontEnd.Extensions;
 using ECampus.FrontEnd.Requests.Interfaces;
@@ -34,7 +33,7 @@ public class UserRequestsExtensionsTests
     {
         _httpContext.User.Returns(new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
         {
-            new(CustomClaimTypes.Id, "abc")
+            new(ClaimTypes.Sid, "abc")
         })));
 
         await new Func<Task>(() => _sut.GetCurrentUserAsync(_httpContextAccessor)).Should()
@@ -86,7 +85,7 @@ public class UserRequestsExtensionsTests
         _sut.GetByIdAsync(10).Returns(user);
         _httpContextAccessor.HttpContext?.User.Returns(new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
         {
-            new(CustomClaimTypes.Id, "10")
+            new(ClaimTypes.Sid, "10")
         }, CookieAuthenticationDefaults.AuthenticationScheme)));
 
         var result = await _sut.GetCurrentUserAsync(_httpContextAccessor);
