@@ -1,7 +1,6 @@
 ﻿using System.Security.Claims;
 using ECampus.DataAccess.Contracts.DataAccess;
 using ECampus.DataAccess.Contracts.DataSelectParameters;
-using ECampus.Domain.Auth;
 using ECampus.Domain.DataTransferObjects;
 using ECampus.Domain.Entities;
 using ECampus.Domain.Validation;
@@ -31,7 +30,7 @@ public class PasswordChangeDtoUpdateValidatorTests
     [Fact]
     public async Task Validate_ShouldReturnMessage_WhenPasswordsNotMatches()
     {
-        _user.FindFirst(CustomClaimTypes.Id).Returns(new Claim("10", "10"));
+        _user.FindFirst(ClaimTypes.Sid).Returns(new Claim("10", "10"));
         var passwordChange = new PasswordChangeDto
             { UserId = 10, NewPassword = "new", OldPassword = "old", NewPasswordConfirm = "new" };
         _baseValidator.ValidateAsync(passwordChange).Returns(new ValidationResult());
@@ -49,7 +48,7 @@ public class PasswordChangeDtoUpdateValidatorTests
     {
         var errors = new ValidationResult(new ValidationError("abc", "bcd"));
         var token = new CancellationToken(); 
-        _user.FindFirst(CustomClaimTypes.Id).Returns(new Claim("", "10"));
+        _user.FindFirst(ClaimTypes.Sid).Returns(new Claim("", "10"));
         _baseValidator.ValidateAsync(Arg.Any<PasswordChangeDto>(), token).Returns(errors);
         var expectedErrors = new ValidationResult(errors);
         expectedErrors.AddError(new ValidationError("UserId",

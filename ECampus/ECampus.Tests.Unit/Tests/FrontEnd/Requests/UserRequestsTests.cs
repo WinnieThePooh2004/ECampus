@@ -1,6 +1,5 @@
 ﻿using System.Net;
 using System.Security.Claims;
-using ECampus.Domain.Auth;
 using ECampus.FrontEnd.Requests;
 using ECampus.Tests.Shared.Mocks.HttpRequests;
 using Microsoft.AspNetCore.Http;
@@ -17,7 +16,7 @@ public class UserRequestsTests
 
     private readonly ClaimsPrincipal _user = new(new ClaimsIdentity(new List<Claim>
     {
-        new(CustomClaimTypes.Id, "10")
+        new(ClaimTypes.Sid, "10")
     }));
 
     public UserRequestsTests()

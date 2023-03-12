@@ -6,7 +6,6 @@ using ECampus.Domain.DataTransferObjects;
 using ECampus.Domain.Entities;
 using ECampus.Services.Contracts.Messaging;
 using ECampus.Services.Contracts.Services;
-using ECampus.Services.Messaging;
 using Microsoft.EntityFrameworkCore;
 
 namespace ECampus.Services.Services.Messaging;

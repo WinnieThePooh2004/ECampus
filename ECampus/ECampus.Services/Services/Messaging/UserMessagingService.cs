@@ -2,7 +2,6 @@
 using ECampus.Services.Contracts.Messaging;
 using ECampus.Services.Contracts.Services;
 using ECampus.Services.Mapping.Messages;
-using ECampus.Services.Messaging;
 
 namespace ECampus.Services.Services.Messaging;
 
