@@ -1,6 +1,6 @@
 ﻿using ECampus.DataAccess.Interfaces;
 using ECampus.Domain.Entities;
-using ECampus.Domain.QueryParameters;
+using ECampus.Domain.Requests.TaskSubmission;
 using ECampus.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 

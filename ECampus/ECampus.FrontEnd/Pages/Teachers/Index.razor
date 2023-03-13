@@ -1,6 +1,8 @@
 ﻿@page "/teachers/{DepartmentId:int}"
-<IndexPageModel TData="TeacherDto" TParameters="TeacherParameters"
+@using ECampus.Domain.Requests.Teacher
+@using ECampus.Domain.Responses.Teacher
+<IndexPageModel TData="MultipleTeacherResponse" TParameters="TeacherParameters"
            ParameterOptions="@(p => { p.DepartmentId = DepartmentId; p.OrderBy = "LastName"; })"
            CreateLink="@($"/teachers/Create/{DepartmentId}")"
            EditLink="/teachers/edit"
-           ActionLinks="@(new List<(string, Func<TeacherDto, string>)> { ("Timetable", d => $"/timetable/teacher/{d.Id}")})" />
+           ActionLinks="@(new List<(string, Func<MultipleTeacherResponse, string>)> { ("Timetable", d => $"/timetable/teacher/{d.Id}")})" />

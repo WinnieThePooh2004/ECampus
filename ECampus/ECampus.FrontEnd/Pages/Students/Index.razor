@@ -1,5 +1,7 @@
 ﻿@page "/Students/{GroupId:int}"
-<IndexPageModel TData="StudentDto" TParameters="StudentParameters"
+@using ECampus.Domain.Requests.Student
+@using ECampus.Domain.Responses.Student
+<IndexPageModel TData="MultipleStudentResponse" TParameters="StudentParameters"
            ParameterOptions="@(p => { p.GroupId = GroupId; p.OrderBy = "LastName"; })"
            CreateLink="@($"/students/Create/{GroupId}")"
            EditLink="/students/edit"/>

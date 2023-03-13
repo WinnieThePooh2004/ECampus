@@ -1,6 +1,7 @@
 ﻿using ECampus.Domain.DataTransferObjects;
 using ECampus.Domain.Enums;
-using ECampus.Domain.QueryParameters;
+using ECampus.Domain.Requests.Course;
+using ECampus.Domain.Responses.Course;
 using ECampus.Services.Contracts.Services;
 using ECampus.WebApi.Metadata;
 using Microsoft.AspNetCore.Authorization;
@@ -12,10 +13,10 @@ namespace ECampus.WebApi.Controllers;
 [Route("api/[controller]")]
 public class CoursesController : ControllerBase
 {
-    private readonly IParametersService<CourseDto, CourseParameters> _parametersService;
+    private readonly IParametersService<MultipleCourseResponse, CourseParameters> _parametersService;
     private readonly IBaseService<CourseDto> _baseService;
 
-    public CoursesController(IParametersService<CourseDto, CourseParameters> parametersService,
+    public CoursesController(IParametersService<MultipleCourseResponse, CourseParameters> parametersService,
         IBaseService<CourseDto> baseService)
     {
         _parametersService = parametersService;
@@ -26,20 +27,20 @@ public class CoursesController : ControllerBase
     [AllowAnonymous]
     public async Task<IActionResult> Get([FromQuery] CourseParameters parameters, CancellationToken token = default)
     {
-        return Ok(await _parametersService.GetByParametersAsync(parameters));
+        return Ok(await _parametersService.GetByParametersAsync(parameters, token));
     }
 
     [HttpGet("{id:int}")]
     [AllowAnonymous]
     public async Task<IActionResult> Get(int id, CancellationToken token = default)
     {
-        return Ok(await _baseService.GetByIdAsync(id));
+        return Ok(await _baseService.GetByIdAsync(id, token));
     }
 
     [HttpGet("summary")]
     [Authorized(UserRole.Student)]
     public async Task<IActionResult> Summary(
-        [FromServices] IParametersService<CourseSummary, CourseSummaryParameters> parametersService,
+        [FromServices] IParametersService<CourseSummaryResponse, CourseSummaryParameters> parametersService,
         [FromQuery] CourseSummaryParameters parameters)
     {
         return Ok(await parametersService.GetByParametersAsync(parameters));

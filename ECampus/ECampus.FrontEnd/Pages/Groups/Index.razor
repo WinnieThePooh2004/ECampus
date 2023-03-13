@@ -1,7 +1,10 @@
 ﻿@page "/groups/{DepartmentId:int}"
-<IndexPageModel TData="GroupDto" TParameters="GroupParameters"
+@using ECampus.Domain.Requests.Group
+@using ECampus.Domain.Responses.Group
+
+<IndexPageModel TData="MultipleGroupResponse" TParameters="GroupParameters"
            ParameterOptions="@(p => { p.DepartmentId = DepartmentId; p.OrderBy = "Name"; })"
            CreateLink="@($"/groups/Create/{DepartmentId}")"
            EditLink="/groups/edit"
-           ActionLinks="@(new List<(string, Func<GroupDto, string>)> { ("Timetable", g => $"/timetable/group/{g.Id}"),
+           ActionLinks="@(new List<(string, Func<MultipleGroupResponse, string>)> { ("Timetable", g => $"/timetable/group/{g.Id}"),
                             ("students", g => $"/students/{g.Id}") })"/>

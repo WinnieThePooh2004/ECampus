@@ -1,12 +1,13 @@
 ﻿using ECampus.Domain.Data;
 using ECampus.Domain.Enums;
-using ECampus.Domain.QueryParameters;
+using ECampus.Domain.Requests;
+using ECampus.Domain.Responses;
 using Microsoft.AspNetCore.Components;
 
 namespace ECampus.FrontEnd.Components.PageModels;
 
 public partial class IndexPageModel<TData, TParameters>
-    where TData : class, IDataTransferObject
+    where TData : class, IMultipleItemsResponse
     where TParameters : class, IQueryParameters<TData>, new()
 {
     [Parameter] public string? CreateLink { get; set; }

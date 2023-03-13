@@ -1,5 +1,5 @@
-﻿using ECampus.Domain.DataContainers;
-using ECampus.Domain.DataTransferObjects;
+﻿using ECampus.Domain.DataTransferObjects;
+using ECampus.Domain.Responses.Class;
 using ECampus.Domain.Validation;
 
 namespace ECampus.Services.Contracts.Services;

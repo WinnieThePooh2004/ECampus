@@ -3,11 +3,12 @@ using System.Security.Principal;
 using Bunit;
 using ECampus.Domain.DataTransferObjects;
 using ECampus.Domain.Enums;
+using ECampus.Domain.Responses.Auditory;
 using ECampus.FrontEnd.Pages.Timetable;
 using ECampus.FrontEnd.Requests.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-using TimetableData = ECampus.Domain.DataContainers.Timetable;
+using TimetableData = ECampus.Domain.Responses.Class.Timetable;
 
 namespace ECampus.Tests.Unit.Tests.FrontEnd.Pages.Timetable;
 
@@ -93,7 +94,7 @@ public class AuditoryTimetablePageTests
     public async Task Render_ShouldShowButtonSave_WhenCurrentUserDoesNotHaveSaveAuditory()
     {
         _user.FindFirst(ClaimTypes.Sid).Returns(new Claim("", "10"));
-        var user = new UserProfile { SavedAuditories = new List<AuditoryDto>() };
+        var user = new UserProfile { SavedAuditories = new List<MultipleAuditoryResponse>() };
         _user.Identity.Returns(Substitute.For<IIdentity>());
         _user.Identity!.IsAuthenticated.Returns(true);
         _userRequests.GetByIdAsync(10).Returns(user);
@@ -109,7 +110,7 @@ public class AuditoryTimetablePageTests
     public async Task Render_ShouldShowButtonRemoveSave_WhenCurrentUserDoesNotHaveSaveAuditory()
     {
         _user.FindFirst(ClaimTypes.Sid).Returns(new Claim("", "10"));
-        var user = new UserProfile { SavedAuditories = new List<AuditoryDto> { new() { Id = 11 } } };
+        var user = new UserProfile { SavedAuditories = new List<MultipleAuditoryResponse> { new() { Id = 11 } } };
         _user.Identity.Returns(Substitute.For<IIdentity>());
         _user.Identity!.IsAuthenticated.Returns(true);
         _userRequests.GetByIdAsync(10).Returns(user);

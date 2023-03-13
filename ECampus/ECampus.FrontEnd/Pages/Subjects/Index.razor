@@ -1,6 +1,8 @@
 ﻿@page "/subjects"
+@using ECampus.Domain.Requests.Subject
+@using ECampus.Domain.Responses.Subject
 
-<IndexPageModel TData="SubjectDto" TParameters="SubjectParameters"
+<IndexPageModel TData="MultipleSubjectResponse" TParameters="SubjectParameters"
            ParameterOptions="@(parameters => parameters.OrderBy = "Name")"
            CreateLink="@("/subjects/Create")"
            EditLink="/subjects/edit"/>

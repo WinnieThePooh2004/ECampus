@@ -1,4 +1,7 @@
 ﻿@page "/profile"
+@using ECampus.Domain.Responses.Auditory
+@using ECampus.Domain.Responses.Group
+@using ECampus.Domain.Responses.Teacher
 
 @if (_user is null)
 {
@@ -21,7 +24,7 @@
                 <th style="width: 33%">Name</th>
                 <th style="width: 34%"></th>
             </tr>
-            @foreach (var auditory in _user.SavedAuditories ??= new List<AuditoryDto>())
+            @foreach (var auditory in _user.SavedAuditories ??= new List<MultipleAuditoryResponse>())
             {
                 <tr>
                     <td>
@@ -42,7 +45,7 @@
                 <th style="width: 50%">Name</th>
                 <th style="width: 50%"></th>
             </tr>
-            @foreach (var group in _user.SavedGroups ??= new List<GroupDto>())
+            @foreach (var group in _user.SavedGroups ??= new List<MultipleGroupResponse>())
             {
                 <tr>
                     <td>
@@ -61,7 +64,7 @@
                 <th style="width: 33%">Last name</th>
                 <th style="width: 34%"></th>
             </tr>
-            @foreach (var teacher in _user.SavedTeachers ??= new List<TeacherDto>())
+            @foreach (var teacher in _user.SavedTeachers ??= new List<MultipleTeacherResponse>())
             {
                 <tr>
                     <td>

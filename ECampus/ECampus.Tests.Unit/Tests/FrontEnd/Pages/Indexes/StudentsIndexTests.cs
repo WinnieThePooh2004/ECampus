@@ -1,7 +1,7 @@
 ﻿using Bunit;
-using ECampus.Domain.DataContainers;
-using ECampus.Domain.DataTransferObjects;
-using ECampus.Domain.QueryParameters;
+using ECampus.Domain.Requests.Student;
+using ECampus.Domain.Responses;
+using ECampus.Domain.Responses.Student;
 using ECampus.FrontEnd.PropertySelectors;
 using ECampus.FrontEnd.Requests.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -12,15 +12,15 @@ namespace ECampus.Tests.Unit.Tests.FrontEnd.Pages.Indexes;
 
 public class StudentsIndexTests
 {
-    private readonly IParametersRequests<StudentDto, StudentParameters> _parametersRequests =
-        Substitute.For<IParametersRequests<StudentDto, StudentParameters>>();
+    private readonly IParametersRequests<MultipleStudentResponse, StudentParameters> _parametersRequests =
+        Substitute.For<IParametersRequests<MultipleStudentResponse, StudentParameters>>();
 
-    private readonly IBaseRequests<StudentDto> _baseRequests = Substitute.For<IBaseRequests<StudentDto>>();
+    private readonly IBaseRequests<MultipleStudentResponse> _baseRequests = Substitute.For<IBaseRequests<MultipleStudentResponse>>();
     private readonly IHttpContextAccessor _httpContextAccessor = Substitute.For<IHttpContextAccessor>();
     private readonly HttpContext _httpContent = Substitute.For<HttpContext>();
     private readonly Fixture _fixture = new();
     
-    private static readonly IPropertySelector<StudentDto> PropertySelector = new PropertySelector<StudentDto>();
+    private static readonly IPropertySelector<MultipleStudentResponse> PropertySelector = new PropertySelector<MultipleStudentResponse>();
 
     private static readonly ISearchTermsSelector<StudentParameters> SearchTermsSelector =
         new SearchTermsSelector<StudentParameters>();
@@ -50,7 +50,7 @@ public class StudentsIndexTests
         await _parametersRequests.Received(1).GetByParametersAsync(Arg.Is<StudentParameters>(s => s.GroupId == 10));
     }
     
-    private ListWithPaginationData<StudentDto> TestData(int pageSize) =>
+    private ListWithPaginationData<MultipleStudentResponse> TestData(int pageSize) =>
         new()
         {
             Metadata = new PaginationData
@@ -59,6 +59,6 @@ public class StudentsIndexTests
                 PageNumber = 1,
                 TotalCount = 10
             },
-            Data = _fixture.CreateMany<StudentDto>(10).ToList()
+            Data = _fixture.CreateMany<MultipleStudentResponse>(10).ToList()
         };
 }

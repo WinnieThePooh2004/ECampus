@@ -1,4 +1,4 @@
-﻿using ECampus.Domain.QueryParameters;
+﻿using ECampus.Domain.Requests;
 using ECampus.Domain.Validation;
 
 namespace ECampus.Services.Contracts.Validation;

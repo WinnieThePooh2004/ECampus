@@ -1,17 +1,22 @@
 ﻿using ECampus.Domain.Comparing;
 using ECampus.Domain.Data;
-using ECampus.Domain.QueryParameters;
+using ECampus.Domain.Requests;
+using ECampus.Domain.Responses;
 using Microsoft.AspNetCore.Components;
 
 namespace ECampus.FrontEnd.Components.DataSelectors;
 
 public sealed partial class MultipleItemsSelect<TData, TParameters>
-    where TData : class, IDataTransferObject, new()
+    where TData : class, IMultipleItemsResponse, new()
     where TParameters : class, IQueryParameters<TData>, new()
 {
     [Parameter] public string Title { get; set; } = string.Empty;
+    
     [Parameter] public EventCallback OnChanged { get; set; }
+
     [Parameter] public List<TData> SelectTo { get; set; } = new();
+
+    [Parameter] public List<int> SelectIdsTo { get; set; } = new();
 
     private Dictionary<TData, bool> Select { get; } =
         new(new Dictionary<TData, bool>(new DataTransferObjectComparer<TData>()));
@@ -38,6 +43,7 @@ public sealed partial class MultipleItemsSelect<TData, TParameters>
             if (DataRefreshed())
             {
                 SelectTo.Remove(selectInSourceList);
+                SelectIdsTo.Remove(item.Id);
             }
             this[item] = false;
             return;
@@ -46,6 +52,7 @@ public sealed partial class MultipleItemsSelect<TData, TParameters>
         if (DataRefreshed())
         {
             SelectTo.Add(item);
+            SelectIdsTo.Add(item.Id);
         }
         this[item] = true;
     }

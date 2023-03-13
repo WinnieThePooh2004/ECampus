@@ -1,5 +1,6 @@
 ﻿@using ECampus.Domain.DataTransferObjects
-@using ECampus.Domain.QueryParameters
+@using ECampus.Domain.Requests.Teacher
+@using ECampus.Domain.Responses.Teacher
 @inherits ModelEditForm<ECampus.Domain.DataTransferObjects.SubjectDto>
 <EditForm EditContext="EditContext" OnValidSubmit="Submit">
     <FluentValidationValidator Validator="Validator"/>
@@ -19,7 +20,7 @@
                         Last name
                     </th>
                 </tr>
-                @foreach (var teacher in Model.Teachers ??= new List<TeacherDto>())
+                @foreach (var teacher in Model.Teachers ??= new List<MultipleTeacherResponse>())
                 {
                     <tr>
                         <td>
@@ -32,7 +33,7 @@
                 }
             </table>
             <br/><br/>
-            <MultipleItemsSelect TData="TeacherDto" TParameters="TeacherParameters" SelectTo="@Model.Teachers" OnChanged="@StateHasChanged" />
+            <MultipleItemsSelect TData="MultipleTeacherResponse" TParameters="TeacherParameters" SelectTo="@Model.Teachers" OnChanged="@StateHasChanged" />
             <br/>
             <button type="submit" class="btn btn-success">Save</button>
         </div>

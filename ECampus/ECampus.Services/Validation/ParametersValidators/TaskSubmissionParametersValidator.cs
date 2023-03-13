@@ -6,7 +6,7 @@ using ECampus.Domain.Auth;
 using ECampus.Domain.Entities;
 using ECampus.Domain.Enums;
 using ECampus.Domain.Exceptions.DomainExceptions;
-using ECampus.Domain.QueryParameters;
+using ECampus.Domain.Requests.TaskSubmission;
 using ECampus.Domain.Validation;
 using ECampus.Services.Contracts.Validation;
 using Microsoft.AspNetCore.Http;

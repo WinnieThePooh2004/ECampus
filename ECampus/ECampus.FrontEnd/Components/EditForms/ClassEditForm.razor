@@ -1,4 +1,12 @@
-﻿@inherits ModelEditForm<ClassDto>
+﻿@using ECampus.Domain.Requests.Teacher
+@using ECampus.Domain.Requests.Auditory
+@using ECampus.Domain.Requests.Group
+@using ECampus.Domain.Requests.Subject
+@using ECampus.Domain.Responses.Auditory
+@using ECampus.Domain.Responses.Group
+@using ECampus.Domain.Responses.Subject
+@using ECampus.Domain.Responses.Teacher
+@inherits ModelEditForm<ClassDto>
 <div class="row">
     <div class="col-md-4">
         <EditForm EditContext="EditContext" on OnValidSubmit="Submit">
@@ -45,24 +53,24 @@
             @if (TimetableMode != TimetableMode.Teacher)
             {
                 <ValidationMessage For="@(() => Model.TeacherId)"/>
-                <SingleItemSelect TData="TeacherDto" TParameters="TeacherParameters" @bind-SelectedId="Model.TeacherId" Title="Select teacher"/>
+                <SingleItemSelect TData="MultipleTeacherResponse" TParameters="TeacherParameters" @bind-SelectedId="Model.TeacherId" Title="Select teacher"/>
                 <br/>
             }
             @if (TimetableMode != TimetableMode.Auditory)
             {
                 <ValidationMessage For="@(() => Model.AuditoryId)"/>
-                <SingleItemSelect TData="AuditoryDto" TParameters="AuditoryParameters" @bind-SelectedId="Model.AuditoryId" Title="Select auditory"/>
+                <SingleItemSelect TData="MultipleAuditoryResponse" TParameters="AuditoryParameters" @bind-SelectedId="Model.AuditoryId" Title="Select auditory"/>
                 <br/>
             }
             @if (TimetableMode != TimetableMode.Group)
             {
                 <ValidationMessage For="@(() => Model.GroupId)"/>
-                <SingleItemSelect TData="GroupDto" TParameters="GroupParameters" @bind-SelectedId="Model.GroupId" Title="Select group"/>
+                <SingleItemSelect TData="MultipleGroupResponse" TParameters="GroupParameters" @bind-SelectedId="Model.GroupId" Title="Select group"/>
                 <br/>
             }
 
             <ValidationMessage For="@(() => Model.SubjectId)"/>
-            <SingleItemSelect TData="SubjectDto" TParameters="SubjectParameters" @bind-SelectedId="Model.SubjectId" Title="Select subject"/>
+            <SingleItemSelect TData="MultipleSubjectResponse" TParameters="SubjectParameters" @bind-SelectedId="Model.SubjectId" Title="Select subject"/>
 
         </EditForm>
     </div>

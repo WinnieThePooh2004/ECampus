@@ -7,6 +7,7 @@ using ECampus.Domain.Entities;
 using ECampus.Domain.Enums;
 using ECampus.Domain.Exceptions.DomainExceptions;
 using ECampus.Domain.Extensions;
+using ECampus.Domain.Responses.Auth;
 using ECampus.Services.Contracts.Services;
 using ECampus.Services.Services.Auth;
 using ECampus.Tests.Shared;
@@ -67,7 +68,7 @@ public class AuthorizationServiceTests
         _parametersDataAccess
             .GetByParameters<User, UserEmailParameters>(Arg.Is<UserEmailParameters>(p =>
                 p.Email == "secretEmail@abc.com")).Returns(set);
-        var loginResult = new LoginResult
+        var loginResult = new LoginResponse
         {
             Email = user.Email,
             Role = user.Role.ToString(),
@@ -81,12 +82,12 @@ public class AuthorizationServiceTests
         actual.Should().BeEquivalentTo(actual);
     }
 
-    private string CreateExpectedToken(LoginResult loginResult)
+    private string CreateExpectedToken(LoginResponse loginResponse)
     {
         var jwt = new JwtSecurityToken(
             issuer: _authOptions.Issuer,
             audience: _authOptions.Audience,
-            claims: loginResult.CreateClaims(),
+            claims: loginResponse.CreateClaims(),
             expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(2)),
             signingCredentials: new SigningCredentials(_authOptions.GetSymmetricSecurityKey(),
                 SecurityAlgorithms.HmacSha256));

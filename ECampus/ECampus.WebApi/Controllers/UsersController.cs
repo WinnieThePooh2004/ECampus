@@ -1,6 +1,7 @@
 ﻿using ECampus.Domain.DataTransferObjects;
 using ECampus.Domain.Enums;
-using ECampus.Domain.QueryParameters;
+using ECampus.Domain.Requests.User;
+using ECampus.Domain.Responses.User;
 using ECampus.Services.Contracts.Services;
 using ECampus.WebApi.Metadata;
 using Microsoft.AspNetCore.Mvc;
@@ -12,10 +13,10 @@ namespace ECampus.WebApi.Controllers;
 public class UsersController : ControllerBase
 {
     private readonly IBaseService<UserDto> _service;
-    private readonly IParametersService<UserDto, UserParameters> _parametersService;
+    private readonly IParametersService<MultipleUserResponse, UserParameters> _parametersService;
 
     public UsersController(IBaseService<UserDto> service,
-        IParametersService<UserDto, UserParameters> parametersService)
+        IParametersService<MultipleUserResponse, UserParameters> parametersService)
     {
         _service = service;
         _parametersService = parametersService;

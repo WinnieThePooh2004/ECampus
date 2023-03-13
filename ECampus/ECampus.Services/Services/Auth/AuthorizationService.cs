@@ -8,6 +8,7 @@ using ECampus.Domain.DataTransferObjects;
 using ECampus.Domain.Entities;
 using ECampus.Domain.Exceptions.DomainExceptions;
 using ECampus.Domain.Extensions;
+using ECampus.Domain.Responses.Auth;
 using ECampus.Domain.Validation;
 using ECampus.Services.Contracts.Services;
 using Microsoft.AspNetCore.Http;
@@ -32,7 +33,7 @@ public class AuthorizationService : IAuthorizationService
         _userProfileService = userProfileService;
     }
 
-    public async Task<LoginResult> Login(LoginDto login, CancellationToken token = default)
+    public async Task<LoginResponse> Login(LoginDto login, CancellationToken token = default)
     {
         if (_httpContextAccessor.HttpContext is null)
         {
@@ -46,7 +47,7 @@ public class AuthorizationService : IAuthorizationService
             throw new DomainException(HttpStatusCode.BadRequest, "Wrong password or email");
         }
 
-        var result = new LoginResult
+        var result = new LoginResponse
         {
             Email = user.Email,
             Role = user.Role.ToString(),
@@ -60,7 +61,7 @@ public class AuthorizationService : IAuthorizationService
         return CreateJwt(result);
     }
 
-    public async Task<LoginResult> SignUp(RegistrationDto registrationDto, CancellationToken token = default)
+    public async Task<LoginResponse> SignUp(RegistrationDto registrationDto, CancellationToken token = default)
     {
         var userToCreate = new User
         {
@@ -70,7 +71,7 @@ public class AuthorizationService : IAuthorizationService
         var user = _parametersDataAccess.Create(userToCreate);
         await _parametersDataAccess.SaveChangesAsync(token);
         
-        var result = new LoginResult
+        var result = new LoginResponse
         {
             Email = user.Email,
             Role = user.Role.ToString(),
@@ -103,17 +104,17 @@ public class AuthorizationService : IAuthorizationService
             : new ValidationResult();
     }
     
-    private LoginResult CreateJwt(LoginResult result)
+    private LoginResponse CreateJwt(LoginResponse response)
     {
         var jwt = new JwtSecurityToken(
             issuer: _authOptions.Issuer,
             audience: _authOptions.Audience,
-            claims: result.CreateClaims(),
+            claims: response.CreateClaims(),
             expires: DateTime.UtcNow.Add(TimeSpan.FromHours(2)),
             signingCredentials: new SigningCredentials(_authOptions.GetSymmetricSecurityKey(),
                 SecurityAlgorithms.HmacSha256));
 
-        result.Token = new JwtSecurityTokenHandler().WriteToken(jwt);
-        return result;
+        response.Token = new JwtSecurityTokenHandler().WriteToken(jwt);
+        return response;
     }
 }

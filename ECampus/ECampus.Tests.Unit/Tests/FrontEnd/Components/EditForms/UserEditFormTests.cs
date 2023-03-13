@@ -1,8 +1,13 @@
 ﻿using Bunit;
-using ECampus.Domain.DataContainers;
 using ECampus.Domain.DataTransferObjects;
 using ECampus.Domain.Enums;
-using ECampus.Domain.QueryParameters;
+using ECampus.Domain.Requests.Student;
+using ECampus.Domain.Requests.Teacher;
+using ECampus.Domain.Requests.User;
+using ECampus.Domain.Responses;
+using ECampus.Domain.Responses.Student;
+using ECampus.Domain.Responses.Teacher;
+using ECampus.Domain.Responses.User;
 using ECampus.FrontEnd.Components.EditForms;
 using ECampus.FrontEnd.PropertySelectors;
 using ECampus.FrontEnd.Requests.Interfaces;
@@ -19,8 +24,8 @@ public class UserEditFormTests
     private readonly IBaseRequests<UserDto> _baseRequests = Substitute.For<IBaseRequests<UserDto>>();
     private readonly IValidator<UserDto> _validator = Substitute.For<IValidator<UserDto>>();
 
-    private readonly IParametersRequests<UserDto, UserParameters> _parametersRequests =
-        Substitute.For<IParametersRequests<UserDto, UserParameters>>();
+    private readonly IParametersRequests<MultipleUserResponse, UserParameters> _parametersRequests =
+        Substitute.For<IParametersRequests<MultipleUserResponse, UserParameters>>();
 
     public UserEditFormTests()
     {
@@ -60,10 +65,10 @@ public class UserEditFormTests
     public void Build_ShouldShowTeacherSelector_WhenRoleIsTeacher()
     {
         var user = new UserDto { Role = UserRole.Teacher };
-        var parametersSelector = Substitute.For<IParametersRequests<TeacherDto, TeacherParameters>>();
+        var parametersSelector = Substitute.For<IParametersRequests<MultipleTeacherResponse, TeacherParameters>>();
         _context.Services.AddSingleton(parametersSelector);
         parametersSelector.GetByParametersAsync(Arg.Any<TeacherParameters>())
-            .Returns(new ListWithPaginationData<TeacherDto>());
+            .Returns(new ListWithPaginationData<MultipleTeacherResponse>());
 
         var component = RenderedComponent(user);
         var markup = component.Markup;
@@ -75,10 +80,10 @@ public class UserEditFormTests
     public void Build_ShouldShowStudentSelector_WhenRoleIsStudent()
     {
         var user = new UserDto { Role = UserRole.Student };
-        var parametersSelector = Substitute.For<IParametersRequests<StudentDto, StudentParameters>>();
+        var parametersSelector = Substitute.For<IParametersRequests<MultipleStudentResponse, StudentParameters>>();
         _context.Services.AddSingleton(parametersSelector);
         parametersSelector.GetByParametersAsync(Arg.Any<StudentParameters>())
-            .Returns(new ListWithPaginationData<StudentDto>());
+            .Returns(new ListWithPaginationData<MultipleStudentResponse>());
 
         var component = RenderedComponent(user);
         var markup = component.Markup;
@@ -90,10 +95,11 @@ public class UserEditFormTests
     public void ClickOnStudent_ShouldSelectStudent_WhenRoleIsStudent()
     {
         var user = new UserDto { Role = UserRole.Student };
-        var parametersSelector = Substitute.For<IParametersRequests<StudentDto, StudentParameters>>();
+        var parametersSelector = Substitute.For<IParametersRequests<MultipleStudentResponse, StudentParameters>>();
         _context.Services.AddSingleton(parametersSelector);
         parametersSelector.GetByParametersAsync(Arg.Any<StudentParameters>())
-            .Returns(new ListWithPaginationData<StudentDto> { Data = new List<StudentDto> { new() { Id = 1 } } });
+            .Returns(new ListWithPaginationData<MultipleStudentResponse>
+                { Data = new List<MultipleStudentResponse> { new() { Id = 1 } } });
         var component = RenderedComponent(user);
         var checkbox = component.FindAll("input").Single();
 
@@ -106,10 +112,10 @@ public class UserEditFormTests
     public void ClickOnTeacher_ShouldSelectTeacher_WhenRoleIsStudent()
     {
         var user = new UserDto { Role = UserRole.Teacher };
-        var parametersSelector = Substitute.For<IParametersRequests<TeacherDto, TeacherParameters>>();
+        var parametersSelector = Substitute.For<IParametersRequests<MultipleTeacherResponse, TeacherParameters>>();
         _context.Services.AddSingleton(parametersSelector);
         parametersSelector.GetByParametersAsync(Arg.Any<TeacherParameters>())
-            .Returns(new ListWithPaginationData<TeacherDto>{Data = new List<TeacherDto>{new() {Id = 1}}});
+            .Returns(new ListWithPaginationData<MultipleTeacherResponse>{Data = new List<MultipleTeacherResponse>{new() {Id = 1}}});
         var component = RenderedComponent(user);
         var checkbox = component.FindAll("input").Single();
 

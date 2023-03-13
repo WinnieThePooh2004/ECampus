@@ -1,6 +1,7 @@
 ﻿using ECampus.Domain.DataTransferObjects;
 using ECampus.Domain.Enums;
-using ECampus.Domain.QueryParameters;
+using ECampus.Domain.Requests.Group;
+using ECampus.Domain.Responses.Group;
 using ECampus.Services.Contracts.Services;
 using ECampus.WebApi.Metadata;
 using Microsoft.AspNetCore.Authorization;
@@ -12,10 +13,10 @@ namespace ECampus.WebApi.Controllers;
 [Route("api/[controller]")]
 public class GroupsController : ControllerBase
 {
-    private readonly IParametersService<GroupDto, GroupParameters> _service;
+    private readonly IParametersService<MultipleGroupResponse, GroupParameters> _service;
     private readonly IBaseService<GroupDto> _baseService;
 
-    public GroupsController(IParametersService<GroupDto, GroupParameters> service, IBaseService<GroupDto> baseService)
+    public GroupsController(IParametersService<MultipleGroupResponse, GroupParameters> service, IBaseService<GroupDto> baseService)
     {
         _service = service;
         _baseService = baseService;

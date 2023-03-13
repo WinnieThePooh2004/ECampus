@@ -1,6 +1,8 @@
 ﻿@page "/courses/Summary/{StudentId:int}"
+@using ECampus.Domain.Requests.Course
+@using ECampus.Domain.Responses.Course
 
-<IndexPageModel TData="ECampus.Domain.DataTransferObjects.CourseSummary" TParameters="CourseSummaryParameters" EditEnabled="false"
+<IndexPageModel TData="CourseSummaryResponse" TParameters="CourseSummaryParameters" EditEnabled="false"
                 ParameterOptions="SetParameters"/>
 
 @code{
@@ -10,6 +12,6 @@
     private void SetParameters(CourseSummaryParameters parameters)
     {
         parameters.StudentId = StudentId;
-        parameters.OrderBy = nameof(ECampus.Domain.DataTransferObjects.CourseSummary.CourseId);
+        parameters.OrderBy = nameof(CourseSummaryResponse.CourseId);
     }
 }

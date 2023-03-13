@@ -1,6 +1,7 @@
-﻿using ECampus.Domain.DataContainers;
-using ECampus.Domain.DataTransferObjects;
-using ECampus.Domain.QueryParameters;
+﻿using ECampus.Domain.DataTransferObjects;
+using ECampus.Domain.Requests.TaskSubmission;
+using ECampus.Domain.Responses;
+using ECampus.Domain.Responses.TaskSubmission;
 using ECampus.Services.Contracts.Services;
 using ECampus.WebApi.Controllers;
 using Microsoft.AspNetCore.Mvc;
@@ -12,8 +13,8 @@ public class TaskSubmissionControllerTests
     private readonly TaskSubmissionsController _sut;
     private readonly ITaskSubmissionService _service = Substitute.For<ITaskSubmissionService>();
 
-    private readonly IParametersService<TaskSubmissionDto, TaskSubmissionParameters> _parametersService =
-        Substitute.For<IParametersService<TaskSubmissionDto, TaskSubmissionParameters>>();
+    private readonly IParametersService<MultipleTaskSubmissionResponse, TaskSubmissionParameters> _parametersService =
+        Substitute.For<IParametersService<MultipleTaskSubmissionResponse, TaskSubmissionParameters>>();
 
     private readonly Fixture _fixture = new();
 
@@ -25,9 +26,9 @@ public class TaskSubmissionControllerTests
     [Fact]
     public async Task GetByParameters_ReturnsFromService_ServiceCalled()
     {
-        var data = _fixture.Build<ListWithPaginationData<TaskSubmissionDto>>()
+        var data = _fixture.Build<ListWithPaginationData<MultipleTaskSubmissionResponse>>()
             .With(l => l.Data, Enumerable.Range(0, 5)
-                .Select(_ => _fixture.Create<TaskSubmissionDto>()).ToList())
+                .Select(_ => _fixture.Create<MultipleTaskSubmissionResponse>()).ToList())
             .Create();
 
         _parametersService.GetByParametersAsync(Arg.Any<TaskSubmissionParameters>()).Returns(data);

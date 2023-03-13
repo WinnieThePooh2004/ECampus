@@ -2,9 +2,9 @@
 using ECampus.Core.Installers;
 using ECampus.DataAccess.Contracts.DataAccess;
 using ECampus.DataAccess.Contracts.DataSelectParameters;
-using ECampus.Domain.DataContainers;
 using ECampus.Domain.DataTransferObjects;
 using ECampus.Domain.Entities;
+using ECampus.Domain.Responses.Class;
 using ECampus.Domain.Validation;
 using ECampus.Services.Contracts.Services;
 using ECampus.Services.Contracts.Validation;

@@ -1,6 +1,7 @@
-﻿using ECampus.Domain.DataContainers;
-using ECampus.Domain.DataTransferObjects;
-using ECampus.Domain.QueryParameters;
+﻿using ECampus.Domain.DataTransferObjects;
+using ECampus.Domain.Requests.Subject;
+using ECampus.Domain.Responses;
+using ECampus.Domain.Responses.Subject;
 using ECampus.Services.Contracts.Services;
 using ECampus.WebApi.Controllers;
 using Microsoft.AspNetCore.Mvc;
@@ -9,8 +10,8 @@ namespace ECampus.Tests.Unit.Tests.BackEnd.Api.Controllers;
 
 public class SubjectsControllerTests
 {
-    private readonly IParametersService<SubjectDto, SubjectParameters> _service =
-        Substitute.For<IParametersService<SubjectDto, SubjectParameters>>();
+    private readonly IParametersService<MultipleSubjectResponse, SubjectParameters> _service =
+        Substitute.For<IParametersService<MultipleSubjectResponse, SubjectParameters>>();
 
     private readonly IBaseService<SubjectDto> _baseService = Substitute.For<IBaseService<SubjectDto>>();
     private readonly SubjectsController _sut;
@@ -78,9 +79,9 @@ public class SubjectsControllerTests
     [Fact]
     public async Task GetByParameters_ReturnsFromService_ServiceCalled()
     {
-        var data = _fixture.Build<ListWithPaginationData<SubjectDto>>()
+        var data = _fixture.Build<ListWithPaginationData<MultipleSubjectResponse>>()
             .With(l => l.Data, Enumerable.Range(0, 5)
-                .Select(_ => _fixture.Create<SubjectDto>()).ToList())
+                .Select(_ => _fixture.Create<MultipleSubjectResponse>()).ToList())
             .Create();
 
         _service.GetByParametersAsync(Arg.Any<SubjectParameters>()).Returns(data);

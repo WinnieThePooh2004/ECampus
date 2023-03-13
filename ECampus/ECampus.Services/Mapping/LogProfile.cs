@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using ECampus.Domain.DataTransferObjects;
 using ECampus.Domain.Entities;
+using ECampus.Domain.Responses.Log;
 
 namespace ECampus.Services.Mapping;
 
@@ -8,6 +8,6 @@ public class LogProfile : Profile
 {
     public LogProfile()
     {
-        CreateMap<Log, LogDto>();
+        CreateMap<Log, MultipleLogResponse>();
     }
 }

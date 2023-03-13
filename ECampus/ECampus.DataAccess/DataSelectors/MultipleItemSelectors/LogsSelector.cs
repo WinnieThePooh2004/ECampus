@@ -1,6 +1,6 @@
 ﻿using ECampus.DataAccess.Interfaces;
 using ECampus.Domain.Entities;
-using ECampus.Domain.QueryParameters;
+using ECampus.Domain.Requests.Log;
 using ECampus.Infrastructure;
 
 namespace ECampus.DataAccess.DataSelectors.MultipleItemSelectors;

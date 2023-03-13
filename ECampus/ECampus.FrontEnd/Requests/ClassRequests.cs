@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics;
 using ECampus.FrontEnd.Requests.Interfaces;
 using ECampus.FrontEnd.Requests.Options;
-using ECampus.Domain.DataContainers;
 using ECampus.Domain.DataTransferObjects;
+using ECampus.Domain.Responses.Class;
 using Newtonsoft.Json;
 
 namespace ECampus.FrontEnd.Requests;

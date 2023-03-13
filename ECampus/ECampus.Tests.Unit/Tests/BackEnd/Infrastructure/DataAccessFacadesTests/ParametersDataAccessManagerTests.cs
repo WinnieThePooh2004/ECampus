@@ -2,7 +2,8 @@
 using ECampus.DataAccess.DataAccessFacades;
 using ECampus.DataAccess.Interfaces;
 using ECampus.Domain.Entities;
-using ECampus.Domain.QueryParameters;
+using ECampus.Domain.Requests.Auditory;
+using ECampus.Domain.Requests.Group;
 using ECampus.Infrastructure;
 using ECampus.Tests.Shared.Mocks.EntityFramework;
 using Microsoft.EntityFrameworkCore;

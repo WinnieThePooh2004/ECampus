@@ -1,10 +1,11 @@
-﻿using ECampus.Domain.DataContainers;
-using ECampus.Domain.DataTransferObjects;
+﻿using ECampus.Domain.DataTransferObjects;
 using ECampus.Domain.Entities;
 using ECampus.Domain.Entities.RelationEntities;
 using ECampus.Domain.Enums;
 using ECampus.Domain.Extensions;
-using ECampus.Domain.QueryParameters;
+using ECampus.Domain.Requests.Course;
+using ECampus.Domain.Responses;
+using ECampus.Domain.Responses.Course;
 using ECampus.Tests.Integration.AppFactories;
 using ECampus.Tests.Integration.AuthHelpers;
 using FluentAssertions;
@@ -49,14 +50,14 @@ public class SuccessfulEndpointsTests : IClassFixture<ApplicationFactory>, IAsyn
         var response = await _client.GetAsync(
             $"/api/Courses/summary?{new CourseSummaryParameters
             {
-                StudentId = 200, OrderBy = nameof(CourseSummary.StartDate)
+                StudentId = 200, OrderBy = nameof(CourseSummaryResponse.StartDate)
             }.ToQueryString()}");
 
         var result = await response.Content.ReadAsStringAsync();
 
         response.EnsureSuccessStatusCode();
         var content =
-            JsonConvert.DeserializeObject<ListWithPaginationData<CourseSummary>>(
+            JsonConvert.DeserializeObject<ListWithPaginationData<CourseSummaryResponse>>(
                 await response.Content.ReadAsStringAsync());
         content!.Data.Count.Should().Be(2);
         content.Data[0].ScoredPoints.Should().Be(5);

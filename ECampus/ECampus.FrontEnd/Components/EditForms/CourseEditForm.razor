@@ -1,4 +1,10 @@
-﻿@inherits ModelEditForm<CourseDto>
+﻿@using ECampus.Domain.Requests.Teacher
+@using ECampus.Domain.Requests.Group
+@using ECampus.Domain.Requests.Subject
+@using ECampus.Domain.Responses.Group
+@using ECampus.Domain.Responses.Subject
+@using ECampus.Domain.Responses.Teacher
+@inherits ModelEditForm<CourseDto>
 
 <EditForm Model="Model" OnSubmit="Submit">
     <FluentValidationValidator Validator="Validator"/>
@@ -10,14 +16,14 @@
     </div>
     <div class="col-md-3">
         <ValidationMessage For="@(() => Model.Teachers)"/>
-        <MultipleItemsSelect TData="TeacherDto" TParameters="TeacherParameters" SelectTo="Model.Teachers"/>
+        <MultipleItemsSelect TData="MultipleTeacherResponse" TParameters="TeacherParameters" SelectTo="Model.Teachers"/>
     </div>
     <div class="col-md-3">
         <ValidationMessage For="@(() => Model.Groups)"/>
-        <MultipleItemsSelect TData="GroupDto" TParameters="GroupParameters" SelectTo="Model.Groups"/>
+        <MultipleItemsSelect TData="MultipleGroupResponse" TParameters="GroupParameters" SelectTo="Model.Groups"/>
     </div>
     <div>
         <ValidationMessage For="@(() => Model.SubjectId)"/>
-        <SingleItemSelect TData="SubjectDto" TParameters="SubjectParameters" @bind-SelectedId="Model.SubjectId"/>
+        <SingleItemSelect TData="MultipleSubjectResponse" TParameters="SubjectParameters" @bind-SelectedId="Model.SubjectId"/>
     </div>
 </EditForm>

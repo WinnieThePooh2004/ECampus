@@ -1,5 +1,6 @@
 ﻿using ECampus.Domain.DataTransferObjects;
 using ECampus.Domain.Exceptions.DomainExceptions;
+using ECampus.Domain.Responses.Auth;
 using ECampus.FrontEnd.Auth;
 using ECampus.FrontEnd.Requests.Interfaces;
 using Microsoft.AspNetCore.Authentication;
@@ -37,7 +38,7 @@ public class AuthServiceTests
         _httpContextAccessor.HttpContext.RequestServices.GetService<IAuthenticationService>()
             .Returns(Substitute.For<IAuthenticationService>());
         _authRequests.LoginAsync(Arg.Is<LoginDto>(l => l.Email == "email" && l.Password == "password"))
-            .Returns(new LoginResult());
+            .Returns(new LoginResponse());
 
         await _sut.Login("email", "password", properties);
 

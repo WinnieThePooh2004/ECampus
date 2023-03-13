@@ -1,6 +1,8 @@
 ﻿@page "/users"
+@using ECampus.Domain.Requests.User
+@using ECampus.Domain.Responses.User
 @attribute [Authorize]
 
-<IndexPageModel TData="UserDto" TParameters="UserParameters"
+<IndexPageModel TData="MultipleUserResponse" TParameters="UserParameters"
                 EditLink="/users/edit" CreateLink="/users/create"
 />

@@ -4,7 +4,7 @@ using ECampus.Domain.Auth;
 using ECampus.Domain.DataTransferObjects;
 using ECampus.Domain.Enums;
 using ECampus.Domain.Exceptions;
-using ECampus.Domain.QueryParameters;
+using ECampus.Domain.Requests.Course;
 using Microsoft.AspNetCore.Components;
 
 namespace ECampus.FrontEnd.Pages.User;

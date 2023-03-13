@@ -3,7 +3,7 @@ using ECampus.Core.Installers;
 using ECampus.FrontEnd.Requests;
 using ECampus.FrontEnd.Requests.Interfaces;
 using ECampus.Domain;
-using ECampus.Domain.QueryParameters;
+using ECampus.Domain.Requests;
 
 namespace ECampus.FrontEnd.Installers;
 

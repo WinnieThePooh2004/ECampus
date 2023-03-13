@@ -1,6 +1,7 @@
-﻿using ECampus.Domain.DataContainers;
-using ECampus.Domain.DataTransferObjects;
-using ECampus.Domain.QueryParameters;
+﻿using ECampus.Domain.DataTransferObjects;
+using ECampus.Domain.Requests.Auditory;
+using ECampus.Domain.Responses;
+using ECampus.Domain.Responses.Auditory;
 using ECampus.Services.Contracts.Services;
 using ECampus.WebApi.Controllers;
 using Microsoft.AspNetCore.Mvc;
@@ -9,8 +10,8 @@ namespace ECampus.Tests.Unit.Tests.BackEnd.Api.Controllers;
 
 public class AuditoriesControllerTests
 {
-    private readonly IParametersService<AuditoryDto, AuditoryParameters> _service =
-        Substitute.For<IParametersService<AuditoryDto, AuditoryParameters>>();
+    private readonly IParametersService<MultipleAuditoryResponse, AuditoryParameters> _service =
+        Substitute.For<IParametersService<MultipleAuditoryResponse, AuditoryParameters>>();
 
     private readonly IBaseService<AuditoryDto> _baseService = Substitute.For<IBaseService<AuditoryDto>>();
 
@@ -79,9 +80,9 @@ public class AuditoriesControllerTests
     [Fact]
     public async Task GetByParameters_ReturnsFromService_ServiceCalled()
     {
-        var data = _fixture.Build<ListWithPaginationData<AuditoryDto>>()
+        var data = _fixture.Build<ListWithPaginationData<MultipleAuditoryResponse>>()
             .With(l => l.Data, Enumerable.Range(0, 5)
-                .Select(_ => _fixture.Create<AuditoryDto>()).ToList())
+                .Select(_ => _fixture.Create<MultipleAuditoryResponse>()).ToList())
             .Create();
 
         _service.GetByParametersAsync(Arg.Any<AuditoryParameters>()).Returns(data);

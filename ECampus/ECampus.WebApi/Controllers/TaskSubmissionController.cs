@@ -1,6 +1,7 @@
 ﻿using ECampus.Domain.DataTransferObjects;
 using ECampus.Domain.Enums;
-using ECampus.Domain.QueryParameters;
+using ECampus.Domain.Requests.TaskSubmission;
+using ECampus.Domain.Responses.TaskSubmission;
 using ECampus.Services.Contracts.Services;
 using ECampus.WebApi.Metadata;
 using Microsoft.AspNetCore.Mvc;
@@ -11,10 +12,10 @@ namespace ECampus.WebApi.Controllers;
 [Route("api/[controller]")]
 public class TaskSubmissionsController : ControllerBase
 {
-    private readonly IParametersService<TaskSubmissionDto, TaskSubmissionParameters> _parametersService;
+    private readonly IParametersService<MultipleTaskSubmissionResponse, TaskSubmissionParameters> _parametersService;
     private readonly ITaskSubmissionService _taskSubmissionService;
 
-    public TaskSubmissionsController(IParametersService<TaskSubmissionDto, TaskSubmissionParameters> parametersService,
+    public TaskSubmissionsController(IParametersService<MultipleTaskSubmissionResponse, TaskSubmissionParameters> parametersService,
         ITaskSubmissionService taskSubmissionService)
     {
         _parametersService = parametersService;

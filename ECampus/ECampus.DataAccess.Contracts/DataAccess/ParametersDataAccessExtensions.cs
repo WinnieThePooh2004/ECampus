@@ -2,7 +2,7 @@
 using ECampus.DataAccess.Contracts.DataSelectParameters;
 using ECampus.Domain.Data;
 using ECampus.Domain.Exceptions.InfrastructureExceptions;
-using ECampus.Domain.QueryParameters;
+using ECampus.Domain.Requests;
 using Microsoft.EntityFrameworkCore;
 
 namespace ECampus.DataAccess.Contracts.DataAccess;

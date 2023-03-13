@@ -1,12 +1,13 @@
 ﻿using ECampus.Domain.Comparing;
 using ECampus.Domain.Data;
-using ECampus.Domain.QueryParameters;
+using ECampus.Domain.Requests;
+using ECampus.Domain.Responses;
 using Microsoft.AspNetCore.Components;
 
 namespace ECampus.FrontEnd.Components.DataSelectors;
 
 public sealed partial class SingleItemSelect<TData, TParameters>
-    where TData : class, IDataTransferObject, new()
+    where TData : class, IMultipleItemsResponse, new()
     where TParameters : class, IQueryParameters<TData>, new()
 {
     [Parameter] public string Title { get; set; } = "";

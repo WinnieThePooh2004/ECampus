@@ -6,6 +6,7 @@ using ECampus.Domain.Entities;
 using ECampus.Domain.Entities.RelationEntities;
 using ECampus.Domain.Enums;
 using ECampus.Domain.Exceptions.InfrastructureExceptions;
+using ECampus.Domain.Responses.Subject;
 using ECampus.Tests.Integration.AppFactories;
 using ECampus.Tests.Integration.AuthHelpers;
 using ECampus.Tests.Shared.Mocks.HttpRequests;
@@ -77,7 +78,7 @@ public class SuccessfulTeachersEndpointsTests : IClassFixture<ApplicationFactory
             LastName = "ln1",
             FirstName = "fn1",
             DepartmentId = 1,
-            Subjects = new List<SubjectDto> { new() { Id = 300 }, new() { Id = 302 } }
+            Subjects = new List<MultipleSubjectResponse> { new() { Id = 300 }, new() { Id = 302 } }
         };
         var response = await _client.PutAsJsonAsync("/api/Teachers", teacher);
         response.EnsureSuccessStatusCode();
@@ -114,7 +115,7 @@ public class SuccessfulTeachersEndpointsTests : IClassFixture<ApplicationFactory
             LastName = "lastname",
             FirstName = "firstName",
             DepartmentId = 1,
-            Subjects = new List<SubjectDto> { new() { Id = 301 }, new() { Id = 302 } }
+            Subjects = new List<MultipleSubjectResponse> { new() { Id = 301 }, new() { Id = 302 } }
         };
 
         var response = await _client.PostAsJsonAsync("/api/Teachers", teacher);

@@ -4,6 +4,8 @@ using ECampus.DataAccess.Contracts.DataSelectParameters;
 using ECampus.Domain.DataTransferObjects;
 using ECampus.Domain.Entities;
 using ECampus.Domain.Enums;
+using ECampus.Domain.Responses.Student;
+using ECampus.Domain.Responses.Teacher;
 using ECampus.Services.Services;
 using ECampus.Tests.Shared.DataFactories;
 using ECampus.Tests.Shared.Mocks.EntityFramework;
@@ -183,7 +185,7 @@ public class UserRoleServiceTests
         userFromDb.TeacherId.Should().Be(10);
         teacher.UserEmail.Should().Be(userFromDb.Email);
     }
-    
+
     [Fact]
     public async Task Update_ShouldThrow_WhenRoleIsOutOfRange()
     {
@@ -198,7 +200,7 @@ public class UserRoleServiceTests
             .ThrowAsync<UnreachableException>()
             .WithInnerExceptionExactly<UnreachableException, ArgumentOutOfRangeException>();
     }
-    
+
     [Fact]
     public async Task Update_ShouldThrow_WhenRoleAreEqualAndIsOutOfRange()
     {
@@ -244,7 +246,10 @@ public class UserRoleServiceTests
     public async Task Create_ShouldOnlyCreateAndSave_WhenRoleIsAdminOrGuest(UserRole role)
     {
         var user = new UserDto
-            { Role = role, StudentId = 0, Student = new StudentDto(), Teacher = new TeacherDto(), TeacherId = 0 };
+        {
+            Role = role, StudentId = 0, Student = new MultipleStudentResponse(),
+            Teacher = new MultipleTeacherResponse(), TeacherId = 0
+        };
 
         var result = await _sut.CreateAsync(user);
 
@@ -262,7 +267,7 @@ public class UserRoleServiceTests
         _dataAccess.SetReturnById(19, teacher);
 
         var result = await _sut.CreateAsync(new UserDto
-            { TeacherId = 19, Role = UserRole.Teacher, Student = new StudentDto(), StudentId = 9 });
+            { TeacherId = 19, Role = UserRole.Teacher, Student = new MultipleStudentResponse(), StudentId = 9 });
 
         result.Student.Should().BeNull();
         result.StudentId.Should().BeNull();
@@ -276,7 +281,7 @@ public class UserRoleServiceTests
         _dataAccess.SetReturnById(19, student);
 
         var result = await _sut.CreateAsync(new UserDto
-            { StudentId = 19, Role = UserRole.Student, Teacher = new TeacherDto(), TeacherId = 9 });
+            { StudentId = 19, Role = UserRole.Student, Teacher = new MultipleTeacherResponse(), TeacherId = 9 });
 
         result.Teacher.Should().BeNull();
         result.TeacherId.Should().BeNull();

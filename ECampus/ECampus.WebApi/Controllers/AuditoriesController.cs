@@ -1,6 +1,7 @@
 ﻿using ECampus.Domain.DataTransferObjects;
 using ECampus.Domain.Enums;
-using ECampus.Domain.QueryParameters;
+using ECampus.Domain.Requests.Auditory;
+using ECampus.Domain.Responses.Auditory;
 using ECampus.Services.Contracts.Services;
 using ECampus.WebApi.Metadata;
 using Microsoft.AspNetCore.Authorization;
@@ -12,10 +13,10 @@ namespace ECampus.WebApi.Controllers;
 [Route("api/[controller]")]
 public class AuditoriesController : ControllerBase
 {
-    private readonly IParametersService<AuditoryDto, AuditoryParameters> _parametersService;
+    private readonly IParametersService<MultipleAuditoryResponse, AuditoryParameters> _parametersService;
     private readonly IBaseService<AuditoryDto> _baseService;
 
-    public AuditoriesController(IParametersService<AuditoryDto, AuditoryParameters> parametersService,
+    public AuditoriesController(IParametersService<MultipleAuditoryResponse, AuditoryParameters> parametersService,
         IBaseService<AuditoryDto> baseService)
     {
         _parametersService = parametersService;

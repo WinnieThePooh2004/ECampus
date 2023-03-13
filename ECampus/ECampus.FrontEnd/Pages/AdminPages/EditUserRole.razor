@@ -1,4 +1,6 @@
 ﻿@page "/users/edit/{Id:int}"
+@using ECampus.Domain.Responses.Student
+@using ECampus.Domain.Responses.Teacher
 
 @if (_user is null)
 {
@@ -22,7 +24,7 @@
         <p>
             This user is teacher with next details:
         </p>
-        <DetailsPageModel TData="TeacherDto" Model="_user.Teacher"/>
+        <DetailsPageModel TData="MultipleTeacherResponse" Model="_user.Teacher"/>
     }
 
     else if (_user.Student is not null)
@@ -30,7 +32,7 @@
         <p>
             This user is student with next details:
         </p>
-        <DetailsPageModel TData="StudentDto" Model="_user.Student"/>
+        <DetailsPageModel TData="MultipleStudentResponse" Model="_user.Student"/>
     }
     
     <UserRoleEditForm Model="_user"/>

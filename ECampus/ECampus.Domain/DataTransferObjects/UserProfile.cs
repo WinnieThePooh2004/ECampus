@@ -1,6 +1,9 @@
 ﻿using ECampus.Domain.Data;
 using ECampus.Domain.Entities;
 using ECampus.Domain.Metadata;
+using ECampus.Domain.Responses.Auditory;
+using ECampus.Domain.Responses.Group;
+using ECampus.Domain.Responses.Teacher;
 
 namespace ECampus.Domain.DataTransferObjects;
 
@@ -8,9 +11,14 @@ namespace ECampus.Domain.DataTransferObjects;
 public class UserProfile : IDataTransferObject
 {
     public int Id { get; set; }
+    
     public string Username { get; set; } = string.Empty;
+    
     public string Email { get; set; } = string.Empty;
-    public List<GroupDto>? SavedGroups { get; set; }
-    public List<TeacherDto>? SavedTeachers { get; set; }
-    public List<AuditoryDto>? SavedAuditories { get; set; }
+    
+    public List<MultipleGroupResponse>? SavedGroups { get; set; }
+    
+    public List<MultipleTeacherResponse>? SavedTeachers { get; set; }
+    
+    public List<MultipleAuditoryResponse>? SavedAuditories { get; set; }
 }

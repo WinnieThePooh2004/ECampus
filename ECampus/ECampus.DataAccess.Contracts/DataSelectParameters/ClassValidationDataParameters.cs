@@ -1,6 +1,6 @@
 ﻿using ECampus.Domain.Entities;
 using ECampus.Domain.Enums;
-using ECampus.Domain.QueryParameters;
+using ECampus.Domain.Requests;
 
 namespace ECampus.DataAccess.Contracts.DataSelectParameters;
 

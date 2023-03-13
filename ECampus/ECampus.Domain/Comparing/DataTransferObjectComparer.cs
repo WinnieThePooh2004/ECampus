@@ -1,10 +1,10 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using ECampus.Domain.Data;
+using ECampus.Domain.Responses;
 
 namespace ECampus.Domain.Comparing;
 
 public class DataTransferObjectComparer<T> : IEqualityComparer<T>
-    where T : class, IDataTransferObject
+    where T : class, IMultipleItemsResponse
 {
     public bool Equals(T? x, T? y)
     {
