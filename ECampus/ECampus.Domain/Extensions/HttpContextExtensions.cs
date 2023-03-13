@@ -1,6 +1,5 @@
 ﻿using System.Security.Claims;
 using ECampus.Domain.Auth;
-using ECampus.Domain.DataTransferObjects;
 using ECampus.Domain.Responses.Auth;
 
 namespace ECampus.Domain.Extensions;

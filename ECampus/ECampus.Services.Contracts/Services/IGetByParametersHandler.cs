@@ -3,7 +3,7 @@ using ECampus.Domain.Responses;
 
 namespace ECampus.Services.Contracts.Services;
 
-public interface IParametersService<TResponse, in TParams>
+public interface IGetByParametersHandler<TResponse, in TParams>
     where TResponse : class, IMultipleItemsResponse
     where TParams : IQueryParameters<TResponse>
 {

@@ -14,7 +14,7 @@ public class PureIdSelectInstallers : IInstaller
     public int InstallOrder => -1;
     public void Install(IServiceCollection services, IConfiguration configuration)
     {
-        var models = typeof(DomainAssemblyMarker).Assembly.GetModels();
+        var models = typeof(DomainAssemblyMarker).Assembly.GetEntities();
         foreach (var model in models)
         {
             var parametersType = typeof(PureByIdParameters<>).MakeGenericType(model);

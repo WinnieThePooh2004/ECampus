@@ -7,6 +7,7 @@ public interface ISingleItemResponse
     int Id { get; set; }
 }
 
+// ReSharper disable once UnusedTypeParameter
 public interface ISingleItemResponse<TEntity> : ISingleItemResponse
     where TEntity : IEntity
 {

@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ECampus.Services.Services;
 
-public class ParametersService<TDto, TParameters, TEntity> : IParametersService<TDto, TParameters>
+public class GetByParametersHandler<TDto, TParameters, TEntity> : IGetByParametersHandler<TDto, TParameters>
     where TDto : class, IMultipleItemsResponse
     where TEntity : class, IEntity, new()
     where TParameters : class, IDataSelectParameters<TEntity>, IQueryParameters<TDto>
@@ -17,7 +17,7 @@ public class ParametersService<TDto, TParameters, TEntity> : IParametersService<
     private readonly IDataAccessFacade _dataAccess;
     private readonly IMapper _mapper;
 
-    public ParametersService(IMapper mapper, IDataAccessFacade dataAccess)
+    public GetByParametersHandler(IMapper mapper, IDataAccessFacade dataAccess)
     {
         _mapper = mapper;
         _dataAccess = dataAccess;

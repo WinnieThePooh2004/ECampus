@@ -1,6 +1,5 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http.Headers;
-using ECampus.Domain.DataTransferObjects;
 using ECampus.Domain.Entities;
 using ECampus.Domain.Enums;
 using ECampus.Domain.Extensions;

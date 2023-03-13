@@ -6,17 +6,17 @@ using ECampus.Services.Contracts.Validation;
 
 namespace ECampus.Services.Services.ValidationServices;
 
-public class ServiceWithParametersValidation<TResponse, TParameters> : IParametersService<TResponse, TParameters>
+public class HandlerWithGetByParametersValidation<TResponse, TParameters> : IGetByParametersHandler<TResponse, TParameters>
     where TParameters : IQueryParameters<TResponse>
     where TResponse : class, IMultipleItemsResponse
 {
-    private readonly IParametersService<TResponse, TParameters> _baseService;
+    private readonly IGetByParametersHandler<TResponse, TParameters> _baseHandler;
     private readonly IParametersValidator<TParameters> _parametersValidator;
 
-    public ServiceWithParametersValidation(IParametersService<TResponse, TParameters> baseService,
+    public HandlerWithGetByParametersValidation(IGetByParametersHandler<TResponse, TParameters> baseHandler,
         IParametersValidator<TParameters> parametersValidator)
     {
-        _baseService = baseService;
+        _baseHandler = baseHandler;
         _parametersValidator = parametersValidator;
     }
 
@@ -28,6 +28,6 @@ public class ServiceWithParametersValidation<TResponse, TParameters> : IParamete
             throw new ValidationException(typeof(TParameters), errors);
         }
 
-        return await _baseService.GetByParametersAsync(parameters, token);
+        return await _baseHandler.GetByParametersAsync(parameters, token);
     }
 }

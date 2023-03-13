@@ -1,8 +1,11 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
+using ECampus.Domain.Commands.Auditory;
 using ECampus.Domain.DataTransferObjects;
 using ECampus.Domain.Entities;
 using ECampus.Domain.Enums;
+using ECampus.Domain.Responses;
+using ECampus.Domain.Responses.Auditory;
 using ECampus.Tests.Integration.AppFactories;
 using ECampus.Tests.Integration.AuthHelpers;
 using ECampus.WebApi.MiddlewareFilters;
@@ -20,7 +23,7 @@ public class AuditoriesSuccessfulEndpointsTests : IClassFixture<ApplicationFacto
     public AuditoriesSuccessfulEndpointsTests(ApplicationFactory factory)
     {
         _client = factory.CreateClient();
-        _client.Login(DefaultUsers.GetUserByRole(UserRole.Admin));
+        _client.Login(UserRole.Admin);
     }
 
     public async Task InitializeAsync()
@@ -43,9 +46,10 @@ public class AuditoriesSuccessfulEndpointsTests : IClassFixture<ApplicationFacto
     public async Task Get_ShouldReturnTeacherAndSubjects_IfExists()
     {
         var response = await _client.GetAsync("/api/Auditories/101");
+        
         response.EnsureSuccessStatusCode();
         var auditory =
-            JsonConvert.DeserializeObject<Auditory>(await response.Content.ReadAsStringAsync());
+            JsonConvert.DeserializeObject<SingleAuditoryResponse>(await response.Content.ReadAsStringAsync());
         auditory.Should().NotBeNull();
         auditory?.Id.Should().Be(101);
         auditory?.Name.Should().Be("name2");
@@ -55,7 +59,7 @@ public class AuditoriesSuccessfulEndpointsTests : IClassFixture<ApplicationFacto
     [Fact]
     public async Task Update_ShouldUpdateInDb()
     {
-        var teacher = new AuditoryDto
+        var teacher = new UpdateAuditoryCommand()
         {
             Id = 100,
             Name = "newName",
@@ -71,15 +75,18 @@ public class AuditoriesSuccessfulEndpointsTests : IClassFixture<ApplicationFacto
     [Fact]
     public async Task Create_ShouldAddToDataBase_WhenNoValidationErrorOccured()
     {
-        var teacher = new AuditoryDto
+        var teacher = new CreateAuditoryCommand
         {
-            Id = 104,
             Name = "name40",
             Building = "building40"
         };
+        
         var response = await _client.PostAsJsonAsync("/api/Auditories", teacher);
+        
         response.EnsureSuccessStatusCode();
-        (await ApplicationFactory.Context.Auditories.FindAsync(104)).Should().NotBeNull();
+        var content = await response.Content.ReadAsStringAsync();
+        var result = JsonConvert.DeserializeObject<CreatedResponse>(content);
+        (await ApplicationFactory.Context.Auditories.FindAsync(result!.Id)).Should().NotBeNull();
     }
 
     [Fact]

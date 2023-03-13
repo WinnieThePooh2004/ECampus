@@ -13,13 +13,13 @@ namespace ECampus.WebApi.Controllers;
 [Route("api/[controller]")]
 public class DepartmentsController : ControllerBase
 {
-    private readonly IParametersService<MultipleDepartmentResponse, DepartmentParameters> _parametersService;
+    private readonly IGetByParametersHandler<MultipleDepartmentResponse, DepartmentParameters> _getByParametersHandler;
     private readonly IBaseService<DepartmentDto> _baseService;
 
-    public DepartmentsController(IParametersService<MultipleDepartmentResponse, DepartmentParameters> parametersService,
+    public DepartmentsController(IGetByParametersHandler<MultipleDepartmentResponse, DepartmentParameters> getByParametersHandler,
         IBaseService<DepartmentDto> baseService)
     {
-        _parametersService = parametersService;
+        _getByParametersHandler = getByParametersHandler;
         _baseService = baseService;
     }
 
@@ -28,7 +28,7 @@ public class DepartmentsController : ControllerBase
     [AllowAnonymous]
     public async Task<IActionResult> Get([FromQuery] DepartmentParameters parameters, CancellationToken token = default)
     {
-        return Ok(await _parametersService.GetByParametersAsync(parameters, token));
+        return Ok(await _getByParametersHandler.GetByParametersAsync(parameters, token));
     }
 
     // GET: Departments/Details/5

@@ -13,13 +13,13 @@ namespace ECampus.WebApi.Controllers;
 [Route("api/[controller]")]
 public class CoursesController : ControllerBase
 {
-    private readonly IParametersService<MultipleCourseResponse, CourseParameters> _parametersService;
+    private readonly IGetByParametersHandler<MultipleCourseResponse, CourseParameters> _getByParametersHandler;
     private readonly IBaseService<CourseDto> _baseService;
 
-    public CoursesController(IParametersService<MultipleCourseResponse, CourseParameters> parametersService,
+    public CoursesController(IGetByParametersHandler<MultipleCourseResponse, CourseParameters> getByParametersHandler,
         IBaseService<CourseDto> baseService)
     {
-        _parametersService = parametersService;
+        _getByParametersHandler = getByParametersHandler;
         _baseService = baseService;
     }
 
@@ -27,7 +27,7 @@ public class CoursesController : ControllerBase
     [AllowAnonymous]
     public async Task<IActionResult> Get([FromQuery] CourseParameters parameters, CancellationToken token = default)
     {
-        return Ok(await _parametersService.GetByParametersAsync(parameters, token));
+        return Ok(await _getByParametersHandler.GetByParametersAsync(parameters, token));
     }
 
     [HttpGet("{id:int}")]
@@ -40,10 +40,10 @@ public class CoursesController : ControllerBase
     [HttpGet("summary")]
     [Authorized(UserRole.Student)]
     public async Task<IActionResult> Summary(
-        [FromServices] IParametersService<CourseSummaryResponse, CourseSummaryParameters> parametersService,
+        [FromServices] IGetByParametersHandler<CourseSummaryResponse, CourseSummaryParameters> getByParametersHandler,
         [FromQuery] CourseSummaryParameters parameters)
     {
-        return Ok(await parametersService.GetByParametersAsync(parameters));
+        return Ok(await getByParametersHandler.GetByParametersAsync(parameters));
     }
 
     [HttpPost]

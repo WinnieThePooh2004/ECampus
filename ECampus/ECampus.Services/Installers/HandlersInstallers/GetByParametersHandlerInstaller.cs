@@ -7,9 +7,9 @@ using ECampus.Services.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace ECampus.Services.Installers;
+namespace ECampus.Services.Installers.HandlersInstallers;
 
-public class ParametersServicesInstaller : IInstaller
+public class GetByParametersHandlerInstaller : IInstaller
 {
     public int InstallOrder => -1;
 
@@ -25,8 +25,8 @@ public class ParametersServicesInstaller : IInstaller
             var dtoType = parameters.GetInterfaces().Single(i => i.IsGenericOfType(typeof(IQueryParameters<>)))
                 .GetGenericArguments()[0];
 
-            services.AddScoped(typeof(IParametersService<,>).MakeGenericType(dtoType, parameters),
-                typeof(ParametersService<,,>).MakeGenericType(dtoType, parameters, modelType));
+            services.AddScoped(typeof(IGetByParametersHandler<,>).MakeGenericType(dtoType, parameters),
+                typeof(GetByParametersHandler<,,>).MakeGenericType(dtoType, parameters, modelType));
         }
     }
 }

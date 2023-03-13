@@ -10,15 +10,15 @@ namespace ECampus.Tests.Unit.Tests.BackEnd.Api.Controllers;
 
 public class DepartmentsControllerTests
 {
-    private readonly IParametersService<MultipleDepartmentResponse, DepartmentParameters> _service =
-        Substitute.For<IParametersService<MultipleDepartmentResponse, DepartmentParameters>>();
+    private readonly IGetByParametersHandler<MultipleDepartmentResponse, DepartmentParameters> _handler =
+        Substitute.For<IGetByParametersHandler<MultipleDepartmentResponse, DepartmentParameters>>();
 
     private readonly IBaseService<DepartmentDto> _baseService = Substitute.For<IBaseService<DepartmentDto>>();
     private readonly DepartmentsController _sut;
     private readonly Fixture _fixture;
     public DepartmentsControllerTests()
     {
-        _sut = new DepartmentsController(_service, _baseService);
+        _sut = new DepartmentsController(_handler, _baseService);
         _fixture = new Fixture();
         _fixture.Behaviors.Add(new OmitOnRecursionBehavior());
     }
@@ -83,11 +83,11 @@ public class DepartmentsControllerTests
                 .Select(_ => _fixture.Create<MultipleDepartmentResponse>()).ToList())
             .Create();
 
-        _service.GetByParametersAsync(Arg.Any<DepartmentParameters>()).Returns(data);
+        _handler.GetByParametersAsync(Arg.Any<DepartmentParameters>()).Returns(data);
         var actionResult = await _sut.Get(new DepartmentParameters());
 
         actionResult.Should().BeOfType<OkObjectResult>();
         actionResult.As<OkObjectResult>().Value.Should().Be(data);
-        await _service.Received().GetByParametersAsync(Arg.Any<DepartmentParameters>());
+        await _handler.Received().GetByParametersAsync(Arg.Any<DepartmentParameters>());
     }
 }

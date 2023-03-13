@@ -1,5 +1,4 @@
-﻿using ECampus.Domain.DataTransferObjects;
-using ECampus.Domain.Entities;
+﻿using ECampus.Domain.Entities;
 using ECampus.Domain.Entities.RelationEntities;
 using ECampus.Domain.Enums;
 using ECampus.Domain.Extensions;
@@ -52,9 +51,7 @@ public class SuccessfulEndpointsTests : IClassFixture<ApplicationFactory>, IAsyn
             {
                 StudentId = 200, OrderBy = nameof(CourseSummaryResponse.StartDate)
             }.ToQueryString()}");
-
-        var result = await response.Content.ReadAsStringAsync();
-
+        
         response.EnsureSuccessStatusCode();
         var content =
             JsonConvert.DeserializeObject<ListWithPaginationData<CourseSummaryResponse>>(

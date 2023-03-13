@@ -13,10 +13,10 @@ namespace ECampus.WebApi.Controllers;
 public class LogsController : ControllerBase
 {
     [HttpGet]
-    public async Task<IActionResult> Get([FromServices] IParametersService<MultipleLogResponse, LogParameters> service,
+    public async Task<IActionResult> Get([FromServices] IGetByParametersHandler<MultipleLogResponse, LogParameters> handler,
         [FromQuery] LogParameters parameters)
     {
-        return Ok(await service.GetByParametersAsync(parameters));
+        return Ok(await handler.GetByParametersAsync(parameters));
     }
 
     // [HttpDelete("{id:int}")]

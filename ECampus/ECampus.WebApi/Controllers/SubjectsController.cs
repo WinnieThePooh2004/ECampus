@@ -13,13 +13,13 @@ namespace ECampus.WebApi.Controllers;
 [Route("api/[controller]")]
 public class SubjectsController : ControllerBase
 {
-    private readonly IParametersService<MultipleSubjectResponse, SubjectParameters> _service;
+    private readonly IGetByParametersHandler<MultipleSubjectResponse, SubjectParameters> _handler;
     private readonly IBaseService<SubjectDto> _baseService;
         
-    public SubjectsController(IParametersService<MultipleSubjectResponse, SubjectParameters> service,
+    public SubjectsController(IGetByParametersHandler<MultipleSubjectResponse, SubjectParameters> handler,
         IBaseService<SubjectDto> baseService)
     {
-        _service = service;
+        _handler = handler;
         _baseService = baseService;
     }
 
@@ -28,7 +28,7 @@ public class SubjectsController : ControllerBase
     [AllowAnonymous]
     public async Task<IActionResult> Get([FromQuery] SubjectParameters parameters, CancellationToken token = default)
     {
-        return Ok(await _service.GetByParametersAsync(parameters, token));
+        return Ok(await _handler.GetByParametersAsync(parameters, token));
     }
 
     // GET: Subjects/Details/5

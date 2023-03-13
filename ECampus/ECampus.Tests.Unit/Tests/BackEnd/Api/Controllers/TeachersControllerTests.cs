@@ -10,8 +10,8 @@ namespace ECampus.Tests.Unit.Tests.BackEnd.Api.Controllers;
 
 public class TeachersControllerTests
 {
-    private readonly IParametersService<MultipleTeacherResponse, TeacherParameters> _service =
-        Substitute.For<IParametersService<MultipleTeacherResponse, TeacherParameters>>();
+    private readonly IGetByParametersHandler<MultipleTeacherResponse, TeacherParameters> _handler =
+        Substitute.For<IGetByParametersHandler<MultipleTeacherResponse, TeacherParameters>>();
 
     private readonly IBaseService<TeacherDto> _baseService = Substitute.For<IBaseService<TeacherDto>>();
     private readonly TeachersController _sut;
@@ -19,7 +19,7 @@ public class TeachersControllerTests
 
     public TeachersControllerTests()
     {
-        _sut = new TeachersController(_service, _baseService);
+        _sut = new TeachersController(_handler, _baseService);
         _fixture = new Fixture();
         _fixture.Behaviors.Add(new OmitOnRecursionBehavior());
     }
@@ -84,11 +84,11 @@ public class TeachersControllerTests
                 .Select(_ => _fixture.Create<MultipleTeacherResponse>()).ToList())
             .Create();
 
-        _service.GetByParametersAsync(Arg.Any<TeacherParameters>()).Returns(data);
+        _handler.GetByParametersAsync(Arg.Any<TeacherParameters>()).Returns(data);
         var actionResult = await _sut.Get(new TeacherParameters());
 
         actionResult.Should().BeOfType<OkObjectResult>();
         actionResult.As<OkObjectResult>().Value.Should().Be(data);
-        await _service.Received().GetByParametersAsync(Arg.Any<TeacherParameters>());
+        await _handler.Received().GetByParametersAsync(Arg.Any<TeacherParameters>());
     }
 }

@@ -13,13 +13,13 @@ namespace ECampus.WebApi.Controllers;
 public class UsersController : ControllerBase
 {
     private readonly IBaseService<UserDto> _service;
-    private readonly IParametersService<MultipleUserResponse, UserParameters> _parametersService;
+    private readonly IGetByParametersHandler<MultipleUserResponse, UserParameters> _getByParametersHandler;
 
     public UsersController(IBaseService<UserDto> service,
-        IParametersService<MultipleUserResponse, UserParameters> parametersService)
+        IGetByParametersHandler<MultipleUserResponse, UserParameters> getByParametersHandler)
     {
         _service = service;
-        _parametersService = parametersService;
+        _getByParametersHandler = getByParametersHandler;
     }
     
     [HttpGet("{id:int}")]
@@ -33,7 +33,7 @@ public class UsersController : ControllerBase
     [Authorized(UserRole.Admin)]
     public async Task<IActionResult> Get([FromQuery] UserParameters parameters, CancellationToken token = default)
     {
-        return Ok(await _parametersService.GetByParametersAsync(parameters, token));
+        return Ok(await _getByParametersHandler.GetByParametersAsync(parameters, token));
     }
 
     [HttpPut]

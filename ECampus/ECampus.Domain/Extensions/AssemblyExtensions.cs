@@ -7,7 +7,7 @@ namespace ECampus.Domain.Extensions;
 
 public static class AssemblyExtensions
 {
-    public static IEnumerable<Type> GetModels(this Assembly assembly) =>
+    public static IEnumerable<Type> GetEntities(this Assembly assembly) =>
         assembly.GetTypes().Where(type =>
             type.IsAssignableTo(typeof(IEntity)) && type is { IsAbstract: false, IsClass: true } &&
             !type.GetCustomAttributes(typeof(InstallerIgnoreAttribute), false).Any());

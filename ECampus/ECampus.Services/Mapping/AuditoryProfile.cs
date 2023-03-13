@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using ECampus.Domain.DataTransferObjects;
+using ECampus.Domain.Commands.Auditory;
 using ECampus.Domain.Entities;
 using ECampus.Domain.Responses.Auditory;
 
@@ -9,7 +9,10 @@ public class AuditoryProfile : Profile
 {
     public AuditoryProfile()
     {
-        CreateMap<Auditory, AuditoryDto>().ReverseMap();
         CreateMap<Auditory, MultipleAuditoryResponse>();
+        CreateMap<Auditory, SingleAuditoryResponse>();
+        
+        CreateMap<CreateAuditoryCommand, Auditory>();
+        CreateMap<UpdateAuditoryCommand, Auditory>();
     }
 }

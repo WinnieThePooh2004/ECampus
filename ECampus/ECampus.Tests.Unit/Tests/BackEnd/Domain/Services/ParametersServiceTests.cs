@@ -15,7 +15,7 @@ namespace ECampus.Tests.Unit.Tests.BackEnd.Domain.Services;
 public sealed class ParametersServiceTests
 {
     private readonly IAbstractFactory<Auditory> _dataFactory;
-    private readonly ParametersService<MultipleAuditoryResponse, AuditoryParameters, Auditory> _service;
+    private readonly GetByParametersHandler<MultipleAuditoryResponse, AuditoryParameters, Auditory> _handler;
     private readonly IDataAccessFacade _dataAccess = Substitute.For<IDataAccessFacade>();
     private readonly Fixture _fixture;
 
@@ -25,7 +25,7 @@ public sealed class ParametersServiceTests
         var mapper = MapperFactory.Mapper;
 
         Substitute.For<IBaseService<AuditoryDto>>();
-        _service = new ParametersService<MultipleAuditoryResponse, AuditoryParameters, Auditory>(mapper, _dataAccess);
+        _handler = new GetByParametersHandler<MultipleAuditoryResponse, AuditoryParameters, Auditory>(mapper, _dataAccess);
         _fixture = new Fixture();
         _fixture.Behaviors.Add(new OmitOnRecursionBehavior());
     }
@@ -38,7 +38,7 @@ public sealed class ParametersServiceTests
         var expected = new DbSetMock<Auditory>(data).Object;
         _dataAccess.GetByParameters<Auditory, AuditoryParameters>(parameters).Returns(expected);
 
-        var result = await _service.GetByParametersAsync(parameters);
+        var result = await _handler.GetByParametersAsync(parameters);
 
         result.Metadata.Should().BeEquivalentTo(new PaginationData { TotalCount = 10, PageNumber = 1, PageSize = 10 });
         result.Data.Select(a => a.Id).Should().BeEquivalentTo(data.Select(d => d.Id));

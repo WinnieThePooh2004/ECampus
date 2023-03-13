@@ -49,9 +49,4 @@ public class InstantFailuresTests : IClassFixture<ApplicationWithoutDatabase>
 
         response.StatusCode.Should().Be(HttpStatusCode.Forbidden);
     }
-
-    private static string CreateLargeString()
-    {
-        return new string(new char[500]);
-    }
 }

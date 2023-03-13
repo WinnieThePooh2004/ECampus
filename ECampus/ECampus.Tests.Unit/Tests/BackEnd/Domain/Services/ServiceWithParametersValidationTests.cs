@@ -11,10 +11,10 @@ namespace ECampus.Tests.Unit.Tests.BackEnd.Domain.Services;
 
 public class ServiceWithParametersValidationTests
 {
-    private readonly ServiceWithParametersValidation<MultipleTaskSubmissionResponse, TaskSubmissionParameters> _sut;
+    private readonly HandlerWithGetByParametersValidation<MultipleTaskSubmissionResponse, TaskSubmissionParameters> _sut;
 
-    private readonly IParametersService<MultipleTaskSubmissionResponse, TaskSubmissionParameters> _baseService =
-        Substitute.For<IParametersService<MultipleTaskSubmissionResponse, TaskSubmissionParameters>>();
+    private readonly IGetByParametersHandler<MultipleTaskSubmissionResponse, TaskSubmissionParameters> _baseHandler =
+        Substitute.For<IGetByParametersHandler<MultipleTaskSubmissionResponse, TaskSubmissionParameters>>();
 
     private readonly IParametersValidator<TaskSubmissionParameters> _parametersValidator =
         Substitute.For<IParametersValidator<TaskSubmissionParameters>>();
@@ -23,7 +23,7 @@ public class ServiceWithParametersValidationTests
 
     public ServiceWithParametersValidationTests()
     {
-        _sut = new ServiceWithParametersValidation<MultipleTaskSubmissionResponse, TaskSubmissionParameters>(_baseService,
+        _sut = new HandlerWithGetByParametersValidation<MultipleTaskSubmissionResponse, TaskSubmissionParameters>(_baseHandler,
             _parametersValidator);
     }
 
@@ -33,7 +33,7 @@ public class ServiceWithParametersValidationTests
         var parameters = _fixture.Create<TaskSubmissionParameters>();
         _parametersValidator.ValidateAsync(parameters).Returns(new ValidationResult());
         var expected = new ListWithPaginationData<MultipleTaskSubmissionResponse>();
-        _baseService.GetByParametersAsync(parameters).Returns(expected);
+        _baseHandler.GetByParametersAsync(parameters).Returns(expected);
 
         var result = await _sut.GetByParametersAsync(parameters);
 

@@ -27,8 +27,8 @@ public class ParametersValidatorsInstaller : IInstaller
             
             services.AddScoped(typeof(IParametersValidator<>).MakeGenericType(parametersType),
                 parametersValidator);
-            services.Decorate(typeof(IParametersService<,>).MakeGenericType(parametersDto, parametersType),
-                typeof(ServiceWithParametersValidation<,>).MakeGenericType(parametersDto, parametersType));
+            services.Decorate(typeof(IGetByParametersHandler<,>).MakeGenericType(parametersDto, parametersType),
+                typeof(HandlerWithGetByParametersValidation<,>).MakeGenericType(parametersDto, parametersType));
         }
     }
 }

@@ -10,8 +10,8 @@ namespace ECampus.Tests.Unit.Tests.BackEnd.Api.Controllers;
 
 public class SubjectsControllerTests
 {
-    private readonly IParametersService<MultipleSubjectResponse, SubjectParameters> _service =
-        Substitute.For<IParametersService<MultipleSubjectResponse, SubjectParameters>>();
+    private readonly IGetByParametersHandler<MultipleSubjectResponse, SubjectParameters> _handler =
+        Substitute.For<IGetByParametersHandler<MultipleSubjectResponse, SubjectParameters>>();
 
     private readonly IBaseService<SubjectDto> _baseService = Substitute.For<IBaseService<SubjectDto>>();
     private readonly SubjectsController _sut;
@@ -19,7 +19,7 @@ public class SubjectsControllerTests
 
     public SubjectsControllerTests()
     {
-        _sut = new SubjectsController(_service, _baseService);
+        _sut = new SubjectsController(_handler, _baseService);
         _fixture = new Fixture();
         _fixture.Behaviors.Add(new OmitOnRecursionBehavior());
     }
@@ -84,11 +84,11 @@ public class SubjectsControllerTests
                 .Select(_ => _fixture.Create<MultipleSubjectResponse>()).ToList())
             .Create();
 
-        _service.GetByParametersAsync(Arg.Any<SubjectParameters>()).Returns(data);
+        _handler.GetByParametersAsync(Arg.Any<SubjectParameters>()).Returns(data);
         var actionResult = await _sut.Get(new SubjectParameters());
 
         actionResult.Should().BeOfType<OkObjectResult>();
         actionResult.As<OkObjectResult>().Value.Should().Be(data);
-        await _service.Received().GetByParametersAsync(Arg.Any<SubjectParameters>());
+        await _handler.Received().GetByParametersAsync(Arg.Any<SubjectParameters>());
     }
 }

@@ -13,12 +13,12 @@ namespace ECampus.WebApi.Controllers;
 [Route("api/[controller]")]
 public class GroupsController : ControllerBase
 {
-    private readonly IParametersService<MultipleGroupResponse, GroupParameters> _service;
+    private readonly IGetByParametersHandler<MultipleGroupResponse, GroupParameters> _handler;
     private readonly IBaseService<GroupDto> _baseService;
 
-    public GroupsController(IParametersService<MultipleGroupResponse, GroupParameters> service, IBaseService<GroupDto> baseService)
+    public GroupsController(IGetByParametersHandler<MultipleGroupResponse, GroupParameters> handler, IBaseService<GroupDto> baseService)
     {
-        _service = service;
+        _handler = handler;
         _baseService = baseService;
     }
 
@@ -27,7 +27,7 @@ public class GroupsController : ControllerBase
     [AllowAnonymous]
     public async Task<IActionResult> Get([FromQuery] GroupParameters parameters, CancellationToken token = default)
     {
-        return Ok(await _service.GetByParametersAsync(parameters, token));
+        return Ok(await _handler.GetByParametersAsync(parameters, token));
     }
 
     // GET: Groups/Details/5

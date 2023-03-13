@@ -1,6 +1,5 @@
 ﻿using System.Security.Claims;
 using Bunit;
-using ECampus.Domain.DataTransferObjects;
 using ECampus.Domain.Enums;
 using ECampus.Domain.Requests.Auditory;
 using ECampus.Domain.Responses;

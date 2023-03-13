@@ -10,8 +10,8 @@ namespace ECampus.Tests.Unit.Tests.BackEnd.Api.Controllers;
 
 public class CourseTasksControllerTests
 {
-    private readonly IParametersService<MultipleCourseTaskResponse, CourseTaskParameters> _service =
-        Substitute.For<IParametersService<MultipleCourseTaskResponse, CourseTaskParameters>>();
+    private readonly IGetByParametersHandler<MultipleCourseTaskResponse, CourseTaskParameters> _handler =
+        Substitute.For<IGetByParametersHandler<MultipleCourseTaskResponse, CourseTaskParameters>>();
 
     private readonly IBaseService<CourseTaskDto> _baseService = Substitute.For<IBaseService<CourseTaskDto>>();
     private readonly CourseTasksController _sut;
@@ -19,7 +19,7 @@ public class CourseTasksControllerTests
 
     public CourseTasksControllerTests()
     {
-        _sut = new CourseTasksController(_service, _baseService);
+        _sut = new CourseTasksController(_handler, _baseService);
         _fixture = new Fixture();
         _fixture.Behaviors.Add(new OmitOnRecursionBehavior());
     }
@@ -84,11 +84,11 @@ public class CourseTasksControllerTests
                 .Select(_ => _fixture.Create<MultipleCourseTaskResponse>()).ToList())
             .Create();
 
-        _service.GetByParametersAsync(Arg.Any<CourseTaskParameters>()).Returns(data);
+        _handler.GetByParametersAsync(Arg.Any<CourseTaskParameters>()).Returns(data);
         var actionResult = await _sut.Get(new CourseTaskParameters());
 
         actionResult.Should().BeOfType<OkObjectResult>();
         actionResult.As<OkObjectResult>().Value.Should().Be(data);
-        await _service.Received().GetByParametersAsync(Arg.Any<CourseTaskParameters>());
+        await _handler.Received().GetByParametersAsync(Arg.Any<CourseTaskParameters>());
     }
 }

@@ -13,19 +13,19 @@ namespace ECampus.WebApi.Controllers;
 [Route("api/[controller]")]
 public class FacultiesController : ControllerBase
 {
-    private readonly IParametersService<MultipleFacultyResponse, FacultyParameters> _service;
+    private readonly IGetByParametersHandler<MultipleFacultyResponse, FacultyParameters> _handler;
     private readonly IBaseService<FacultyDto> _baseService;
-    public FacultiesController(IParametersService<MultipleFacultyResponse, FacultyParameters> service,
+    public FacultiesController(IGetByParametersHandler<MultipleFacultyResponse, FacultyParameters> handler,
         IBaseService<FacultyDto> baseService)
     {
-        _service = service;
+        _handler = handler;
         _baseService = baseService;
     }
 
     [HttpGet]
     public async Task<IActionResult> Get([FromQuery] FacultyParameters parameters, CancellationToken token = default)
     {
-        return Ok(await _service.GetByParametersAsync(parameters, token));
+        return Ok(await _handler.GetByParametersAsync(parameters, token));
     }
 
     [HttpGet("{id:int?}")]

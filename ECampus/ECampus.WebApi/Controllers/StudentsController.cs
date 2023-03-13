@@ -10,20 +10,20 @@ namespace ECampus.WebApi.Controllers;
 [Route("api/[controller]")]
 public class StudentsController : ControllerBase
 {
-    private readonly IParametersService<MultipleStudentResponse, StudentParameters> _parametersService;
+    private readonly IGetByParametersHandler<MultipleStudentResponse, StudentParameters> _getByParametersHandler;
     private readonly IBaseService<StudentDto> _baseService;
 
-    public StudentsController(IParametersService<MultipleStudentResponse, StudentParameters> parametersService,
+    public StudentsController(IGetByParametersHandler<MultipleStudentResponse, StudentParameters> getByParametersHandler,
         IBaseService<StudentDto> baseService)
     {
-        _parametersService = parametersService;
+        _getByParametersHandler = getByParametersHandler;
         _baseService = baseService;
     }
 
     [HttpGet]
     public async Task<IActionResult> Get([FromQuery] StudentParameters parameters, CancellationToken token = default)
     {
-        return Ok(await _parametersService.GetByParametersAsync(parameters, token));
+        return Ok(await _getByParametersHandler.GetByParametersAsync(parameters, token));
     }
 
     [HttpGet("{id:int}")]

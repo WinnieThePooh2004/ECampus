@@ -13,14 +13,14 @@ public class TaskSubmissionControllerTests
     private readonly TaskSubmissionsController _sut;
     private readonly ITaskSubmissionService _service = Substitute.For<ITaskSubmissionService>();
 
-    private readonly IParametersService<MultipleTaskSubmissionResponse, TaskSubmissionParameters> _parametersService =
-        Substitute.For<IParametersService<MultipleTaskSubmissionResponse, TaskSubmissionParameters>>();
+    private readonly IGetByParametersHandler<MultipleTaskSubmissionResponse, TaskSubmissionParameters> _getByParametersHandler =
+        Substitute.For<IGetByParametersHandler<MultipleTaskSubmissionResponse, TaskSubmissionParameters>>();
 
     private readonly Fixture _fixture = new();
 
     public TaskSubmissionControllerTests()
     {
-        _sut = new TaskSubmissionsController(_parametersService, _service);
+        _sut = new TaskSubmissionsController(_getByParametersHandler, _service);
     }
 
     [Fact]
@@ -31,12 +31,12 @@ public class TaskSubmissionControllerTests
                 .Select(_ => _fixture.Create<MultipleTaskSubmissionResponse>()).ToList())
             .Create();
 
-        _parametersService.GetByParametersAsync(Arg.Any<TaskSubmissionParameters>()).Returns(data);
+        _getByParametersHandler.GetByParametersAsync(Arg.Any<TaskSubmissionParameters>()).Returns(data);
         var actionResult = await _sut.Get(new TaskSubmissionParameters());
 
         actionResult.Should().BeOfType<OkObjectResult>();
         actionResult.As<OkObjectResult>().Value.Should().Be(data);
-        await _parametersService.Received().GetByParametersAsync(Arg.Any<TaskSubmissionParameters>());
+        await _getByParametersHandler.Received().GetByParametersAsync(Arg.Any<TaskSubmissionParameters>());
     }
 
     [Fact]

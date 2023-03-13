@@ -18,7 +18,7 @@ public class SingleItemSelectorInstaller : IInstaller
             type.GetInterfaces().Any(i =>
                 i.IsGenericType && i.GetGenericTypeDefinition() == typeof(ISingleItemSelector<>))).ToList();
 
-        var models = typeof(DomainAssemblyMarker).Assembly.GetModels();
+        var models = typeof(DomainAssemblyMarker).Assembly.GetEntities();
         foreach (var modelType in models)
         {
             var modelSelector = selectors.SingleOrDefault(selector => selector.GetInterfaces()

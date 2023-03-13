@@ -17,8 +17,7 @@ public class ManyToManyRelationshipsUpdate<TEntity, TRelatedEntity, TRelations> 
     private readonly IRelationshipsHandler<TEntity, TRelatedEntity, TRelations> _relationshipsHandler;
 
     public ManyToManyRelationshipsUpdate(IDataUpdateService<TEntity> baseUpdateService,
-        IRelationshipsHandler<TEntity, TRelatedEntity, TRelations> relationshipsHandler,
-        CancellationToken token = default)
+        IRelationshipsHandler<TEntity, TRelatedEntity, TRelations> relationshipsHandler)
     {
         _baseUpdateService = baseUpdateService;
         _relationshipsHandler = relationshipsHandler;

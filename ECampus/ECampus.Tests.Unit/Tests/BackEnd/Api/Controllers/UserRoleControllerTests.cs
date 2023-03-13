@@ -13,14 +13,14 @@ public class UserRoleControllerTests
     private readonly UsersController _sut;
     private readonly IBaseService<UserDto> _service = Substitute.For<IBaseService<UserDto>>();
 
-    private readonly IParametersService<MultipleUserResponse, UserParameters> _parametersService =
-        Substitute.For<IParametersService<MultipleUserResponse, UserParameters>>();
+    private readonly IGetByParametersHandler<MultipleUserResponse, UserParameters> _getByParametersHandler =
+        Substitute.For<IGetByParametersHandler<MultipleUserResponse, UserParameters>>();
 
     private readonly Fixture _fixture = new();
 
     public UserRoleControllerTests()
     {
-        _sut = new UsersController(_service, _parametersService);
+        _sut = new UsersController(_service, _getByParametersHandler);
         _fixture.Behaviors.Add(new OmitOnRecursionBehavior());
     }
 
@@ -70,11 +70,11 @@ public class UserRoleControllerTests
             .With(l => l.Data, Enumerable.Range(0, 5)
                 .Select(_ => _fixture.Create<MultipleUserResponse>()).ToList()).Create();
 
-        _parametersService.GetByParametersAsync(Arg.Any<UserParameters>()).Returns(data);
+        _getByParametersHandler.GetByParametersAsync(Arg.Any<UserParameters>()).Returns(data);
         var actionResult = await _sut.Get(new UserParameters());
 
         actionResult.Should().BeOfType<OkObjectResult>();
         actionResult.As<OkObjectResult>().Value.Should().Be(data);
-        await _parametersService.Received().GetByParametersAsync(Arg.Any<UserParameters>());
+        await _getByParametersHandler.Received().GetByParametersAsync(Arg.Any<UserParameters>());
     }
 }

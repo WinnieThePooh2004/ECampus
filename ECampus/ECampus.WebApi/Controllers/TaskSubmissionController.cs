@@ -12,13 +12,13 @@ namespace ECampus.WebApi.Controllers;
 [Route("api/[controller]")]
 public class TaskSubmissionsController : ControllerBase
 {
-    private readonly IParametersService<MultipleTaskSubmissionResponse, TaskSubmissionParameters> _parametersService;
+    private readonly IGetByParametersHandler<MultipleTaskSubmissionResponse, TaskSubmissionParameters> _getByParametersHandler;
     private readonly ITaskSubmissionService _taskSubmissionService;
 
-    public TaskSubmissionsController(IParametersService<MultipleTaskSubmissionResponse, TaskSubmissionParameters> parametersService,
+    public TaskSubmissionsController(IGetByParametersHandler<MultipleTaskSubmissionResponse, TaskSubmissionParameters> getByParametersHandler,
         ITaskSubmissionService taskSubmissionService)
     {
-        _parametersService = parametersService;
+        _getByParametersHandler = getByParametersHandler;
         _taskSubmissionService = taskSubmissionService;
     }
 
@@ -26,7 +26,7 @@ public class TaskSubmissionsController : ControllerBase
     [Authorized(UserRole.Teacher)]
     public async Task<IActionResult> Get([FromQuery] TaskSubmissionParameters parameters, CancellationToken token = default)
     {
-        return Ok(await _parametersService.GetByParametersAsync(parameters, token));
+        return Ok(await _getByParametersHandler.GetByParametersAsync(parameters, token));
     }
 
     [HttpGet("{id:int}")]
