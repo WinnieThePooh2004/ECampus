@@ -1,7 +1,8 @@
 ﻿using Bunit;
-using ECampus.Domain.DataContainers;
 using ECampus.Domain.DataTransferObjects;
-using ECampus.Domain.QueryParameters;
+using ECampus.Domain.Requests.Faculty;
+using ECampus.Domain.Responses;
+using ECampus.Domain.Responses.Faculty;
 using ECampus.FrontEnd.Components.DataSelectors;
 using ECampus.FrontEnd.PropertySelectors;
 using ECampus.FrontEnd.Requests.Interfaces;
@@ -12,20 +13,21 @@ namespace ECampus.Tests.Unit.Tests.FrontEnd.Components.ItemSelect;
 
 public class MultipleItemSelectTests
 {
-    private readonly TestContext _context = new();
-
-    private readonly IParametersRequests<FacultyDto, FacultyParameters> _parametersRequests =
-        Substitute.For<IParametersRequests<FacultyDto, FacultyParameters>>();
-
-    private readonly Fixture _fixture = new();
-    private bool _onChangedInvoked;
-
-    private static readonly IPropertySelector<FacultyDto> PropertySelector = new PropertySelector<FacultyDto>();
+    private static readonly IPropertySelector<MultipleFacultyResponse> PropertySelector = 
+        new PropertySelector<MultipleFacultyResponse>();
 
     private static readonly ISearchTermsSelector<FacultyParameters> SearchTermsSelector =
         new SearchTermsSelector<FacultyParameters>();
 
 
+    private readonly TestContext _context = new();
+
+    private readonly IParametersRequests<MultipleFacultyResponse, FacultyParameters> _parametersRequests =
+        Substitute.For<IParametersRequests<MultipleFacultyResponse, FacultyParameters>>();
+
+    private readonly Fixture _fixture = new();
+    private bool _onChangedInvoked;
+    
     public MultipleItemSelectTests()
     {
         _context.Services.AddSingleton(_parametersRequests);
@@ -37,10 +39,10 @@ public class MultipleItemSelectTests
     public void CheckItem_ShouldAddItemToList_IfItemWasNotChecked()
     {
         var items = Enumerable.Range(0, 10).Select(i => _fixture
-            .Build<FacultyDto>().With(f => f.Id, i).Create()).ToList();
-        var selectTo = new List<FacultyDto>();
+            .Build<MultipleFacultyResponse>().With(f => f.Id, i).Create()).ToList();
+        var selectTo = new List<MultipleFacultyResponse>();
         _parametersRequests.GetByParametersAsync(Arg.Any<FacultyParameters>())
-            .Returns(new ListWithPaginationData<FacultyDto> { Data = items });
+            .Returns(new ListWithPaginationData<MultipleFacultyResponse> { Data = items });
 
         var selector = RenderSelector(selectTo);
 
@@ -54,10 +56,10 @@ public class MultipleItemSelectTests
     public async Task CheckItem_ShouldRemoveItemToList_IfItemWasChecked()
     {
         var items = Enumerable.Range(0, 10).Select(i => _fixture
-            .Build<FacultyDto>().With(f => f.Id, i).Create()).ToList();
-        var selectTo = new List<FacultyDto> { new() { Id = 0 } };
+            .Build<MultipleFacultyResponse>().With(f => f.Id, i).Create()).ToList();
+        var selectTo = new List<MultipleFacultyResponse> { new() { Id = 0 } };
         _parametersRequests.GetByParametersAsync(Arg.Any<FacultyParameters>())
-            .Returns(new ListWithPaginationData<FacultyDto> { Data = items });
+            .Returns(new ListWithPaginationData<MultipleFacultyResponse> { Data = items });
 
         var selector = RenderSelector(selectTo);
 
@@ -71,10 +73,10 @@ public class MultipleItemSelectTests
     public void Select_ShouldSaveSelectTo_WhenPageNumberChanged()
     {
         var items = Enumerable.Range(0, 10).Select(i => _fixture
-            .Build<FacultyDto>().With(f => f.Id, i).Create()).ToList();
-        var selectTo = new List<FacultyDto> { new() { Id = 0 } };
+            .Build<MultipleFacultyResponse>().With(f => f.Id, i).Create()).ToList();
+        var selectTo = new List<MultipleFacultyResponse> { new() { Id = 0 } };
         _parametersRequests.GetByParametersAsync(Arg.Any<FacultyParameters>())
-            .Returns(new ListWithPaginationData<FacultyDto>
+            .Returns(new ListWithPaginationData<MultipleFacultyResponse>
                 { Data = items, Metadata = new PaginationData { TotalCount = 10, PageNumber = 1, PageSize = 5 } });
 
         var selector = RenderSelector(items);
@@ -90,8 +92,8 @@ public class MultipleItemSelectTests
     public void Build_ShouldHaveH3Tag_WhenTitleIsNotNullOrEmpty()
     {
         _parametersRequests.GetByParametersAsync(Arg.Any<FacultyParameters>())
-            .Returns(new ListWithPaginationData<FacultyDto>());
-        var component = RenderSelector(new List<FacultyDto>(), "title");
+            .Returns(new ListWithPaginationData<MultipleFacultyResponse>());
+        var component = RenderSelector(new List<MultipleFacultyResponse>(), "title");
 
         var title = component.Find("h3");
         title.ToMarkup().Should().Contain("title");
@@ -101,10 +103,10 @@ public class MultipleItemSelectTests
     public async Task ClickOnTableHeader_ShouldChangeOrderBy()
     {
         var items = Enumerable.Range(0, 10).Select(i => _fixture
-            .Build<FacultyDto>().With(f => f.Id, i).Create()).ToList();
-        var selectTo = new List<FacultyDto> { new() { Id = 0 } };
+            .Build<MultipleFacultyResponse>().With(f => f.Id, i).Create()).ToList();
+        var selectTo = new List<MultipleFacultyResponse> { new() { Id = 0 } };
         _parametersRequests.GetByParametersAsync(Arg.Any<FacultyParameters>())
-            .Returns(new ListWithPaginationData<FacultyDto>
+            .Returns(new ListWithPaginationData<MultipleFacultyResponse>
                 { Data = items, Metadata = new PaginationData { TotalCount = 10, PageNumber = 1, PageSize = 5 } });
         var selector = RenderSelector(selectTo);
         var th = selector.Find("th");
@@ -118,14 +120,14 @@ public class MultipleItemSelectTests
     [Fact]
     public void Build_ShouldNotBuildTable_WhenRequestsReturnsNull()
     {
-        RenderSelector(new List<FacultyDto>()).Markup.Should().Be("<p><em>Loading...</em></p>");
+        RenderSelector(new List<MultipleFacultyResponse>()).Markup.Should().Be("<p><em>Loading...</em></p>");
     }
 
 
-    private IRenderedComponent<MultipleItemsSelect<FacultyDto, FacultyParameters>> RenderSelector(
-        List<FacultyDto> selectTo, string title = "")
+    private IRenderedComponent<MultipleItemsSelect<MultipleFacultyResponse, FacultyParameters>> RenderSelector(
+        List<MultipleFacultyResponse> selectTo, string title = "")
     {
-        return _context.RenderComponent<MultipleItemsSelect<FacultyDto, FacultyParameters>>(
+        return _context.RenderComponent<MultipleItemsSelect<MultipleFacultyResponse, FacultyParameters>>(
             parameters => parameters
                 .Add(s => s.SelectTo, selectTo)
                 .Add(s => s.Title, title)

@@ -3,6 +3,7 @@ using ECampus.FrontEnd.Requests.Interfaces;
 using ECampus.FrontEnd.Requests.Interfaces.Validation;
 using ECampus.FrontEnd.Requests.Options;
 using ECampus.Domain.DataTransferObjects;
+using ECampus.Domain.Responses.Auth;
 using ECampus.Domain.Validation;
 using Newtonsoft.Json;
 
@@ -17,20 +18,20 @@ public class AuthRequests : IAuthRequests, IValidationRequests<LoginDto>, IValid
         _client = client;
     }
 
-    public async Task<LoginResult> LoginAsync(LoginDto login)
+    public async Task<LoginResponse> LoginAsync(LoginDto login)
     {
         var response = await _client.CreateClient(RequestOptions.ClientName).PostAsJsonAsync("api/Auth/login", login);
         response.EnsureSuccessStatusCode();
-        return JsonConvert.DeserializeObject<LoginResult>(await response.Content.ReadAsStringAsync())
+        return JsonConvert.DeserializeObject<LoginResponse>(await response.Content.ReadAsStringAsync())
                ?? throw new UnreachableException($"cannot deserialize object of type {typeof(UserDto)}");
     }
 
-    public async Task<LoginResult> SignUpAsync(RegistrationDto registrationDto)
+    public async Task<LoginResponse> SignUpAsync(RegistrationDto registrationDto)
     {
         var response = await _client.CreateClient(RequestOptions.ClientName)
             .PostAsJsonAsync("api/Auth/signup", registrationDto);
         response.EnsureSuccessStatusCode();
-        return JsonConvert.DeserializeObject<LoginResult>(await response.Content.ReadAsStringAsync())
+        return JsonConvert.DeserializeObject<LoginResponse>(await response.Content.ReadAsStringAsync())
                ?? throw new UnreachableException($"cannot deserialize object of type {typeof(UserDto)}");
     }
 

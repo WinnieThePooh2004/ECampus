@@ -1,6 +1,7 @@
-﻿using ECampus.Domain.DataContainers;
-using ECampus.Domain.DataTransferObjects;
-using ECampus.Domain.QueryParameters;
+﻿using ECampus.Domain.DataTransferObjects;
+using ECampus.Domain.Requests.Group;
+using ECampus.Domain.Responses;
+using ECampus.Domain.Responses.Group;
 using ECampus.Services.Contracts.Services;
 using ECampus.WebApi.Controllers;
 using Microsoft.AspNetCore.Mvc;
@@ -9,8 +10,8 @@ namespace ECampus.Tests.Unit.Tests.BackEnd.Api.Controllers;
 
 public class GroupsControllerTests
 {
-    private readonly IParametersService<GroupDto, GroupParameters> _service =
-        Substitute.For<IParametersService<GroupDto, GroupParameters>>();
+    private readonly IParametersService<MultipleGroupResponse, GroupParameters> _service =
+        Substitute.For<IParametersService<MultipleGroupResponse, GroupParameters>>();
 
     private readonly IBaseService<GroupDto> _baseService = Substitute.For<IBaseService<GroupDto>>();
     private readonly GroupsController _sut;
@@ -78,8 +79,9 @@ public class GroupsControllerTests
     [Fact]
     public async Task GetByParameters_ReturnsFromService()
     {
-        var data = _fixture.Build<ListWithPaginationData<GroupDto>>()
-            .With(l => l.Data, Enumerable.Range(0, 5).Select(_ => _fixture.Create<GroupDto>()).ToList())
+        var data = _fixture.Build<ListWithPaginationData<MultipleGroupResponse>>()
+            .With(l => l.Data, 
+                Enumerable.Range(0, 5).Select(_ => _fixture.Create<MultipleGroupResponse>()).ToList())
             .Create();
 
         _service.GetByParametersAsync(Arg.Any<GroupParameters>()).Returns(data);

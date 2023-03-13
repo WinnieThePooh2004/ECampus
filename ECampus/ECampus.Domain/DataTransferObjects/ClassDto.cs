@@ -16,11 +16,18 @@ public class ClassDto : IDataTransferObject
     public WeekDependency WeekDependency { get; set; } = WeekDependency.None;
 
     public int TeacherId { get; set; }
+    
     public int GroupId { get; set; }
+    
     public int AuditoryId { get; set; }
+    
     public int SubjectId { get; set; }
+    
     public AuditoryDto? Auditory { get; set; }
+    
     public TeacherDto? Teacher { get; set; }
+    
     public GroupDto? Group { get; set; }
+    
     public SubjectDto? Subject { get; set; }
 }

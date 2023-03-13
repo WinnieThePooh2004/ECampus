@@ -1,6 +1,7 @@
 ﻿using ECampus.Domain.DataTransferObjects;
 using ECampus.Domain.Enums;
-using ECampus.Domain.QueryParameters;
+using ECampus.Domain.Requests.Subject;
+using ECampus.Domain.Responses.Subject;
 using ECampus.Services.Contracts.Services;
 using ECampus.WebApi.Metadata;
 using Microsoft.AspNetCore.Authorization;
@@ -12,10 +13,11 @@ namespace ECampus.WebApi.Controllers;
 [Route("api/[controller]")]
 public class SubjectsController : ControllerBase
 {
-    private readonly IParametersService<SubjectDto, SubjectParameters> _service;
+    private readonly IParametersService<MultipleSubjectResponse, SubjectParameters> _service;
     private readonly IBaseService<SubjectDto> _baseService;
         
-    public SubjectsController(IParametersService<SubjectDto, SubjectParameters> service, IBaseService<SubjectDto> baseService)
+    public SubjectsController(IParametersService<MultipleSubjectResponse, SubjectParameters> service,
+        IBaseService<SubjectDto> baseService)
     {
         _service = service;
         _baseService = baseService;

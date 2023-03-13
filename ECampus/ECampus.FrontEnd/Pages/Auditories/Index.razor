@@ -1,8 +1,10 @@
 ﻿@page "/auditories"
+@using ECampus.Domain.Requests.Auditory
+@using ECampus.Domain.Responses.Auditory
 <h3>Auditories</h3>
 <br/>
-<IndexPageModel TData="AuditoryDto" TParameters="AuditoryParameters"
+<IndexPageModel TData="MultipleAuditoryResponse" TParameters="AuditoryParameters"
            CreateLink="/auditories/create"
            EditLink="/auditories/edit"
-           ActionLinks="@(new List<(string, Func<AuditoryDto, string>)> { ("Timetable", a => $"/Timetable/auditory/{a.Id}") })"
+           ActionLinks="@(new List<(string, Func<MultipleAuditoryResponse, string>)> { ("Timetable", a => $"/Timetable/auditory/{a.Id}") })"
            ParameterOptions="@(p => p.OrderBy = "Building")"/>

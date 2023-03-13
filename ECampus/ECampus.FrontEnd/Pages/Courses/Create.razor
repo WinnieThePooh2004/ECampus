@@ -1,7 +1,9 @@
 ﻿@page "/courses/create"
+@using ECampus.Domain.Responses.Group
+@using ECampus.Domain.Responses.Teacher
 @inherits CreatePageBase<CourseDto>
 
-<CourseEditForm Model="new CourseDto { Groups = new List<GroupDto>(), Teachers = new List<TeacherDto>() }" OnSubmit="Save"/>
+<CourseEditForm Model="new CourseDto { Groups = new List<MultipleGroupResponse>(), Teachers = new List<MultipleTeacherResponse>() }" OnSubmit="Save"/>
 
 @code {
     protected override string PageAfterSave => "/courses";

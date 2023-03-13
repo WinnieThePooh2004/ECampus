@@ -5,6 +5,7 @@ using ECampus.Domain.Auth;
 using ECampus.Domain.DataTransferObjects;
 using ECampus.Domain.Enums;
 using ECampus.Domain.Exceptions;
+using ECampus.Domain.Responses.CourseTask;
 using Microsoft.AspNetCore.Components;
 
 namespace ECampus.FrontEnd.Pages.CourseTasks;
@@ -18,7 +19,7 @@ public partial class Index
 
     private bool? _enableEdit;
     private UserRole _role;
-    private List<(string LinkName, Func<CourseTaskDto, string> LinkSource)>? _actionLinks;
+    private List<(string LinkName, Func<MultipleCourseTaskResponse, string> LinkSource)>? _actionLinks;
 
     protected override async Task OnInitializedAsync()
     {
@@ -48,18 +49,18 @@ public partial class Index
         _enableEdit = false;
     }
 
-    private List<(string LinkName, Func<CourseTaskDto, string> LinkSource)> ActionLinks() =>
+    private List<(string LinkName, Func<MultipleCourseTaskResponse, string> LinkSource)> ActionLinks() =>
         _role switch
         {
             UserRole.Guest => throw new HttpResponseException(HttpStatusCode.Forbidden),
-            UserRole.Teacher => new List<(string, Func<CourseTaskDto, string>)>
+            UserRole.Teacher => new List<(string, Func<MultipleCourseTaskResponse, string>)>
             {
                 ("View submissions", c => $"/submissions/{c.Id}")
             },
-            UserRole.Student => new List<(string, Func<CourseTaskDto, string>)>
+            UserRole.Student => new List<(string, Func<MultipleCourseTaskResponse, string>)>
             {
                 ("Edit my submission", c => $"/editSubmission/{c.Id}")
             },
-            _ => new List<(string, Func<CourseTaskDto, string>)>()
+            _ => new List<(string, Func<MultipleCourseTaskResponse, string>)>()
         };
 }

@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 using ECampus.Domain.Auth;
-using ECampus.Domain.QueryParameters;
+using ECampus.Domain.Requests.Course;
 using ECampus.Domain.Validation;
 using ECampus.Services.Validation.ParametersValidators;
 using Microsoft.AspNetCore.Http;

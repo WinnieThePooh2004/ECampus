@@ -1,7 +1,7 @@
 ﻿using ECampus.DataAccess.DataSelectors.MultipleItemSelectors;
 using ECampus.Domain.Entities;
 using ECampus.Domain.Entities.RelationEntities;
-using ECampus.Domain.QueryParameters;
+using ECampus.Domain.Requests.Course;
 using ECampus.Infrastructure;
 using ECampus.Tests.Shared.Mocks.EntityFramework;
 using Microsoft.EntityFrameworkCore;

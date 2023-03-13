@@ -1,6 +1,7 @@
 ﻿using System.Net.Http.Json;
 using ECampus.Domain.DataTransferObjects;
 using ECampus.Domain.Entities;
+using ECampus.Domain.Responses.Auth;
 using ECampus.Tests.Integration.AppFactories;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
@@ -51,7 +52,7 @@ public class AuthEndpointsTests : IClassFixture<ApplicationFactory>
 
         response.EnsureSuccessStatusCode();
         var content = await response.Content.ReadAsStringAsync();
-        var loginResult = JsonConvert.DeserializeObject<LoginResult>(content);
+        var loginResult = JsonConvert.DeserializeObject<LoginResponse>(content);
         loginResult!.Email.Should().Be(user.Email);
         loginResult.GroupId.Should().Be(1);
         loginResult.StudentId.Should().Be(800);

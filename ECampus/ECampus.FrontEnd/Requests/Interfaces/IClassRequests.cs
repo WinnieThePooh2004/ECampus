@@ -1,4 +1,4 @@
-﻿using ECampus.Domain.DataContainers;
+﻿using ECampus.Domain.Responses.Class;
 
 namespace ECampus.FrontEnd.Requests.Interfaces;
 

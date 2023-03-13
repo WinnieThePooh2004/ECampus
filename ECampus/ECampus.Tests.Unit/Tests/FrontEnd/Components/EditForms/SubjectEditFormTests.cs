@@ -1,7 +1,8 @@
 ﻿using Bunit;
-using ECampus.Domain.DataContainers;
 using ECampus.Domain.DataTransferObjects;
-using ECampus.Domain.QueryParameters;
+using ECampus.Domain.Requests.Teacher;
+using ECampus.Domain.Responses;
+using ECampus.Domain.Responses.Teacher;
 using ECampus.FrontEnd.Components.EditForms;
 using ECampus.FrontEnd.PropertySelectors;
 using ECampus.FrontEnd.Requests.Interfaces;
@@ -13,16 +14,18 @@ namespace ECampus.Tests.Unit.Tests.FrontEnd.Components.EditForms;
 
 public class SubjectEditFormTests
 {
+    private static readonly IPropertySelector<MultipleTeacherResponse> PropertySelector =
+        new PropertySelector<MultipleTeacherResponse>();
+
     private readonly TestContext _context = new();
 
-    private readonly IParametersRequests<TeacherDto, TeacherParameters> _requests =
-        Substitute.For<IParametersRequests<TeacherDto, TeacherParameters>>();
+    private readonly IParametersRequests<MultipleTeacherResponse, TeacherParameters> _requests =
+        Substitute.For<IParametersRequests<MultipleTeacherResponse, TeacherParameters>>();
 
     private readonly Fixture _fixture = new();
 
     private readonly IValidator<SubjectDto> _validator = Substitute.For<IValidator<SubjectDto>>();
-    
-    private static readonly IPropertySelector<TeacherDto> PropertySelector = new PropertySelector<TeacherDto>();
+
 
     private static readonly ISearchTermsSelector<TeacherParameters> SearchTermsSelector =
         new SearchTermsSelector<TeacherParameters>();
@@ -38,10 +41,10 @@ public class SubjectEditFormTests
     [Fact]
     public void ClickOnTeacher_ShouldAddItToModel()
     {
-        var model = new SubjectDto { Teachers = new List<TeacherDto>() };
-        var teachers = _fixture.Build<TeacherDto>().Without(t => t.Subjects).CreateMany(5).ToList();
+        var model = new SubjectDto { Teachers = new List<MultipleTeacherResponse>() };
+        var teachers = _fixture.Build<MultipleTeacherResponse>().CreateMany(5).ToList();
         _requests.GetByParametersAsync(Arg.Any<TeacherParameters>())
-            .Returns(new ListWithPaginationData<TeacherDto> { Data = teachers });
+            .Returns(new ListWithPaginationData<MultipleTeacherResponse> { Data = teachers });
         _validator.ValidateAsync(Arg.Any<IValidationContext>()).Returns(new ValidationResult());
         var form = RenderedComponent(model);
         var checkbox = form.FindAll("input").First(i => i.ToMarkup().Contains("form-check"));

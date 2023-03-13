@@ -1,7 +1,7 @@
 ﻿using ECampus.Core.Extensions;
 using ECampus.Core.Installers;
 using ECampus.Domain;
-using ECampus.Domain.QueryParameters;
+using ECampus.Domain.Requests;
 using ECampus.Services.Contracts.Services;
 using ECampus.Services.Services;
 using Microsoft.Extensions.Configuration;

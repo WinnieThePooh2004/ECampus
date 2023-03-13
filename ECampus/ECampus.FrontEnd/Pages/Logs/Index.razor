@@ -1,5 +1,7 @@
 ﻿@page "/logs"
+@using ECampus.Domain.Requests.Log
+@using ECampus.Domain.Responses.Log
 
-<IndexPageModel TData="LogDto" TParameters="LogParameters" 
-                ParameterOptions="@(parameters => { parameters.OrderBy = nameof(LogDto.TimeStamp); parameters.PageSize = 20; })"
+<IndexPageModel TData="MultipleLogResponse" TParameters="LogParameters" 
+                ParameterOptions="@(parameters => { parameters.OrderBy = nameof(MultipleLogResponse.TimeStamp); parameters.PageSize = 20; })"
                 />

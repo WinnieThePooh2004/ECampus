@@ -1,16 +1,15 @@
 ﻿using System.Linq.Expressions;
 using ECampus.FrontEnd.PropertySelectors;
 using ECampus.FrontEnd.Requests.Interfaces;
-using ECampus.Domain.Data;
-using ECampus.Domain.DataContainers;
 using ECampus.Domain.Enums;
-using ECampus.Domain.QueryParameters;
+using ECampus.Domain.Requests;
+using ECampus.Domain.Responses;
 using Microsoft.AspNetCore.Components;
 
 namespace ECampus.FrontEnd.Components.PageBases;
 
 public class DataTableBase<TData, TParameters> : ComponentBase
-    where TData : class, IDataTransferObject
+    where TData : class, IMultipleItemsResponse
     where TParameters : class, IQueryParameters<TData>, new()
 {
     [Parameter] public Action<TParameters> ParameterOptions { get; set; } = _ => { };

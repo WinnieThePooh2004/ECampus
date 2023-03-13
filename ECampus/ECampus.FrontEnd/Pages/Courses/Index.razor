@@ -1,10 +1,12 @@
 ﻿@page "/courses"
+@using ECampus.Domain.Requests.Course
+@using ECampus.Domain.Responses.Course
 
 <h3>Courses</h3>
 
-<IndexPageModel TData="CourseDto" TParameters="CourseParameters"
+<IndexPageModel TData="MultipleCourseResponse" TParameters="CourseParameters"
                 CreateLink="/courses/create"
                 EditLink="/courses/edit"
-                ParameterOptions="parameters => parameters.OrderBy = nameof(CourseDto.Name)"
-                ActionLinks="@(new List<(string LinkName, Func<CourseDto, string> LinkSource)> 
+                ParameterOptions="parameters => parameters.OrderBy = nameof(MultipleCourseResponse.Name)"
+                ActionLinks="@(new List<(string LinkName, Func<MultipleCourseResponse, string> LinkSource)> 
                              { ("View tasks", course => $"/tasks/{course.Id}") })"/>

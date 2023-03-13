@@ -1,5 +1,5 @@
 ﻿using ECampus.Domain.Data;
-using ECampus.Domain.QueryParameters;
+using ECampus.Domain.Requests;
 using ECampus.Infrastructure;
 
 namespace ECampus.DataAccess.Interfaces;

@@ -1,5 +1,7 @@
 ﻿using Bunit;
 using ECampus.Domain.DataTransferObjects;
+using ECampus.Domain.Responses.Student;
+using ECampus.Domain.Responses.Teacher;
 using ECampus.FrontEnd.Pages.AdminPages;
 using ECampus.FrontEnd.PropertySelectors;
 using ECampus.FrontEnd.Requests.Interfaces;
@@ -15,12 +17,14 @@ public class UserEditPageTests
     public UserEditPageTests()
     {
         _context.Services.AddSingleton(_requests);
+        _context.Services.AddSingleton(typeof(IPropertySelector<>), 
+            typeof(PropertySelector<>));
     }
 
     [Fact]
     public void Build_ShouldShowStudentDetails_IfUserRoleIsStudent()
     {
-        var user = new UserDto { Student = new StudentDto { FirstName = "fn", LastName = "ln", UserEmail = "email" } };
+        var user = new UserDto { Student = new MultipleStudentResponse { FirstName = "fn", LastName = "ln", UserEmail = "email" } };
         _requests.GetByIdAsync(1).Returns(user);
         _context.Services.AddSingleton<IPropertySelector<StudentDto>, PropertySelector<StudentDto>>();
 
@@ -34,7 +38,7 @@ public class UserEditPageTests
     [Fact]
     public void Build_ShouldShowTeacherDetails_IfUserRoleIsTeacher()
     {
-        var user = new UserDto { Teacher = new TeacherDto { FirstName = "fn", LastName = "ln", UserEmail = "email" } };
+        var user = new UserDto { Teacher = new MultipleTeacherResponse { FirstName = "fn", LastName = "ln", UserEmail = "email" } };
         _requests.GetByIdAsync(1).Returns(user);
         _context.Services.AddSingleton<IPropertySelector<TeacherDto>, PropertySelector<TeacherDto>>();
 

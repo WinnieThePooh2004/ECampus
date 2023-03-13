@@ -1,9 +1,9 @@
 ﻿using System.Net;
 using System.Text.Json;
-using ECampus.Domain.DataContainers;
-using ECampus.Domain.DataTransferObjects;
 using ECampus.Domain.Extensions;
-using ECampus.Domain.QueryParameters;
+using ECampus.Domain.Requests.Auditory;
+using ECampus.Domain.Responses;
+using ECampus.Domain.Responses.Auditory;
 using ECampus.FrontEnd.Requests;
 using ECampus.FrontEnd.Requests.Options;
 using ECampus.Tests.Shared.Mocks.HttpRequests;
@@ -12,7 +12,7 @@ namespace ECampus.Tests.Unit.Tests.FrontEnd.Requests;
 
 public class ParametersRequestsTests : IDisposable
 {
-    private readonly ParametersRequests<AuditoryDto, AuditoryParameters> _sut;
+    private readonly ParametersRequests<MultipleAuditoryResponse, AuditoryParameters> _sut;
     private readonly Fixture _fixture = new();
     private readonly HttpClientFactory _clientFactory = new();
 
@@ -20,7 +20,7 @@ public class ParametersRequestsTests : IDisposable
     {
         var requestsOptions = Substitute.For<IRequestOptions>();
         requestsOptions.GetControllerName(Arg.Any<Type>()).Returns("Auditories");
-        _sut = new ParametersRequests<AuditoryDto, AuditoryParameters>(_clientFactory, requestsOptions);
+        _sut = new ParametersRequests<MultipleAuditoryResponse, AuditoryParameters>(_clientFactory, requestsOptions);
     }
 
     public void Dispose()
@@ -31,10 +31,10 @@ public class ParametersRequestsTests : IDisposable
     [Fact]
     public async Task GetByParameters_ShouldReturnList_WhenStatusCodeIsSuccessful()
     {
-        var list = new ListWithPaginationData<AuditoryDto>
+        var list = new ListWithPaginationData<MultipleAuditoryResponse>
         {
             Metadata = _fixture.Create<PaginationData>(),
-            Data = _fixture.CreateMany<AuditoryDto>(10).ToList()
+            Data = _fixture.CreateMany<MultipleAuditoryResponse>(10).ToList()
         };
         var parameters = _fixture.Create<AuditoryParameters>();
         var response = new HttpResponseMessage();
@@ -46,7 +46,8 @@ public class ParametersRequestsTests : IDisposable
         var result = await _sut.GetByParametersAsync(parameters);
 
         result.Should().BeEquivalentTo(list,
-            opt => opt.ComparingByMembers<ListWithPaginationData<AuditoryDto>>());
+            opt => 
+                opt.ComparingByMembers<ListWithPaginationData<MultipleAuditoryResponse>>());
     }
 
     [Fact]

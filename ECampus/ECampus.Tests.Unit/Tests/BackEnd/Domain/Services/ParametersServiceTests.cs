@@ -1,8 +1,9 @@
 ﻿using ECampus.DataAccess.Contracts.DataAccess;
-using ECampus.Domain.DataContainers;
 using ECampus.Domain.DataTransferObjects;
 using ECampus.Domain.Entities;
-using ECampus.Domain.QueryParameters;
+using ECampus.Domain.Requests.Auditory;
+using ECampus.Domain.Responses;
+using ECampus.Domain.Responses.Auditory;
 using ECampus.Services.Contracts.Services;
 using ECampus.Services.Services;
 using ECampus.Tests.Shared.DataFactories;
@@ -14,7 +15,7 @@ namespace ECampus.Tests.Unit.Tests.BackEnd.Domain.Services;
 public sealed class ParametersServiceTests
 {
     private readonly IAbstractFactory<Auditory> _dataFactory;
-    private readonly ParametersService<AuditoryDto, AuditoryParameters, Auditory> _service;
+    private readonly ParametersService<MultipleAuditoryResponse, AuditoryParameters, Auditory> _service;
     private readonly IDataAccessFacade _dataAccess = Substitute.For<IDataAccessFacade>();
     private readonly Fixture _fixture;
 
@@ -24,7 +25,7 @@ public sealed class ParametersServiceTests
         var mapper = MapperFactory.Mapper;
 
         Substitute.For<IBaseService<AuditoryDto>>();
-        _service = new ParametersService<AuditoryDto, AuditoryParameters, Auditory>(mapper, _dataAccess);
+        _service = new ParametersService<MultipleAuditoryResponse, AuditoryParameters, Auditory>(mapper, _dataAccess);
         _fixture = new Fixture();
         _fixture.Behaviors.Add(new OmitOnRecursionBehavior());
     }

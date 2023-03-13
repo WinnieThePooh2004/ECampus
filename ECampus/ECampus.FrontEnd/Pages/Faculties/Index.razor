@@ -1,8 +1,10 @@
 ﻿@page "/faculties"
+@using ECampus.Domain.Requests.Faculty
+@using ECampus.Domain.Responses.Faculty
 <h1>Faculties</h1>
 
-<IndexPageModel TData="FacultyDto" TParameters="FacultyParameters"
+<IndexPageModel TData="MultipleFacultyResponse" TParameters="FacultyParameters"
            ParameterOptions="@(p => p.OrderBy = "Name")"
            CreateLink="/faculties/Create"
            EditLink="/faculties/edit"
-           ActionLinks="@(new List<(string LinkName, Func<FacultyDto, string> LinkSource)> { ("View departments", f => $"/Departments/{f.Id}") })"/>
+           ActionLinks="@(new List<(string LinkName, Func<MultipleFacultyResponse, string> LinkSource)> { ("View departments", f => $"/Departments/{f.Id}") })"/>

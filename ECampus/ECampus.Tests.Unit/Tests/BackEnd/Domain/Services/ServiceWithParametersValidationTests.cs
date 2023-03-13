@@ -1,7 +1,7 @@
-﻿using ECampus.Domain.DataContainers;
-using ECampus.Domain.DataTransferObjects;
-using ECampus.Domain.Exceptions.DomainExceptions;
-using ECampus.Domain.QueryParameters;
+﻿using ECampus.Domain.Exceptions.DomainExceptions;
+using ECampus.Domain.Requests.TaskSubmission;
+using ECampus.Domain.Responses;
+using ECampus.Domain.Responses.TaskSubmission;
 using ECampus.Domain.Validation;
 using ECampus.Services.Contracts.Services;
 using ECampus.Services.Contracts.Validation;
@@ -11,10 +11,10 @@ namespace ECampus.Tests.Unit.Tests.BackEnd.Domain.Services;
 
 public class ServiceWithParametersValidationTests
 {
-    private readonly ServiceWithParametersValidation<TaskSubmissionDto, TaskSubmissionParameters> _sut;
+    private readonly ServiceWithParametersValidation<MultipleTaskSubmissionResponse, TaskSubmissionParameters> _sut;
 
-    private readonly IParametersService<TaskSubmissionDto, TaskSubmissionParameters> _baseService =
-        Substitute.For<IParametersService<TaskSubmissionDto, TaskSubmissionParameters>>();
+    private readonly IParametersService<MultipleTaskSubmissionResponse, TaskSubmissionParameters> _baseService =
+        Substitute.For<IParametersService<MultipleTaskSubmissionResponse, TaskSubmissionParameters>>();
 
     private readonly IParametersValidator<TaskSubmissionParameters> _parametersValidator =
         Substitute.For<IParametersValidator<TaskSubmissionParameters>>();
@@ -23,7 +23,7 @@ public class ServiceWithParametersValidationTests
 
     public ServiceWithParametersValidationTests()
     {
-        _sut = new ServiceWithParametersValidation<TaskSubmissionDto, TaskSubmissionParameters>(_baseService,
+        _sut = new ServiceWithParametersValidation<MultipleTaskSubmissionResponse, TaskSubmissionParameters>(_baseService,
             _parametersValidator);
     }
 
@@ -32,7 +32,7 @@ public class ServiceWithParametersValidationTests
     {
         var parameters = _fixture.Create<TaskSubmissionParameters>();
         _parametersValidator.ValidateAsync(parameters).Returns(new ValidationResult());
-        var expected = new ListWithPaginationData<TaskSubmissionDto>();
+        var expected = new ListWithPaginationData<MultipleTaskSubmissionResponse>();
         _baseService.GetByParametersAsync(parameters).Returns(expected);
 
         var result = await _sut.GetByParametersAsync(parameters);

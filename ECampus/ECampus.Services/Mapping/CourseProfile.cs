@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ECampus.Domain.DataTransferObjects;
 using ECampus.Domain.Entities;
+using ECampus.Domain.Responses.Course;
 
 namespace ECampus.Services.Mapping;
 
@@ -8,8 +9,17 @@ public class CourseProfile : Profile
 {
     public CourseProfile()
     {
-        CreateMap<Course, CourseDto>().ReverseMap();
-        CreateMap<Course, CourseSummary>().ForMember(
+        CreateMap<Course, CourseDto>();
+        
+        CreateMap<CourseDto, Course>().ForMember(
+            dest => dest.Teachers, opt =>
+                opt.MapFrom(c => c.Teachers!.Select(subject => 
+                    new Subject { Id = subject.Id }).ToList())).ForMember(
+            dest => dest.Groups, opt =>
+                opt.MapFrom(c => c.Groups!.Select(subject => 
+                    new Subject { Id = subject.Id }).ToList()));
+        
+        CreateMap<Course, CourseSummaryResponse>().ForMember(
             dest => dest.CourseId,
             opt => opt.MapFrom(course => course.Id)
         ).ForMember(
@@ -25,5 +35,7 @@ public class CourseProfile : Profile
             opt => opt.MapFrom(c =>
                 c.Tasks!.Select(task => task.Coefficient * task.MaxPoints).Sum())
         );
+
+        CreateMap<Course, MultipleCourseResponse>();
     }
 }

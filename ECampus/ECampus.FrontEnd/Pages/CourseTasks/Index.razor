@@ -1,4 +1,6 @@
 ﻿@page "/tasks/{CourseId:int}"
+@using ECampus.Domain.Requests.CourseTask
+@using ECampus.Domain.Responses.CourseTask
 
 <h3>My tastks</h3>
 
@@ -8,7 +10,7 @@
     return;
 }
 
-<IndexPageModel TData="CourseTaskDto" TParameters="CourseTaskParameters"
+<IndexPageModel TData="MultipleCourseTaskResponse" TParameters="CourseTaskParameters"
                 EditLink="/tasks/edit"
                 CreateLink="@($"/tasks/create/{CourseId}")"
                 ParameterOptions="parameters => parameters.CourseId = CourseId"

@@ -1,6 +1,7 @@
-﻿using ECampus.Domain.DataContainers;
-using ECampus.Domain.DataTransferObjects;
-using ECampus.Domain.QueryParameters;
+﻿using ECampus.Domain.DataTransferObjects;
+using ECampus.Domain.Requests.Department;
+using ECampus.Domain.Responses;
+using ECampus.Domain.Responses.Department;
 using ECampus.Services.Contracts.Services;
 using ECampus.WebApi.Controllers;
 using Microsoft.AspNetCore.Mvc;
@@ -9,8 +10,8 @@ namespace ECampus.Tests.Unit.Tests.BackEnd.Api.Controllers;
 
 public class DepartmentsControllerTests
 {
-    private readonly IParametersService<DepartmentDto, DepartmentParameters> _service =
-        Substitute.For<IParametersService<DepartmentDto, DepartmentParameters>>();
+    private readonly IParametersService<MultipleDepartmentResponse, DepartmentParameters> _service =
+        Substitute.For<IParametersService<MultipleDepartmentResponse, DepartmentParameters>>();
 
     private readonly IBaseService<DepartmentDto> _baseService = Substitute.For<IBaseService<DepartmentDto>>();
     private readonly DepartmentsController _sut;
@@ -77,9 +78,9 @@ public class DepartmentsControllerTests
     [Fact]
     public async Task GetByParameters_ReturnsFromService_ServiceCalled()
     {
-        var data = _fixture.Build<ListWithPaginationData<DepartmentDto>>()
+        var data = _fixture.Build<ListWithPaginationData<MultipleDepartmentResponse>>()
             .With(l => l.Data, Enumerable.Range(0, 5)
-                .Select(_ => _fixture.Create<DepartmentDto>()).ToList())
+                .Select(_ => _fixture.Create<MultipleDepartmentResponse>()).ToList())
             .Create();
 
         _service.GetByParametersAsync(Arg.Any<DepartmentParameters>()).Returns(data);

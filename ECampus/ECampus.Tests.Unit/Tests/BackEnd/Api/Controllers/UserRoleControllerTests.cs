@@ -1,6 +1,7 @@
-﻿using ECampus.Domain.DataContainers;
-using ECampus.Domain.DataTransferObjects;
-using ECampus.Domain.QueryParameters;
+﻿using ECampus.Domain.DataTransferObjects;
+using ECampus.Domain.Requests.User;
+using ECampus.Domain.Responses;
+using ECampus.Domain.Responses.User;
 using ECampus.Services.Contracts.Services;
 using ECampus.WebApi.Controllers;
 using Microsoft.AspNetCore.Mvc;
@@ -12,8 +13,8 @@ public class UserRoleControllerTests
     private readonly UsersController _sut;
     private readonly IBaseService<UserDto> _service = Substitute.For<IBaseService<UserDto>>();
 
-    private readonly IParametersService<UserDto, UserParameters> _parametersService =
-        Substitute.For<IParametersService<UserDto, UserParameters>>();
+    private readonly IParametersService<MultipleUserResponse, UserParameters> _parametersService =
+        Substitute.For<IParametersService<MultipleUserResponse, UserParameters>>();
 
     private readonly Fixture _fixture = new();
 
@@ -65,9 +66,9 @@ public class UserRoleControllerTests
     [Fact]
     public async Task GetByParameters_ReturnsFromService_ServiceCalled()
     {
-        var data = _fixture.Build<ListWithPaginationData<UserDto>>()
+        var data = _fixture.Build<ListWithPaginationData<MultipleUserResponse>>()
             .With(l => l.Data, Enumerable.Range(0, 5)
-                .Select(_ => _fixture.Create<UserDto>()).ToList()).Create();
+                .Select(_ => _fixture.Create<MultipleUserResponse>()).ToList()).Create();
 
         _parametersService.GetByParametersAsync(Arg.Any<UserParameters>()).Returns(data);
         var actionResult = await _sut.Get(new UserParameters());

@@ -1,4 +1,5 @@
 ﻿using ECampus.Domain.DataTransferObjects;
+using ECampus.Domain.Responses.Auth;
 using ECampus.Services.Contracts.Services;
 using ECampus.WebApi.Controllers;
 using Microsoft.AspNetCore.Mvc;
@@ -22,7 +23,7 @@ public class AuthControllerTests
     [Fact]
     public async Task Login_ReturnsFromService_ServiceCalled()
     {
-        var loginResult = _fixture.Create<LoginResult>();
+        var loginResult = _fixture.Create<LoginResponse>();
         var login = _fixture.Create<LoginDto>();
         _service.Login(login).Returns(loginResult);
 

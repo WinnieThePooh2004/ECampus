@@ -1,15 +1,15 @@
 ﻿using System.Diagnostics;
 using ECampus.FrontEnd.Requests.Interfaces;
 using ECampus.FrontEnd.Requests.Options;
-using ECampus.Domain.DataContainers;
 using ECampus.Domain.Extensions;
-using ECampus.Domain.QueryParameters;
+using ECampus.Domain.Requests;
+using ECampus.Domain.Responses;
 using Newtonsoft.Json;
 
 namespace ECampus.FrontEnd.Requests;
 
 public class ParametersRequests<TData, TParameters> : IParametersRequests<TData, TParameters>
-    where TData : class
+    where TData : class, IMultipleItemsResponse
     where TParameters : IQueryParameters
 {
     private readonly string _controllerName;

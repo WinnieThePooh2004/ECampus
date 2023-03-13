@@ -1,5 +1,6 @@
 ﻿using ECampus.Domain.DataTransferObjects;
-using ECampus.Domain.QueryParameters;
+using ECampus.Domain.Requests.Student;
+using ECampus.Domain.Responses.Student;
 using ECampus.Services.Contracts.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,10 +10,11 @@ namespace ECampus.WebApi.Controllers;
 [Route("api/[controller]")]
 public class StudentsController : ControllerBase
 {
-    private readonly IParametersService<StudentDto, StudentParameters> _parametersService;
+    private readonly IParametersService<MultipleStudentResponse, StudentParameters> _parametersService;
     private readonly IBaseService<StudentDto> _baseService;
 
-    public StudentsController(IParametersService<StudentDto, StudentParameters> parametersService, IBaseService<StudentDto> baseService)
+    public StudentsController(IParametersService<MultipleStudentResponse, StudentParameters> parametersService,
+        IBaseService<StudentDto> baseService)
     {
         _parametersService = parametersService;
         _baseService = baseService;

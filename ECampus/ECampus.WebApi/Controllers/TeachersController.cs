@@ -1,6 +1,7 @@
 ﻿using ECampus.Domain.DataTransferObjects;
 using ECampus.Domain.Enums;
-using ECampus.Domain.QueryParameters;
+using ECampus.Domain.Requests.Teacher;
+using ECampus.Domain.Responses.Teacher;
 using ECampus.Services.Contracts.Services;
 using ECampus.WebApi.Metadata;
 using Microsoft.AspNetCore.Authorization;
@@ -12,10 +13,10 @@ namespace ECampus.WebApi.Controllers;
 [Route("api/[controller]")]
 public class TeachersController : ControllerBase
 {
-    private readonly IParametersService<TeacherDto, TeacherParameters> _service;
+    private readonly IParametersService<MultipleTeacherResponse, TeacherParameters> _service;
     private readonly IBaseService<TeacherDto> _baseService;
 
-    public TeachersController(IParametersService<TeacherDto, TeacherParameters> service,
+    public TeachersController(IParametersService<MultipleTeacherResponse, TeacherParameters> service,
         IBaseService<TeacherDto> baseService)
     {
         _service = service;
@@ -27,7 +28,7 @@ public class TeachersController : ControllerBase
     [AllowAnonymous]
     public async Task<IActionResult> Get([FromQuery] TeacherParameters parameters, CancellationToken token = default)
     {
-        return Ok(await _service.GetByParametersAsync(parameters));
+        return Ok(await _service.GetByParametersAsync(parameters, token));
     }
 
     // GET: Teachers/Details/5

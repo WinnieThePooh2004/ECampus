@@ -1,5 +1,12 @@
 ﻿@page "/profile/edit"
 @using Microsoft.AspNetCore.Components
+@using ECampus.Domain.Requests.Auditory
+@using ECampus.Domain.Requests.Group
+@using ECampus.Domain.Requests.Teacher
+@using ECampus.Domain.Responses.Auditory
+@using ECampus.Domain.Responses.Group
+@using ECampus.Domain.Responses.Teacher
+
 @inherits ModelEditForm<UserProfile>
 @if (_model is null)
 {
@@ -19,13 +26,13 @@
                 <InputText @bind-Value="@Model.Username"/>
                 <ValidationMessage For="@(() => Model.Username)"/>
             </p>
-            <MultipleItemsSelect TData="AuditoryDto" TParameters="AuditoryParameters" SelectTo="Model.SavedAuditories"
+            <MultipleItemsSelect TData="MultipleAuditoryResponse" TParameters="AuditoryParameters" SelectTo="Model.SavedAuditories"
                                  Title="Auditories"/>
             <br/>
-            <MultipleItemsSelect TData="GroupDto" TParameters="GroupParameters" SelectTo="Model.SavedGroups"
+            <MultipleItemsSelect TData="MultipleGroupResponse" TParameters="GroupParameters" SelectTo="Model.SavedGroups"
                                  Title="Groups"/>
             <br/>
-            <MultipleItemsSelect TData="TeacherDto" TParameters="TeacherParameters" SelectTo="Model.SavedTeachers"
+            <MultipleItemsSelect TData="MultipleTeacherResponse" TParameters="TeacherParameters" SelectTo="Model.SavedTeachers"
                                  Title="Teachers"/>
             <br/>
         </EditForm>

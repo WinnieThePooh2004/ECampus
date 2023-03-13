@@ -1,6 +1,6 @@
 ﻿using ECampus.DataAccess.DataSelectors.MultipleItemSelectors;
 using ECampus.Domain.Entities;
-using ECampus.Domain.QueryParameters;
+using ECampus.Domain.Requests.Log;
 using ECampus.Infrastructure;
 using ECampus.Tests.Shared.Mocks.EntityFramework;
 using Serilog.Events;

@@ -1,9 +1,10 @@
 ﻿using System.Security.Claims;
 using Bunit;
-using ECampus.Domain.DataContainers;
 using ECampus.Domain.DataTransferObjects;
 using ECampus.Domain.Enums;
-using ECampus.Domain.QueryParameters;
+using ECampus.Domain.Requests.Auditory;
+using ECampus.Domain.Responses;
+using ECampus.Domain.Responses.Auditory;
 using ECampus.FrontEnd.PropertySelectors;
 using ECampus.FrontEnd.Requests.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -14,15 +15,15 @@ namespace ECampus.Tests.Unit.Tests.FrontEnd.Pages.Indexes;
 
 public class AuditoryIndexTests
 {
-    private readonly IParametersRequests<AuditoryDto, AuditoryParameters> _parametersRequests =
-        Substitute.For<IParametersRequests<AuditoryDto, AuditoryParameters>>();
+    private readonly IParametersRequests<MultipleAuditoryResponse, AuditoryParameters> _parametersRequests =
+        Substitute.For<IParametersRequests<MultipleAuditoryResponse, AuditoryParameters>>();
 
-    private readonly IBaseRequests<AuditoryDto> _baseRequests = Substitute.For<IBaseRequests<AuditoryDto>>();
+    private readonly IBaseRequests<MultipleAuditoryResponse> _baseRequests = Substitute.For<IBaseRequests<MultipleAuditoryResponse>>();
     private readonly IHttpContextAccessor _httpContextAccessor = Substitute.For<IHttpContextAccessor>();
     private readonly HttpContext _httpContent = Substitute.For<HttpContext>();
     private readonly Fixture _fixture = new();
 
-    private static readonly IPropertySelector<AuditoryDto> PropertySelector = new PropertySelector<AuditoryDto>();
+    private static readonly IPropertySelector<MultipleAuditoryResponse> PropertySelector = new PropertySelector<MultipleAuditoryResponse>();
 
     private static readonly ISearchTermsSelector<AuditoryParameters> SearchTermsSelector =
         new SearchTermsSelector<AuditoryParameters>();
@@ -190,7 +191,7 @@ public class AuditoryIndexTests
         }));
     }
 
-    private ListWithPaginationData<AuditoryDto> TestData(int pageSize) =>
+    private ListWithPaginationData<MultipleAuditoryResponse> TestData(int pageSize) =>
         new()
         {
             Metadata = new PaginationData
@@ -199,6 +200,6 @@ public class AuditoryIndexTests
                 PageNumber = 1,
                 TotalCount = 10
             },
-            Data = _fixture.CreateMany<AuditoryDto>(10).ToList()
+            Data = _fixture.CreateMany<MultipleAuditoryResponse>(10).ToList()
         };
 }

@@ -1,5 +1,7 @@
 ﻿@page "/submissions/{CourseTaskId:int}"
+@using ECampus.Domain.Requests.TaskSubmission
+@using ECampus.Domain.Responses.TaskSubmission
 
-<IndexPageModel TData="TaskSubmissionDto" TParameters="TaskSubmissionParameters" EditEnabled="false"
+<IndexPageModel TData="MultipleTaskSubmissionResponse" TParameters="TaskSubmissionParameters" EditEnabled="false"
                 ParameterOptions="parameters => parameters.CourseTaskId = CourseTaskId"
-                ActionLinks="@(new List<(string, Func<TaskSubmissionDto, string>)> { ("Mark submission", t => $"/markSubmission/{t.Id}") })"/>
+                ActionLinks="@(new List<(string, Func<MultipleTaskSubmissionResponse, string>)> { ("Mark submission", t => $"/markSubmission/{t.Id}") })"/>

@@ -1,6 +1,7 @@
-﻿using ECampus.Domain.DataContainers;
-using ECampus.Domain.DataTransferObjects;
-using ECampus.Domain.QueryParameters;
+﻿using ECampus.Domain.DataTransferObjects;
+using ECampus.Domain.Requests.CourseTask;
+using ECampus.Domain.Responses;
+using ECampus.Domain.Responses.CourseTask;
 using ECampus.Services.Contracts.Services;
 using ECampus.WebApi.Controllers;
 using Microsoft.AspNetCore.Mvc;
@@ -9,8 +10,8 @@ namespace ECampus.Tests.Unit.Tests.BackEnd.Api.Controllers;
 
 public class CourseTasksControllerTests
 {
-    private readonly IParametersService<CourseTaskDto, CourseTaskParameters> _service =
-        Substitute.For<IParametersService<CourseTaskDto, CourseTaskParameters>>();
+    private readonly IParametersService<MultipleCourseTaskResponse, CourseTaskParameters> _service =
+        Substitute.For<IParametersService<MultipleCourseTaskResponse, CourseTaskParameters>>();
 
     private readonly IBaseService<CourseTaskDto> _baseService = Substitute.For<IBaseService<CourseTaskDto>>();
     private readonly CourseTasksController _sut;
@@ -78,9 +79,9 @@ public class CourseTasksControllerTests
     [Fact]
     public async Task GetByParameters_ReturnsFromService_ServiceCalled()
     {
-        var data = _fixture.Build<ListWithPaginationData<CourseTaskDto>>()
+        var data = _fixture.Build<ListWithPaginationData<MultipleCourseTaskResponse>>()
             .With(l => l.Data, Enumerable.Range(0, 5)
-                .Select(_ => _fixture.Create<CourseTaskDto>()).ToList())
+                .Select(_ => _fixture.Create<MultipleCourseTaskResponse>()).ToList())
             .Create();
 
         _service.GetByParametersAsync(Arg.Any<CourseTaskParameters>()).Returns(data);

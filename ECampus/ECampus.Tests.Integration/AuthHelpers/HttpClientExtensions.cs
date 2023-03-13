@@ -4,6 +4,7 @@ using ECampus.Domain.DataTransferObjects;
 using ECampus.Domain.Entities;
 using ECampus.Domain.Enums;
 using ECampus.Domain.Extensions;
+using ECampus.Domain.Responses.Auth;
 using ECampus.Tests.Shared;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -15,7 +16,7 @@ public static class HttpClientExtensions
     public static void Login(this HttpClient client, User user)
     {
         var options = AuthData.DefaultOptions;
-        var loginResult = new LoginResult
+        var loginResult = new LoginResponse
         {
             Email = user.Email,
             Username = user.Username,

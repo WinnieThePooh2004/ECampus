@@ -1,6 +1,7 @@
 ﻿using ECampus.Domain.DataTransferObjects;
 using ECampus.Domain.Enums;
-using ECampus.Domain.QueryParameters;
+using ECampus.Domain.Requests.Faculty;
+using ECampus.Domain.Responses.Faculty;
 using ECampus.Services.Contracts.Services;
 using ECampus.WebApi.Metadata;
 using Microsoft.AspNetCore.Authorization;
@@ -12,9 +13,10 @@ namespace ECampus.WebApi.Controllers;
 [Route("api/[controller]")]
 public class FacultiesController : ControllerBase
 {
-    private readonly IParametersService<FacultyDto, FacultyParameters> _service;
+    private readonly IParametersService<MultipleFacultyResponse, FacultyParameters> _service;
     private readonly IBaseService<FacultyDto> _baseService;
-    public FacultiesController(IParametersService<FacultyDto, FacultyParameters> service, IBaseService<FacultyDto> baseService)
+    public FacultiesController(IParametersService<MultipleFacultyResponse, FacultyParameters> service,
+        IBaseService<FacultyDto> baseService)
     {
         _service = service;
         _baseService = baseService;

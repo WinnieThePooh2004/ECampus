@@ -1,6 +1,7 @@
 ﻿@using ECampus.Domain.Enums
-@using ECampus.Domain.QueryParameters
 @using ECampus.Domain.DataTransferObjects
+@using ECampus.Domain.Requests.Subject
+@using ECampus.Domain.Responses.Subject
 @inherits ModelEditForm<ECampus.Domain.DataTransferObjects.TeacherDto>
 <div class="row">
     <div class="col-md-4">
@@ -24,23 +25,15 @@
                     <option value="@ScienceDegree.PhD">PhD</option>
                 </InputSelect>
             </p>
-            <table width="30%">
+            <table style="width: 30%">
                 <tr>
                     <th>
                         Name
                     </th>
                 </tr>
-                @foreach (var subject in Model.Subjects ??= new List<SubjectDto>())
-                {
-                    <tr>
-                        <td>
-                            @subject.Name
-                        </td>
-                    </tr>
-                }
             </table>
             <br/><br/>
-            <MultipleItemsSelect TData="SubjectDto" TParameters="SubjectParameters" SelectTo="Model.Subjects" OnChanged="@StateHasChanged"/>
+            <MultipleItemsSelect TData="MultipleSubjectResponse" TParameters="SubjectParameters" SelectTo="Model.Subjects" OnChanged="@StateHasChanged"/>
             <button type="submit" class="btn btn-success">Save</button>
         </EditForm>
     </div>

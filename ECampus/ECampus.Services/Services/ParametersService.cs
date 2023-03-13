@@ -1,16 +1,16 @@
 ﻿using AutoMapper;
 using ECampus.DataAccess.Contracts.DataAccess;
 using ECampus.Domain.Data;
-using ECampus.Domain.DataContainers;
 using ECampus.Domain.Extensions;
-using ECampus.Domain.QueryParameters;
+using ECampus.Domain.Requests;
+using ECampus.Domain.Responses;
 using ECampus.Services.Contracts.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace ECampus.Services.Services;
 
 public class ParametersService<TDto, TParameters, TEntity> : IParametersService<TDto, TParameters>
-    where TDto : class, IDataTransferObject, new()
+    where TDto : class, IMultipleItemsResponse
     where TEntity : class, IEntity, new()
     where TParameters : class, IDataSelectParameters<TEntity>, IQueryParameters<TDto>
 {

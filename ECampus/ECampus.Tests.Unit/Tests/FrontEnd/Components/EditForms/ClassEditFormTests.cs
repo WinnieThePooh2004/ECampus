@@ -1,8 +1,15 @@
 ﻿using Bunit;
-using ECampus.Domain.DataContainers;
 using ECampus.Domain.DataTransferObjects;
 using ECampus.Domain.Enums;
-using ECampus.Domain.QueryParameters;
+using ECampus.Domain.Requests.Auditory;
+using ECampus.Domain.Requests.Group;
+using ECampus.Domain.Requests.Subject;
+using ECampus.Domain.Requests.Teacher;
+using ECampus.Domain.Responses;
+using ECampus.Domain.Responses.Auditory;
+using ECampus.Domain.Responses.Group;
+using ECampus.Domain.Responses.Subject;
+using ECampus.Domain.Responses.Teacher;
 using ECampus.FrontEnd.Components.EditForms;
 using ECampus.FrontEnd.PropertySelectors;
 using ECampus.FrontEnd.Requests.Interfaces;
@@ -13,17 +20,17 @@ namespace ECampus.Tests.Unit.Tests.FrontEnd.Components.EditForms;
 
 public class ClassEditFormTests
 {
-    private readonly IParametersRequests<TeacherDto, TeacherParameters> _teacherRequests =
-        Substitute.For<IParametersRequests<TeacherDto, TeacherParameters>>();
+    private readonly IParametersRequests<MultipleTeacherResponse, TeacherParameters> _teacherRequests =
+        Substitute.For<IParametersRequests<MultipleTeacherResponse, TeacherParameters>>();
 
-    private readonly IParametersRequests<AuditoryDto, AuditoryParameters> _auditoriesRequests =
-        Substitute.For<IParametersRequests<AuditoryDto, AuditoryParameters>>();
+    private readonly IParametersRequests<MultipleAuditoryResponse, AuditoryParameters> _auditoriesRequests =
+        Substitute.For<IParametersRequests<MultipleAuditoryResponse, AuditoryParameters>>();
 
-    private readonly IParametersRequests<SubjectDto, SubjectParameters> _subjectRequests =
-        Substitute.For<IParametersRequests<SubjectDto, SubjectParameters>>();
+    private readonly IParametersRequests<MultipleSubjectResponse, SubjectParameters> _subjectRequests =
+        Substitute.For<IParametersRequests<MultipleSubjectResponse, SubjectParameters>>();
 
-    private readonly IParametersRequests<GroupDto, GroupParameters> _groupRequests =
-        Substitute.For<IParametersRequests<GroupDto, GroupParameters>>();
+    private readonly IParametersRequests<MultipleGroupResponse, GroupParameters> _groupRequests =
+        Substitute.For<IParametersRequests<MultipleGroupResponse, GroupParameters>>();
 
     private readonly TestContext _context = new();
     private readonly IValidator<ClassDto> _validator = Substitute.For<IValidator<ClassDto>>();
@@ -40,12 +47,12 @@ public class ClassEditFormTests
         _context.Services.AddSingleton(typeof(IPropertySelector<>), typeof(PropertySelector<>));
         _context.Services.AddSingleton(typeof(ISearchTermsSelector<>), typeof(SearchTermsSelector<>));
         _auditoriesRequests.GetByParametersAsync(Arg.Any<AuditoryParameters>())
-            .Returns(new ListWithPaginationData<AuditoryDto>());
+            .Returns(new ListWithPaginationData<MultipleAuditoryResponse>());
         _teacherRequests.GetByParametersAsync(Arg.Any<TeacherParameters>())
-            .Returns(new ListWithPaginationData<TeacherDto>());
-        _groupRequests.GetByParametersAsync(Arg.Any<GroupParameters>()).Returns(new ListWithPaginationData<GroupDto>());
+            .Returns(new ListWithPaginationData<MultipleTeacherResponse>());
+        _groupRequests.GetByParametersAsync(Arg.Any<GroupParameters>()).Returns(new ListWithPaginationData<MultipleGroupResponse>());
         _subjectRequests.GetByParametersAsync(Arg.Any<SubjectParameters>())
-            .Returns(new ListWithPaginationData<SubjectDto>());
+            .Returns(new ListWithPaginationData<MultipleSubjectResponse>());
     }
 
     [Theory]

@@ -1,7 +1,7 @@
 ﻿using Bunit;
-using ECampus.Domain.DataContainers;
-using ECampus.Domain.DataTransferObjects;
-using ECampus.Domain.QueryParameters;
+using ECampus.Domain.Requests.Group;
+using ECampus.Domain.Responses;
+using ECampus.Domain.Responses.Group;
 using ECampus.FrontEnd.Components.DataSelectors;
 using ECampus.FrontEnd.PropertySelectors;
 using ECampus.FrontEnd.Requests.Interfaces;
@@ -14,10 +14,10 @@ public class SingleItemSelectTests
 {
     private readonly TestContext _context = new();
 
-    private readonly IParametersRequests<GroupDto, GroupParameters> _parametersRequests =
-        Substitute.For<IParametersRequests<GroupDto, GroupParameters>>();
+    private readonly IParametersRequests<MultipleGroupResponse, GroupParameters> _parametersRequests =
+        Substitute.For<IParametersRequests<MultipleGroupResponse, GroupParameters>>();
     
-    private static readonly IPropertySelector<GroupDto> PropertySelector = new PropertySelector<GroupDto>();
+    private static readonly IPropertySelector<MultipleGroupResponse> PropertySelector = new PropertySelector<MultipleGroupResponse>();
 
     private static readonly ISearchTermsSelector<GroupParameters> SearchTermsSelector =
         new SearchTermsSelector<GroupParameters>();
@@ -36,7 +36,7 @@ public class SingleItemSelectTests
     public void Build_ShouldHaveH3Tag_WhenTitleIsNotNullOrEmpty()
     {
         _parametersRequests.GetByParametersAsync(Arg.Any<GroupParameters>())
-            .Returns(new ListWithPaginationData<GroupDto>());
+            .Returns(new ListWithPaginationData<MultipleGroupResponse>());
         var component = RenderSelector(0, "title");
 
         var title = component.Find("h3");
@@ -49,7 +49,7 @@ public class SingleItemSelectTests
     public void Build_ShouldNotHaveH3Tag_WhenTitleIsNullOrEmpty(string title)
     {
         _parametersRequests.GetByParametersAsync(Arg.Any<GroupParameters>())
-            .Returns(new ListWithPaginationData<GroupDto>());
+            .Returns(new ListWithPaginationData<MultipleGroupResponse>());
 
         RenderSelector(0, title).FindAll("h3").Should().BeEmpty();
     }
@@ -64,10 +64,10 @@ public class SingleItemSelectTests
     public void SelectItem_ShouldInvokeSelectChange_WhenArgIsTrue()
     {
         var select = 0;
-        var data = new ListWithPaginationData<GroupDto>
+        var data = new ListWithPaginationData<MultipleGroupResponse>
         {
             Metadata = new PaginationData { TotalCount = 5, PageNumber = 1, PageSize = 5 },
-            Data = _fixture.CreateMany<GroupDto>(5).ToList()
+            Data = _fixture.CreateMany<MultipleGroupResponse>(5).ToList()
         };
         _parametersRequests.GetByParametersAsync(Arg.Any<GroupParameters>()).Returns(data);
         var selector = RenderSelector(0, g => select = g);
@@ -82,10 +82,10 @@ public class SingleItemSelectTests
     public void SelectItem_ShouldIgnore_WhenArgIsFalse()
     {
         int? select = null;
-        var data = new ListWithPaginationData<GroupDto>
+        var data = new ListWithPaginationData<MultipleGroupResponse>
         {
             Metadata = new PaginationData { TotalCount = 5, PageNumber = 1, PageSize = 5 },
-            Data = _fixture.CreateMany<GroupDto>(5).ToList()
+            Data = _fixture.CreateMany<MultipleGroupResponse>(5).ToList()
         };
         _parametersRequests.GetByParametersAsync(Arg.Any<GroupParameters>()).Returns(data);
         var selector = RenderSelector(0, g => select = g);
@@ -104,10 +104,10 @@ public class SingleItemSelectTests
     public void SelectItem_ShouldChangeSelectedItem_WhenCurrentIsNotNull()
     {
         var select = 0;
-        var data = new ListWithPaginationData<GroupDto>
+        var data = new ListWithPaginationData<MultipleGroupResponse>
         {
             Metadata = new PaginationData { TotalCount = 5, PageNumber = 1, PageSize = 5 },
-            Data = _fixture.CreateMany<GroupDto>(5).ToList()
+            Data = _fixture.CreateMany<MultipleGroupResponse>(5).ToList()
         };
         _parametersRequests.GetByParametersAsync(Arg.Any<GroupParameters>()).Returns(data);
         var selector = RenderSelector(0, g => select = g);
@@ -126,9 +126,9 @@ public class SingleItemSelectTests
     public async Task ClickOnTableHeader_ShouldChangeOrderBy()
     {
         var items = Enumerable.Range(0, 10).Select(i => _fixture
-            .Build<GroupDto>().With(f => f.Id, i).Create()).ToList();
+            .Build<MultipleGroupResponse>().With(f => f.Id, i).Create()).ToList();
         _parametersRequests.GetByParametersAsync(Arg.Any<GroupParameters>())
-            .Returns(new ListWithPaginationData<GroupDto>
+            .Returns(new ListWithPaginationData<MultipleGroupResponse>
                 { Data = items, Metadata = new PaginationData { TotalCount = 10, PageNumber = 1, PageSize = 5 } });
         var selector = RenderSelector(1);
         var th = selector.Find("th");
@@ -139,18 +139,18 @@ public class SingleItemSelectTests
         await _parametersRequests.Received(1).GetByParametersAsync(Arg.Any<GroupParameters>());
     }
 
-    private IRenderedComponent<SingleItemSelect<GroupDto, GroupParameters>> RenderSelector(int selectedId,
+    private IRenderedComponent<SingleItemSelect<MultipleGroupResponse, GroupParameters>> RenderSelector(int selectedId,
         Action<int> selectChanged, string title = "")
     {
-        return _context.RenderComponent<SingleItemSelect<GroupDto, GroupParameters>>(options =>
+        return _context.RenderComponent<SingleItemSelect<MultipleGroupResponse, GroupParameters>>(options =>
             options.Add(s => s.SelectedId, selectedId)
                 .Add(s => s.Title, title)
                 .Add(s => s.SelectedIdChanged, selectChanged));
     }
     
-    private IRenderedComponent<SingleItemSelect<GroupDto, GroupParameters>> RenderSelector(int selectedId, string title = "")
+    private IRenderedComponent<SingleItemSelect<MultipleGroupResponse, GroupParameters>> RenderSelector(int selectedId, string title = "")
     {
-        return _context.RenderComponent<SingleItemSelect<GroupDto, GroupParameters>>(options =>
+        return _context.RenderComponent<SingleItemSelect<MultipleGroupResponse, GroupParameters>>(options =>
             options.Add(s => s.SelectedId, selectedId)
                 .Add(s => s.Title, title));
     }
